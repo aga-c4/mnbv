@@ -1,0 +1,227 @@
+﻿body {
+width:99%;
+font-size:14;
+font-family:Verdana, Arial;
+text-align:left;
+color:#000;
+margin:0;
+padding:0;
+overflow-y:scroll; /*Всегда отображать вертикальную прокрутку чтоб сайт не ездил*/
+}
+
+.container {
+text-align:left;
+width:100%;
+margin:0;
+padding:0 0 0 10px;
+float:left;
+}
+
+.gormenu {
+font-size:20px;
+text-align:left;
+color:#000;
+background-color:#3698da;
+/*Gradient*/
+background: -moz-linear-gradient(bottom, #3698da, #cdebff); /* Firefox 3.6+ */
+/* Chrome 1-9, Safari 4-5 */
+background: -webkit-gradient(linear, left bottom, left top,
+color-stop(0%,#3698da), color-stop(100%,#cdebff));
+/* Chrome 10+, Safari 5.1+ */
+background: -webkit-linear-gradient(bottom, #3698da, #cdebff);
+background: -o-linear-gradient(bottom, #3698da, #cdebff); /* Opera 11.10+ */
+background: -ms-linear-gradient(bottom, #3698da, #cdebff); /* IE10 */
+background: linear-gradient(bottom, #3698da, #cdebff); /* CSS3 */
+width:100%;
+overflow:hidden;
+margin:0;
+padding:0;
+float:left;
+-webkit-box-shadow: 0 0 5px #666; /* Тень для Safari 3.0 */
+box-shadow: 0 0 5px #666; /* Тень для остальных браузеров */
+-moz-box-shadow: 0 0 5px #666p; /* Тень для Firefox 3.5 */
+}
+.gormenu a {
+color:#000;
+font-size:20px;
+text-decoration:none;
+line-height: 2;
+}
+.gormenu a:active, .gormenu a:hover, .gormenu a.selected {
+color:#ff0;
+text-decoration:none;
+}
+
+.content {
+text-align:left;
+color:#333;
+width:99%;
+margin:0;
+padding:0;
+float:left;
+}
+
+.futor {
+text-align:left;
+background-color:#3698da;
+/*Gradient*/
+background: -moz-linear-gradient(bottom, #3698da, #cdebff); /* Firefox 3.6+ */
+/* Chrome 1-9, Safari 4-5 */
+background: -webkit-gradient(linear, left bottom, left top,
+color-stop(0%,#3698da), color-stop(100%,#cdebff));
+/* Chrome 10+, Safari 5.1+ */
+background: -webkit-linear-gradient(bottom, #3698da, #cdebff);
+background: -o-linear-gradient(bottom, #3698da, #cdebff); /* Opera 11.10+ */
+background: -ms-linear-gradient(bottom, #3698da, #cdebff); /* IE10 */
+background: linear-gradient(bottom, #3698da, #cdebff); /* CSS3 */
+width:100%;
+margin:9px 0 0;
+padding:6px 0;
+float:left;
+-webkit-box-shadow: 0 0 5px #666; /* Тень для Safari 3.0 */
+box-shadow: 0 0 5px #666; /* Тень для остальных браузеров */
+-moz-box-shadow: 0 0 5px #666p; /* Тень для Firefox 3.5 */
+}
+.futor p {
+margin:0;
+padding:0;
+}
+
+h1 {
+font-size:20px;
+font-weight:normal;
+text-decoration:none;
+margin:0;
+padding:0;
+}
+
+h2 {
+font-family:20px;
+font-weight:normal;
+text-decoration:none;
+margin:0;
+padding:0;
+}
+
+a {
+color:#36c;
+text-decoration:underline;
+}
+
+form {
+margin:0;
+padding:0;
+}
+
+input, textarea, select {
+background-color:#fff;
+border:1px Solid #ccc;
+}
+
+input.radio {
+    border:0 Solid ;
+}
+
+.submit {
+font-weight:bold;
+text-align:center;
+color:#333;
+background-color:#cdebff;
+}
+
+.submit_vid {
+font-weight:bold;
+text-align:center;
+color:blue;
+background-color:#66ff66;
+}
+
+.bigsubmit {
+font-size:20px;
+font-weight:normal;
+text-align:center;
+color:#333;
+background-color:#cdebff;
+}
+
+.bigsubmit_vid {
+font-size:20px;
+font-weight:normal;
+text-align:center;
+color:blue;
+background-color:#66ff66;
+}
+
+ol, ul {
+    margin:0;
+    padding:0 0 0 2em;
+}
+li {
+    margin:3px;
+    padding:0;
+}
+
+img {
+border:0;
+margin:0;
+padding:0;
+}
+
+img.content-img {
+border:0;
+margin:6px;
+padding:0;
+}
+
+table {
+font-size:14px;
+}
+
+table.base {
+width:99%;
+border-collapse: collapse;
+}
+
+table.base th, table.base th.line {
+    font-weight:bold;
+    background-color:#cdebff;
+    border:1px Solid #ccc;
+    vertical-align: top;
+    text-align: center;
+}
+table.base th.line {
+    text-align: left;
+}
+table.base th a {
+font-weight:normal;
+color:#333;
+text-decoration:none;
+}
+table.base th a:active, table.base th a:hover {
+text-decoration:underline;
+}
+
+table.base td {
+border-top:1px Solid #ccc;
+border-bottom:1px Solid #ccc;
+padding:3px;
+vertical-align: top;
+}
+table.base td a {
+color:#333;
+text-decoration:none;
+}
+table.base td a:active, table.base td a:hover{
+text-decoration:underline;
+}
+
+div.clear {
+margin:0;
+padding:0;
+clear: both;
+}
+
+div.fltrbl {
+    float:left;
+    padding:3px;
+}
