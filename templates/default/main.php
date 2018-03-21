@@ -1,20 +1,5 @@
 <?php
 require_once MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'head.php');
-
-//Блок изменения ширины шаблона
-if (Glob::$vars['session']->get('intranet_width')) $intranet_width = Glob::$vars['session']->get('intranet_width');
-else $intranet_width = 1;
-
-if (isset($_GET["fintranet_width"])){
-    $fintranet_width=intval($_GET["fintranet_width"]);
-    if (($fintranet_width>1)and($fintranet_width<980)){$fintranet_width=980;}//Установка минимальной ширины шаблона
-    $intranet_width = $fintranet_width;
-    Glob::$vars['session']->set('intranet_width',$intranet_width); //Варианты 0 или не задано - 100%, остальные числа - необходимая ширина шаблона
-}
-if (($intranet_width>1)and($intranet_width<980)){$intranet_width=980;}//Установка минимальной ширины шаблона
-if ($intranet_width==1){$intranet_width_str='99%';}else{$intranet_width_str=$intranet_width.'px';}
-//Конец блока изменения ширины шаблона
-
 ?>
 <link rel="shortcut icon" href="<?=WWW_IMGPATH;?>logo/smallico.ico">
 <LINK href="<?=WWW_SRCPATH.MNBV_MAINMODULE;?>/css/mnbv.css" type="text/css" rel="Stylesheet" media="screen">
@@ -48,20 +33,12 @@ if (SysLogs::getErrors()!=''){echo "<pre>ERRORS:\n" . SysLogs::getErrors() . "--
 </div>
 
 <div class="futor" style="width:<?=$intranet_width_str;?>;">
-<?php
-echo '<span style="float:right;">'.Lang::get("Click to resize").' --->';
-if ($intranet_width==1){echo '<a href="?fintranet_width=980" style="font-weight:bold;text-decoration:none;color:#000;">[980]</a>';}
-elseif ($intranet_width<=980){echo '<a href="?fintranet_width=1250" style="font-weight:bold;text-decoration:none;color:#000;">[1250]</a>';}
-elseif ($intranet_width<=1250){echo '<a href="?fintranet_width=1" style="font-weight:bold;text-decoration:none;color:#000;">[100%]</a>';}
-else {echo '<a href="?fintranet_width=980" style="font-weight:bold;text-decoration:none;color:#000;">[980]</a>';}
-echo "&nbsp;&nbsp;</span>\n";
-?>
 <span style="color:blue;">&nbsp;&nbsp;<?
 if (Glob::$vars['user']->get('userid')>0) $langUserName = 'No name'; else $langUserName = '';
 if (Glob::$vars['user']->get('name')!='') $langUserName = Glob::$vars['user']->get('name');
 if (!Lang::isDefLang()&&Glob::$vars['user']->get('namelang')!='') $langUserName = Glob::$vars['user']->get('namelang');
 echo '<a href="/intranet/auth/">'.$langUserName.'</a>';
-?></span><br>
+?></span>
 <span style="float:right;">Сopyright © 2012 <?=SysBF::getFrArr($item,'site_name');?>&nbsp;&nbsp;</span>
 </div>
 </div>
