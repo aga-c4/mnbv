@@ -1,3 +1,16 @@
 .idea
 /nbproject/private/
 /nbproject
+/tmp/cache/
+/tmp/imgeditor/
+/tmp/logs/
+/tmp/modules/
+/tmp/upl/
+/app/modules/
+/app/templates/
+/www/data/
+/www/tmp/
+/data/storage_files/robotsrun/
+/console.php
+/start_robot.php
+/www/index.php
