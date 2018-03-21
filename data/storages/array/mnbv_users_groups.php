@@ -45,12 +45,14 @@ SysStorage::$arraySt["usersgr"] = array(
     "212" => array("id"=>212,"pozid"=>312,"parentid"=>1,"type"=>0,"visible"=>1,"first"=>0,"name"=>"Работа с контрагентами","namelang"=>"Klient manager","access"=>0,"access2"=>2),
     "213" => array("id"=>213,"pozid"=>313,"parentid"=>1,"type"=>0,"visible"=>1,"first"=>0,"name"=>"Работа с расчетами","namelang"=>"Payment manager","access"=>0,"access2"=>2),
     
-    //Параметры брокера
+	/*
+    //Параметры брокера (номера зарезервированы, не использовать.)
     "301" => array("id"=>301,"pozid"=>301,"parentid"=>1,"type"=>0,"visible"=>1,"first"=>0,"name"=>"Работа с Z-Broker","namelang"=>"Z-Broker","access"=>0,"access2"=>2),
     "302" => array("id"=>302,"pozid"=>302,"parentid"=>1,"type"=>0,"visible"=>1,"first"=>0,"name"=>"Работа с Z-Broker конфигурацией","namelang"=>"Z-Broker config","access"=>0,"access2"=>2),
     "303" => array("id"=>303,"pozid"=>303,"parentid"=>1,"type"=>0,"visible"=>1,"first"=>0,"name"=>"Работа с Z-Broker биржами","namelang"=>"Z-Broker config","access"=>0,"access2"=>2),
     "304" => array("id"=>304,"pozid"=>304,"parentid"=>1,"type"=>0,"visible"=>1,"first"=>0,"name"=>"Работа с Z-Broker роботами","namelang"=>"Z-Broker bots","access"=>0,"access2"=>2),
     "305" => array("id"=>305,"pozid"=>305,"parentid"=>1,"type"=>0,"visible"=>1,"first"=>0,"name"=>"Работа с Z-Broker заданиями","namelang"=>"Z-Broker activity","access"=>0,"access2"=>2),
     "306" => array("id"=>306,"pozid"=>306,"parentid"=>1,"type"=>0,"visible"=>1,"first"=>0,"name"=>"Z-Broker менеджеры","namelang"=>"Z-Broker managers","access"=>0,"access2"=>2),
-    
+    */
+	
 );
