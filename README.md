@@ -136,7 +136,7 @@ mklink /j actions D:\OSPanel\domains\mnbv\data\storage_files\actions
 root без пароля. Если в вашем случае это другие доступы, то создайте файл 
 "app/modules/mnbv/config/config.php"  по образцу:
 
-<?php
+```php
 //Переменные работы с Базами и хранилищами данных-----------------------
 //Установка доступов к БД
 SysStorage::setDb('mysql1',array(
@@ -146,6 +146,7 @@ SysStorage::setDb('mysql1',array(
 	'password' => 'Пароль к БД'
 ));
 //Конец файла, не закрывать его тегом закрытия скрипта ------------------
+```
 
 7. Настройте Web сервер на запуск вашего домена из директории "web" системы.
 Индексы директорий index.html, index.php.
