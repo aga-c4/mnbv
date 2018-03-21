@@ -117,14 +117,17 @@
 хотите отображать приложенные файлы без проверки прав доступа.
 Для демо инсталяции зайдите в корневую папку, где вы создаете линк и выполните 
 команды Windows:
+```
 Для папки www/tmp:
 mklink /j imgeditor D:\OSPanel\domains\mnbv\tmp\imgeditor
+
 Для папки www/data:
 mklink /j site D:\OSPanel\domains\mnbv\data\storage_files\site
 mklink /j news D:\OSPanel\domains\mnbv\data\storage_files\news
 mklink /j articles D:\OSPanel\domains\mnbv\data\storage_files\articles
 mklink /j products D:\OSPanel\domains\mnbv\data\storage_files\products
 mklink /j actions D:\OSPanel\domains\mnbv\data\storage_files\actions
+```
 
 5. Создайте базу данных базовая кодировка utf-8, сравнение utf8_general_ci
 По-умолчанию для базы используется название mnbv8. При локальных тестах она
