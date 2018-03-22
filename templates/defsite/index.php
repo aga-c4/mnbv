@@ -107,7 +107,7 @@ if (Glob::$vars['user']->get('name')!='') $langUserName = Glob::$vars['user']->g
 if (!Lang::isDefLang()&&Glob::$vars['user']->get('namelang')!='') $langUserName = Glob::$vars['user']->get('namelang');
 echo '<a href="/intranet/auth/">'.$langUserName.'</a>';
 ?></span>
-<span style="float:right;">Сopyright © 2012 <?=SysBF::getFrArr($item,'site_name');?>&nbsp;&nbsp;</span>
+<span style="float:right;">Сopyright © 2006-2018, AGA-C4 <?=SysBF::getFrArr($item,'site_name');?>&nbsp;&nbsp;</span>
 </div>
 </div>
 
