@@ -94,7 +94,7 @@ MNBVf::startVidget('pglist',$item,array(
 
 <?
 echo (!empty($item['page_content2'])) ? ($item['page_content']."\n") : '';
-MNBVf::putDBStatToLog();
+MNBVf::putFinStatToLog();
 if (SysLogs::getLog()!=''){echo "<pre>LOG:\n"  . SysLogs::getLog() . "-------\n</pre>";}
 if (SysLogs::getErrors()!=''){echo "<pre>ERRORS:\n" . SysLogs::getErrors() . "-------\n</pre>";}
 ?>
