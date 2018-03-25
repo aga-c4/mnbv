@@ -184,17 +184,12 @@ class StorageController {
                 $item['list']["$key"]["url"] = '/' . Glob::$vars['mnbv_module'] . '/' . $this->controllerName . '/' . $key . '/' . ((Lang::isDefLang())?'':'altlang/');
             }
         }
-            
-        //Запишем конфиг и логи----------------------
-        $script_datetime_stop = date("Y-m-d H:i:s");
-        $script_time_stop = SysBF::getmicrotime();
-        $time_script = sprintf ("%01.4f",($script_time_stop - Glob::$vars['time_start']));
-        SysLogs::addLog('Starttime: ' . Glob::$vars['datetime_start']);
-        SysLogs::addLog("Endtime: $script_datetime_stop");
-        SysLogs::addLog("Runtime: $time_script");
 
         //View------------------------
         MNBVf::render(MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'main.php'),$item,$tpl_mode);
+        
+        //Запишем конфиг и логи, если этого не произошлов в конце шаблона
+        if (!SysLogs::$logComplete) MNBVf::putFinStatToLog();
 
     }
     
@@ -212,17 +207,12 @@ class StorageController {
         //$item['page_sctpl'] = 'tpl_objlist.php';
         $item['page_h1'] = Glob::$vars['page_h1'];
         $item['page_content'] = $PgHtml;
-        
-        //Запишем конфиг и логи----------------------
-        $script_datetime_stop = date("Y-m-d H:i:s");
-        $script_time_stop = SysBF::getmicrotime();
-        $time_script = sprintf ("%01.4f",($script_time_stop - Glob::$vars['time_start']));
-        SysLogs::addLog('Starttime: ' . Glob::$vars['datetime_start']);
-        SysLogs::addLog("Endtime: $script_datetime_stop");
-        SysLogs::addLog("Runtime: $time_script");
 
         //View------------------------
         MNBVf::render(MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'main.php'),$item,$tpl_mode);
+        
+        //Запишем конфиг и логи, если этого не произошлов в конце шаблона
+        if (!SysLogs::$logComplete) MNBVf::putFinStatToLog();
         
     }
     
@@ -243,17 +233,12 @@ class StorageController {
         
         $item['list'] = array();        
         foreach ($item['list'] as $key => $value) $item['list']["$key"]["url"] = '/' . $this->thisModuleName . '/' . $key . '/';
-        
-        //Запишем конфиг и логи----------------------
-        $script_datetime_stop = date("Y-m-d H:i:s");
-        $script_time_stop = SysBF::getmicrotime();
-        $time_script = sprintf ("%01.4f",($script_time_stop - Glob::$vars['time_start']));
-        SysLogs::addLog('Starttime: ' . Glob::$vars['datetime_start']);
-        SysLogs::addLog("Endtime: $script_datetime_stop");
-        SysLogs::addLog("Runtime: $time_script");
 
         //View------------------------
         MNBVf::render(MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'main.php'),$item,$tpl_mode);
+        
+        //Запишем конфиг и логи, если этого не произошлов в конце шаблона
+        if (!SysLogs::$logComplete) MNBVf::putFinStatToLog();
         
     }
     
@@ -530,20 +515,15 @@ class StorageController {
         
         //Контент страницы  
         $item['page_content'] = $PgHtml;
-            
-        //Запишем конфиг и логи----------------------
-        $script_datetime_stop = date("Y-m-d H:i:s");
-        $script_time_stop = SysBF::getmicrotime();
-        $time_script = sprintf ("%01.4f",($script_time_stop - Glob::$vars['time_start']));
-        SysLogs::addLog('Starttime: ' . Glob::$vars['datetime_start']);
-        SysLogs::addLog("Endtime: $script_datetime_stop");
-        SysLogs::addLog("Runtime: $time_script");
         
         SysLogs::addLog('Lang: ' . Lang::getLang());
         SysLogs::addLog('DefLang: ' . Lang::getDefLang());
 
         //View------------------------
         MNBVf::render(MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'main.php'),$item,$tpl_mode);
+        
+        //Запишем конфиг и логи, если этого не произошлов в конце шаблона
+        if (!SysLogs::$logComplete) MNBVf::putFinStatToLog();
         
     }
 
@@ -877,16 +857,11 @@ class StorageController {
 
         //Конец формирования полей объекта -----------------------------------------------------------------------------
 
-        //Запишем конфиг и логи----------------------
-        $script_datetime_stop = date("Y-m-d H:i:s");
-        $script_time_stop = SysBF::getmicrotime();
-        $time_script = sprintf ("%01.4f",($script_time_stop - Glob::$vars['time_start']));
-        SysLogs::addLog('Starttime: ' . Glob::$vars['datetime_start']);
-        SysLogs::addLog("Endtime: $script_datetime_stop");
-        SysLogs::addLog("Runtime: $time_script");
-        //var_dump(Lang::$dict);
         //View------------------------
         MNBVf::render(MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'main.php'),$item,$tpl_mode);
+
+        //Запишем конфиг и логи, если этого не произошлов в конце шаблона
+        if (!SysLogs::$logComplete) MNBVf::putFinStatToLog();   
         
     }
     
@@ -906,17 +881,12 @@ class StorageController {
         //$item['page_sctpl'] = 'tpl_baseobjlist.php';
         $item['page_h1'] = Glob::$vars['page_h1'];
         $item['page_content'] = $PgHtml;
-        
-        //Запишем конфиг и логи----------------------
-        $script_datetime_stop = date("Y-m-d H:i:s");
-        $script_time_stop = SysBF::getmicrotime();
-        $time_script = sprintf ("%01.4f",($script_time_stop - Glob::$vars['time_start']));
-        SysLogs::addLog('Starttime: ' . Glob::$vars['datetime_start']);
-        SysLogs::addLog("Endtime: $script_datetime_stop");
-        SysLogs::addLog("Runtime: $time_script");
 
         //View------------------------
         MNBVf::render(MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'main.php'),$item,$tpl_mode);
+        
+        //Запишем конфиг и логи, если этого не произошлов в конце шаблона
+        if (!SysLogs::$logComplete) MNBVf::putFinStatToLog();
         
     }
     

@@ -198,6 +198,21 @@ class DbMysql {
      * @return bool|resource
      */
     public function query($query)  {
+        
+        $location = '';
+        if (SysLogs::$logsEnable) {
+            $debugArr = debug_backtrace();
+            if (!empty($debugArr)&& is_array($debugArr)){
+                $maxLocCount = count($debugArr);
+                $currItem = 0;
+                //При необходимости перепрыгнем через служебные методы, для получения интересующей нас точки входа
+                if ($currItem<$maxLocCount && false!==stripos($debugArr[$currItem]['file'],'MNBVMySQLSt.class.php')) $currItem++;
+                if ($currItem<$maxLocCount && false!==stripos($debugArr[$currItem]['file'],'MNBVStorage.class.php')) $currItem++;
+                if ($currItem<$maxLocCount && false!==stripos($debugArr[$currItem]['file'],'MNBVStorage.class.php')) $currItem++; //Возможен двойной вызов по getObjAcc()
+                $location = 'file=['.$debugArr[$currItem]['file'].'] line=['.$debugArr[$currItem]['line'].']';
+            }else $location = 'empty debug_backtrace';
+        }
+        
         try {
             if ($this->linkDb) {
                 $this->lastQuery = htmlspecialchars($query,ENT_QUOTES,'utf-8');
@@ -216,19 +231,23 @@ class DbMysql {
                     self::$sqlStat['allSql'] ++;
                     self::$sqlStat['allTime'] += $timesql;
 
-                    //Если это ражим отладки, то сохраним все запросы
-                    if (SysLogs::$logsEnable) self::$sqlStat['allQueries'][] = htmlspecialchars($query,ENT_QUOTES,'utf-8') . " [Time:".sprintf ("%01.6f",$timesql)."s]";
+                    //Если это ражим отладки, то сохраним все запросы, но не более 100.
+                    if (SysLogs::$logsEnable) {
+                        $qItems = count(self::$sqlStat['allQueries']);
+                        if ($qItems<=100) {self::$sqlStat['allQueries'][] = htmlspecialchars($query,ENT_QUOTES,'utf-8') . ' |---> [Time:'.sprintf ("%01.6f",$timesql).'s]'.((!empty($location))?(' [Location: '.$location.']'):'');}
+                        elseif ($qItems==101) {self::$sqlStat['allQueries'][] = 'Saved only 100 queries';}
+                    }
 
                     $this->lastQuery = '';
                     return $result;
                 }
             }else{
-                SysLogs::addError('Mysql:Error - Empty linkDb for ' . $this->aliasDb . '!');
+                SysLogs::addError('Mysql:Error - Empty linkDb for ' . $this->aliasDb . '!'.((!empty($locaton))?('[Location: '.$location.']'):''));
                 $this->linkDb = null;
                 return false;
             }
         }catch (Exception $e) {
-            SysLogs::addError('Mysql:Error - ' . $e->getMessage());
+            SysLogs::addError('Mysql:Error - ' . $e->getMessage() . ((!empty($locaton))?('[Location: '.$location.']'):''));
             $this->mysql_ping();
             return false;
         }

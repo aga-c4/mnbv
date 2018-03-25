@@ -11,5 +11,6 @@ $itemCounter = 0;
 if (!empty($item['page_h1'])){ echo $item['page_h1'] . "\n------------\n";$itemCounter++;}
 if (!empty($item['page_content'])){ echo $item['page_content'] . "\n------------\n";$itemCounter++;}
 if (isset($item) && is_array($item) && count($item)>$itemCounter) {var_dump($item); echo "\n------------\n";}
+MNBVf::putDBStatToLog();
 if (SysLogs::getErrors()!=''){echo "ERRORS:\n" . SysLogs::getErrors() . "\n------------\n";}
 if (SysLogs::getLog()!=''){echo "LOG:\n" . SysLogs::getLog() . "\n------------\n";}

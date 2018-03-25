@@ -1,6 +1,6 @@
 <?php
 /**
- * RobotsController class - класс робота для сбора основной статистики по активным роботам на базе ps -ax | grep=start_robot
+ * RobotsController class - РєР»Р°СЃСЃ СЂРѕР±РѕС‚Р° РґР»СЏ СЃР±РѕСЂР° РѕСЃРЅРѕРІРЅРѕР№ СЃС‚Р°С‚РёСЃС‚РёРєРё РїРѕ Р°РєС‚РёРІРЅС‹Рј СЂРѕР±РѕС‚Р°Рј РЅР° Р±Р°Р·Рµ ps -ax | grep=start_robot
  *
  * Created by Konstantin Khachaturyan (aga-c4)
  * @author Konstantin Khachaturyan (AGA-C4)
@@ -10,7 +10,7 @@
 class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
 
     /**
-     * @var string - Имя робота
+     * @var string - РРјСЏ СЂРѕР±РѕС‚Р°
      */
     public $thisModuleName = '';
 
@@ -19,49 +19,49 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
     }
 
     /**
-     * Метод по-умолчанию
-     * @param string $tpl_mode - формат вывода
-     * @param bool $console - если true, то вывод в консоль
+     * РњРµС‚РѕРґ РїРѕ-СѓРјРѕР»С‡Р°РЅРёСЋ
+     * @param string $tpl_mode - С„РѕСЂРјР°С‚ РІС‹РІРѕРґР°
+     * @param bool $console - РµСЃР»Рё true, С‚Рѕ РІС‹РІРѕРґ РІ РєРѕРЅСЃРѕР»СЊ
      */
     public function action_index($item=array(),$tpl_mode='html', $console=false){
 
         #################################################################
-        # Стартовый конфиг
+        # РЎС‚Р°СЂС‚РѕРІС‹Р№ РєРѕРЅС„РёРі
         #################################################################
-        ini_set('max_execution_time', 0); //Максимальное время выполнения скрипта, установим в 0, чтоб небыло ограничений. Устанавливаем в контроллере, т.к. могут быть роботы с установленным ограничением по времени
-        $usleepTime = 1; //1 секунда - понадобится позже при вычислении реального времени выполнения.
-        SysLogs::$logsEnable = false; //Накапливать лог
-        SysLogs::$errorsEnable = false; //Накапливать лог ошибок
-        SysLogs::$logRTView = true; //Выводить сообщения непосредственно при их формировании. Если не установлено SysLogs::$logView, то выводятся только ошибки
-        SysLogs::$logView = false; //Показывать лог событий скрипта (суммарный для ошибок и событий). Если не задано, то сообщения обычные в лог не будут выводиться даже при установленном SysLogs::$logRTView
+        ini_set('max_execution_time', 0); //РњР°РєСЃРёРјР°Р»СЊРЅРѕРµ РІСЂРµРјСЏ РІС‹РїРѕР»РЅРµРЅРёСЏ СЃРєСЂРёРїС‚Р°, СѓСЃС‚Р°РЅРѕРІРёРј РІ 0, С‡С‚РѕР± РЅРµР±С‹Р»Рѕ РѕРіСЂР°РЅРёС‡РµРЅРёР№. РЈСЃС‚Р°РЅР°РІР»РёРІР°РµРј РІ РєРѕРЅС‚СЂРѕР»Р»РµСЂРµ, С‚.Рє. РјРѕРіСѓС‚ Р±С‹С‚СЊ СЂРѕР±РѕС‚С‹ СЃ СѓСЃС‚Р°РЅРѕРІР»РµРЅРЅС‹Рј РѕРіСЂР°РЅРёС‡РµРЅРёРµРј РїРѕ РІСЂРµРјРµРЅРё
+        $usleepTime = 1; //1 СЃРµРєСѓРЅРґР° - РїРѕРЅР°РґРѕР±РёС‚СЃСЏ РїРѕР·Р¶Рµ РїСЂРё РІС‹С‡РёСЃР»РµРЅРёРё СЂРµР°Р»СЊРЅРѕРіРѕ РІСЂРµРјРµРЅРё РІС‹РїРѕР»РЅРµРЅРёСЏ.
+        SysLogs::$logsEnable = false; //РќР°РєР°РїР»РёРІР°С‚СЊ Р»РѕРі
+        SysLogs::$errorsEnable = false; //РќР°РєР°РїР»РёРІР°С‚СЊ Р»РѕРі РѕС€РёР±РѕРє
+        SysLogs::$logRTView = true; //Р’С‹РІРѕРґРёС‚СЊ СЃРѕРѕР±С‰РµРЅРёСЏ РЅРµРїРѕСЃСЂРµРґСЃС‚РІРµРЅРЅРѕ РїСЂРё РёС… С„РѕСЂРјРёСЂРѕРІР°РЅРёРё. Р•СЃР»Рё РЅРµ СѓСЃС‚Р°РЅРѕРІР»РµРЅРѕ SysLogs::$logView, С‚Рѕ РІС‹РІРѕРґСЏС‚СЃСЏ С‚РѕР»СЊРєРѕ РѕС€РёР±РєРё
+        SysLogs::$logView = false; //РџРѕРєР°Р·С‹РІР°С‚СЊ Р»РѕРі СЃРѕР±С‹С‚РёР№ СЃРєСЂРёРїС‚Р° (СЃСѓРјРјР°СЂРЅС‹Р№ РґР»СЏ РѕС€РёР±РѕРє Рё СЃРѕР±С‹С‚РёР№). Р•СЃР»Рё РЅРµ Р·Р°РґР°РЅРѕ, С‚Рѕ СЃРѕРѕР±С‰РµРЅРёСЏ РѕР±С‹С‡РЅС‹Рµ РІ Р»РѕРі РЅРµ Р±СѓРґСѓС‚ РІС‹РІРѕРґРёС‚СЊСЃСЏ РґР°Р¶Рµ РїСЂРё СѓСЃС‚Р°РЅРѕРІР»РµРЅРЅРѕРј SysLogs::$logRTView
         $outputFilename = 'data/storage_files/zbrobotsrun/att/p[obj_id]_1.txt';
         #################################################################
 
-        usleep(1000000 * $usleepTime); //Спим $usleepTime секунд. чтоб все по базам записалось
+        usleep(1000000 * $usleepTime); //РЎРїРёРј $usleepTime СЃРµРєСѓРЅРґ. С‡С‚РѕР± РІСЃРµ РїРѕ Р±Р°Р·Р°Рј Р·Р°РїРёСЃР°Р»РѕСЃСЊ
         $procId = SysBF::checkStr(SysBF::getFrArr(Glob::$vars['request'],'proc',''),'int');
         $rsid = SysBF::checkStr(SysBF::getFrArr(Glob::$vars['request'],'rsid',''),'strictstr');
 
-        require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVProcess.class.php';  //Класс работы со словарями
-        require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVRobot.class.php';  //Класс работы со словарями
+        require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVProcess.class.php';  //РљР»Р°СЃСЃ СЂР°Р±РѕС‚С‹ СЃРѕ СЃР»РѕРІР°СЂСЏРјРё
+        require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVRobot.class.php';  //РљР»Р°СЃСЃ СЂР°Р±РѕС‚С‹ СЃРѕ СЃР»РѕРІР°СЂСЏРјРё
         $proc = new MNBVRobot('zbrobotsrun',$procId);
         $procProp = $proc->getObj();
         $proc->setPsid($rsid);
         $procProp['sid'] = $rsid;
 
-        if ($procProp!==null && (empty($procProp['sid']) || $procProp['sid']==$rsid)) {//Продолжаем работу только если данное задание не имеет sid, т.е. не запущено.
+        if ($procProp!==null && (empty($procProp['sid']) || $procProp['sid']==$rsid)) {//РџСЂРѕРґРѕР»Р¶Р°РµРј СЂР°Р±РѕС‚Сѓ С‚РѕР»СЊРєРѕ РµСЃР»Рё РґР°РЅРЅРѕРµ Р·Р°РґР°РЅРёРµ РЅРµ РёРјРµРµС‚ sid, С‚.Рµ. РЅРµ Р·Р°РїСѓС‰РµРЅРѕ.
 
-            //Откроем сессию, подключим пользователя, того, кто был редактором задания на выполнение.
-            Glob::$vars['session'] = new MNBVSession(true,'','Nosave'); //Инициализация сессии
-            Glob::$vars['session']->set('userid',$procProp['edituser']); //Скрипт запускается от идентификатора пользователя последнего редактора
+            //РћС‚РєСЂРѕРµРј СЃРµСЃСЃРёСЋ, РїРѕРґРєР»СЋС‡РёРј РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ, С‚РѕРіРѕ, РєС‚Рѕ Р±С‹Р» СЂРµРґР°РєС‚РѕСЂРѕРј Р·Р°РґР°РЅРёСЏ РЅР° РІС‹РїРѕР»РЅРµРЅРёРµ.
+            Glob::$vars['session'] = new MNBVSession(true,'','Nosave'); //РРЅРёС†РёР°Р»РёР·Р°С†РёСЏ СЃРµСЃСЃРёРё
+            Glob::$vars['session']->set('userid',$procProp['edituser']); //РЎРєСЂРёРїС‚ Р·Р°РїСѓСЃРєР°РµС‚СЃСЏ РѕС‚ РёРґРµРЅС‚РёС„РёРєР°С‚РѕСЂР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ РїРѕСЃР»РµРґРЅРµРіРѕ СЂРµРґР°РєС‚РѕСЂР°
             Glob::$vars['user'] = new MNBVUser(Glob::$vars['session']->get('userid'));
 
-            //Установки языка и инициализация словаря
-            if (Lang::getLang() != Lang::getDefLang()) MNBVf::requireFile(MNBV_PATH . 'lang/LangDict_'.Glob::$vars['lang'].'.php'); //Переподключим основной словарь с языком пользователя
-            MNBVf::requireFile(MNBVf::getRealFileName($this->thisModuleName, 'lang/LangDict_'.Glob::$vars['lang'].'.php')); //Словарь модуля
+            //РЈСЃС‚Р°РЅРѕРІРєРё СЏР·С‹РєР° Рё РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ СЃР»РѕРІР°СЂСЏ
+            if (Lang::getLang() != Lang::getDefLang()) MNBVf::requireFile(MNBV_PATH . 'lang/LangDict_'.Glob::$vars['lang'].'.php'); //РџРµСЂРµРїРѕРґРєР»СЋС‡РёРј РѕСЃРЅРѕРІРЅРѕР№ СЃР»РѕРІР°СЂСЊ СЃ СЏР·С‹РєРѕРј РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ
+            MNBVf::requireFile(MNBVf::getRealFileName($this->thisModuleName, 'lang/LangDict_'.Glob::$vars['lang'].'.php')); //РЎР»РѕРІР°СЂСЊ РјРѕРґСѓР»СЏ
 
             $outputFilename = str_replace('[obj_id]',$procId,$outputFilename);
 
-            while (true){ //Бесконечный цикл жизни робота
+            while (true){ //Р‘РµСЃРєРѕРЅРµС‡РЅС‹Р№ С†РёРєР» Р¶РёР·РЅРё СЂРѕР±РѕС‚Р°
 
                 $outputStr = '';
                 $outputStr .= "----=[Robots Monitor]=----\n";
@@ -73,30 +73,30 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
 
                 $procProp = $proc->getObjById($procId);
 
-                //Если отвалилась база данных и мы не можем получить
+                //Р•СЃР»Рё РѕС‚РІР°Р»РёР»Р°СЃСЊ Р±Р°Р·Р° РґР°РЅРЅС‹С… Рё РјС‹ РЅРµ РјРѕР¶РµРј РїРѕР»СѓС‡РёС‚СЊ
                 if ($procProp===null){
                     $timeDelta = microtime(true) - $timeStart;
                     if ($timeDelta<1) usleep(intval(1000000 - 1000000 * $timeDelta));
                     continue;
                 }
 
-                //Проверка на маркер завершения, если есть, то оставливаем (включая маркер принудительной остановки)
+                //РџСЂРѕРІРµСЂРєР° РЅР° РјР°СЂРєРµСЂ Р·Р°РІРµСЂС€РµРЅРёСЏ, РµСЃР»Рё РµСЃС‚СЊ, С‚Рѕ РѕСЃС‚Р°РІР»РёРІР°РµРј (РІРєР»СЋС‡Р°СЏ РјР°СЂРєРµСЂ РїСЂРёРЅСѓРґРёС‚РµР»СЊРЅРѕР№ РѕСЃС‚Р°РЅРѕРІРєРё)
                 if ($procProp['status']=='stopped' || $procProp['status']=='killed') {
                     echo "Script stopped\n";
                     break;
                 }
 
-                //Валидация текущей сессии задания робота
+                //Р’Р°Р»РёРґР°С†РёСЏ С‚РµРєСѓС‰РµР№ СЃРµСЃСЃРёРё Р·Р°РґР°РЅРёСЏ СЂРѕР±РѕС‚Р°
                 if (!$proc->validate($procProp)){
                     $proc->stopError('Validate Error!');
                     echo "Validate Error!\n";
                     break;
                 }
 
-                //Проверка на паузу, если есть, то переходим к расчету времени сна и следующей итерации
+                //РџСЂРѕРІРµСЂРєР° РЅР° РїР°СѓР·Сѓ, РµСЃР»Рё РµСЃС‚СЊ, С‚Рѕ РїРµСЂРµС…РѕРґРёРј Рє СЂР°СЃС‡РµС‚Сѓ РІСЂРµРјРµРЅРё СЃРЅР° Рё СЃР»РµРґСѓСЋС‰РµР№ РёС‚РµСЂР°С†РёРё
                 if ($procProp['status']!='paused'){
 
-                    //То, что делает робот
+                    //РўРѕ, С‡С‚Рѕ РґРµР»Р°РµС‚ СЂРѕР±РѕС‚
 
                     $command = "ps -ax | grep start_robot  2>&1";
                     //exec($command . " 2>&1", $output);
@@ -119,29 +119,29 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
                     $outputStr .= "\n";
 
 
-                    //Запишем в файл
+                    //Р—Р°РїРёС€РµРј РІ С„Р°Р№Р»
                     $outputFile = fopen($outputFilename,"w");
                     if ($outputFile !== false){
                         fwrite($outputFile,$outputStr);
                     }
                     fclose($outputFile);
 
-                }//конец проверки на паузу
-                //Считаем оставшееся время в микросекундах до начала след итерации и отдыхаем это время.
+                }//РєРѕРЅРµС† РїСЂРѕРІРµСЂРєРё РЅР° РїР°СѓР·Сѓ
+                //РЎС‡РёС‚Р°РµРј РѕСЃС‚Р°РІС€РµРµСЃСЏ РІСЂРµРјСЏ РІ РјРёРєСЂРѕСЃРµРєСѓРЅРґР°С… РґРѕ РЅР°С‡Р°Р»Р° СЃР»РµРґ РёС‚РµСЂР°С†РёРё Рё РѕС‚РґС‹С…Р°РµРј СЌС‚Рѕ РІСЂРµРјСЏ.
                 $timeDelta = microtime(true) - $timeStart;
                 if ($timeDelta<1) usleep(intval(1000000 - 1000000 * $timeDelta));
 
             }
 
-            //Запишем конфиг и логи----------------------
+            //Р—Р°РїРёС€РµРј РєРѕРЅС„РёРі Рё Р»РѕРіРё, РµСЃР»Рё СЌС‚РѕРіРѕ РЅРµ РїСЂРѕРёР·РѕС€Р»РѕРІ РІ РєРѕРЅС†Рµ С€Р°Р±Р»РѕРЅР°
+            if (!SysLogs::$logComplete) MNBVf::putFinStatToLog(true);
+        
+            //Р’С‹РІРµРґРµРј РЅР° СЌРєСЂР°РЅ ----------------------
             $script_datetime_stop = date("Y-m-d G:i:s");
             $script_time_stop = SysBF::getmicrotime();
             $time_script = sprintf ("%01.4f",($script_time_stop - Glob::$vars['time_start']));
-            SysLogs::addLog('Starttime: ' . Glob::$vars['datetime_start']);
-            SysLogs::addLog("Endtime: $script_datetime_stop");
-            SysLogs::addLog("Runtime: $time_script");
 
-            //Запишем в файл статус завершения
+            //Р—Р°РїРёС€РµРј РІ С„Р°Р№Р» СЃС‚Р°С‚СѓСЃ Р·Р°РІРµСЂС€РµРЅРёСЏ
             $outputStr = '';
             $outputStr .= "----=[Robots Monitor]=----\n";
             $outputStr .= "RSid=[$rsid]\n";
@@ -151,6 +151,7 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
             $outputStr .= 'Starttime: ' . Glob::$vars['datetime_start'] . "\n";
             $outputStr .= "Endtime: $script_datetime_stop" . "\n";
             $outputStr .= "Runtime: $time_script" . "\n";
+            
             //$outputStr .= "------Log-------\n";
             //$outputStr .= SysLogs::getLog() . "\n";
             //$outputStr .= MNBVf::putDBStatToLog() . "\n";
@@ -161,7 +162,7 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
             }
             fclose($outputFile);
 
-            $proc->clear(); //Если если это не бесконечный циклический процесс, то перед выходом очистим данные по процессу.
+            $proc->clear(); //Р•СЃР»Рё РµСЃР»Рё СЌС‚Рѕ РЅРµ Р±РµСЃРєРѕРЅРµС‡РЅС‹Р№ С†РёРєР»РёС‡РµСЃРєРёР№ РїСЂРѕС†РµСЃСЃ, С‚Рѕ РїРµСЂРµРґ РІС‹С…РѕРґРѕРј РѕС‡РёСЃС‚РёРј РґР°РЅРЅС‹Рµ РїРѕ РїСЂРѕС†РµСЃСЃСѓ.
 
         }
 

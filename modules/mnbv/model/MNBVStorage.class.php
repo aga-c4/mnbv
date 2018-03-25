@@ -12,7 +12,57 @@
  * Time: 00:00
  */
 class MNBVStorage{
-   
+    
+    /**
+     * @var type массив счетчиков количества и времени изполнения запросов разного вида. 
+     */
+    private static $stat = array(
+        'all' => array(
+            'add' => array('qty'=>0,'time'=>0),
+            'set' => array('qty'=>0,'time'=>0),
+            'get' => array('qty'=>0,'time'=>0),
+            'del' => array('qty'=>0,'time'=>0),
+        ),
+        'mysql' => array(
+            'add' => array('qty'=>0,'time'=>0),
+            'set' => array('qty'=>0,'time'=>0),
+            'get' => array('qty'=>0,'time'=>0),
+            'del' => array('qty'=>0,'time'=>0),
+        ),
+        'mongodb' => array(
+            'add' => array('qty'=>0,'time'=>0),
+            'set' => array('qty'=>0,'time'=>0),
+            'get' => array('qty'=>0,'time'=>0),
+            'del' => array('qty'=>0,'time'=>0),
+        ),
+        'redis' => array(
+            'add' => array('qty'=>0,'time'=>0),
+            'set' => array('qty'=>0,'time'=>0),
+            'get' => array('qty'=>0,'time'=>0),
+            'del' => array('qty'=>0,'time'=>0),
+        ),
+        'file' => array(
+            'add' => array('qty'=>0,'time'=>0),
+            'set' => array('qty'=>0,'time'=>0),
+            'get' => array('qty'=>0,'time'=>0),
+            'del' => array('qty'=>0,'time'=>0),
+        ),
+        'array' => array(
+            'add' => array('qty'=>0,'time'=>0),
+            'set' => array('qty'=>0,'time'=>0),
+            'get' => array('qty'=>0,'time'=>0),
+            'del' => array('qty'=>0,'time'=>0),
+        ),
+    );
+    
+    /**
+     * Возвращает массив статистики использования хранилищ
+     * @return array массив со статистикой
+     */
+    public static function getStat(){
+        return self::$stat;
+    }
+
     /**
      * Получить список объектов системы или объект. Для того же действия с проверкой авторизации используем MNBVStorage::getObjAcc()
      * @param string $storage - хранилище. Если это строка, то выбор идет из конкретного хранилища, иначе хранилища задаются массивом 
@@ -38,6 +88,9 @@ class MNBVStorage{
      * @return array массив, содержащий найденные объекты, 0 элемент массива всегда содержит колличество найденных объектов без учета ограничений limit!
      */
     public static function getObj($storage,$fields=array('*'),$filter=array(),$conf=array(),$cache='no-cache',$accVal=false){
+        
+        $timeStartFunct = SysBF::getmicrotime();
+        
         //Выберем подходящий тип хранилища
         $storage = strtolower($storage);
         if (!empty(SysStorage::$storage["$storage"]["db"])&&!empty(SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'])&&in_array(SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'],SysStorage::$dbtypes)){
@@ -51,12 +104,22 @@ class MNBVStorage{
         //В фильтры при необходимости добавим условие на проверку прав доступа
         if ($accVal && !Glob::$vars['user']->get('root')) array_push($filter,'and','access','in',MNBVf::getPermArr());
 
-        if     ($dbtype === 'mysql') return MNBVMySQLSt::getObj($storage,$fields,$filter,$conf);
-        elseif ($dbtype === 'mongodb') return MNBVMongoSt::getObj($storage,$fields,$filter,$conf);
-        elseif ($dbtype === 'redis') return MNBVRedisSt::getObj($storage,$fields,$filter,$conf);
-        elseif ($dbtype === 'file') return MNBVFileSt::getObj($storage,$fields,$filter,$conf);
-        elseif ($dbtype === 'array') return MNBVArraySt::getObj($storage,$fields,$filter,$conf);
-        else return array(0);
+        $result = array(0);
+        if     ($dbtype === 'mysql') $result =  MNBVMySQLSt::getObj($storage,$fields,$filter,$conf);
+        elseif ($dbtype === 'mongodb') $result =  MNBVMongoSt::getObj($storage,$fields,$filter,$conf);
+        elseif ($dbtype === 'redis') $result =  MNBVRedisSt::getObj($storage,$fields,$filter,$conf);
+        elseif ($dbtype === 'file') $result =  MNBVFileSt::getObj($storage,$fields,$filter,$conf);
+        elseif ($dbtype === 'array') $result =  MNBVArraySt::getObj($storage,$fields,$filter,$conf);
+        
+        if (SysLogs::$logsEnable) {
+            $timeRunFunct = SysBF::getmicrotime()-$timeStartFunct;
+            if (isset(self::$stat[$dbtype])) {
+                self::$stat[$dbtype]['get']['qty']++;
+                self::$stat[$dbtype]['get']['time'] += $timeRunFunct;
+            }
+        }
+        
+        return $result;
 
     }
 
@@ -80,6 +143,8 @@ class MNBVStorage{
      */
     public static function setObj($storage,$fields=array(),$filter=array(),$accVal=true){
 
+        $timeStartFunct = SysBF::getmicrotime();
+        
         //Выберем подходящий тип хранилища
         $storage = strtolower($storage);
         if (!empty(SysStorage::$storage["$storage"]["db"])&&!empty(SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'])&&in_array(SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'],SysStorage::$dbtypes)){
@@ -92,12 +157,22 @@ class MNBVStorage{
         //В фильтры при необходимости добавим условие на проверку прав доступа
         if ($accVal && !Glob::$vars['user']->get('root')) array_push($filter,'and','access2','in',MNBVf::getPermArr());
 
-        if     ($dbtype === 'mysql') return MNBVMySQLSt::setObj($storage,$fields,$filter);
-        elseif ($dbtype === 'mongodb') return MNBVMongoSt::setObj($storage,$fields,$filter);
-        elseif ($dbtype === 'redis') return MNBVRedisSt::setObj($storage,$fields,$filter);
-        elseif ($dbtype === 'file') return MNBVFileSt::setObj($storage,$fields,$filter);
-        elseif ($dbtype === 'array') return MNBVArraySt::setObj($storage,$fields,$filter);
-        else return false;
+        $result = array(0);
+        if     ($dbtype === 'mysql') $result =  MNBVMySQLSt::setObj($storage,$fields,$filter);
+        elseif ($dbtype === 'mongodb') $result =  MNBVMongoSt::setObj($storage,$fields,$filter);
+        elseif ($dbtype === 'redis') $result =  MNBVRedisSt::setObj($storage,$fields,$filter);
+        elseif ($dbtype === 'file') $result =  MNBVFileSt::setObj($storage,$fields,$filter);
+        elseif ($dbtype === 'array') $result =  MNBVArraySt::setObj($storage,$fields,$filter);
+        
+        if (SysLogs::$logsEnable) {
+            $timeRunFunct = SysBF::getmicrotime()-$timeStartFunct;
+            if (isset(self::$stat[$dbtype])) {
+                self::$stat[$dbtype]['set']['qty']++;
+                self::$stat[$dbtype]['set']['time'] += $timeRunFunct;
+            }
+        }
+        
+        return $result;
 
     }
 
@@ -115,6 +190,8 @@ class MNBVStorage{
      */
     public static function addObj($storage,$fields=array(),$filter=array(),$accVal=true,$params=array()){
 
+        $timeStartFunct = SysBF::getmicrotime();
+        
         //Выберем подходящий тип хранилища
         $storage = strtolower($storage);
         if (!empty(SysStorage::$storage["$storage"]["db"])&&!empty(SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'])&&in_array(SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'],SysStorage::$dbtypes)){
@@ -127,12 +204,22 @@ class MNBVStorage{
         //В фильтры при необходимости добавим условие на проверку прав доступа
         if ($accVal && !Glob::$vars['user']->get('root') && !in_array(SysStorage::$storage["$storage"]["access2"],Glob::$vars['user']->get('permarr'))) return false;
 
-        if     ($dbtype === 'mysql') return MNBVMySQLSt::addObj($storage,$fields,$filter,$params);
-        elseif ($dbtype === 'mongodb') return MNBVMongoSt::addObj($storage,$fields,$filter);
-        elseif ($dbtype === 'redis') return MNBVRedisSt::addObj($storage,$fields,$filter);
-        elseif ($dbtype === 'file') return MNBVFileSt::addObj($storage,$fields,$filter);
-        elseif ($dbtype === 'array') return MNBVArraySt::addObj($storage,$fields,$filter);
-        else return false;
+        $result = array(0);
+        if     ($dbtype === 'mysql') $result =  MNBVMySQLSt::addObj($storage,$fields,$filter,$params);
+        elseif ($dbtype === 'mongodb') $result =  MNBVMongoSt::addObj($storage,$fields,$filter);
+        elseif ($dbtype === 'redis') $result =  MNBVRedisSt::addObj($storage,$fields,$filter);
+        elseif ($dbtype === 'file') $result =  MNBVFileSt::addObj($storage,$fields,$filter);
+        elseif ($dbtype === 'array') $result =  MNBVArraySt::addObj($storage,$fields,$filter);
+        
+        if (SysLogs::$logsEnable) {
+            $timeRunFunct = SysBF::getmicrotime()-$timeStartFunct;
+            if (isset(self::$stat[$dbtype])) {
+                self::$stat[$dbtype]['add']['qty']++;
+                self::$stat[$dbtype]['add']['time'] += $timeRunFunct;
+            }
+        }
+        
+        return $result;
     }
 
 
@@ -148,6 +235,8 @@ class MNBVStorage{
      */
     public static function delObj($storage,$filter=array(),$accVal=true){
 
+        $timeStartFunct = SysBF::getmicrotime();
+        
         //Выберем подходящий тип хранилища
         $storage = strtolower($storage);
         if (!empty(SysStorage::$storage["$storage"]["db"])&&!empty(SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'])&&in_array(SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'],SysStorage::$dbtypes)){
@@ -159,12 +248,22 @@ class MNBVStorage{
         //В фильтры при необходимости добавим условие на проверку прав доступа
         if ($accVal && !Glob::$vars['user']->get('root')) array_push($filter,'and','access2','in',MNBVf::getPermArr());
 
-        if     ($dbtype === 'mysql') return MNBVMySQLSt::delObj($storage,$filter);
-        elseif ($dbtype === 'mongodb') return MNBVMongoSt::delObj($storage,$filter);
-        elseif ($dbtype === 'redis') return MNBVRedisSt::delObj($storage,$filter);
-        elseif ($dbtype === 'file') return MNBVFileSt::delObj($storage,$filter);
-        elseif ($dbtype === 'array') return MNBVArraySt::delObj($storage,$filter);
-        else return false;
+        $result = array(0);
+        if     ($dbtype === 'mysql') $result =  MNBVMySQLSt::delObj($storage,$filter);
+        elseif ($dbtype === 'mongodb') $result =  MNBVMongoSt::delObj($storage,$filter);
+        elseif ($dbtype === 'redis') $result =  MNBVRedisSt::delObj($storage,$filter);
+        elseif ($dbtype === 'file') $result =  MNBVFileSt::delObj($storage,$filter);
+        elseif ($dbtype === 'array') $result =  MNBVArraySt::delObj($storage,$filter);
+        
+        if (SysLogs::$logsEnable) {
+            $timeRunFunct = SysBF::getmicrotime()-$timeStartFunct;
+            if (isset(self::$stat[$dbtype])) {
+                self::$stat[$dbtype]['del']['qty']++;
+                self::$stat[$dbtype]['del']['time'] += $timeRunFunct;
+            }
+        }
+        
+        return $result;
     }
 
     /**

@@ -70,20 +70,12 @@ class RobotsCrontestController extends AbstractMnbvsiteController{
             //Финальные операции
             $proc->clear('status'); //Если если это не бесконечный циклический процесс, то перед выходом очистим данные по процессу. 
 
-            //Запишем конфиг и логи----------------------
-            $script_datetime_stop = date("Y-m-d G:i:s");
-            $script_time_stop = SysBF::getmicrotime();
-            $time_script = sprintf ("%01.4f",($script_time_stop - Glob::$vars['time_start'] - $usleepTime));
-            SysLogs::addLog('Starttime: ' . Glob::$vars['datetime_start']);
-            SysLogs::addLog("Endtime: $script_datetime_stop");
-            SysLogs::addLog("Runtime: $time_script");
+            //Запишем конфиг и логи, если этого не произошлов в конце шаблона
+            if (!SysLogs::$logComplete) MNBVf::putFinStatToLog(true);
 
-            echo 'Starttime: ' . Glob::$vars['datetime_start'] . "\n";
-            echo "Endtime: $script_datetime_stop" . "\n";
-            echo "Runtime: $time_script" . "\n";
-            //echo "------Log-------\n";
-            //echo SysLogs::getLog() . "\n";
-            //echo MNBVf::putDBStatToLog() . "\n";
+            echo "------Log-------\n";
+            echo SysLogs::getLog() . "\n";
+            echo MNBVf::putDBStatToLog() . "\n";
         
         }
 

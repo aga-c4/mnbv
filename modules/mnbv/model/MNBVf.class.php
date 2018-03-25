@@ -309,10 +309,36 @@ class MNBVf {
      * Записывает в лог общую статистику использования баз данных
      * @param type $view true - выводить лог независимо от установки константы APP_DEBUG_MODE
      */
-    public static function putDBStatToLog($view=false){
+    public static function putFinStatToLog($view=false){
+        
+        //Запишем в лог основные параметры работы текущего процесса
+        $script_datetime_stop = date("Y-m-d G:i:s");
+        $script_time_stop = SysBF::getmicrotime();
+        $time_script = sprintf ("%01.4f",($script_time_stop - Glob::$vars['time_start']));
+        $memory_peak_usage = intval(memory_get_peak_usage()/1024) . 'kB';
+        $memory_fin_usage = intval(memory_get_usage()/1024) . 'kB';
+        SysLogs::addLog('Starttime: ' . Glob::$vars['datetime_start']);
+        SysLogs::addLog("Endtime: $script_datetime_stop");
+        SysLogs::addLog("Runtime: $time_script");
+        SysLogs::addLog("Memory peak usage: $memory_peak_usage");
+        SysLogs::addLog("Memory fin usage: $memory_fin_usage");
         
         if (defined('APP_DEBUG_MODE') || $view) { //Если это ражим отладки Добавим статистику по базам данных
-            //MySQL---
+            //Общая статистика по работе хранилищ
+            SysLogs::addLog("\n---Storage statistic: ---");
+            $storageStatArr = MNBVStorage::getStat();
+            foreach ($storageStatArr as $key => $value) {
+                if ($value['add']['qty']+$value['set']['qty']+$value['get']['qty']+$value['del']['qty']>0){ 
+                    $logStr  = ' ' . $key . ':';
+                    if ($value['add']['qty']>0) $logStr  = ' add=['.$value['add']['qty'].'/'.sprintf ("%01.6f",$value['add']['time']).'s]';
+                    if ($value['set']['qty']>0) $logStr .= ' set=['.$value['set']['qty'].'/'.sprintf ("%01.6f",$value['set']['time']).'s]';
+                    if ($value['get']['qty']>0) $logStr .= ' get=['.$value['get']['qty'].'/'.sprintf ("%01.6f",$value['get']['time']).'s]';
+                    if ($value['del']['qty']>0) $logStr .= ' del=['.$value['del']['qty'].'/'.sprintf ("%01.6f",$value['del']['time']).'s]';
+                    SysLogs::addLog($logStr);
+                }
+            }
+        
+            //Статистика запросов MySQL---
             $mysqlStat = DbMysql::mysqlStat();
             SysLogs::addLog("\n---MySQL statistic: ---");
             foreach ($mysqlStat as $key=>$value){
@@ -326,6 +352,8 @@ class MNBVf {
                     SysLogs::addLog("$key: ".$value);
                 }
             }
+            
+            SysLogs::$logComplete = true;
         } 
         
     }

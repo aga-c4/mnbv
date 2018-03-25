@@ -62,6 +62,11 @@ class SysLogs {
      * @var bullean Видимость Ошибок работы скрипта
      */
     public static $errorsView = false;
+    
+    /**
+     * @var bullean Если true, то в лог выгрузили финальные записи о времени исполнения скрипта и т.п. (обычно проиходит в шаблоне MNBVf::putDBStatToLog();) 
+     */
+    public static $logComplete = false;
 	
     /**
      * Добавляет сообщение об ошибке в Лог ошибок и общий Лог

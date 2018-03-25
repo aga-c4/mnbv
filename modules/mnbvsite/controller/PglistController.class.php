@@ -192,16 +192,11 @@ class PglistController extends AbstractMnbvsiteController {
         
   
 
-        //Запишем конфиг и логи----------------------
-        $script_datetime_stop = date("Y-m-d G:i:s");
-        $script_time_stop = SysBF::getmicrotime();
-        $time_script = sprintf ("%01.4f",($script_time_stop - Glob::$vars['time_start']));
-        SysLogs::addLog('Starttime: ' . Glob::$vars['datetime_start']);
-        SysLogs::addLog("Endtime: $script_datetime_stop");
-        SysLogs::addLog("Runtime: $time_script");
-
         //View------------------------
         MNBVf::render(Glob::$vars['mnbv_tpl_file'],$item,$tpl_mode);
+        
+        //Запишем конфиг и логи, если этого не произошлов в конце шаблона
+        if (!SysLogs::$logComplete) MNBVf::putFinStatToLog();
         
     }
     
@@ -325,16 +320,11 @@ class PglistController extends AbstractMnbvsiteController {
         if (!empty($item['obj']['vars']['script_tpl2_file'])) $item['page_sctpl'] = $item['obj']['vars']['script_tpl2_file']; //Если задан в Переменных скрипта в объекте
         SysLogs::addLog('Select mnbv script tpl2 file: [' . $item['page_sctpl'] . ']');
 
-        //Запишем конфиг и логи----------------------
-        $script_datetime_stop = date("Y-m-d G:i:s");
-        $script_time_stop = SysBF::getmicrotime();
-        $time_script = sprintf ("%01.4f",($script_time_stop - Glob::$vars['time_start']));
-        SysLogs::addLog('Starttime: ' . Glob::$vars['datetime_start']);
-        SysLogs::addLog("Endtime: $script_datetime_stop");
-        SysLogs::addLog("Runtime: $time_script");
-
         //View------------------------
         MNBVf::render(Glob::$vars['mnbv_tpl2_file'],$item,$tpl_mode);
+        
+        //Запишем конфиг и логи, если этого не произошлов в конце шаблона
+        if (!SysLogs::$logComplete) MNBVf::putFinStatToLog();
         
     }
         
