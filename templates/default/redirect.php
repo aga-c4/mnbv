@@ -3,7 +3,7 @@ if (!Glob::$vars['console']) header('Content-Type: text/html; charset=utf-8');
 ?>
 <html>
 <head>
-    <title>NBV Redirect</title>
+    <title>MNBV Redirect</title>
 </head>
 <body>
 <h1>MNBV Redirect</h1>

@@ -36,9 +36,9 @@ if (!empty($storageRes[0])){ //Домен найден
     if (empty($siteArr['protocol'])) $siteArr['protocol'] = '//';
     if (empty($siteArr['template'])) $siteArr['template'] = MNBV_DEF_TPL;
     if (!empty($siteArr['startid'])) $siteArr['pgid'] = $siteArr['startid'];
-    if (!empty($siteArr['maindomain']) && $siteArr['maindomain']==$currentDomen && MNBVf::validateRequestProtocol($siteArr['protocol'])){ 
+    if ($siteArr['maindomain']==$currentDomen && MNBVf::validateRequestProtocol($siteArr['protocol'])){ 
         //Найден основной домен и протокол подходит, работаем с ним
-        if (empty($siteArr['cookiedomain'])) $siteArr['cookiedomain'] = (!empty($siteArr['maindomain']))?('.'.$siteArr['maindomain']):((!empty($siteArr['domain']))?('.'.$siteArr['domain']):'');
+        if (empty($siteArr['cookiedomain'])) $siteArr['cookiedomain'] = (!empty($siteArr['maindomain']))?('.'.$siteArr['maindomain']):'';
     }else{ //Найден не основной домен, редирактим на основной
         $redirectUrl = $siteArr['protocol'] . $siteArr['maindomain'] . (($_SERVER['REQUEST_URI']!='/')?$_SERVER['REQUEST_URI']:'');
         SysLogs::addLog('Site router: domain = ['.$currentDomen.'] is not the main mirror. Redirect to '.$redirectUrl);
@@ -52,12 +52,16 @@ if (!empty($storageRes[0])){ //Домен найден
     if (!empty($storageRes[0])){//Объект для редактирования найден
         if (empty($siteArr['domain'])) $siteArr['domain'] = $currentDomen;
         if (empty($siteArr['maindomain'])) $siteArr['maindomain'] = $siteArr['domain'];
-        if (empty($siteArr['cookiedomain'])) $siteArr['cookiedomain'] = (!empty($siteArr['maindomain']))?('.'.$siteArr['maindomain']):((!empty($siteArr['domain']))?('.'.$siteArr['domain']):'');
+        if (empty($siteArr['cookiedomain'])) $siteArr['cookiedomain'] = (!empty($siteArr['maindomain']))?('.'.$siteArr['maindomain']):'';
         if (empty($siteArr['protocol'])) $siteArr['protocol'] = '//';
         Glob::$vars['mnbv_site'] = $siteArr;
-        $redirectUrl = $siteArr['protocol'] . $siteArr['maindomain'] . (($_SERVER['REQUEST_URI']!='/')?$_SERVER['REQUEST_URI']:'');
-        SysLogs::addLog('Site router: domain = ['.$currentDomen.'] not found. Redirect to '.$redirectUrl);
-        MNBVf::redirect($redirectUrl);
+        if ($siteArr['maindomain'] != $currentDomen){ //Редиректим, если основной домен - другой.
+            $redirectUrl = $siteArr['protocol'] . $siteArr['maindomain'] . (($_SERVER['REQUEST_URI']!='/')?$_SERVER['REQUEST_URI']:'');
+            SysLogs::addLog('Site router: domain = ['.$currentDomen.'] not found. Redirect to '.$redirectUrl);
+            MNBVf::redirect($redirectUrl);
+        }else{
+            SysLogs::addLog('Site router: domain = ['.$currentDomen.']. Default site selected.' );
+        }
     }
 }
 Glob::$vars['mnbv_site'] = $siteArr;
