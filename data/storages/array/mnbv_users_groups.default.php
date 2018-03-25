@@ -29,7 +29,7 @@ SysStorage::$arraySt["usersgr"] = array(
     "117" => array("id"=>117,"pozid"=>217,"parentid"=>1,"type"=>0,"visible"=>1,"first"=>0,"name"=>"Работа с сообщениями","namelang"=>"Messages manager","access"=>0,"access2"=>2),
     "118" => array("id"=>118,"pozid"=>218,"parentid"=>1,"type"=>0,"visible"=>1,"first"=>0,"name"=>"Работа c заказами","namelang"=>"Orders manager","access"=>0,"access2"=>2),
     
-    //Группы учетной системы
+    //Группы учетной системы.
     "200" => array("id"=>200,"pozid"=>300,"parentid"=>1,"type"=>0,"visible"=>1,"first"=>0,"name"=>"Работа в Интранете","namelang"=>"Intranet","access"=>0,"access2"=>2),
     "201" => array("id"=>201,"pozid"=>301,"parentid"=>1,"type"=>0,"visible"=>1,"first"=>0,"name"=>"Директор","namelang"=>"Director","access"=>0,"access2"=>2),
     "202" => array("id"=>202,"pozid"=>302,"parentid"=>1,"type"=>0,"visible"=>1,"first"=>0,"name"=>"Главбух","namelang"=>"GLBuh","access"=>0,"access2"=>2),
