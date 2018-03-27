@@ -10,9 +10,9 @@ require_once MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'head.php');
 <script src="<?=WWW_SRCPATH.MNBV_MAINMODULE;?>/js/jquery.lightbox_start.js" type="text/javascript"></script>
 </head>
 <body>
-<div class="container" style="width:<?=$intranet_width_str;?>;">
+<div class="container" style="width:100%;">
 
-<div class="gormenu" style="width:<?=$intranet_width_str;?>;overflow: hidden;">
+<div class="gormenu" style="width:100%;overflow: hidden;">
 <span style="float:right;padding-right:5px;">
 <?
     if (Lang::isDefLang()){ //Это основной язык
@@ -100,12 +100,12 @@ if (SysLogs::getErrors()!=''){echo "<pre>ERRORS:\n" . SysLogs::getErrors() . "--
 ?>
 </div>
 
-<div class="futor" style="width:<?=$intranet_width_str;?>;">
+<div class="futor" style="width:100%;">
 <span style="color:blue;">&nbsp;&nbsp;<?
 if (Glob::$vars['user']->get('userid')>0) $langUserName = 'No name'; else $langUserName = '';
 if (Glob::$vars['user']->get('name')!='') $langUserName = Glob::$vars['user']->get('name');
 if (!Lang::isDefLang()&&Glob::$vars['user']->get('namelang')!='') $langUserName = Glob::$vars['user']->get('namelang');
-echo '<a href="/intranet/auth/">'.$langUserName.'</a>';
+echo '<a href="/intranet/auth">'.$langUserName.'</a>';
 ?></span>
 <span style="float:right;">Сopyright © 2006-2018, AGA-C4 <?=SysBF::getFrArr($item,'site_name');?>&nbsp;&nbsp;</span>
 </div>
