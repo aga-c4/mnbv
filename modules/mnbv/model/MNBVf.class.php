@@ -348,10 +348,10 @@ class MNBVf {
         $memory_peak_usage = intval(memory_get_peak_usage()/1024) . 'kB';
         $memory_fin_usage = intval(memory_get_usage()/1024) . 'kB';
 
-        SysLogs::addLog("\n---Fin Log: ---");
+        SysLogs::addLog("---Fin Log: ---");
         SysLogs::addLog('Starttime: ' . Glob::$vars['datetime_start']);
         SysLogs::addLog("Endtime: $script_datetime_stop");
-        SysLogs::addLog("Runtime: $time_script");
+        SysLogs::addLog("Runtime: $time_script".'s.');
         SysLogs::addLog("Memory peak usage: $memory_peak_usage");
         SysLogs::addLog("Memory fin usage: $memory_fin_usage");
         
