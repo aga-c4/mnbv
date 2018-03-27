@@ -72,10 +72,9 @@ class RobotsCrontestController extends AbstractMnbvsiteController{
 
             //Запишем конфиг и логи, если этого не произошлов в конце шаблона
             if (!SysLogs::$logComplete) MNBVf::putFinStatToLog(true);
-
             echo "------Log-------\n";
             echo SysLogs::getLog() . "\n";
-            echo MNBVf::putDBStatToLog() . "\n";
+            echo MNBVf::getDBStat() . "\n";
         
         }
 

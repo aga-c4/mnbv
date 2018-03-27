@@ -152,9 +152,11 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
             $outputStr .= "Endtime: $script_datetime_stop" . "\n";
             $outputStr .= "Runtime: $time_script" . "\n";
             
-            //$outputStr .= "------Log-------\n";
-            //$outputStr .= SysLogs::getLog() . "\n";
-            //$outputStr .= MNBVf::putDBStatToLog() . "\n";
+            //Запишем конфиг и логи, если этого не произошлов в конце шаблона
+            //if (!SysLogs::$logComplete) MNBVf::putFinStatToLog(true);
+            //echo "------Log-------\n";
+            //echo SysLogs::getLog() . "\n";
+            //echo MNBVf::getDBStat() . "\n";
 
             $outputFile = fopen($outputFilename,"w");
             if ($outputFile !== false){
