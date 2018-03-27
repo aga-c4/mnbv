@@ -12,7 +12,7 @@ if (!defined("APP_DEBUG_MODE"))
 /**
  * Режим отладки true - активирован, false - не используется
  */
-define("APP_DEBUG_MODE",true);
+define("APP_DEBUG_MODE",false);
 
 if (!defined("APP_MODULESPATH"))
 /**

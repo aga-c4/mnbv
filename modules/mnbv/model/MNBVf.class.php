@@ -306,10 +306,40 @@ class MNBVf {
     }
     
     /**
+     * возвращает общую статистику использования баз данных
+     */
+    public static function getDBStat(){
+        $result = '';
+
+        //MySQL---
+        $mysqlStat = DbMysql::mysqlStat();
+        $result .= "\n---MySQL statistic: ---" . "\n";
+        foreach ($mysqlStat as $key=>$value){
+            if (is_array($value)){
+                $counter=1;
+                foreach ($value as $mysqlQu) {
+                    $result .= "Query$counter: " . str_replace("\n",' ',$mysqlQu) . "\n";
+                    $counter++;
+                }
+            }else{
+                $result .= "$key: ".$value . "\n";
+            }
+        }
+        
+        return $result;
+    }
+    
+    
+    /**
      * Записывает в лог общую статистику использования баз данных
-     * @param type $view true - выводить лог независимо от установки константы APP_DEBUG_MODE
+     * @param $view true - выводить лог независимо от установки константы APP_DEBUG_MODE
      */
     public static function putFinStatToLog($view=false){
+
+        if (SysLogs::$logComplete) return; //Разрешено отработать этому только 1 раз.
+        
+        $oldLogView = SysLogs::$logView;
+        SysLogs::$logView = true;
         
         //Запишем в лог основные параметры работы текущего процесса
         $script_datetime_stop = date("Y-m-d G:i:s");
@@ -317,13 +347,15 @@ class MNBVf {
         $time_script = sprintf ("%01.4f",($script_time_stop - Glob::$vars['time_start']));
         $memory_peak_usage = intval(memory_get_peak_usage()/1024) . 'kB';
         $memory_fin_usage = intval(memory_get_usage()/1024) . 'kB';
+
+        SysLogs::addLog("\n---Fin Log: ---");
         SysLogs::addLog('Starttime: ' . Glob::$vars['datetime_start']);
         SysLogs::addLog("Endtime: $script_datetime_stop");
         SysLogs::addLog("Runtime: $time_script");
         SysLogs::addLog("Memory peak usage: $memory_peak_usage");
         SysLogs::addLog("Memory fin usage: $memory_fin_usage");
         
-        if (defined('APP_DEBUG_MODE') || $view) { //Если это ражим отладки Добавим статистику по базам данных
+        if ((defined('APP_DEBUG_MODE') && APP_DEBUG_MODE) || $view) { //Если это ражим отладки Добавим статистику по базам данных
             //Общая статистика по работе хранилищ
             SysLogs::addLog("\n---Storage statistic: ---");
             $storageStatArr = MNBVStorage::getStat();
@@ -356,32 +388,10 @@ class MNBVf {
             SysLogs::$logComplete = true;
         } 
         
+        SysLogs::$logView = $oldLogView;
+        
     }
     
-    /**
-     * возвращает общую статистику использования баз данных
-     * @param type $view true - выводить лог независимо от установки константы APP_DEBUG_MODE
-     */
-    public static function getDBStat(){
-        $result = '';
-
-        //MySQL---
-        $mysqlStat = DbMysql::mysqlStat();
-        $result .= "\n---MySQL statistic: ---" . "\n";
-        foreach ($mysqlStat as $key=>$value){
-            if (is_array($value)){
-                $counter=1;
-                foreach ($value as $mysqlQu) {
-                    $result .= "Query$counter: " . str_replace("\n",' ',$mysqlQu) . "\n";
-                    $counter++;
-                }
-            }else{
-                $result .= "$key: ".$value . "\n";
-            }
-        }
-        
-        return $result;
-    }
 
     /**
      * Проверяет соответствует ли значение шаблону типа 1,2,3,4-6... или * - для всех вариантов

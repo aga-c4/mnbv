@@ -72,7 +72,7 @@ class SysLogs {
      * Добавляет сообщение об ошибке в Лог ошибок и общий Лог
      * @param string $errorMessage
      */
-	public static function addError($errorMessage){
+    public static function addError($errorMessage){
         $dopStr = ((self::$logViewTime)?(date("Y-m-d G:i:s").'   '):'') . ((self::$logViewController && !empty(Glob::$vars['controller']))?(Glob::$vars['controller']. '   '):'');
         if (strlen(self::$log)>100000 || strlen(self::$errors)>100000) self::clearOutErrLog();
         if (self::$errorsEnable) self::$errors .= $dopStr . $errorMessage . "\n";
@@ -84,7 +84,7 @@ class SysLogs {
      * Добавляет сообщение в Лог выполнения скрипта
      * @param string $errorMessage
      */
-	public static function addLog($logMessage){
+    public static function addLog($logMessage){
         $dopStr = ((self::$logViewTime)?(date("Y-m-d G:i:s").'   '):'') . ((self::$logViewController && !empty(Glob::$vars['controller']))?(Glob::$vars['controller']. '   '):'');
         if (strlen(self::$log)>100000) self::clearOutLog();
         if (self::$logsEnable) self::$log .= $dopStr . $logMessage . "\n";

@@ -144,7 +144,7 @@ class SdataController{
         //MNBVf::render(MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'main.php'),$item,$tpl_mode);
         
         //Запишем конфиг и логи, если этого не произошлов в конце шаблона
-        if (!SysLogs::$logComplete) MNBVf::putFinStatToLog(true);
+        if (!SysLogs::$logComplete) MNBVf::putFinStatToLog();
 
     }
 	

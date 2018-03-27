@@ -30,10 +30,10 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
         #################################################################
         ini_set('max_execution_time', 0); //Максимальное время выполнения скрипта, установим в 0, чтоб небыло ограничений. Устанавливаем в контроллере, т.к. могут быть роботы с установленным ограничением по времени
         $usleepTime = 1; //1 секунда - понадобится позже при вычислении реального времени выполнения.
-        SysLogs::$logsEnable = false; //Накапливать лог
-        SysLogs::$errorsEnable = false; //Накапливать лог ошибок
-        SysLogs::$logRTView = true; //Выводить сообщения непосредственно при их формировании. Если не установлено SysLogs::$logView, то выводятся только ошибки
-        SysLogs::$logView = false; //Показывать лог событий скрипта (суммарный для ошибок и событий). Если не задано, то сообщения обычные в лог не будут выводиться даже при установленном SysLogs::$logRTView
+        //SysLogs::$logsEnable = false; //Накапливать лог
+        //SysLogs::$errorsEnable = false; //Накапливать лог ошибок
+        //SysLogs::$logRTView = true; //Выводить сообщения непосредственно при их формировании. Если не установлено SysLogs::$logView, то выводятся только ошибки
+        //SysLogs::$logView = false; //Показывать лог событий скрипта (суммарный для ошибок и событий). Если не задано, то сообщения обычные в лог не будут выводиться даже при установленном SysLogs::$logRTView
         $outputFilename = 'data/storage_files/zbrobotsrun/att/p[obj_id]_1.txt';
         #################################################################
 
@@ -152,11 +152,8 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
             $outputStr .= "Endtime: $script_datetime_stop" . "\n";
             $outputStr .= "Runtime: $time_script" . "\n";
             
-            //Запишем конфиг и логи, если этого не произошлов в конце шаблона
-            //if (!SysLogs::$logComplete) MNBVf::putFinStatToLog(true);
-            //echo "------Log-------\n";
-            //echo SysLogs::getLog() . "\n";
-            //echo MNBVf::getDBStat() . "\n";
+            //Запишем конфиг и логи----------------------
+            //MNBVf::putFinStatToLog(true);
 
             $outputFile = fopen($outputFilename,"w");
             if ($outputFile !== false){
