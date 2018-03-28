@@ -1305,7 +1305,8 @@ SysStorage::$storage['robotsrun']['stru']['robot'] = array("type"=>"int", "size"
 SysStorage::$storage['robotsrun']['stru']['cronrun'] = array("type"=>"int", "size"=>1, "creatval"=>0, "dbtype"=>"int"); // Необходимость запуска по крону
 SysStorage::$storage['robotsrun']['stru']['rbtype'] = array("type"=>"string", "size"=>50, "creatval"=>"", "dbtype"=>"varchar", "linkstorage"=>array("workers"=>"workers", "info" =>"info", "service"=>"service")); //Тип робота
 
-SysStorage::$storage['robotsrun']['view']['vars']['list'] = array(
+/*
+SysStorage::$storage['robotsrun']['stru']['vars']['list'] = array(
     //Специальные
     "always" => array("name"=>"always", "type"=>"int", "size"=>1, "creatval"=>0, "dbtype"=>"int"), // Запускать, даже если уже запущено
 
@@ -1323,6 +1324,7 @@ SysStorage::$storage['robotsrun']['view']['vars']['list'] = array(
 
     "scriptvars" => array("name"=>"scriptvars", "type"=>"textarea","editor"=>false,"rows"=>5,"width"=>"100%","table" =>"thline","checktype" => "text"),
 );
+*/
 
 SysStorage::$storage['robotsrun']['list'] = array(
     "main" => array(
