@@ -39,12 +39,12 @@ MNBV robot start!
 -------
 Run help:
 For Windows:
-$ php start_robot.php session=RunId > data/storage_files/zbrobotsrun/att/p[RunId]_1.txt
+$ php start_robot.php session=RunId > data/storage_files/robotsrun/att/p[RunId]_1.txt
 
 For Unix:
-$ nohup php start_robot.php session=RunId > data/storage_files/zbrobotsrun/att/p[RunId]_1.txt &
+$ nohup php start_robot.php session=RunId > data/storage_files/robotsrun/att/p[RunId]_1.txt &
 
-Output print to data/storage_files/zbrobotsrun/att/p[RunId]_1.txt
+Output print to data/storage_files/robotsrun/att/p[RunId]_1.txt
 
 add debug=on to view logs
 -------

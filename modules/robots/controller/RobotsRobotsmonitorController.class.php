@@ -34,7 +34,7 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
         //SysLogs::$errorsEnable = false; //Накапливать лог ошибок
         //SysLogs::$logRTView = true; //Выводить сообщения непосредственно при их формировании. Если не установлено SysLogs::$logView, то выводятся только ошибки
         //SysLogs::$logView = false; //Показывать лог событий скрипта (суммарный для ошибок и событий). Если не задано, то сообщения обычные в лог не будут выводиться даже при установленном SysLogs::$logRTView
-        $outputFilename = 'data/storage_files/zbrobotsrun/att/p[obj_id]_1.txt';
+        $outputFilename = 'data/storage_files/robotsrun/att/p[obj_id]_1.txt';
         #################################################################
 
         usleep(1000000 * $usleepTime); //Спим $usleepTime секунд. чтоб все по базам записалось
@@ -43,7 +43,7 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
 
         require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVProcess.class.php';  //Класс работы со словарями
         require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVRobot.class.php';  //Класс работы со словарями
-        $proc = new MNBVRobot('zbrobotsrun',$procId);
+        $proc = new MNBVRobot('robotsrun',$procId);
         $procProp = $proc->getObj();
         $proc->setPsid($rsid);
         $procProp['sid'] = $rsid;

@@ -46,7 +46,7 @@ class RobotsStartcronController extends AbstractMnbvsiteController{
 
         require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVProcess.class.php';  //Класс работы со словарями
         require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVRobot.class.php';  //Класс работы со словарями
-        $proc = new MNBVRobot('zbrobotsrun',$procId);
+        $proc = new MNBVRobot('robotsrun',$procId);
         $procProp = $proc->getObj();
 
         if ($procProp!==null && (empty($procProp['sid']) || $procProp['sid']==$rsid)) {//Продолжаем работу только если данное задание не имеет sid, т.е. не запущено.
@@ -73,7 +73,7 @@ class RobotsStartcronController extends AbstractMnbvsiteController{
 
             //То, что делает робот
             //1. Запросим задания, исполняемые по крону
-            $storageRes = MNBVStorage::getObj('zbrobotsrun',
+            $storageRes = MNBVStorage::getObj('robotsrun',
                 array("id","name","sid","vars"),
                 array("cronrun","=","1","and","type","=","0","and","visible","=","1"));
 
@@ -89,7 +89,7 @@ class RobotsStartcronController extends AbstractMnbvsiteController{
                 if (!isset($task['vars']['crmonth']) || !MNBVf::validateValByStr($crmonth,$task['vars']['crmonth'])) continue;
                 if (!isset($task['vars']['crweek']) || !MNBVf::validateValByStr($crweek,$task['vars']['crweek'])) continue;
 
-                $stProc = new MNBVRobot('zbrobotsrun',$task["id"]);
+                $stProc = new MNBVRobot('robotsrun',$task["id"]);
                 if ($stProc->start((!empty($task['vars']['always']))?'restart':'')) echo date("Y-m-d G:i:s") . ' ' . $stProc->getRobotAlias() . " sid=[" . $stProc->getPsid() . "]\n";
             }
 

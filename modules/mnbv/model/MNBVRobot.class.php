@@ -12,7 +12,7 @@ class MNBVRobot extends MNBVProcess {
     /**
      * @var string хранилище типов роботов
      */
-    protected $robotsStorage = 'zbrobots';
+    protected $robotsStorage = 'robots';
 
     /**
      * @var string хранилище заданий для роботов

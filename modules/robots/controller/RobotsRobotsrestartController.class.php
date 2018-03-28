@@ -34,7 +34,7 @@ class RobotsRobotsrestartController extends AbstractMnbvsiteController{
         //SysLogs::$errorsEnable = false; //Накапливать лог ошибок
         //SysLogs::$logRTView = true; //Выводить сообщения непосредственно при их формировании. Если не установлено SysLogs::$logView, то выводятся только ошибки
         //SysLogs::$logView = false; //Показывать лог событий скрипта (суммарный для ошибок и событий). Если не задано, то сообщения обычные в лог не будут выводиться даже при установленном SysLogs::$logRTView
-        $outputFilename = 'data/storage_files/zbrobotsrun/att/p[obj_id]_2.txt';
+        $outputFilename = 'data/storage_files/robotsrun/att/p[obj_id]_2.txt';
         #################################################################
 
         usleep(1000000 * $usleepTime); //Спим $usleepTime секунд. чтоб все по базам записалось
@@ -46,7 +46,7 @@ class RobotsRobotsrestartController extends AbstractMnbvsiteController{
         
         require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVProcess.class.php';  //Класс работы со словарями
         require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVRobot.class.php';  //Класс работы со словарями
-        $proc = new MNBVRobot('zbrobotsrun',$procId);
+        $proc = new MNBVRobot('robotsrun',$procId);
         $procProp = $proc->getObj();
         $outputLogStr = '';
 
@@ -103,7 +103,7 @@ class RobotsRobotsrestartController extends AbstractMnbvsiteController{
                 if (!isset($procProp['files']['att'])) $procProp['files']['att'] = array();
                 $procProp['files']['att']['2'] = array('type'=>'txt','fname'=>'log.txt');
                 $procPropFilesUpd = json_encode($procProp['files']);
-                $res = MNBVStorage::setObj('zbrobotsrun', array('files'=>$procPropFilesUpd), array("id",'=',$procProp["id"]));
+                $res = MNBVStorage::setObj('robotsrun', array('files'=>$procPropFilesUpd), array("id",'=',$procProp["id"]));
 
                 //Получим список запущенных процессов роботов
                 $command = "ps -ax | grep start_robot  2>&1";
@@ -130,7 +130,7 @@ class RobotsRobotsrestartController extends AbstractMnbvsiteController{
 
                 //Выберем запущенные процессы из базы и посмотрим какие из них померли, запустим померших заново
                 $storageRes = MNBVStorage::getObj(
-                    'zbrobotsrun',
+                    'robotsrun',
                     array("id","name","sid","pid"),
                     array("visible","=","1","and","pid",">",0,"and","status","in",array("working","paused")));
                 $pidsDbArr = array();
@@ -142,7 +142,7 @@ class RobotsRobotsrestartController extends AbstractMnbvsiteController{
                         //Если запущен процесс а по его pid не находим в системе процесса, то запускаем этот процесс заново и освежаем его свойства
                         if (!isset($pidsArr[strval($value['pid'])]) && $procId!=$value["id"]){
                             if ($outputLogStr=='') $outputLogStr = "\n";
-                            $rproc = new MNBVRobot('zbrobotsrun',$value["id"]);
+                            $rproc = new MNBVRobot('robotsrun',$value["id"]);
                             $res=$rproc->start('restart');
                             $currStr = date("Y-m-d H:i:s") . " Restart proc[".$value["id"]."] sid=[".$rproc->getPsid()."] pid=[".$rproc->getPid()."] ".(($res)?'Ok!':'Error!')."\n";
                             $outputLogStr .= $currStr;

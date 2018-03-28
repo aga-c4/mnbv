@@ -36,7 +36,7 @@ class RobotsUniversalController extends AbstractMnbvsiteController{
         //SysLogs::$errorsEnable = false; //Накапливать лог ошибок
         //::$logRTView = true; //Выводить сообщения непосредственно при их формировании. Если не установлено SysLogs::$logView, то выводятся только ошибки
         //::$logView = false; //Показывать лог событий скрипта (суммарный для ошибок и событий). Если не задано, то сообщения обычные в лог не будут выводиться даже при установленном SysLogs::$logRTView
-        $outputFilename = 'data/storage_files/zbrobotsrun/att/p[obj_id]_2.txt';
+        $outputFilename = 'data/storage_files/robotsrun/att/p[obj_id]_2.txt';
         $telegramToken = '';
         $telegramChatId = '';
         #################################################################
@@ -52,7 +52,7 @@ class RobotsUniversalController extends AbstractMnbvsiteController{
         require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVProcess.class.php';  //Класс работы со словарями
         require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVRobot.class.php';  //Класс работы со словарями
         require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVTelegram.class.php';  //Класс работы с Telegram
-        $proc = new MNBVRobot('zbrobotsrun',$procId);
+        $proc = new MNBVRobot('robotsrun',$procId);
         $procProp = $proc->getObj();
 
         //Открое файл с логом для записи туда результата работы
