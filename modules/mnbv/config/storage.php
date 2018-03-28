@@ -1303,7 +1303,7 @@ SysStorage::$storage['robotsrun']['stru']['status'] = array("type"=>"string", "s
 SysStorage::$storage['robotsrun']['stru']['message'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"); //Сообщение при выполнении задачи
 SysStorage::$storage['robotsrun']['stru']['robot'] = array("type"=>"int", "size"=>11, "creatval"=>0, "dbtype"=>"int", "linkstorage"=>"robots"); //Тип робота
 SysStorage::$storage['robotsrun']['stru']['cronrun'] = array("type"=>"int", "size"=>1, "creatval"=>0, "dbtype"=>"int"); // Необходимость запуска по крону
-SysStorage::$storage['robotsrun']['stru']['rbtype'] = array("type"=>"string", "size"=>50, "creatval"=>"", "dbtype"=>"varchar", "linkstorage"=>array("traders"=>"rb_traders", "info" =>"rb_info", "service"=>"rb_service")); //Тип торгового робота
+SysStorage::$storage['robotsrun']['stru']['rbtype'] = array("type"=>"string", "size"=>50, "creatval"=>"", "dbtype"=>"varchar", "linkstorage"=>array("workers"=>"workers", "info" =>"info", "service"=>"service")); //Тип робота
 
 SysStorage::$storage['robotsrun']['stru']['vars']['list'] = array(
     //Специальные
@@ -1335,7 +1335,7 @@ SysStorage::$storage['robotsrun']['filter'] = array(
     //"fltr_method" => 'post',
     "view" => array(
         "name" => array("name"=>"name", "type"=>"like", "checktype" => "routeitem"),
-        "rbtype" => array("name"=>"rbtype", "type"=>"select", "viewindex" =>false, "notset" =>true, "checktype" => "roteitem", "linkstorage"=>array("traders"=>"rb_traders", "info" =>"rb_info", "service"=>"rb_service")),
+        "rbtype" => array("name"=>"rbtype", "type"=>"select", "viewindex" =>false, "notset" =>true, "checktype" => "roteitem", "linkstorage"=>array("workers"=>"workers", "info" =>"info", "service"=>"service")),
         "status" => array("name"=>"status", "type"=>"select", "viewindex" =>false, "notset" =>true, "checktype" => "roteitem", "linkstorage"=>array("waighting" =>"Waight", "working"=>"Working", "noresponse"=>"No response", "paused"=>"Paused","killed"=>"Killed", "stopped"=>"Stopped", "success"=>"Success", "starterror"=>"Start Error", "error"=>"Error")),
         "submitstr" => array("name"=>"submitstr", "type"=>"submitstr", "string"=>"Filter"),
 ));
@@ -1371,7 +1371,7 @@ SysStorage::$storage['robotsrun']['view']['status'] = array(
     "status" => array("name"=>"status", "type"=>"select", "viewindex" =>false, "notset" =>true, "linkstorage"=>array("waighting" =>"Waight", "working"=>"Working", "paused"=>"Paused","stopped"=>"Stopped", "success"=>"Success", "error"=>"Error"), "checktype" => "routeitem","active" => "print"), // Если 1, то выполнение до текста
     "message" => array("name"=>"message", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text","active" => "print"),
     "clear2" => array("name"=>"clear2", "type"=>"lineblock", "table" =>"thline", "string"=>"Runing log"),
-    "log" => array("name"=>"log", "type"=>"textarea","editor"=>true,"width"=>"100%","rows"=>25,"frfile"=>"data/storage_files/zbrobotsrun/att/p[obj_id]_1.txt","timeout"=>1,"active" => "print","pre"=>true,"table" =>"tdline", "style"=>"background-color:#000; color:#ccc;"), //Основной язык
+    "log" => array("name"=>"log", "type"=>"textarea","editor"=>true,"width"=>"100%","rows"=>25,"frfile"=>"data/storage_files/robotsrun/att/p[obj_id]_1.txt","timeout"=>1,"active" => "print","pre"=>true,"table" =>"tdline", "style"=>"background-color:#000; color:#ccc;"), //Основной язык
     //"clear1" => array("name"=>"clear1", "type"=>"refresh","timeout"=>5),
 );
 
@@ -1382,7 +1382,6 @@ SysStorage::$storage['robotsrun']['view']['config'] = array(
     "clear1" => array("name"=>"clear1", "type"=>"lineblock", "table" =>"thline", "string"=>"Parameters"),
     "robot" => array("name"=>"robot", "type"=>"select", "viewindex" =>false, "notset" =>true, "filter_type"=>"objects", "filter_folder"=>1, "checktype" => "id"),
     "rbtype" => array("name"=>"rbtype", "type"=>"select", "notset" =>true, "viewindex" =>false,  "delim"=>" | ", "checktype" => "routeitem"),
-    "pairslist" => array("name"=>"pairslist", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text"),
     "about" => array("name"=>"about", "type"=>"textarea","editor"=>false,"rows"=>8,"width"=>"100%","langlink"=>"aboutlang","table" =>"thline","checktype" => "text","lang" => "lang"), //Основной язык
     "aboutlang" => array("name"=>"aboutlang", "type"=>"textarea","editor"=>false,"rows"=>8,"width"=>"100%","langlink"=>"about","table" =>"thline","checktype" => "text","lang" => "altlang"),
     "clear2" => array("name"=>"clear2", "type"=>"lineblock", "table" =>"thline", "string"=>"Run parameters"),
