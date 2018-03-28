@@ -58,7 +58,7 @@ $storageDefStruArr = array(
         "script_storage" => array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"), //Хранилище данных скрипта
         "script_folder" => array("type"=>"int", "size"=>11, "creatval"=>"0", "dbtype"=>"int"), // Стартовая папка скрипта
         "scriptvalign" => array("type"=>"int", "size"=>1, "creatval"=>0, "dbtype"=>"int", "linkstorage"=>array("1" =>"Down", "2"=>"Top")), // Если 1, то выполнение до текста
-        "scriptvars" => array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"), // код инициализации скрипта - запускается перед выполнением скрипта нужен для конфигурирования скрипта по месту.
+        "scriptvars" => array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"text"), // код инициализации скрипта - запускается перед выполнением скрипта нужен для конфигурирования скрипта по месту.
         "list_sort" => array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar", "linkstorage"=>Glob::$vars['sort_types_st']), // Дефолтовая сортировка списка в рамках данного раздела,
         "list_max_items" => array("type"=>"int", "size"=>11, "creatval"=>"0", "dbtype"=>"int"), // Стартовая папка скрипта
     )),
@@ -1305,7 +1305,7 @@ SysStorage::$storage['robotsrun']['stru']['robot'] = array("type"=>"int", "size"
 SysStorage::$storage['robotsrun']['stru']['cronrun'] = array("type"=>"int", "size"=>1, "creatval"=>0, "dbtype"=>"int"); // Необходимость запуска по крону
 SysStorage::$storage['robotsrun']['stru']['rbtype'] = array("type"=>"string", "size"=>50, "creatval"=>"", "dbtype"=>"varchar", "linkstorage"=>array("workers"=>"workers", "info" =>"info", "service"=>"service")); //Тип робота
 
-SysStorage::$storage['robotsrun']['stru']['vars']['list'] = array(
+SysStorage::$storage['robotsrun']['view']['vars']['list'] = array(
     //Специальные
     "always" => array("name"=>"always", "type"=>"int", "size"=>1, "creatval"=>0, "dbtype"=>"int"), // Запускать, даже если уже запущено
 
