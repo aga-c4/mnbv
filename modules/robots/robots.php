@@ -11,6 +11,8 @@
 //Базовая инициализация
 Glob::$vars['console'] = true;
 Glob::$vars['tpl_mode'] = 'txt'; //Если это консоль, то по умолчанию выводим в тексте
+Glob::$vars['robotsStorage'] = (!empty($robotsStorage))?$robotsStorage:'robots'; //Хранилище типов роботов
+Glob::$vars['robotsRunStorage'] = (!empty($robotsRunStorage))?$robotsRunStorage:'robotsrun'; //Хранилище заданий роботов
 SysLogs::$logViewTime = true; //Перед каждой записью выводить дату-время
 SysLogs::$logViewController = false; //Перед каждой записью выводить контроллер
 SysLogs::addLog('Start module ['.Glob::$vars['module'].']');

@@ -17,7 +17,7 @@ class MNBVRobot extends MNBVProcess {
     /**
      * @var string хранилище заданий для роботов
      */
-    protected $storage = '';
+    protected $storage = 'robotsrun';
 
     /**
      * @var string идентификатор сессии текущего задания

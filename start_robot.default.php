@@ -15,6 +15,8 @@
 $startFromConsole = true; //Маркер запуска из консоли.
 $startTplMode = 'txt'; //Формат ответа (txt,html,json,none)
 $startModule = 'robots'; //Запускаемый базовый модуль, если не установлен, то берем из констант и конфига
+$robotsStorage = 'robots'; //Хранилище типов роботов
+$robotsRunStorage = 'robotsrun'; //Хранилище заданий роботов
 $systemLogView = false; //Видимость Лога работы скрипта
 $systemLogRTView = true; //Выводить сообщения непосредственно при их формировании
 $systemLogSave = false; //Сохранение Лога работы скрипта
