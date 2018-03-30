@@ -43,7 +43,7 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
 
         require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVProcess.class.php';  //Класс работы со словарями
         require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVRobot.class.php';  //Класс работы со словарями
-        $proc = new MNBVRobot(Glob::$vars['robotsRunStorage'],$procId);
+        $proc = new MNBVRobot($procId);
         $procProp = $proc->getObj();
         $proc->setPsid($rsid);
         $procProp['sid'] = $rsid;
