@@ -39,7 +39,10 @@ class MNBVRobot extends MNBVProcess {
      */
     protected $robotAlias = '';
 
-    public function __construct($storage='',$objId=''){
+    public function __construct($objId='',$storage='',$robotsStorage=''){
+        if (!empty(Glob::$vars['robotsStorage'])) $this->robotsStorage = Glob::$vars['robotsStorage'];
+        if (!empty(Glob::$vars['robotsRunStorage'])) $this->storage = Glob::$vars['robotsRunStorage'];
+        if (!empty($robotsStorage)) $this->robotsStorage = $robotsStorage;
         if (!empty($storage)) $this->storage = $storage;
         if (!empty($objId)) $this->objId = $objId;
         if (!empty($command)) $this->command = $command;
