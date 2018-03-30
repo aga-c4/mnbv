@@ -13,7 +13,7 @@ require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVRobot.class.php';  //Класс �
 
 $currStorageAlias = $this->getStorage();
 
-$proc = new MNBVRobot($currStorageAlias,$item['obj']["id"]);
+$proc = new MNBVRobot($item['obj']["id"]);
 
 //Произведем действия по команде для процесса
 $act = SysBF::checkStr(SysBF::getFrArr(Glob::$vars['request'],'act',''),'strictstr');
