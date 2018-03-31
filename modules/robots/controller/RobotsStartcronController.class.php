@@ -49,7 +49,7 @@ class RobotsStartcronController extends AbstractMnbvsiteController{
         $proc = new MNBVRobot($procId);
         $procProp = getObj();
 
-        if ($procProp!==null && (empty($procProp['sid']) || $procProp['sid']==$rsid)) {//Продолжаем работу только если данное задание не имеет sid, т.е. не запущено.
+        if ($procProp!==null) {//Продолжаем работу только если данное задание не имеет sid, т.е. не запущено.
 
             $proc->setPsid($rsid);
             $procProp['sid'] = $rsid;
