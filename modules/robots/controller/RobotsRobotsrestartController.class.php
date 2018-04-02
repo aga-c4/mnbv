@@ -142,7 +142,7 @@ class RobotsRobotsrestartController extends AbstractMnbvsiteController{
                         //Если запущен процесс а по его pid не находим в системе процесса, то запускаем этот процесс заново и освежаем его свойства
                         if (!isset($pidsArr[strval($value['pid'])]) && $procId!=$value["id"]){
                             if ($outputLogStr=='') $outputLogStr = "\n";
-                            $rproc = new MNBVRobot(Glob::$vars['robotsRunStorage'],$value["id"]);
+                            $rproc = new MNBVRobot($value["id"]);
                             $res=$rproc->start('restart');
                             $currStr = date("Y-m-d H:i:s") . " Restart proc[".$value["id"]."] sid=[".$rproc->getPsid()."] pid=[".$rproc->getPid()."] ".(($res)?'Ok!':'Error!')."\n";
                             $outputLogStr .= $currStr;
