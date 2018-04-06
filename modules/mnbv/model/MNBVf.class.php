@@ -1554,7 +1554,8 @@ class MNBVf {
 
         if (is_array($form_folder)){
 
-        foreach ($form_folder as $viewArr){
+        foreach ($form_folder as $ffkey=>$viewArr){
+            if ($ffkey=='viewonly') continue;
             if (!(empty($viewArr["lang"]) || $viewArr["lang"]=="all" || ($viewArr["lang"]=="lang" && !$altlang) || ($viewArr["lang"]=="altlang" && $altlang))) continue; //Если данное поле не подлежит выводу по текущему языку, то идем далее
 
             if ($viewArr["type"]=="vars") {
