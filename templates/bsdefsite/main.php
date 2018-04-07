@@ -24,6 +24,7 @@ require_once MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'head.php');
     <![endif]-->
     
     <LINK href="<?=WWW_SRCPATH.MNBV_MAINMODULE;?>/css/mnbv.css" type="text/css" rel="Stylesheet" media="screen">
+    <LINK type="/text/css" href="<?=WWW_SRCPATH;?>lightbox/dist/ekko-lightbox.css" rel="stylesheet">
   </head>
 
   <body>
@@ -97,5 +98,13 @@ echo '<a href="/intranet/auth">'.$langUserName.'</a>';
     <script src="<?=WWW_SRCPATH;?>bootstrap3/docs/dist/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="<?=WWW_SRCPATH;?>bootstrap3/docs/assets/js/ie10-viewport-bug-workaround.js"></script>
+    
+    <script src="<?=WWW_SRCPATH;?>lightbox/dist/ekko-lightbox.min.js"></script>
+    <script>
+        $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+                event.preventDefault();
+                $(this).ekkoLightbox();
+            });
+    </script>
   </body>
 </html>
