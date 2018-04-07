@@ -1,0 +1,97 @@
+/* Sticky footer styles
+-------------------------------------------------- */
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 60px;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 40px;
+  background-color: #333;
+}
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+
+body > .container {
+  padding: 60px 15px 0;
+}
+.container .text-muted {
+  margin: 10px 0;
+}
+
+.footer > .container {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.navbar-container {
+  padding: 0 15px 0;    
+}
+
+code {
+  font-size: 80%;
+}
+
+
+/* Custom page CSS
+-------------------------------------------------- */
+/* Not required for template or sticky footer method. */
+.navbar-static-top {
+  margin-bottom: 19px;
+}
+
+.navbar-brand{
+    float:left;
+    height:50px;
+    padding: 10px 15px;
+    font-size:18px;
+    line-height:20px
+}
+
+.navbar-inverse{
+    color:#000;
+    background-color:#3698da;
+    /*Gradient*/
+    background: -moz-linear-gradient(bottom, #3698da, #cdebff); /* Firefox 3.6+ */
+    /* Chrome 1-9, Safari 4-5 */
+    background: -webkit-gradient(linear, left bottom, left top,
+    color-stop(0%,#3698da), color-stop(100%,#cdebff));
+    /* Chrome 10+, Safari 5.1+ */
+    background: -webkit-linear-gradient(bottom, #3698da, #cdebff);
+    background: -o-linear-gradient(bottom, #3698da, #cdebff); /* Opera 11.10+ */
+    background: -ms-linear-gradient(bottom, #3698da, #cdebff); /* IE10 */
+    background: linear-gradient(bottom, #3698da, #cdebff); /* CSS3 */
+    -webkit-box-shadow: 0 0 5px #666; /* Тень для Safari 3.0 */
+    box-shadow: 0 0 5px #666; /* Тень для остальных браузеров */
+    -moz-box-shadow: 0 0 5px #666p; /* Тень для Firefox 3.5 */
+}
+
+.footer{
+    background-color:#3698da;
+    /*Gradient*/
+    background: -moz-linear-gradient(bottom, #3698da, #cdebff); /* Firefox 3.6+ */
+    /* Chrome 1-9, Safari 4-5 */
+    background: -webkit-gradient(linear, left bottom, left top,
+    color-stop(0%,#3698da), color-stop(100%,#cdebff));
+    /* Chrome 10+, Safari 5.1+ */
+    background: -webkit-linear-gradient(bottom, #3698da, #cdebff);
+    background: -o-linear-gradient(bottom, #3698da, #cdebff); /* Opera 11.10+ */
+    background: -ms-linear-gradient(bottom, #3698da, #cdebff); /* IE10 */
+    background: linear-gradient(bottom, #3698da, #cdebff); /* CSS3 */
+    -webkit-box-shadow: 0 0 5px #666; /* Тень для Safari 3.0 */
+    box-shadow: 0 0 5px #666; /* Тень для остальных браузеров */
+    -moz-box-shadow: 0 0 5px #666p; /* Тень для Firefox 3.5 */
+}
+
+.navbar-inverse .navbar-nav>li>a {
+    color: #000;
+}

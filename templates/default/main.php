@@ -2,6 +2,7 @@
 require_once MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'head.php');
 ?>
 <link rel="shortcut icon" href="<?=WWW_IMGPATH;?>logo/smallico.ico">
+<LINK href="<?=WWW_SRCPATH.MNBV_MAINMODULE;?>/css/default.css" type="text/css" rel="Stylesheet" media="screen">
 <LINK href="<?=WWW_SRCPATH.MNBV_MAINMODULE;?>/css/mnbv.css" type="text/css" rel="Stylesheet" media="screen">
 <link type="/text/css" href="/src/mnbv/css/jquery.lightbox.css" rel="stylesheet">
 
