@@ -2,7 +2,8 @@
 require_once MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'head.php');
 ?>
     
-
+    <link rel="shortcut icon" href="<?=WWW_IMGPATH;?>logo/smallico.ico">
+    
     <!-- Bootstrap core CSS -->
     <link href="<?=WWW_SRCPATH;?>bootstrap3/docs/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -10,7 +11,7 @@ require_once MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'head.php');
     <link href="<?=WWW_SRCPATH;?>bootstrap3/docs/assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
 
     <!-- Custom styles for this template -->
-    <link href="<?=WWW_SRCPATH;?>bsdefault/css/navbar-static-top.css" rel="stylesheet">
+    <link href="<?=WWW_SRCPATH;?>bsdefsite/css/navbar-static-top.css" rel="stylesheet">
 
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
@@ -22,7 +23,7 @@ require_once MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'head.php');
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
     
-    <LINK href="<?=WWW_SRCPATH.MNBV_MAINMODULE;?>/css/default.css" type="text/css" rel="Stylesheet" media="screen">
+    <LINK href="<?=WWW_SRCPATH.MNBV_MAINMODULE;?>/css/mnbv.css" type="text/css" rel="Stylesheet" media="screen">
   </head>
 
   <body>
@@ -40,7 +41,7 @@ require_once MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'head.php');
           <a class="navbar-brand" href="/" style="margin-top: 0px;"><img src="<?=WWW_SRCPATH.MNBV_MAINMODULE;?>/img/logo/logomini1.png" width="27" height="30" border="0"></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-<?MNBVf::startVidget('gormenu',$item,2);?>
+<?MNBVf::startVidget('gormenu',$item,3);?>
           <ul class="nav navbar-nav navbar-right">
 <?
     if (Lang::isDefLang()){ //Это основной язык
@@ -50,8 +51,8 @@ require_once MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'head.php');
         <?
     }else{ //Это альтернативный язык
         ?>
-            <li><a href=""><?=Lang::getDefLang();?> <span class="sr-only">(current)</span></a></li>
-            <li class="active"><a href="<?=((!empty($item['page_url_swlang']))?$item['page_url_swlang']:'');?>"><?=Lang::getAltLangName();?></a></li>
+            <li><a href="<?=((!empty($item['page_url_swlang']))?$item['page_url_swlang']:'');?>"><?=Lang::getDefLang();?> <span class="sr-only">(current)</span></a></li>
+            <li class="active"><a href=""><?=Lang::getAltLangName();?></a></li>
         <?
     }
 ?>
@@ -62,7 +63,7 @@ require_once MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'head.php');
 
 
     <div class="container">
-
+<?=MNBVf::getNavStr($item['obj']['nav_arr'],array('fin_link_ctive'=>false,'link_class'=>'navstr','delim'=>' > '));?>
 <?php
 echo (!empty($item['page_h1'])) ? ("<h1>".$item['page_h1']."</h1>\n") : '';
 echo (!empty($item['page_content'])) ? ($item['page_content']."\n") : '';

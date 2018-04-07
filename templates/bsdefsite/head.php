@@ -14,4 +14,3 @@ if (!Glob::$vars['console']) header('Content-Type: text/html; charset=utf-8');
     <META http-equiv=Content-Type content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
 
-

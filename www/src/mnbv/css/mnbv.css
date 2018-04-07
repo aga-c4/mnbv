@@ -14,7 +14,7 @@ margin:0;
 padding:0;
 }
 
-a {
+container > a {
 color:#36c;
 text-decoration:underline;
 }
@@ -68,11 +68,11 @@ color:blue;
 background-color:#66ff66;
 }
 
-ol, ul {
+container > ol, ul {
     margin:0;
     padding:0 0 0 2em;
 }
-li {
+container > li {
     margin:3px;
     padding:0;
 }

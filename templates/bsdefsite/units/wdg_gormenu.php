@@ -3,12 +3,13 @@
  * Шаблон вывода виджета горизонтального меню
  */
 
-echo $menuStr = '<ul class="nav navbar-nav">'."\n";
-$menuStr .= '<a href="'.(isset(Glob::$vars['back_url_last']))?Glob::$vars['back_url_last'].'?back=on':'/'.'"><--</a>'."\n";
+$menuStr = '<ul class="nav navbar-nav">'."\n";
+//$menuStr .= '<li><a href="' . ((isset(Glob::$vars['back_url_last']))?Glob::$vars['back_url_last'].'?back=on':'/') . '"><--</a></li>'."\n";
 foreach ($menuArr as $menuItem) {
     $menuStr .= '<li' . ((!empty($menuItem['active']))?' class="active"':'') . '><a href="' . $menuItem['url'] . '">' . $menuItem['name'] . '</a></li>'."\n";
 }
-echo $menuStr .= '</ul>'."\n";
+$menuStr .= '</ul>'."\n";
+echo $menuStr;
 
 /*Пример
 <ul class="nav navbar-nav">

@@ -6,7 +6,6 @@
  * 'login' - если задано, то установим стартовое значение login
  */
 ?>
-<br>
 <script type="text/javascript" src="<?=WWW_SRCPATH.MNBV_MAINMODULE;?>/js/md5-min.js"></script>
 <SCRIPT>
 var selectform=0;
@@ -35,21 +34,15 @@ function CheckForm()
    }
 }
 </SCRIPT>
-<FORM action="" method=post onsubmit="CheckForm();" name=authform>
-<div style='WIDTH: 250px;'>
-<table class=base>
-<tr>
-
-<td align=right><b><?=Lang::get("Login");?>:</b> <input type=text name=ul size="16" value="<?=SysBF::getFrArr($item['user'],'login','');?>"><br>
-<b><?=Lang::get("Password");?>:</b> <input type="Password" name=fp size="16" onchange="CheckForm();"><br>
-<input type=hidden name=fu value=''>
-<input type=hidden name=act value='auth'>
-<input type=button onclick="CheckForm();" value="<?=Lang::get("Authorise");?>"><br>
-
-</td>
-</tr>
-</table>
+<div class="jumbotron">
+<form class="form-signin" action="" method=post onsubmit="CheckForm();" name=authform>
+  <label for="inputEmail" class="sr-only"><?=Lang::get("Login");?></label>
+  <input type=email id="inputEmail" name=ul class="form-control" placeholder="<?=Lang::get("Login");?>" required autofocus>
+  <label for="inputPassword" class="sr-only"><?=Lang::get("Password");?></label>
+  <input type="Password" name=fp size="16" onchange="CheckForm();" id="inputPassword" class="form-control" placeholder="<?=Lang::get("Password");?>" required>
+  <input type=hidden name=fu value=''>
+  <input type=hidden name=act value='auth'>
+  <input class="btn btn-lg btn-primary btn-block" type=button onclick="CheckForm();" value="<?=Lang::get("Authorise");?>">
+  <br><center>IP:[<? echo GetEnv('REMOTE_ADDR'); ?>]</center>
+</form>
 </div>
-</FORM>
-<br>
-IP:[<? echo GetEnv('REMOTE_ADDR'); ?>]
