@@ -22,7 +22,7 @@ if (isset($item['sub_obj']['files']["img"]["1"]) && $tecObjTxtCode = MNBVf::getO
         if ($imgWStr=='' && isset($item['img_max_size']['img_max_w'])) $imgWStr = ' width="'. $item['img_max_size']['img_max_w'] .'"';
         $imgHStr = (isset($item['sub_obj']['files']["img"]["1"]['size']['h']))?(' height="'.$item['sub_obj']['files']["img"]["1"]['size']['h'].'"'):'';
         ?>
-        <a class="example-image-link" href='<?=SysBF::getFrArr($item['sub_obj']['files']["img"]["1"],'src_big','');?>' data-toggle="lightbox" title="<?=SysBF::getFrArr($item['sub_obj']['files']["img"]["1"],'name','');?>"><img class="example-image" src='<?=SysBF::getFrArr($item['sub_obj']['files']["img"]["1"],'src','');?>'<?=$imgWStr;?><?=$imgWStr;?> style="max-width: 98%;"></a><br>
+        <a class="example-image-link" href='<?=SysBF::getFrArr($item['sub_obj']['files']["img"]["1"],'src_big','');?>' data-toggle="lightbox" data-gallery="<?=SysBF::getFrArr($item['sub_obj']['files']["img"]["1"],'name','');?>"><img class="example-image" src='<?=SysBF::getFrArr($item['sub_obj']['files']["img"]["1"],'src','');?>'<?=$imgWStr;?><?=$imgWStr;?> style="max-width: 98%;"></a><br>
     <?
     }
 }
@@ -43,7 +43,7 @@ for ($i=2;$i<=$formImgNum;$i++){
         $u = SysBF::getFrArr($item['sub_obj']['files']["img"]["$i"],'src_min','');
 
         //URL ссылка большой картинки
-        $a1 = (SysBF::getFrArr($item['sub_obj']['files']["img"]["$i"],'src_big'))?'<a href="'.$item['sub_obj']['files']["img"]["$i"]['src_big'].'" data-toggle="lightbox" title="'.$n.'">':'';
+        $a1 = (SysBF::getFrArr($item['sub_obj']['files']["img"]["$i"],'src_big'))?'<a href="'.$item['sub_obj']['files']["img"]["$i"]['src_big'].'" data-toggle="lightbox" data-gallery="'.$n.'">':'';
         $a2 = (!empty($a1))?'</a>':'';
 
         echo $a1 . '<img src="' . $u . '""' . $imgWStr . $imgWStr . '>' . $a2 . "\n";
