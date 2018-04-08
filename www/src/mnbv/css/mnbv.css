@@ -14,11 +14,6 @@ margin:0;
 padding:0;
 }
 
-container > a {
-color:#36c;
-text-decoration:underline;
-}
-
 form {
 margin:0;
 padding:0;
@@ -68,11 +63,11 @@ color:blue;
 background-color:#66ff66;
 }
 
-container > ol, ul {
+.container > ol, ul {
     margin:0;
     padding:0 0 0 2em;
 }
-container > li {
+.container > li {
     margin:3px;
     padding:0;
 }

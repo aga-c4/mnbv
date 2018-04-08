@@ -61,6 +61,11 @@ padding:0;
 float:left;
 }
 
+.content a {
+color:#36c;
+text-decoration:underline;
+}
+
 .futor {
 text-align:left;
 background-color:#3698da;
@@ -82,7 +87,13 @@ float:left;
 box-shadow: 0 0 5px #666; /* Тень для остальных браузеров */
 -moz-box-shadow: 0 0 5px #666p; /* Тень для Firefox 3.5 */
 }
+
 .futor p {
 margin:0;
 padding:0;
+}
+
+.futor a {
+color:#36c;
+text-decoration:underline;
 }
