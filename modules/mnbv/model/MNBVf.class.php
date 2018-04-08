@@ -908,7 +908,9 @@ class MNBVf {
     public static function getFileType($url=''){
         //1. отрежем все после ?, включая его самого и выделим расширение файла
         $filenamArr = explode('?',$url);
-        $ext = strtolower(array_pop(explode('.',$filenamArr[0])));
+        $fnam1Arr = explode('.',$filenamArr[0]);
+        $fnam1 = array_pop($fnam1Arr);
+        $ext = strtolower($fnam1);
         if (SysBF::getFrArr(Glob::$vars['file_types'],"$ext")!==null) return $ext;
     }
     
