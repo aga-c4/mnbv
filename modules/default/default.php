@@ -9,8 +9,8 @@
  */
 $thisModuleName = Glob::$vars['module'];
 
-require_once APP_MODULESPATH . 'core/'. MOD_MODELSPATH .'/DbMysql.class.php'; //Класс MySql
-require_once APP_MODULESPATH . 'core/'. MOD_MODELSPATH .'/SysStorage.class.php';    //Класс хранилищ данных
+//require_once APP_MODULESPATH . 'core/'. MOD_MODELSPATH .'/DbMysql.class.php'; //Класс MySql
+//require_once APP_MODULESPATH . 'core/'. MOD_MODELSPATH .'/SysStorage.class.php';    //Класс хранилищ данных
 
 require_once APP_MODULESPATH . $thisModuleName . '/router.php';    //Маршрутизация модуля
 
