@@ -25,6 +25,21 @@ define("USER_MODULESPATH",'app/modules/');
  */
 define("MNBV_MAINMODULE",'mnbv');
 
+/**
+ * Основной загрузчик классов CORE с поддержкой namespace с адресацией от папки модулей
+ * @param $class_name
+ */
+spl_autoload_register (function ($class_name) {
+    if (false!==stripos($class_name,'\\')) {
+        // Преобразование namespace в полный путь к файлу
+        $class =  APP_MODULESPATH . str_replace('\\', DIRECTORY_SEPARATOR, $class_name) . '.class.php';
+    }else{
+        //В остальных случаях забираем из моделей core
+        $class =  CORE_PATH . 'model/' . $class_name . '.class.php';
+    }
+    if(file_exists($class)) require_once ($class);
+} );
+
 //Загрузка дефолтовых и пользовательских констант и конфигов. Конфиги работают по принципу замещения.
 if(file_exists(USER_MODULESPATH . MNBV_MAINMODULE .'/config/constants.php')) require_once (USER_MODULESPATH . MNBV_MAINMODULE .'/config/constants.php');
 if(file_exists(USER_MODULESPATH . 'core/config/constants.php')) require_once (USER_MODULESPATH . 'core/config/constants.php');
@@ -44,16 +59,6 @@ else require_once APP_MODULESPATH . 'core/init.php'; //Дефолтовый init
 //Маршрутизация запроса: дефолтовая и пользовательская
 if(file_exists(USER_MODULESPATH . 'core/router.php'))  require_once (USER_MODULESPATH . 'core/router.php'); //Пользовательский маршрутизатор, если есть
 else require_once APP_MODULESPATH . 'core/router.php'; //Дефолтовый марщрутизатор, если нет пользовательского
-
-/**
- * Основной загрузчик классов - реализация для MNBV. TODO - измените или отключите его, если вы не используете MNBV
- * @param $class_name
- */
-function __autoload($class_name) {
-    // Преобразование namespace в полный путь к файлу
-    $class = APP_MODULESPATH . 'mnbv/model/' . str_replace('\\', '/', $class_name) . '.class.php';
-    require_once $class;
-}
 
 $moduleFile =  APP_MODULESPATH . Glob::$vars['module'] . '/' . Glob::$vars['module'] . '.php';
 if(file_exists($moduleFile)) require_once ($moduleFile);
