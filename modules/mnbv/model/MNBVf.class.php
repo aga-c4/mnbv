@@ -423,7 +423,11 @@ class MNBVf {
         //View------------------------
         switch ($tplMode) {
             case "html": //Вывод в html формате для Web
-                require_once $tplPath;
+                if(file_exists(USER_MODULESPATH . MNBV_MAINMODULE . '/controller/render.php'))  { //При наличии локального рендера, передать управление ему
+                    include (USER_MODULESPATH . MNBV_MAINMODULE . '/controller/render.php');
+                }else{//В остальных случаях - используем обычные php шаблоны.
+                    include $tplPath;
+                }
                 break;
             case "txt": //Вывод в текстовом формате для консоли
                 if (!empty(Glob::$vars['mnbv_tpl'])) require_once(MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'txtmain.php')); //Если есть возможность, то задействуем пользовательский шаблон
