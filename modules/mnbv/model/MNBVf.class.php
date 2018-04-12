@@ -424,6 +424,7 @@ class MNBVf {
         switch ($tplMode) {
             case "html": //Вывод в html формате для Web
                 if(file_exists(USER_MODULESPATH . MNBV_MAINMODULE . '/controller/render.php'))  { //При наличии локального рендера, передать управление ему
+                    //Внимание, имейте в виду, что в $tplPath передается полный путь к шаблону от корня проекта, возможно будет необходимо его обрезать до корня используемого шаблонизатора
                     include (USER_MODULESPATH . MNBV_MAINMODULE . '/controller/render.php');
                 }else{//В остальных случаях - используем обычные php шаблоны.
                     include $tplPath;
