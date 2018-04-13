@@ -581,7 +581,7 @@ class MNBVf {
     {
         $result = ''; // Пока результат пуст
         $default_port = 80; // Порт по-умолчанию
-        $realUri = (!empty($uri))?$uri:$_SERVER['REQUEST_URI'];  
+        $realUri = (!empty($uri))?$uri:((!empty($_SERVER['REQUEST_URI']))?$_SERVER['REQUEST_URI']:'');  
         
         if (!empty(Glob::$vars['mnbv_site']['fullurl'])){ //Если требуется формировать URL с протоколом и доменом
             if ($realUri=='/') $realUri = '';

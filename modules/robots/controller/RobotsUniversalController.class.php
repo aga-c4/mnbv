@@ -49,9 +49,6 @@ class RobotsUniversalController extends AbstractMnbvsiteController{
         $procId = SysBF::checkStr(SysBF::getFrArr(Glob::$vars['request'],'proc',''),'int');
         $rsid = SysBF::checkStr(SysBF::getFrArr(Glob::$vars['request'],'rsid',''),'strictstr');
 
-        require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVProcess.class.php';  //Класс работы со словарями
-        require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVRobot.class.php';  //Класс работы со словарями
-        require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVTelegram.class.php';  //Класс работы с Telegram
         $proc = new MNBVRobot($procId);
         $procProp = $proc->getObj();
 

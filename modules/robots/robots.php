@@ -8,6 +8,25 @@
  * Time: 00:00
  */
 
+/**
+ * Основной загрузчик классов MNBV
+ * @param $class_name
+ */
+spl_autoload_register (function ($class_name) {
+    if (false===stripos($class_name,'\\')) { //Неймспейсы мы уже обработали в core
+        $test = (Glob::$vars['console'])?Glob::$vars['autoload_console_log_view']:false; //Если true, то в консоли выведет сообщения о загрузке классов
+        $class =  MNBV_PATH . 'model/' . $class_name . '.class.php';
+        if ($test) echo 'Try to load class: ' . $class . "\n";
+        if(file_exists($class)) {
+            require_once ($class);
+            if ($test) echo ' Ok!'; 
+        }else{
+            echo ' Not found!';
+        }
+        if ($test) echo "\n";
+    }
+} );
+
 //Базовая инициализация
 Glob::$vars['console'] = true;
 Glob::$vars['tpl_mode'] = 'txt'; //Если это консоль, то по умолчанию выводим в тексте
@@ -16,10 +35,6 @@ Glob::$vars['robotsRunStorage'] = (!empty($robotsRunStorage))?$robotsRunStorage:
 SysLogs::$logViewTime = true; //Перед каждой записью выводить дату-время
 SysLogs::$logViewController = false; //Перед каждой записью выводить контроллер
 SysLogs::addLog('Start module ['.Glob::$vars['module'].']');
-require_once MNBV_PATH . MOD_MODELSPATH . 'Lang.class.php';  //Класс работы со словарями
-require_once CORE_PATH . MOD_MODELSPATH . 'DbMysql.class.php'; //Класс MySql
-require_once CORE_PATH . MOD_MODELSPATH . 'SysStorage.class.php'; //Класс хранилищ данных
-require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVf.class.php'; //Класс базовых функций системы MNBV
 
 //Инициализация текущего модуля
 require_once MNBV_PATH . 'config/config.php';    //Базовый конфиг модуля

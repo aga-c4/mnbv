@@ -14,21 +14,21 @@
  */
 spl_autoload_register (function ($class_name) {
     if (false===stripos($class_name,'\\')) { //Неймспейсы мы уже обработали в core
+        $test = (Glob::$vars['console'])?Glob::$vars['autoload_console_log_view']:false; //Если true, то в консоли выведет сообщения о загрузке классов
         $class =  MNBV_PATH . 'model/' . $class_name . '.class.php';
-        if(file_exists($class)) require_once ($class);
+        if ($test) echo 'Try to load class: ' . $class . "\n";
+        if(file_exists($class)) {
+            require_once ($class);
+            if ($test) echo ' Ok!'; 
+        }else{
+            if ($test) echo ' Not found!';
+        }
+        if ($test) echo "\n";
     }
 } );
 
 //Базовая инициализация MNBV
 SysLogs::addLog('Start module ['.Glob::$vars['module'].']');
-//require_once MNBV_PATH . MOD_MODELSPATH . 'Lang.class.php';  //Класс работы со словарями
-//require_once CORE_PATH . MOD_MODELSPATH . 'DbMysql.class.php'; //Класс MySql
-//require_once CORE_PATH . MOD_MODELSPATH . 'SysStorage.class.php'; //Класс хранилищ данных
-//require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVStorage.class.php'; //Класс работы с хранилищами MNBV
-//require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVdefSt.class.php'; //Класс работы с хранилищами типа MNBVdefSt MNBV
-//require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVMySQLSt.class.php'; //Класс работы с хранилищами типа MySQLSt MNBV
-//require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVdefSt.class.php'; //Класс работы с хранилищами типа MNBVdefSt MNBV
-//require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVf.class.php'; //Класс базовых функций системы MNBV
 
 //Инициализация текущего модуля
 require_once MNBV_PATH . 'config/config.php';    //Базовый конфиг модуля

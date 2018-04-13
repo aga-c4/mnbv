@@ -30,14 +30,24 @@ define("MNBV_MAINMODULE",'mnbv');
  * @param $class_name
  */
 spl_autoload_register (function ($class_name) {
+    $test = (Glob::$vars['console'])?Glob::$vars['autoload_console_log_view']:false;
+    $class_name = ltrim($class_name, '\\');
     if (false!==stripos($class_name,'\\')) {
         // Преобразование namespace в полный путь к файлу
-        $class =  APP_MODULESPATH . str_replace('\\', DIRECTORY_SEPARATOR, $class_name) . '.class.php';
+        // Поддержка стандарта PSR-0 (https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md)
+        $class =  APP_VENDORS . str_replace(array('\\','_'), DIRECTORY_SEPARATOR, $class_name) . '.php';
     }else{
         //В остальных случаях забираем из моделей core
         $class =  CORE_PATH . 'model/' . $class_name . '.class.php';
     }
-    if(file_exists($class)) require_once ($class);
+    if ($test) echo 'Try to load class: ' . $class . "\n";
+    if(file_exists($class)) {
+        require_once ($class);
+        if ($test) echo ' Ok!'; 
+    }else{
+        if ($test) echo ' Not found!';
+    }
+    if ($test) echo "\n";
 } );
 
 //Загрузка дефолтовых и пользовательских констант и конфигов. Конфиги работают по принципу замещения.
@@ -47,9 +57,6 @@ require_once APP_MODULESPATH . 'core/config/constants.php';
 if(file_exists(USER_MODULESPATH . 'core/config/config.php')) require_once (USER_MODULESPATH . 'core/config/config.php');
 require_once APP_MODULESPATH . 'core/config/config.php';
 
-//Основные классы системы
-require_once APP_MODULESPATH . 'core/model/SysBF.class.php'; //Библиотека системных функций
-require_once APP_MODULESPATH . 'core/model/SysLogs.class.php'; //Класс работы с логами
 SysLogs::addLog('Start module [core]');
 
 //Стартовая инициализация элементов системы: дефолтовая и пользовательская

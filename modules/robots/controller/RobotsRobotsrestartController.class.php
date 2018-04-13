@@ -44,8 +44,6 @@ class RobotsRobotsrestartController extends AbstractMnbvsiteController{
         echo "Start MNBV robot " . $this->thisModuleName . "! \n";
         echo "RSid=[$rsid]\n";
         
-        require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVProcess.class.php';  //Класс работы со словарями
-        require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVRobot.class.php';  //Класс работы со словарями
         $proc = new MNBVRobot($procId);
         $procProp = $proc->getObj();
         $outputLogStr = '';
