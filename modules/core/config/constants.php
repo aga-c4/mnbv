@@ -48,7 +48,7 @@ if (!defined("APP_VENDORS"))
 /**
  * Путь к директории с кодом вендоров
  */
-define("APP_VENDORS",'vendors/');
+define("APP_VENDORS",'vendor/');
 
 if (!defined("APP_SRCPATH")) 
 /**
