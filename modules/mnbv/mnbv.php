@@ -14,7 +14,7 @@
  */
 spl_autoload_register (function ($class_name) {
     if (false===stripos($class_name,'\\')) { //Неймспейсы мы уже обработали в core
-        $test = (Glob::$vars['console'])?Glob::$vars['autoload_console_log_view']:false; //Если true, то в консоли выведет сообщения о загрузке классов
+        $test = (Glob::$vars['console'] && !empty(Glob::$vars['autoload_console_log_view']))?true:false; //Если true, то в консоли выведет сообщения о загрузке классов
         $class =  MNBV_PATH . 'model/' . $class_name . '.class.php';
         if ($test) echo 'Try to load class: ' . $class . "\n";
         if(file_exists($class)) {

@@ -21,16 +21,21 @@ define("APP_MODULESPATH" , 'modules/'); //Путь к директории с м
 define("USER_MODULESPATH",'app/modules/');
 
 /**
- * Путь к модулю ядра MNBV
+ * Путь к модулю ядра CMS.MNBV, если установлена и используется
  */
 define("MNBV_MAINMODULE",'mnbv');
+
+//Загрузка дефолтовых и пользовательских констант и конфигов. Конфиги работают по принципу замещения.
+if(file_exists(USER_MODULESPATH . MNBV_MAINMODULE .'/config/constants.php')) require_once (USER_MODULESPATH . MNBV_MAINMODULE .'/config/constants.php');
+if(file_exists(USER_MODULESPATH . 'core/config/constants.php')) require_once (USER_MODULESPATH . 'core/config/constants.php');
+require_once APP_MODULESPATH . 'core/config/constants.php';
 
 /**
  * Основной загрузчик классов CORE с поддержкой namespace с адресацией от папки модулей
  * @param $class_name
  */
 spl_autoload_register (function ($class_name) {
-    $test = (Glob::$vars['console'])?Glob::$vars['autoload_console_log_view']:false;
+    $test = false; //(Glob::$vars['console'])?true:false; //Если true, то в консоли выведет сообщения о загрузке классов Нужно для отладки
     $class_name = ltrim($class_name, '\\');
     if (false!==stripos($class_name,'\\')) {
         // Преобразование namespace в полный путь к файлу
@@ -50,14 +55,13 @@ spl_autoload_register (function ($class_name) {
     if ($test) echo "\n";
 } );
 
-//Загрузка дефолтовых и пользовательских констант и конфигов. Конфиги работают по принципу замещения.
-if(file_exists(USER_MODULESPATH . MNBV_MAINMODULE .'/config/constants.php')) require_once (USER_MODULESPATH . MNBV_MAINMODULE .'/config/constants.php');
-if(file_exists(USER_MODULESPATH . 'core/config/constants.php')) require_once (USER_MODULESPATH . 'core/config/constants.php');
-require_once APP_MODULESPATH . 'core/config/constants.php';
+SysLogs::addLog('Start module [core]');
+
+//Автозагрузка вендоров
+if(file_exists(APP_VENDORS . 'autoload.php')) require_once (APP_VENDORS . 'autoload.php');
+
 if(file_exists(USER_MODULESPATH . 'core/config/config.php')) require_once (USER_MODULESPATH . 'core/config/config.php');
 require_once APP_MODULESPATH . 'core/config/config.php';
-
-SysLogs::addLog('Start module [core]');
 
 //Стартовая инициализация элементов системы: дефолтовая и пользовательская
 if(file_exists(USER_MODULESPATH . 'core/init.php'))  require_once (USER_MODULESPATH . 'core/init.php'); //Пользовательский init, если есть
