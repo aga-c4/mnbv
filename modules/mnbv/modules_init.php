@@ -7,6 +7,7 @@
  * Date: 09.04.15
  * Time: 00:00 
  */
+SysLogs::addLog('Modules_init start mnbv_module = ['.Glob::$vars['mnbv_module'].'].' );
 
 //Определим домен и сооветственно сайт для данного домена, при необходимости сделаем редирект---------------------------
 if (!isset($_SERVER['SERVER_NAME'])) $_SERVER['SERVER_NAME'] = '';
