@@ -43,8 +43,6 @@ else require_once MNBV_PATH . 'init.php'; //Дефолтовый init, если 
 if(file_exists(USER_MODULESPATH . MNBV_MAINMODULE . '/router.php'))  require_once (USER_MODULESPATH . MNBV_MAINMODULE . '/router.php'); //Пользовательский маршрутизатор, если есть
 else require_once MNBV_PATH . 'router.php'; //Дефолтовый марщрутизатор, если нет пользовательского
 
-require_once MNBVf::getRealFileName(MNBV_MAINMODULE,  MOD_MODELSPATH . 'MNBVDiscount.class.php'); //Класс работы со скидками. Можно убрать, если не используете каталог товаров.
-
 $moduleFile =  MNBVf::getRealFileName(Glob::$vars['mnbv_module'], Glob::$vars['mnbv_module'] . '.php');
 if(file_exists($moduleFile)) require_once ($moduleFile);
 else { //Действие при ошибочном модуле - попробуем открыть модуль по-умолчанию

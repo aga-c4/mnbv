@@ -539,7 +539,8 @@ class MNBVf {
         
         $size=10; if (!empty(Glob::$vars['back_url_max_num'])) $size = intval(Glob::$vars['back_url_max_num']);
         
-        if(!is_array(Glob::$vars['back_url_arr'] = Glob::$vars['session']->get('back_url_arr'))) Glob::$vars['back_url_arr'] = array();
+        Glob::$vars['back_url_arr'] = array();
+        if(isset(Glob::$vars['session']) && !is_array(Glob::$vars['back_url_arr'] = Glob::$vars['session']->get('back_url_arr'))) Glob::$vars['back_url_arr'] = array();
         Glob::$vars['back_url_num'] = count(Glob::$vars['back_url_arr']);
         if (Glob::$vars['back_url_num']>$size){
             $delta = Glob::$vars['back_url_num'] - intval($size);
@@ -556,13 +557,13 @@ class MNBVf {
         if (!$is_static){
             if (Glob::$vars['back_url_num']>0 && isset(Glob::$vars['request']['back'])){
                 unset(Glob::$vars['back_url_arr'][(Glob::$vars['back_url_num']-1)]);
-                Glob::$vars['session']->set('back_url_arr',Glob::$vars['back_url_arr']);
+                if(isset(Glob::$vars['session'])) Glob::$vars['session']->set('back_url_arr',Glob::$vars['back_url_arr']);
                 Glob::$vars['back_url_num']--;
                 if (Glob::$vars['back_url_num']>1 && !empty(Glob::$vars['back_url_arr'][(Glob::$vars['back_url_num']-2)])) Glob::$vars['back_url_last'] = Glob::$vars['back_url_arr'][(Glob::$vars['back_url_num']-2)];
             }elseif(Glob::$vars['back_url_num']==0 || (Glob::$vars['back_url_num']>0 && Glob::$vars['back_url_arr'][(Glob::$vars['back_url_num']-1)]!=$url)) {
                 if (Glob::$vars['back_url_num']>0 && !empty(Glob::$vars['back_url_arr'][(Glob::$vars['back_url_num']-1)])) Glob::$vars['back_url_last'] = Glob::$vars['back_url_arr'][(Glob::$vars['back_url_num']-1)];
                 Glob::$vars['back_url_arr'][] = $url;
-                Glob::$vars['session']->set('back_url_arr',Glob::$vars['back_url_arr']);
+                if(isset(Glob::$vars['session'])) Glob::$vars['session']->set('back_url_arr',Glob::$vars['back_url_arr']);
                 Glob::$vars['back_url_num']++;
             }
         }

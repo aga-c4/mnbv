@@ -7,7 +7,7 @@
  * Date: 09.04.15
  * Time: 00:00 
  */
-SysLogs::addLog('Modules_init start mnbv_module = ['.Glob::$vars['mnbv_module'].'].' );
+SysLogs::addLog('SubModules_init start mnbv_module = ['.Glob::$vars['mnbv_module'].'].' );
 
 //Установки языка и инициализация словаря
 if (Lang::getLang() != Lang::getDefLang()) MNBVf::requireFile(MNBV_PATH . 'lang/LangDict_'.Glob::$vars['lang'].'.php'); //Переподключим основной словарь с языком пользователя
