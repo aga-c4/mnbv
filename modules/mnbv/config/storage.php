@@ -1297,6 +1297,7 @@ SysStorage::$storage['robotsrun'] = array(
     'files_security' => true, //будет ли ограничение доступа к приложенным файлам объектов хранилища
 );
 SysStorage::$storage['robotsrun']['stru']['command'] = array("type"=>"string", "size"=>50, "creatval"=>"", "dbtype"=>"varchar"); //Команда роботу
+SysStorage::$storage['robotsrun']['stru']['action'] = array("type"=>"string", "size"=>50, "creatval"=>"", "dbtype"=>"text"); //Команда роботу
 SysStorage::$storage['robotsrun']['stru']['sid'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"); //Идентификатор сессии робота
 SysStorage::$storage['robotsrun']['stru']['pid'] = array("type"=>"int", "size"=>11, "creatval"=>100, "dbtype"=>"int"); // Pid процесса сессии робота
 SysStorage::$storage['robotsrun']['stru']['status'] = array("type"=>"string", "size"=>50, "creatval"=>"", "dbtype"=>"varchar"); //Статус выполнения задачи
