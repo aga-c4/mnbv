@@ -43,6 +43,9 @@ spl_autoload_register (function ($class_name) {
 SysLogs::addLog('Start module ['.Glob::$vars['module'].']');
 
 //Инициализация текущего модуля
+if(file_exists(USER_MODULESPATH . MNBV_MAINMODULE . '/config/constants.php'))  require_once (USER_MODULESPATH . MNBV_MAINMODULE . '/config/constants.php');  //Если есть пользовательский конфиг, то перечитаем его поверх дефолтового
+require_once MNBV_PATH . 'config/constants.php';    //Константы модуля
+
 require_once MNBV_PATH . 'config/config.php';    //Базовый конфиг модуля
 if(file_exists(USER_MODULESPATH . MNBV_MAINMODULE . '/config/config.php'))  require_once (USER_MODULESPATH . MNBV_MAINMODULE . '/config/config.php');  //Если есть пользовательский конфиг, то перечитаем его поверх дефолтового
 
