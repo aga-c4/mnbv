@@ -463,5 +463,51 @@ class MNBVStorage{
     public static function sendRemoveFile($storage,$obj_id,$slot_type,$slot_id){
         return true;
     }
+    
+        /**
+     * Получение данных по вышестоящему объекту
+     * @param $objArr {"id"=>int/string, "upfolders"=>string, "attrup"=>string, "attr"=>string}
+     * @param $typeinp - строка содержащая тип входных данных('string' - строка (по-умолчанию), 'array' - массив). Необязательный параметр
+     * @param $typeout - строка содержащая тип выходных данных('string' - строка (по-умолчанию), 'array' - массив). Необязательный параметр
+     * @param $dnuse - включать в атрибуты только те, у которых есть метка dnuse по-умолчанию true.
+     * @return array
+     */
+    public static function upObjInfo($objArr,$typeinp='string',$typeout='string',$dnuse=true){
+
+        $result = array("upfolders"=>array(),"attrup"=>array());
+
+        //Если не задан id объекта, то выводим пустые значения
+        if (empty($objArr["id"])) {
+            if ($typeout==='string') return array("upfolders"=>"","attrup"=>"");
+            else return $result;
+        }
+
+        if (!empty($objArr['upfolders'])){
+            if ($typeinp==='string') $upfolders = json_decode($objArr['upfolders'],true);
+            else $upfolders = $objArr['upfolders'];
+        }
+        if (empty($upfolders)) $upfolders = array();
+        $upfolders[] = $objArr["id"];
+        if ($typeout==='string') $result["upfolders"] = json_encode($upfolders);
+        else $result["upfolders"] = $upfolders;
+
+        if (!empty($objArr['attr'])){
+            if ($typeinp==='string') $attr = json_decode($objArr['attr'],true);
+            else $attr = $objArr['attr'];
+        }
+        if (empty($attr)) $attr = array();
+
+        if (!empty($objArr['attrup'])){
+            if ($typeinp==='string') $attrup = json_decode($objArr['attrup'],true);
+            else $attrup = $objArr['attrup'];
+        }
+        if (empty($attrup)) $attrup = array();
+
+        foreach($attr as $value) if (!$dnuse || !empty($value["dnuse"])) $attrup[] = $value;
+        if ($typeout==='string') $result["attrup"] = (count($attrup)>0)?json_encode($attrup):'';
+        else $result["attrup"] = $attrup;
+
+        return $result;
+    }
 
 } 

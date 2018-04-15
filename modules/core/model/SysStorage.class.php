@@ -17,7 +17,6 @@ define("ST_OBJECT", 0);
 define("ST_FOLDER", 1);
 define("ST_URL", 2);
 define("ST_LINK", 3);
-define("ST_PHOTO", 4);
 
 /**
  * Class SysStorage - класс работы с хранилищами
@@ -88,7 +87,7 @@ class SysStorage {
     /**
      * @var array типы объектов хранилищ
      */
-    public static $storageTypesOfObjects = array("0" =>"Object", "1"=>"Folder", "2"=>"Url", "3"=>"Link", "4"=>"Photo");
+    public static $storageTypesOfObjects = array("0" =>"Object", "1"=>"Folder", "2"=>"Url", "3"=>"Link");
 
     /**
      * @var string - тип БД по-умолчанию
@@ -302,58 +301,6 @@ class SysStorage {
      */
     public static function set($storage,array $storageArr){
         if (is_array($storageArr)) foreach ($storageArr as $key=>$value) self::$storage["$storage"]["$key"] = $value;
-    }
-
-    /**
-     * Получение данных по вышестоящему объекту
-     * @param $arrStr - строка в JSON
-     * @return array - массив {"upfolders"=>string,"attrup"=>string}
-     */
-
-    /**
-     * Получение данных по вышестоящему объекту
-     * @param $objArr {"id"=>int/string, "upfolders"=>string, "attrup"=>string, "attr"=>string}
-     * @param $typeinp - строка содержащая тип входных данных('string' - строка (по-умолчанию), 'array' - массив). Необязательный параметр
-     * @param $typeout - строка содержащая тип выходных данных('string' - строка (по-умолчанию), 'array' - массив). Необязательный параметр
-     * @param $dnuse - включать в атрибуты только те, у которых есть метка dnuse по-умолчанию true.
-     * @return array
-     */
-    public static function upObjInfo($objArr,$typeinp='string',$typeout='string',$dnuse=true){
-
-        $result = array("upfolders"=>array(),"attrup"=>array());
-
-        //Если не задан id объекта, то выводим пустые значения
-        if (empty($objArr["id"])) {
-            if ($typeout==='string') return array("upfolders"=>"","attrup"=>"");
-            else return $result;
-        }
-
-        if (!empty($objArr['upfolders'])){
-            if ($typeinp==='string') $upfolders = json_decode($objArr['upfolders'],true);
-            else $upfolders = $objArr['upfolders'];
-        }
-        if (empty($upfolders)) $upfolders = array();
-        $upfolders[] = $objArr["id"];
-        if ($typeout==='string') $result["upfolders"] = json_encode($upfolders);
-        else $result["upfolders"] = $upfolders;
-
-        if (!empty($objArr['attr'])){
-            if ($typeinp==='string') $attr = json_decode($objArr['attr'],true);
-            else $attr = $objArr['attr'];
-        }
-        if (empty($attr)) $attr = array();
-
-        if (!empty($objArr['attrup'])){
-            if ($typeinp==='string') $attrup = json_decode($objArr['attrup'],true);
-            else $attrup = $objArr['attrup'];
-        }
-        if (empty($attrup)) $attrup = array();
-
-        foreach($attr as $value) if (!$dnuse || !empty($value["dnuse"])) $attrup[] = $value;
-        if ($typeout==='string') $result["attrup"] = (count($attrup)>0)?json_encode($attrup):'';
-        else $result["attrup"] = $attrup;
-
-        return $result;
     }
 
     /**

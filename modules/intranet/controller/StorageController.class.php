@@ -86,7 +86,7 @@ class StorageController {
         if ($levelCounter>10) return true;
 
         //Сформируем данные для размещения в нижестоящих папках
-        $storageRes2 = SysStorage::upObjInfo($this->foldersArr["$folderId"]);
+        $storageRes2 = MNBVStorage::upObjInfo($this->foldersArr["$folderId"]);
         $upfolders = $storageRes2["upfolders"];
         $attrup = $storageRes2["attrup"];
 
@@ -385,7 +385,7 @@ class StorageController {
                             array("id","=",$newParentid));
                         $varsArr = array();
                         if (!empty($storageRes[0])) {//Есть сведения о родительской папке
-                            $storageRes2 = SysStorage::upObjInfo($storageRes[1]);
+                            $storageRes2 = MNBVStorage::upObjInfo($storageRes[1]);
                             $updateArr["upfolders"] = $storageRes2["upfolders"];
                             $updateArr["attrup"] = $storageRes2["attrup"];
                         }else{//Нет сведений о родительской папке
@@ -730,7 +730,7 @@ class StorageController {
                             array("id,upfolders,attrup,attr"),
                             array("id","=",$tecNewParentid));
                         if (!empty($storageRes[0])) {//Есть сведения о родительской папке
-                            $storageRes2 = SysStorage::upObjInfo($storageRes[1]);
+                            $storageRes2 = MNBVStorage::upObjInfo($storageRes[1]);
                             $updateArr["upfolders"] = $storageRes2["upfolders"];
                             $updateArr["attrup"] = $storageRes2["attrup"];
                         }else{//Нет сведений о родительской папке

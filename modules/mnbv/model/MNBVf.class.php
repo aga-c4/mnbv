@@ -1132,7 +1132,7 @@ class MNBVf {
          
 
             //Сформируем данные по атрибутам из родительской папки и настройкам их вывода
-            $storageRes2 = SysStorage::upObjInfo($result['parent'],'array','array',false);
+            $storageRes2 = MNBVStorage::upObjInfo($result['parent'],'array','array',false);
             $result['mnbvgen'] = array();
             $result['mnbvgen']['upfolders'] = (isset($storageRes2['upfolders']))?$storageRes2['upfolders']:array(); 
             $result['mnbvgen']['attrup'] = (isset($storageRes2['attrup']))?$storageRes2['attrup']:array();  
@@ -1236,7 +1236,7 @@ class MNBVf {
 
 
         //Сформируем данные по атрибутам из родительской папки и настройкам их вывода
-        $storageRes2 = SysStorage::upObjInfo($result['parent'],'array','array',false);
+        $storageRes2 = MNBVStorage::upObjInfo($result['parent'],'array','array',false);
         $result['mnbvgen'] = array();
         $result['mnbvgen']['upfolders'] = (isset($storageRes2['upfolders']))?$storageRes2['upfolders']:array(); 
         $result['mnbvgen']['attrup'] = (isset($storageRes2['attrup']))?$storageRes2['attrup']:array();  
