@@ -10,7 +10,6 @@
 /app/templates/
 /www/data/
 /www/tmp/
-/modules/additional/
 /console.php
 /start_robot.php
 /www/index.php
