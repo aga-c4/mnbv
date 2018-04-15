@@ -1387,6 +1387,7 @@ SysStorage::$storage['robotsrun']['view']['config'] = array(
     "rbtype" => array("name"=>"rbtype", "type"=>"select", "notset" =>true, "viewindex" =>false,  "delim"=>" | ", "checktype" => "routeitem"),
     "about" => array("name"=>"about", "type"=>"textarea","editor"=>false,"rows"=>8,"width"=>"100%","langlink"=>"aboutlang","table" =>"thline","checktype" => "text","lang" => "lang"), //Основной язык
     "aboutlang" => array("name"=>"aboutlang", "type"=>"textarea","editor"=>false,"rows"=>8,"width"=>"100%","langlink"=>"about","table" =>"thline","checktype" => "text","lang" => "altlang"),
+    "action" => array("name"=>"action", "type"=>"textarea","editor"=>false,"rows"=>5,"width"=>"100%","langlink"=>"aboutlang","table" =>"thline","checktype" => "text"), //Команды на выполнение
     "clear2" => array("name"=>"clear2", "type"=>"lineblock", "table" =>"thline", "string"=>"Run parameters"),
     "cronrun" => array("name"=>"cronrun", "type"=>"checkbox", "table" =>"td", "checktype" => "on"),
     "vars" => array("name"=>"vars", "type"=>"vars", "view"=>array(
