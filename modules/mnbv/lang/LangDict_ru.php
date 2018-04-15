@@ -616,8 +616,8 @@ $langTmpArr = array(
         
         "submitstr" => "Текст Кнопки",
 
-        "controller"=>"Controller",
-        "action"=>"Action",
+        "controller"=>"Контроллер",
+        "action"=>"Действие",
         
         "Message" => "Сообщение",
         
