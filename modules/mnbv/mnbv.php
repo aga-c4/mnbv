@@ -8,6 +8,18 @@
  * Time: 00:00
  */
 
+if (!defined("MNBV_MAINMODULE")) 
+/**
+ * Путь к модулю ядра CMS.MNBV, если установлена и используется
+ */
+define("MNBV_MAINMODULE",'mnbv');
+
+if (!defined("MNBV_PATH")) 
+/**
+ * Путь к модулю ядра MNBV
+ */
+define("MNBV_PATH",'modules/mnbv/');
+
 /**
  * Основной загрузчик классов MNBV
  * @param $class_name

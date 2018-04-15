@@ -20,14 +20,7 @@ define("APP_MODULESPATH" , 'modules/'); //Путь к директории с м
  */
 define("USER_MODULESPATH",'app/modules/');
 
-/**
- * Путь к модулю ядра CMS.MNBV, если установлена и используется
- */
-define("MNBV_MAINMODULE",'mnbv');
-
 //Загрузка дефолтовых и пользовательских констант и конфигов. Конфиги работают по принципу замещения.
-if(file_exists(USER_MODULESPATH . MNBV_MAINMODULE .'/config/constants.php')) require_once (USER_MODULESPATH . MNBV_MAINMODULE .'/config/constants.php');
-if(file_exists(APP_MODULESPATH . MNBV_MAINMODULE .'/config/constants.php')) require_once (APP_MODULESPATH . MNBV_MAINMODULE .'/config/constants.php');
 if(file_exists(USER_MODULESPATH . 'core/config/constants.php')) require_once (USER_MODULESPATH . 'core/config/constants.php');
 require_once APP_MODULESPATH . 'core/config/constants.php';
 
