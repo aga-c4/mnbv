@@ -139,21 +139,15 @@ if (!empty($_GET['utm_term'])) {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-
 //Видимость Лога работы скрипта
 if (NULL!==Glob::$vars['session']->get('logs_view')) SysLogs::$logView = (Glob::$vars['session']->get('logs_view'))?true:false;
 //Подключение пользователя
 if (!Glob::$vars['session']->get('userid')) Glob::$vars['session']->set('userid',0);
 Glob::$vars['user'] = new MNBVUser(Glob::$vars['session']->get('userid'));
-//Если есть в сессии, то установим статус просмотра логов
-//if (NULL!==Glob::$vars['session']->get('logs_view',SysLogs::$logView)) SysLogs::$logView = (Glob::$vars['session']->get('logs_view',SysLogs::$logView))?true:false;
 //Если есть в сессии, то установим статус редиректа
 if (NULL!==Glob::$vars['session']->get('allow_redirect')) Glob::$vars['allow_redirect'] = (Glob::$vars['session']->get('allow_redirect'))?true:false;
-
-
 //Установки языка и инициализация словаря
 SysLogs::addLog('lang=['.Glob::$vars['lang'].'] def_lang=['.Glob::$vars['def_lang'].'] Lang::lang=['.Lang::getLang().'] Lang::def_lang=['.Lang::getDefLang().'] Lang::alt_lang=['.((Lang::isAltLang())?'TRUE':'FALSE').']');
 if (Lang::getLang() != Lang::getDefLang()) MNBVf::requireFile(MNBV_PATH . 'lang/LangDict_'.Glob::$vars['lang'].'.php'); //Переподключим основной словарь с языком пользователя
 MNBVf::requireFile(MNBVf::getRealFileName(Glob::$vars['mnbv_module'], 'lang/LangDict_'.Glob::$vars['lang'].'.php')); //Словарь модуля 
 if (Lang::getLang() != Lang::getDefLang()) MNBVf::requireFile(MNBVf::getRealFileName(Glob::$vars['mnbv_module'], 'lang/LangDict_'.Glob::$vars['def_lang'].'.php'));  //Словарь модуля дефолтовый
-
