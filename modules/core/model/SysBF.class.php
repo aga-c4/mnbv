@@ -14,7 +14,7 @@
 class SysBF {
 
     /**
-     * Посылает запрос к АПИ ExpertSender и возвращает ответ
+     * Посылает запрос по HTTP с помощью CURL ExpertSender и возвращает ответ
      * @param array $param
      * @return mixed|string
      */
@@ -371,7 +371,6 @@ class SysBF {
     public static function utw($str){
         return iconv("UTF-8","CP1251", $str);
     }
-
 	
 }
 
