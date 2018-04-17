@@ -148,7 +148,7 @@ class RobotsRobotsrestartController extends AbstractMnbvsiteController{
 
                             //Сохраним старый лог в 2й файл, чтоб если что смогли бы понять почему процесс встал
                             $logFilename1 = str_replace('[obj_id]',$value["id"],$logFilename1);
-                            $logFilename2 = str_replace('[obj_id]',$value["id"],$logFilename1);
+                            $logFilename2 = str_replace('[obj_id]',$value["id"],$logFilename2);
                             if(file_exists($logFilename1)) {
                                 exec("cp $logFilename1 $logFilename2");
                                 SysLogs::addLog("Exec command: [cp $logFilename1 $logFilename2]");
