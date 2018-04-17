@@ -151,6 +151,7 @@ class RobotsRobotsrestartController extends AbstractMnbvsiteController{
                             $logFilename2 = str_replace('[obj_id]',$value["id"],$logFilename1);
                             if(file_exists($logFilename1)) {
                                 exec("cp $logFilename1 $logFilename2");
+                                SysLogs::addLog("Exec command: [cp $logFilename1 $logFilename2]");
                                 //Зарегистрируем приложенные файлы, куда будем выгружать данные
                                 if (!isset($rprocProp['files']['att'])) $rprocProp['files']['att'] = array();
                                 $rprocProp['files']['att']['2'] = array('type'=>'txt','fname'=>'log2.txt');
