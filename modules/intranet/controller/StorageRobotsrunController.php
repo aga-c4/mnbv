@@ -21,11 +21,6 @@ $ob_command = SysBF::checkStr(SysBF::getFrArr(Glob::$vars['request'],'ob_command
 if ($act=='update' && !empty($ob_command)){//Изменения только для режима редактирования
     switch($ob_command){
         case 'run':
-            //Зарегистрируем приложенные файлы, куда будем выгружать данные
-            $procObj['files']['att']['1'] = array('type'=>'txt','fname'=>'output.txt');
-            $item['obj']['files'] = $procObj['files'];
-            $procObj["files"] = json_encode($procObj["files"]);
-            $res = MNBVStorage::setObj($currStorageAlias, array('files'=>$procObj["files"]), array("id",'=',$item['obj']["id"]));
             $proc->start();
             if (empty($item['form_folder'])||$item['form_folder']=='main') MNBVf::redirect('folder_status/'); //При создании объекта перебросим в тот же список
             break;

@@ -143,7 +143,7 @@ class MNBVRobot extends MNBVProcess {
         //Запишем данные в хранилище процесса
 
         //Команду и вывод берем из робота, привязанного к объекту
-        $storageRes = MNBVStorage::getObj($this->getRobotsStorage(),array("id","alias","vars"),array("id","=",$this->obj['robot']));
+        $storageRes = MNBVStorage::getObj($this->getRobotsStorage(),array("id","alias","vars","files"),array("id","=",$this->obj['robot']));
         $robot = (!empty($storageRes[0]))?$storageRes[1]:null;
 
         if ($robot==null) {
@@ -151,6 +151,7 @@ class MNBVRobot extends MNBVProcess {
             return false;
         }
         $robot['vars'] = (!empty($robot['vars']))?SysBF::json_decode($robot['vars']):array();
+        $robot['files'] = (!empty($robot['files']))?SysBF::json_decode($robot['files']):array();
         if (empty($robot['alias'])) $robot['alias'] = '';
 
         $this->psid = ($opType=='restart'&&!empty($proc['sid']))?$proc['sid']:md5(time().rand()); //Сгенерируем идентификатор сессии для текущего задания
@@ -159,6 +160,11 @@ class MNBVRobot extends MNBVProcess {
 
         $this->output = APP_STORAGEFILESPATH . $this->getStorage().'/att/p'.$this->objId.'_1.txt';
         if (!empty($robot['vars']['output'])) $this->output = str_replace('[obj_id]',$this->objId,$robot['vars']['output']); //[obj_id] - шаблон для замены $this->objId
+
+        //Зарегистрируем приложенные файлы, куда будем выгружать данные
+        if (!isset($robot['files']['att'])) $robot['files']['att'] = array();
+        $robot['files']['att']['1'] = array('type'=>'txt','fname'=>'output.txt');
+        $updateArr['files'] = json_encode($robot['files']);
 
         $updateArr = array();
         $updateArr['status'] = 'working';
