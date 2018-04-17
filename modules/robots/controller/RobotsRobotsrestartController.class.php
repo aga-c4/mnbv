@@ -34,7 +34,7 @@ class RobotsRobotsrestartController extends AbstractMnbvsiteController{
         //SysLogs::$errorsEnable = false; //Накапливать лог ошибок
         //SysLogs::$logRTView = true; //Выводить сообщения непосредственно при их формировании. Если не установлено SysLogs::$logView, то выводятся только ошибки
         //SysLogs::$logView = false; //Показывать лог событий скрипта (суммарный для ошибок и событий). Если не задано, то сообщения обычные в лог не будут выводиться даже при установленном SysLogs::$logRTView
-        $outputFilename = 'data/storage_files/'.Glob::$vars['robotsRunStorage'].'/att/p[obj_id]_2.txt';
+        $outputFilename = 'data/storage_files/'.Glob::$vars['robotsRunStorage'].'/att/p[obj_id]_3.txt';
         #################################################################
 
         usleep(1000000 * $usleepTime); //Спим $usleepTime секунд. чтоб все по базам записалось
@@ -99,7 +99,7 @@ class RobotsRobotsrestartController extends AbstractMnbvsiteController{
 
                 //Зарегистрируем приложенные файлы, куда будем выгружать данные
                 if (!isset($procProp['files']['att'])) $procProp['files']['att'] = array();
-                $procProp['files']['att']['2'] = array('type'=>'txt','fname'=>'log.txt');
+                $procProp['files']['att']['3'] = array('type'=>'txt','fname'=>'log.txt');
                 $procPropFilesUpd = json_encode($procProp['files']);
                 $res = MNBVStorage::setObj(Glob::$vars['robotsRunStorage'], array('files'=>$procPropFilesUpd), array("id",'=',$procProp["id"]));
 
