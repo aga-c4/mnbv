@@ -34,7 +34,9 @@ class RobotsRobotsrestartController extends AbstractMnbvsiteController{
         //SysLogs::$errorsEnable = false; //Накапливать лог ошибок
         //SysLogs::$logRTView = true; //Выводить сообщения непосредственно при их формировании. Если не установлено SysLogs::$logView, то выводятся только ошибки
         //SysLogs::$logView = false; //Показывать лог событий скрипта (суммарный для ошибок и событий). Если не задано, то сообщения обычные в лог не будут выводиться даже при установленном SysLogs::$logRTView
-        $outputFilename = 'data/storage_files/'.Glob::$vars['robotsRunStorage'].'/att/p[obj_id]_3.txt';
+        $logFilename1 = APP_STORAGEFILESPATH.Glob::$vars['robotsRunStorage'].'/att/p[obj_id]_1.txt';
+        $logFilename2 = APP_STORAGEFILESPATH.Glob::$vars['robotsRunStorage'].'/att/p[obj_id]_2.txt';
+        $outputFilename = APP_STORAGEFILESPATH.Glob::$vars['robotsRunStorage'].'/att/p[obj_id]_3.txt';
         #################################################################
 
         usleep(1000000 * $usleepTime); //Спим $usleepTime секунд. чтоб все по базам записалось
@@ -139,13 +141,29 @@ class RobotsRobotsrestartController extends AbstractMnbvsiteController{
 
                         //Если запущен процесс а по его pid не находим в системе процесса, то запускаем этот процесс заново и освежаем его свойства
                         if (!isset($pidsArr[strval($value['pid'])]) && $procId!=$value["id"]){
+
                             if ($outputLogStr=='') $outputLogStr = "\n";
                             $rproc = new MNBVRobot($value["id"]);
+                            $rprocProp = $rproc->getObj();
+
+                            //Сохраним старый лог в 2й файл, чтоб если что смогли бы понять почему процесс встал
+                            $logFilename1 = str_replace('[obj_id]',$value["id"],$logFilename1);
+                            $logFilename2 = str_replace('[obj_id]',$value["id"],$logFilename1);
+                            if(file_exists($logFilename1)) {
+                                exec("cp $logFilename1 $logFilename2");
+                                //Зарегистрируем приложенные файлы, куда будем выгружать данные
+                                if (!isset($rprocProp['files']['att'])) $rprocProp['files']['att'] = array();
+                                $rprocProp['files']['att']['2'] = array('type'=>'txt','fname'=>'log2.txt');
+                                $rprocPropFilesUpd = json_encode($rprocProp['files']);
+                                MNBVStorage::setObj(Glob::$vars['robotsRunStorage'], array('files'=>$rprocPropFilesUpd), array("id",'=',$rprocProp["id"]));
+                            }
+
                             $res=$rproc->start('restart');
                             $currStr = date("Y-m-d H:i:s") . " Restart proc[".$value["id"]."] sid=[".$rproc->getPsid()."] pid=[".$rproc->getPid()."] ".(($res)?'Ok!':'Error!')."\n";
                             $outputLogStr .= $currStr;
                             echo $currStr;
                             if ($res) $restartScripts++; else $restartScriptsErr++;
+
                         }
                     }
                 }
