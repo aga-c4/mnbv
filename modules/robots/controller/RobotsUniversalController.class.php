@@ -36,7 +36,7 @@ class RobotsUniversalController extends AbstractMnbvsiteController{
         //SysLogs::$errorsEnable = false; //Накапливать лог ошибок
         //::$logRTView = true; //Выводить сообщения непосредственно при их формировании. Если не установлено SysLogs::$logView, то выводятся только ошибки
         //::$logView = false; //Показывать лог событий скрипта (суммарный для ошибок и событий). Если не задано, то сообщения обычные в лог не будут выводиться даже при установленном SysLogs::$logRTView
-        $outputFilename = 'data/storage_files/'.Glob::$vars['robotsRunStorage'].'/att/p[obj_id]_2.txt';
+        $outputFilename = APP_STORAGEFILESPATH.Glob::$vars['robotsRunStorage'].'/att/p[obj_id]_3.txt';
         $telegramToken = '';
         $telegramChatId = '';
         #################################################################
@@ -60,7 +60,14 @@ class RobotsUniversalController extends AbstractMnbvsiteController{
         //if ($outputFile === false){
         //    $continueMainOk = false;
         //    SysLogs::addError("Error open Log file [$outputFilename]!");
-        //} else $logFileOk = true;
+        //} else {
+        //    $logFileOk = true;
+        //    //Зарегистрируем приложенные файлы, куда будем выгружать данные
+        //    if (!isset($procProp['files']['att'])) $procProp['files']['att'] = array();
+        //    $procProp['files']['att']['3'] = array('type'=>'txt','fname'=>'log.txt');
+        //    $procPropFilesUpd = json_encode($procProp['files']);
+        //    $res = MNBVStorage::setObj(Glob::$vars['robotsRunStorage'], array('files'=>$procPropFilesUpd), array("id",'=',$procProp["id"]));
+        //}
 
         //Стартовая валидация sid должен либо совпадать с тем что в БД, либо в БД не должно быть заполнено это поле. Модифицируйте условие для скриптов с возможностью паралельного запуска.
         if ($continueMainOk && $procProp!==null && (empty($procProp['sid']) || $procProp['sid']==$rsid)) {
