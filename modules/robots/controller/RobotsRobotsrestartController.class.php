@@ -111,7 +111,7 @@ class RobotsRobotsrestartController extends AbstractMnbvsiteController{
                 $res = MNBVStorage::setObj(Glob::$vars['robotsRunStorage'], array('files'=>$procPropFilesUpd), array("id",'=',$procProp["id"]));
 
                 //Получим список запущенных процессов роботов
-                $pidsArr = MNBVProcess::psRunList();
+                $pidsArr = SysProc::psRunList();
                 echo "Found processes:\n";
                 foreach($pidsArr as $curPidArr) echo "[" . $curPidArr['proc'] . "]" . $curPidArr['scriptName'] . "[" . $curPidArr['pid'] . "][" . $curPidArr['sid'] . "]\n";
 
