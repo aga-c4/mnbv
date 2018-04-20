@@ -137,9 +137,15 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
                                 }
 
                             }elseif($commandName=='mass_start'){
-
-
-
+                                if (isset($procProp['action']['proclist'])&& is_array($procProp['action']['proclist'])){
+                                    SysBF::saveFile($outputFilename3,date("Y-m-d H:i:s") . " Found processes:\n",'a');
+                                    foreach ($procProp['action']['proclist'] as $key=>$value){
+                                        $proc = new MNBVRobot($item['obj']["id"]);
+                                        $currPrStr =  "[" . $curPidArr['proc'] . "]" . $curPidArr['scriptName'] . "[" . $curPidArr['pid'] . "][" . $curPidArr['sid'] . "] ";
+                                        SysBF::saveFile($outputFilename3,"$currPrStr Started!\n",'a');
+                                        $proc->start();
+                                    }
+                                }
                             }
                             
                         }
