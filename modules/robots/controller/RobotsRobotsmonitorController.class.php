@@ -131,7 +131,7 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
                                 SysBF::saveFile($outputFilename3,"Found processes:\n",'a');
                                 foreach($pidsArr as $curPidArr) {
                                     if ($curPidArr['proc']==$procId) continue; //Себя не трогаем
-                                    //MNBVProcess::procStop($curPidArr['pid']);
+                                    MNBVProcess::procStop($curPidArr['pid']);
                                     $currPrStr =  "[" . $curPidArr['proc'] . "]" . $curPidArr['scriptName'] . "[" . $curPidArr['pid'] . "][" . $curPidArr['sid'] . "] ";
                                     SysBF::saveFile($outputFilename3,"$currPrStr Stopped!\n",'a');
                                 }
@@ -142,8 +142,8 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
                                     foreach ($procProp['action']['proclist'] as $key=>$value){
                                         $rbproc = new MNBVRobot(intval($value));
                                         $rbprocProp = $rbproc->getObj();
-                                        $currPrStr =  "[" . $rbprocProp['id'] . "]" . ((Lang::isDefLang()||empty($rbprocProp["namelang"])?$rbprocProp["name"]:$rbprocProp["namelang"]));
-                                        //$rbproc->start();
+                                        $currPrStr =  "[" . $rbprocProp['id'] . "] " . ((Lang::isDefLang()||empty($rbprocProp["namelang"])?$rbprocProp["name"]:$rbprocProp["namelang"]));
+                                        $rbproc->start();
                                         SysBF::saveFile($outputFilename3,"$currPrStr Started!\n",'a');
                                     }
                                 }
