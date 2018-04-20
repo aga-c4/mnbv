@@ -35,6 +35,7 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
         //SysLogs::$logRTView = true; //Выводить сообщения непосредственно при их формировании. Если не установлено SysLogs::$logView, то выводятся только ошибки
         //SysLogs::$logView = false; //Показывать лог событий скрипта (суммарный для ошибок и событий). Если не задано, то сообщения обычные в лог не будут выводиться даже при установленном SysLogs::$logRTView
         $outputFilename = APP_STORAGEFILESPATH.Glob::$vars['robotsRunStorage'].'/att/p[obj_id]_1.txt';
+        $outputFilename3 = APP_STORAGEFILESPATH.Glob::$vars['robotsRunStorage'].'/att/p[obj_id]_3.txt';
         #################################################################
 
         usleep(1000000 * $usleepTime); //Спим $usleepTime секунд. чтоб все по базам записалось
@@ -57,6 +58,12 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
             Glob::$vars['session'] = new MNBVSession(true,'','Nosave'); //Инициализация сессии
             Glob::$vars['session']->set('userid',$procProp['edituser']); //Скрипт запускается от идентификатора пользователя последнего редактора
             Glob::$vars['user'] = new MNBVUser(Glob::$vars['session']->get('userid'));
+            
+            //Зарегистрируем приложенные файлы, куда будем выгружать данные
+            if (!isset($procProp['files']['att'])) $procProp['files']['att'] = array();
+            $procProp['files']['att']['3'] = array('type'=>'txt','fname'=>'log.txt');
+            $procPropFilesUpd = json_encode($procProp['files']);
+            MNBVStorage::setObj(Glob::$vars['robotsRunStorage'], array('files'=>$procPropFilesUpd), array("id",'=',$procProp["id"]));
 
             //Установки языка и инициализация словаря
             if (Lang::getLang() != Lang::getDefLang()) MNBVf::requireFile(MNBV_PATH . 'lang/LangDict_'.Glob::$vars['lang'].'.php'); //Переподключим основной словарь с языком пользователя
@@ -100,6 +107,42 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
                 if ($procProp['status']!='paused'){
 
                     //То, что делает робот
+                    #########################################[ То, что делает робот ]###########################################
+                    
+                    //Обработка внешних комманд
+                    $commandNameArr = array(
+                        "stop_all" => "All process stop",
+                        "mass_start" => "Mass start",
+                    );
+
+                    if (!empty($procProp['action']['command'])&& in_array($procProp['action']['command'],$commandNameArr)) {
+                        $commandName = (!empty($commandNameArr[$procProp['action']['command']]))?$commandNameArr[$procProp['action']['command']]:'';
+                        $commandName = trim(strtolower($commandName));
+                        SysBF::saveFile($outputFilename,date("Y-m-d H:i:s") . "\nGet command: ".$commandNameArr[$commandName]."\n",'a');
+                        
+                        if ($procProp['action']['command']=='stop_all'){
+                            
+                            //Получим массив всех запущенных процессов роботов и остановим их
+                            $pidsArr = MNBVProcess::psRunList();
+                            SysBF::saveFile($outputFilename,date("Y-m-d H:i:s") . "Found processes:\n",'a');
+                            foreach($pidsArr as $curPidArr) {
+                                if ($curPidArr['proc']==$procId) continue; //Себя не трогаем
+                                MNBVProcess::procStop($curPidArr['pid']);
+                                $currPrStr =  "[" . $curPidArr['proc'] . "]" . $curPidArr['scriptName'] . "[" . $curPidArr['pid'] . "][" . $curPidArr['sid'] . "] ";
+                                SysBF::saveFile($outputFilename,date("Y-m-d H:i:s") . "$currPrStr Stopped!\n",'a');
+                            }
+                            
+                        }elseif($procProp['action']['command']=='mass_start'){
+                            
+                            
+                            
+                        }
+                    }
+                    $procProp['action'] = array();
+                    MNBVStorage::setObj(Glob::$vars['robotsRunStorage'], array('action'=>''), array("id",'=',$procProp["id"]));
+                    //-------------------------
+                        
+                        
 
                     $command = "ps -ax | grep start_robot  2>&1";
                     //exec($command . " 2>&1", $output);
@@ -122,11 +165,9 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
 
 
                     //Запишем в файл
-                    $outputFile = fopen($outputFilename,"w");
-                    if ($outputFile !== false){
-                        fwrite($outputFile,$outputStr);
-                    }
-                    fclose($outputFile);
+                    SysBF::saveFile($outputFilename,$outputStr,'w');
+                    
+                    #########################################[ То, что делает робот ]###########################################
 
                 }//конец проверки на паузу
                 //Считаем оставшееся время в микросекундах до начала след итерации и отдыхаем это время.
