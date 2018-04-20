@@ -47,6 +47,11 @@ class RobotsRobotsrestartController extends AbstractMnbvsiteController{
         $proc = new MNBVRobot($procId);
         $procProp = $proc->getObj();
         $outputLogStr = '';
+        
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $procProp=NULL;
+            echo "It is Windows - we can`t use ps!\n";
+        }
 
         if ($procProp!==null){//Стартовая валидация
 
@@ -104,27 +109,9 @@ class RobotsRobotsrestartController extends AbstractMnbvsiteController{
                 $res = MNBVStorage::setObj(Glob::$vars['robotsRunStorage'], array('files'=>$procPropFilesUpd), array("id",'=',$procProp["id"]));
 
                 //Получим список запущенных процессов роботов
-                $command = "ps -ax | grep start_robot  2>&1";
-                //exec($command . " 2>&1", $output);
-                //if (!empty($output) && is_array($output)) $outputStr .= explode("\n",$output);
-
-                $result = shell_exec( $command." 2>&1" );
-                $resArr = preg_split("/\n/",$result);
-
-                $pidsArr = array();
+                $pidsArr = MNBVProcess::psRunList();
                 echo "Found processes:\n";
-                foreach($resArr as $resStr){
-                    if (!empty($resStr) && !preg_match("/grep/",$resStr) && !preg_match("/\/bin\/bash/",$resStr)) {
-                        preg_match("/robot=([^\s]+)[\s]+proc=([^\s]+)/i",$resStr,$resStrArr);
-                        preg_match("/rsid=([^\s]+)/i",$resStr,$resStrArr2);
-
-                        //Нас интересуют только те, у которых есть сведения об идентификаторе процесса и не включаем текущее задание
-                        if (!empty($resStrArr[1])&&!empty($resStrArr2[1])) {
-                            echo "[".$resStrArr[2]."]" . $resStrArr[1] . "[" . intval($resStr) . "][" . $resStrArr2[1] . "]\n";
-                            $pidsArr[strval(intval($resStr))] = array('proc'=>$resStrArr[2],'pid'=>intval($resStr), 'sid'=>$resStrArr2[1], 'scriptName'=>$resStrArr[1]);
-                        }
-                    }
-                }
+                foreach($pidsArr as $curPidArr) echo "[" . $curPidArr['proc'] . "]" . $curPidArr['scriptName'] . "[" . $curPidArr['pid'] . "][" . $curPidArr['sid'] . "]\n";
 
                 //Выберем запущенные процессы из базы и посмотрим какие из них померли, запустим померших заново
                 $storageRes = MNBVStorage::getObj(

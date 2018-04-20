@@ -45,6 +45,11 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
         $procProp = $proc->getObj();
         $proc->setPsid($rsid);
         $procProp['sid'] = $rsid;
+        
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $procProp=NULL;
+            echo "It is Windows - we can`t use ps!\n";
+        }
 
         if ($procProp!==null && (empty($procProp['sid']) || $procProp['sid']==$rsid)) {//Продолжаем работу только если данное задание не имеет sid, т.е. не запущено.
 
@@ -99,7 +104,6 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
                     $command = "ps -ax | grep start_robot  2>&1";
                     //exec($command . " 2>&1", $output);
                     //if (!empty($output) && is_array($output)) $outputStr .= explode("\n",$output);
-
                     $result = shell_exec( $command." 2>&1" );
                     $resArr = preg_split("/\n/",$result);
 
