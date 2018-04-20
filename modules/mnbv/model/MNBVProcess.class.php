@@ -157,7 +157,6 @@ class MNBVProcess {
         $result = shell_exec( $command." 2>&1" );
         $resArr = preg_split("/\n/",$result);
         $pidsArr = array();
-        echo "Found processes:\n";
         foreach($resArr as $resStr){
             if (!empty($resStr) && !preg_match("/grep/",$resStr) && !preg_match("/\/bin\/bash/",$resStr)) {
                 preg_match("/robot=([^\s]+)[\s]+proc=([^\s]+)/i",$resStr,$resStrArr);
