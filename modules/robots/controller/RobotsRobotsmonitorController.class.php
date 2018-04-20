@@ -130,7 +130,7 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
                                 SysBF::saveFile($outputFilename3,date("Y-m-d H:i:s") . "Found processes:\n",'a');
                                 foreach($pidsArr as $curPidArr) {
                                     if ($curPidArr['proc']==$procId) continue; //Себя не трогаем
-                                    MNBVProcess::procStop($curPidArr['pid']);
+                                    //MNBVProcess::procStop($curPidArr['pid']);
                                     $currPrStr =  "[" . $curPidArr['proc'] . "]" . $curPidArr['scriptName'] . "[" . $curPidArr['pid'] . "][" . $curPidArr['sid'] . "] ";
                                     SysBF::saveFile($outputFilename3,"$currPrStr Stopped!\n",'a');
                                 }
