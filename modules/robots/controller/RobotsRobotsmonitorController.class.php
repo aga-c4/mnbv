@@ -117,7 +117,6 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
                         "mass_start" => "Mass start",
                     );
 
-                    SysBF::saveFile($outputFilename3,date("Y-m-d H:i:s") . "\nGet command: ".$procProp['action']['command']."\n",'a');
                     if (!empty($procProp['action']['command'])) {
                         $commandName = (!empty($commandNameArr[$procProp['action']['command']]))?$commandNameArr[$procProp['action']['command']]:'';
                         $commandName = trim(strtolower($commandName));
