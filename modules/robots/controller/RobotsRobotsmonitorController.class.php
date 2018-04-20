@@ -116,26 +116,29 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
                         "mass_start" => "Mass start",
                     );
 
-                    if (!empty($procProp['action']['command']) && isset($commandNameArr[$procProp['action']['command']])) {
+                    if (!empty($procProp['action']['command'])) {
                         $commandName = (!empty($commandNameArr[$procProp['action']['command']]))?$commandNameArr[$procProp['action']['command']]:'';
                         $commandName = trim(strtolower($commandName));
                         SysBF::saveFile($outputFilename3,date("Y-m-d H:i:s") . "\nGet command: ".$commandNameArr[$commandName]."\n",'a');
-                        
-                        if ($procProp['action']['command']=='stop_all'){
-                            
-                            //Получим массив всех запущенных процессов роботов и остановим их
-                            $pidsArr = MNBVProcess::psRunList();
-                            SysBF::saveFile($outputFilename3,date("Y-m-d H:i:s") . "Found processes:\n",'a');
-                            foreach($pidsArr as $curPidArr) {
-                                if ($curPidArr['proc']==$procId) continue; //Себя не трогаем
-                                MNBVProcess::procStop($curPidArr['pid']);
-                                $currPrStr =  "[" . $curPidArr['proc'] . "]" . $curPidArr['scriptName'] . "[" . $curPidArr['pid'] . "][" . $curPidArr['sid'] . "] ";
-                                SysBF::saveFile($outputFilename3,"$currPrStr Stopped!\n",'a');
+                        if (isset($commandNameArr[$procProp['action']['command']])) {
+
+                            if ($commandName=='stop_all'){
+
+                                //Получим массив всех запущенных процессов роботов и остановим их
+                                $pidsArr = MNBVProcess::psRunList();
+                                SysBF::saveFile($outputFilename3,date("Y-m-d H:i:s") . "Found processes:\n",'a');
+                                foreach($pidsArr as $curPidArr) {
+                                    if ($curPidArr['proc']==$procId) continue; //Себя не трогаем
+                                    MNBVProcess::procStop($curPidArr['pid']);
+                                    $currPrStr =  "[" . $curPidArr['proc'] . "]" . $curPidArr['scriptName'] . "[" . $curPidArr['pid'] . "][" . $curPidArr['sid'] . "] ";
+                                    SysBF::saveFile($outputFilename3,"$currPrStr Stopped!\n",'a');
+                                }
+
+                            }elseif($commandName=='mass_start'){
+
+
+
                             }
-                            
-                        }elseif($procProp['action']['command']=='mass_start'){
-                            
-                            
                             
                         }
                     }
