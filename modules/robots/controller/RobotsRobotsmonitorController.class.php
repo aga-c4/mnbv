@@ -128,7 +128,7 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
 
                                 //Получим массив всех запущенных процессов роботов и остановим их
                                 $pidsArr = MNBVProcess::psRunList();
-                                SysBF::saveFile($outputFilename3,date("Y-m-d H:i:s") . " Found processes:\n",'a');
+                                SysBF::saveFile($outputFilename3,"Found processes:\n",'a');
                                 foreach($pidsArr as $curPidArr) {
                                     if ($curPidArr['proc']==$procId) continue; //Себя не трогаем
                                     //MNBVProcess::procStop($curPidArr['pid']);
@@ -138,12 +138,13 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
 
                             }elseif($commandName=='mass_start'){
                                 if (isset($procProp['action']['proclist'])&& is_array($procProp['action']['proclist'])){
-                                    SysBF::saveFile($outputFilename3,date("Y-m-d H:i:s") . " Found processes:\n",'a');
+                                    SysBF::saveFile($outputFilename3,"Found processes:\n",'a');
                                     foreach ($procProp['action']['proclist'] as $key=>$value){
-                                        $proc = new MNBVRobot($item['obj']["id"]);
-                                        $currPrStr =  "[" . $curPidArr['proc'] . "]" . $curPidArr['scriptName'] . "[" . $curPidArr['pid'] . "][" . $curPidArr['sid'] . "] ";
+                                        $rbproc = new MNBVRobot(intval($value));
+                                        $rbprocProp = $rbproc->getObj();
+                                        $currPrStr =  "[" . $rbprocProp['id'] . "]" . ((Lang::isDefLang()||empty($rbprocProp["namelang"])?$rbprocProp["name"]:$rbprocProp["namelang"]));
+                                        //$rbproc->start();
                                         SysBF::saveFile($outputFilename3,"$currPrStr Started!\n",'a');
-                                        $proc->start();
                                     }
                                 }
                             }
