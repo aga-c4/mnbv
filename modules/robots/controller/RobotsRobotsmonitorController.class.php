@@ -116,7 +116,7 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
                         "mass_start" => "Mass start",
                     );
 
-                    if (!empty($procProp['action']['command'])&& in_array($procProp['action']['command'],$commandNameArr)) {
+                    if (!empty($procProp['action']['command']) && isset($commandNameArr[$procProp['action']['command']])) {
                         $commandName = (!empty($commandNameArr[$procProp['action']['command']]))?$commandNameArr[$procProp['action']['command']]:'';
                         $commandName = trim(strtolower($commandName));
                         SysBF::saveFile($outputFilename3,date("Y-m-d H:i:s") . "\nGet command: ".$commandNameArr[$commandName]."\n",'a');
@@ -130,7 +130,7 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
                                 if ($curPidArr['proc']==$procId) continue; //Себя не трогаем
                                 MNBVProcess::procStop($curPidArr['pid']);
                                 $currPrStr =  "[" . $curPidArr['proc'] . "]" . $curPidArr['scriptName'] . "[" . $curPidArr['pid'] . "][" . $curPidArr['sid'] . "] ";
-                                SysBF::saveFile($outputFilename3,date("Y-m-d H:i:s") . "$currPrStr Stopped!\n",'a');
+                                SysBF::saveFile($outputFilename3,"$currPrStr Stopped!\n",'a');
                             }
                             
                         }elseif($procProp['action']['command']=='mass_start'){
