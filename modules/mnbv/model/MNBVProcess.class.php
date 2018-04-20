@@ -148,7 +148,7 @@ class MNBVProcess {
      * @param type $rsid - значение идентификатора rsid, указанное при запуске процесса в ОС. Если не задан, то возвращается массив со всеми запущенными роботами
      * @return array - массив со свойствами запущенных копий процессов в системе на базе ps
      */
-    public function psRunList($rsid=''){
+    public static function psRunList($rsid=''){
         
         if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') return array(); //В виндовсе мы не можем сказать сколько их и будем говорить что не нашли, чтоб не мешало запуску при отладке.
     
