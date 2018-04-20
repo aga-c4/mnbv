@@ -128,7 +128,7 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
 
                                 //Получим массив всех запущенных процессов роботов и остановим их
                                 $pidsArr = MNBVProcess::psRunList();
-                                SysBF::saveFile($outputFilename3,date("Y-m-d H:i:s") . "Found processes:\n",'a');
+                                SysBF::saveFile($outputFilename3,date("Y-m-d H:i:s") . " Found processes:\n",'a');
                                 foreach($pidsArr as $curPidArr) {
                                     if ($curPidArr['proc']==$procId) continue; //Себя не трогаем
                                     //MNBVProcess::procStop($curPidArr['pid']);
