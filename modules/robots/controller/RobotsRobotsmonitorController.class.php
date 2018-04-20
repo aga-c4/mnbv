@@ -118,10 +118,9 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
                     );
 
                     if (!empty($procProp['action']['command'])) {
-                        $commandName = (!empty($commandNameArr[$procProp['action']['command']]))?$commandNameArr[$procProp['action']['command']]:'Bad command';
-                        $commandName = trim(strtolower($commandName));
-                        SysBF::saveFile($outputFilename3,"\n" . date("Y-m-d H:i:s") . "Get command: " . $commandNameArr[$commandName] . "\n",'a');
-                        if (isset($commandNameArr[$procProp['action']['command']])) {
+                        $commandName = (!empty($commandNameArr[$procProp['action']['command']]))?trim(strtolower($commandNameArr[$procProp['action']['command']])):'Bad command';
+                        SysBF::saveFile($outputFilename3,"\n" . date("Y-m-d H:i:s") . " Get command: " . $commandNameArr[$commandName] . "\n",'a');
+                        if ($commandName != 'Bad command') {
 
                             if ($commandName=='stop_all'){
 
