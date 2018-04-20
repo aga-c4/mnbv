@@ -70,6 +70,7 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
             MNBVf::requireFile(MNBVf::getRealFileName($this->thisModuleName, 'lang/LangDict_'.Glob::$vars['lang'].'.php')); //Словарь модуля
 
             $outputFilename = str_replace('[obj_id]',$procId,$outputFilename);
+            $outputFilename3 = str_replace('[obj_id]',$procId,$outputFilename3);
 
             while (true){ //Бесконечный цикл жизни робота
 
