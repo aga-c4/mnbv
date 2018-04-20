@@ -110,12 +110,13 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
                     //То, что делает робот
                     #########################################[ То, что делает робот ]###########################################
                     
-                    //Обработка внешних комманд
+                    //Обработка внешних комманд-----------------------------------
                     $commandNameArr = array(
                         "stop_all" => "All process stop",
                         "mass_start" => "Mass start",
                     );
 
+                    SysBF::saveFile($outputFilename3,date("Y-m-d H:i:s") . "\nGet command: ".$procProp['action']['command']."\n",'a');
                     if (!empty($procProp['action']['command'])) {
                         $commandName = (!empty($commandNameArr[$procProp['action']['command']]))?$commandNameArr[$procProp['action']['command']]:'';
                         $commandName = trim(strtolower($commandName));
@@ -142,7 +143,6 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
                             
                         }
                     }
-                    $procProp['action'] = array();
                     MNBVStorage::setObj(Glob::$vars['robotsRunStorage'], array('action'=>''), array("id",'=',$procProp["id"]));
                     //-------------------------
                         
