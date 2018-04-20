@@ -8,9 +8,6 @@
  * Time: 13:19
  */
 
-require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVProcess.class.php';  //Класс работы со словарями
-require_once MNBV_PATH . MOD_MODELSPATH . 'MNBVRobot.class.php';  //Класс работы со словарями
-
 $currStorageAlias = $this->getStorage();
 
 $proc = new MNBVRobot($item['obj']["id"]);

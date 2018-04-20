@@ -34,7 +34,7 @@ class MNBVProcess {
     }
 
     protected function runCom(){
-        $result = self::runDaemon($this->command,$this->output);
+        $result = MNBVProcess::runDaemon($this->command,$this->output);
         if ($result!==false) $this->pid = $result;
         return $result;
     }
@@ -70,7 +70,7 @@ class MNBVProcess {
      */
     public function stop(){
         $result=false;
-        if (!empty($this->pid)) $result = self::procStop($this->pid);
+        if (!empty($this->pid)) $result = MNBVProcess::procStop($this->pid);
         return $result;
     }
     
@@ -80,7 +80,7 @@ class MNBVProcess {
      */
     public function status(){
         $result=false;
-        if (!empty($this->pid)) $result = self::procStatus($this->pid);
+        if (!empty($this->pid)) $result = MNBVProcess::procStatus($this->pid);
         return $result;
     }
     
