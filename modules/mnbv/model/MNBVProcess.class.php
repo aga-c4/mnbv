@@ -170,7 +170,7 @@ class MNBVProcess {
             }
         }
 
-        return $result;
+        return $pidsArr;
                 
     }
     
