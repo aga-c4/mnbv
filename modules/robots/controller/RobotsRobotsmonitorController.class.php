@@ -82,6 +82,7 @@ class RobotsRobotsmonitorController extends AbstractMnbvsiteController{
                 $timeStart = microtime(true);
 
                 $procProp = $proc->getObjById($procId);
+                $procProp['action'] = (!empty($procProp['action']))?SysBF::json_decode($procProp['action']):array();
 
                 //Если отвалилась база данных и мы не можем получить
                 if ($procProp===null){
