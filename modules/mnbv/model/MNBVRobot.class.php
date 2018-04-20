@@ -184,7 +184,7 @@ class MNBVRobot extends MNBVProcess {
         $this->obj['vars']['script'] = $objVarsArr['script'];
         $this->obj['vars']['output'] = $objVarsArr['output'];
 
-        $result = SysProc::runDaemon($this->command,$this->output);
+        $result = MNBVProcess::runDaemon($this->command,$this->output);
         if ($result!==false) {
             $this->pid = $result;
             //Запишем данные в хранилище процесса
