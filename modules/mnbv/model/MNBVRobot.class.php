@@ -161,12 +161,13 @@ class MNBVRobot extends MNBVProcess {
         $this->output = APP_STORAGEFILESPATH . $this->getStorage().'/att/p'.$this->objId.'_1.txt';
         if (!empty($robot['vars']['output'])) $this->output = str_replace('[obj_id]',$this->objId,$robot['vars']['output']); //[obj_id] - шаблон для замены $this->objId
 
+        $updateArr = array();
+
         //Зарегистрируем приложенные файлы, куда будем выгружать данные
         if (!isset($robot['files']['att'])) $robot['files']['att'] = array();
         $robot['files']['att']['1'] = array('type'=>'txt','fname'=>'output.txt');
         $updateArr['files'] = json_encode($robot['files']);
 
-        $updateArr = array();
         $updateArr['status'] = 'working';
         $updateArr['message'] = (($opType=='restart')?'Restart in ':'From ') . date("Y-m-d H:i:s");
         $updateArr['sid'] = $this->psid;
