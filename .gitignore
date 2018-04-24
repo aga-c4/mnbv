@@ -15,4 +15,6 @@
 /www/index.php
 /data/storage_files/
 /data/storages/
+/data/storage_dumps/migration.php
+/data/storage_dumps/*-status.txt
 /vendor/
