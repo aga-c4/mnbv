@@ -205,9 +205,10 @@ class MNBVMigration {
      */
     public function getConfig(array $config=array()){
 
+        if (isset($config[$this->dbAlias])&&is_array($config[$this->dbAlias])) $this->config = $config[$this->dbAlias];
+        else return false;
 
-
-
+        $this->$version = $this->config["version"];
 
 
 
@@ -249,6 +250,11 @@ class MNBVMigration {
 
                 if (empty($tecArr[6])) $error = true; else $error = false;
 
+                $this->lastMigrNum = intval($tecArr[2]);
+                if ($this->$version != intval($tecArr[3]) $this->$version = 'xz';
+                $this->version = intval($tecArr[3]);
+                $this->subversion = intval($tecArr[4]);
+
                 $strCounter++;
             }
 
@@ -265,6 +271,16 @@ class MNBVMigration {
 
         $Dir_list = opendir($this->dbAlias.'v'.$this->version);
         while ($tec_file_nam = readdir($Dir_list)) if (!is_dir($Dir_list.'/'.$tec_file_nam)){
+            //0001-03-007-update_users.sql
+            $tec_file_nam = trim($tec_file_nam);
+            $tecArr = preg_split("/-/", $tec_file_nam);
+            $currNum = intval($tecArr[0]);
+
+            //Условия блокировки
+            if (empty($currNum)||$this->lastMigrNum>=$currNum) continue;
+            if (in_array($tec_file_nam,$this->migrations)) continue;
+            if ($this->$version != intval($tecArr[3])
+
             $this->migrations[] = $tec_file_nam;
         }
         closedir($Dir_list);
