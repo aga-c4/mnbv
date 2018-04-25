@@ -139,6 +139,11 @@ dump - create databse dump
 class MNBVMigration {
 
     /**
+     * @var bool маркер ошибки
+     */
+    public $error = false;
+
+    /**
      * @var string размещение файла конфига
      */
     public $migrationStatusFile = '[dbAlias]-status.csv';
@@ -199,6 +204,15 @@ class MNBVMigration {
      * @return bool
      */
     public function getConfig(array $config=array()){
+
+
+
+
+
+
+
+
+
         return true;
     }
 
@@ -217,6 +231,7 @@ class MNBVMigration {
             $strCounter = 0;
             $this->migrationsLog = array();
             $this->migrations = array();
+            $error = false;
             while (!feof($file)){
                 $str=fgets($file, 255);
                 $str=trim($str);
@@ -228,11 +243,16 @@ class MNBVMigration {
                 $currMigrFileName = trim($tecArr[1]);
                 if (empty($currMigrFileName)) continue;
 
-                $this->migrationsLog[] = $tecArr;
+                if (empty($tecArr[6])) $str .= 'Error!';
+                $this->migrationsLog[] = $str;
                 $this->migrations[] = $currMigrFileName;
+
+                if (empty($tecArr[6])) $error = true; else $error = false;
 
                 $strCounter++;
             }
+
+            if ($error) $this->error = true; //Если последняя запись с ошибкой, то продолжать нельзя, пока ошибка не будет устранена
             return true;
         }
     }
@@ -243,12 +263,13 @@ class MNBVMigration {
      */
     public function findNewMigrations(){
 
-
-
-
-
-
-
+        $Dir_list = opendir($this->dbAlias.'v'.$this->version);
+        while ($tec_file_nam = readdir($Dir_list)) if (!is_dir($Dir_list.'/'.$tec_file_nam)){
+            $this->migrations[] = $tec_file_nam;
+        }
+        closedir($Dir_list);
+        sort($this->migrations);
+        reset($this->migrations);
 
         return true;
     }
