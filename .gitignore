@@ -17,4 +17,5 @@
 /data/storages/
 /data/storage_dumps/migration.php
 /data/storage_dumps/*-status.txt
+/data/storage_dumps/dump/
 /vendor/
