@@ -357,7 +357,7 @@ class MNBVMigration {
         //Условия блокировки
         if ($baselineFileNam!=$fileName || $this->lastMigrNum>0){
             if (empty($currNum)||$this->lastMigrNum>=$currNum) {
-                echo "Error: wrong number [$currNum] <= last number [".$this->lastMigrNum."]\n";
+                echo " Error: wrong number [$currNum] <= last number [".$this->lastMigrNum."]\n";
                 $this->error = true; //При этом маркере продолжать уже не будем
                 return false;
             }
