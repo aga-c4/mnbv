@@ -143,7 +143,7 @@ class MNBVRobot extends MNBVProcess {
         //Запишем данные в хранилище процесса
 
         //Команду и вывод берем из робота, привязанного к объекту
-        $storageRes = MNBVStorage::getObj($this->getRobotsStorage(),array("id","alias","vars","files"),array("id","=",$this->obj['robot']));
+        $storageRes = MNBVStorage::getObj($this->getRobotsStorage(),array("id","alias","vars"),array("id","=",$this->obj['robot']));
         $robot = (!empty($storageRes[0]))?$storageRes[1]:null;
 
         if ($robot==null) {
@@ -164,9 +164,9 @@ class MNBVRobot extends MNBVProcess {
         $updateArr = array();
 
         //Зарегистрируем приложенные файлы, куда будем выгружать данные
-        if (!isset($robot['files']['att'])) $robot['files']['att'] = array();
-        $robot['files']['att']['1'] = array('type'=>'txt','fname'=>'output.txt');
-        $updateArr['files'] = json_encode($robot['files']);
+        if (!isset($proc['files']['att'])) $proc['files']['att'] = array();
+        $proc['files']['att']['1'] = array('type'=>'txt','fname'=>'output.txt');
+        $updateArr['files'] = json_encode($proc['files']);
 
         $updateArr['status'] = 'working';
         $updateArr['message'] = (($opType=='restart')?'Restart in ':'From ') . date("Y-m-d H:i:s");
