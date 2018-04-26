@@ -348,18 +348,22 @@ class MNBVMigration {
         //0001-03-007-update_users.sql
         $fileName = trim($fileName);
         $tecArr = preg_split("/-/", $fileName);
-        $currNum = (!empty(trim($tecArr[3])))?intval($tecArr[0]):0;
-        $version = (!empty(trim($tecArr[3])))?intval($tecArr[1]):0;
-        $subversion = (!empty(trim($tecArr[3])))?intval($tecArr[2]):0;
+        $currNum = (!empty($tecArr[0]))?intval($tecArr[0]):0;
+        $version = (!empty($tecArr[1]))?intval($tecArr[1]):0;
+        $subversion = (!empty($tecArr[2]))?intval($tecArr[2]):0;
         
-        $comm = (!empty(trim($tecArr[3])))?trim($tecArr[3]):'';
+        $comm = (!empty($tecArr[3]))?trim($tecArr[3]):'';
         $comm = str_replace('.'.$this->config["ext"],'',$comm);
 
         //echo "fileName=[$fileName] baselineFileNam=[$baselineFileNam]\n";
         //Условия блокировки
         if ($baselineFileNam!=$fileName || $this->lastMigrNum>0){
-            if (empty($currNum)||$this->lastMigrNum>=$currNum) return false;
-            if (in_array($tec_file_nam,$this->migrations)) return false;
+            if (empty($currNum)||$this->lastMigrNum>=$currNum) {
+                echo "Error: wrong number [$currNum] <= last number [".$this->lastMigrNum."]\n";
+                $this->error = true; //При этом маркере продолжать уже не будем
+                return false;
+            }
+            if (in_array($fileName,$this->migrations)) return false;
             //if ($this->version != intval($tecArr[3])) return false;
         }
         
