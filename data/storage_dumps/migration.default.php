@@ -118,7 +118,7 @@ if (!empty($dbAlias) && !isset($request['help']) && false!==$db->getConfig($conf
     }
 
 }else{
-        echo "COMMAND:
+    echo "COMMAND:
 php migration.php [db=dbAlias] [help|info|migrate]
 
 dbAlias - database alias for info or migrate
@@ -128,7 +128,7 @@ migrate - run migrations
 dump - create databse dump
 --------------------------
 ";
-    }
+}
 
 
 /**
@@ -228,7 +228,7 @@ class MNBVMigration {
             $this->migrations = array();
             $error = false;
             while (!feof($file)){
-                $str = fgets($file, 255);
+                $str = fgets($file);
                 $str = trim($str);
                 if (!$str) continue;
                 if (empty($str)) continue;
@@ -265,7 +265,7 @@ class MNBVMigration {
 
         $baselineFileNam = 'baseline.'.$this->config["ext"];
         $baselineFound = false;
-        
+
         $dirList = opendir($this->dbAlias.'/v'.$this->version);
         $resArr = array();
         while ($tec_file_nam = readdir($dirList)) if (!is_dir($dirList.'/'.$tec_file_nam)){
@@ -275,13 +275,13 @@ class MNBVMigration {
             $currNum = intval($tecArr[0]);
 
             if ($baselineFileNam==$tec_file_nam) $baselineFound = true;
-            
+
             //Условия блокировки
             if (empty($currNum)||$this->lastMigrNum>=$currNum) continue;
             if (in_array($tec_file_nam,$this->migrations)) continue;
             if ($this->version != intval($tecArr[1])) continue;
             if ($tec_file_nam==$baselineFileNam) continue;
-            
+
             $resArr[] = $tec_file_nam;
         }
         closedir($dirList);
@@ -292,7 +292,7 @@ class MNBVMigration {
         foreach($resArr as $key=>$value){
             $this->newMigrations[] = $value;
         }
-                
+
         return true;
     }
 
@@ -311,14 +311,14 @@ class MNBVMigration {
     public function getDbFullVersion(){
         return $this->version.'.'.$this->subversion;
     }
-    
+
     /**
      * Добавляет запись в файл лога миграций
      * @param string $str строка для записи в файл
      * @return bool - результат операции
      */
     private function saveToFile($str=''){
-	$fileName = str_replace('[dbAlias]',$this->dbAlias,$this->migrationStatusFile);
+        $fileName = str_replace('[dbAlias]',$this->dbAlias,$this->migrationStatusFile);
         if ($handle = fopen($fileName,'a+')){
             if (fwrite($handle,$str)){
                 fclose($handle);
@@ -327,9 +327,9 @@ class MNBVMigration {
             echo "File [$fileName] Not found!\n";
             return false;
         }
-	return true;
+        return true;
     }
-    
+
     /**
      * Выполняет файл миграции для выбранной базы данных.
      * @param string $fileName имя исполняемого файла миграции
@@ -341,16 +341,16 @@ class MNBVMigration {
             echo "\nError found! Can`t to run next migration script!\n";
             return false;
         }
-        
+
         $baselineFileNam = 'baseline.'.$this->config["ext"];
-        
+
         //0001-03-007-update_users.sql
         $fileName = trim($fileName);
         $tecArr = preg_split("/-/", $fileName);
         $currNum = (!empty($tecArr[0]))?intval($tecArr[0]):0;
         $version = (!empty($tecArr[1]))?intval($tecArr[1]):0;
         $subversion = (!empty($tecArr[2]))?intval($tecArr[2]):0;
-        
+
         $comm = (!empty($tecArr[3]))?trim($tecArr[3]):'';
         $comm = str_replace('.'.$this->config["ext"],'',$comm);
 
@@ -365,24 +365,25 @@ class MNBVMigration {
             if (in_array($fileName,$this->migrations)) return false;
             //if ($this->version != intval($tecArr[3])) return false;
         }
-        
+
         if ($baselineFileNam==$fileName){
             $currNum = 0;
             $version = $this->version;
             $subversion = 0;
             $comm = 'Baseline';
         }
-        
+
         //date-start|Название файла|Номер|Версия|Подверсия|Комментарий|date-stop
         $this->saveToFile(date("Y-m-d G:i:s").'|'.$fileName.'|'.$currNum.'|'.$version.'|'.$subversion.'|'.$comm.'|');
 
         $command = $this->config["db_script"] . $this->dbAlias . '/v' . $this->version . '/' . $fileName;
         //echo $command."\n";
-        
-        $res = exec("$command 2>&1", $output, $return_var);
-        
+
+        exec("$command 2>&1", $output, $return_var);
+
         if (!empty($output[0])) {
-            $this->saveToFile(date("Y-m-d G:i:s")."|Error\n");
+            $this->saveToFile(date("Y-m-d G:i:s")."|Error|".$output[0]."\n");
+            echo "\nError: ".$output[0]."\n";
             $this->error = true;
             return false;
         }else{
@@ -403,14 +404,14 @@ class MNBVMigration {
         $fileName = $this->dbAlias . '-v' . $this->version . '.' . $this->version . '-' . date("Ymd-G-i") . '.' . $this->config["ext"];
         $command = $this->config["db_dump_scrpt"] . $this->dumpPath . '/' . $fileName;
         echo $command."\n";
-        
+
         $res = exec("$command 2>&1", $output, $return_var);
         if (!empty($output[0])) {
             return false;
         }else{
             return true;
         }
-        
+
     }
 
 }
