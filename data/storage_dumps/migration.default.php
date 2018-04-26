@@ -277,7 +277,6 @@ class MNBVMigration {
             if ($baselineFileNam==$tec_file_nam) $baselineFound = true;
 
             //Условия блокировки
-            if (empty($currNum)||$this->lastMigrNum>=$currNum) continue;
             if (in_array($tec_file_nam,$this->migrations)) continue;
             if ($this->version != intval($tecArr[1])) continue;
             if ($tec_file_nam==$baselineFileNam) continue;
