@@ -146,7 +146,7 @@ class RobotsRobotsrestartController extends AbstractMnbvsiteController{
                                 MNBVStorage::setObj(Glob::$vars['robotsRunStorage'], array('files'=>$rprocPropFilesUpd), array("id",'=',$rprocProp["id"]));
                             }
 
-                            $res=$rproc->start('restart');
+                            //$res=$rproc->start('restart');
                             $currStr = date("Y-m-d H:i:s") . " Restart proc[".$value["id"]."] sid=[".$rproc->getPsid()."] pid=[".$rproc->getPid()."] ".(($res)?'Ok!':'Error!')."\n";
                             $outputLogStr .= $currStr;
                             echo $currStr;
