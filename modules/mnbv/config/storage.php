@@ -1254,7 +1254,7 @@ SysStorage::$storage['robots'] = array(
     'files_security' => true, //будет ли ограничение доступа к приложенным файлам объектов хранилища
 );
 
-SysStorage::$storage['robots']['stru']['rbtype'] = array("type"=>"string", "size"=>50, "creatval"=>"", "dbtype"=>"varchar", "linkstorage"=>array("worker"=>"rb_work", "info" =>"rb_info", "service"=>"rb_service")); //Тип торгового робота
+SysStorage::$storage['robots']['stru']['rbtype'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar");
 
 SysStorage::$storage['robots']['stru']['vars']['list'] = array(
     //Специальные
