@@ -20,3 +20,4 @@
 /data/storage_dumps/dump/
 /vendor/
 /composer.json
+/composer.lock
