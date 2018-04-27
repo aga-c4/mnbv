@@ -661,6 +661,7 @@ $langTmpArr = array(
 
     ),
     
+    "rb_work" => "Worker", 
     "rb_traders" => "Traders", 
     "rb_info" => "Info", 
     "rb_service" => "Service",
