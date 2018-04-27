@@ -84,7 +84,7 @@ CREATE TABLE `mnbv_actions` (
 
 INSERT INTO `mnbv_actions` (`id`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `preview`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `files`, `siteid`, `tags`, `products`, `folders`, `vendor`, `country`, `discpr`, `discval`, `discmaxpr`, `discmaxval`, `discminmargpr`, `discminmargval`) VALUES
 (1, '2017-09-15 23:56:49', 0, 100, 1, '', 1, 0, 210, 0, 'Акции', '', '', '', 0, '', '', '', '', 1505505360, 0, 0, 2, 1505505409, 2, 1505505415, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '', '', '', '', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00'),
-(2, '2017-09-15 23:57:11', 1, 100, 0, '', 1, 0, 210, 0, 'Покупайте веселей!', 'Let\'s bay', '', '', 0, '', '', '<p>Описание текущей акции</p>', '<p>About this action!</p>', 1505505420, 0, 0, 2, 1505505431, 2, 1505506559, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"https:\\/\\/icdn.lenta.ru\\/images\\/2017\\/09\\/15\\/18\\/20170915185029441\\/top7_8f17d1d43da5820edc04278ecdda0b75.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1505505822,\"editip\":\"127.0.0.1\"}}}', 0, '', '', '', '', '', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00');
+(2, '2017-09-15 23:57:11', 1, 100, 0, '', 1, 0, 210, 0, 'Покупайте веселей!', 'Lets bay', '', '', 0, '', '', '<p>Описание текущей акции</p>', '<p>About this action!</p>', 1505505420, 0, 0, 2, 1505505431, 2, 1505506559, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"https:\\/\\/icdn.lenta.ru\\/images\\/2017\\/09\\/15\\/18\\/20170915185029441\\/top7_8f17d1d43da5820edc04278ecdda0b75.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1505505822,\"editip\":\"127.0.0.1\"}}}', 0, '', '', '', '', '', '0.00', '0.00', '0.00', '0.00', '0.00', '0.00');
 
 -- --------------------------------------------------------
 
@@ -803,7 +803,8 @@ CREATE TABLE `mnbv_robots` (
   `upfolders` text NOT NULL,
   `files` text NOT NULL,
   `siteid` int(11) NOT NULL DEFAULT '0',
-  `tags` varchar(255) NOT NULL
+  `tags` varchar(255) NOT NULL,
+  `action` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
