@@ -1254,6 +1254,8 @@ SysStorage::$storage['robots'] = array(
     'files_security' => true, //будет ли ограничение доступа к приложенным файлам объектов хранилища
 );
 
+SysStorage::$storage['zbrobots']['stru']['rbtype'] = array("type"=>"string", "size"=>50, "creatval"=>"", "dbtype"=>"varchar", "linkstorage"=>array("worker"=>"rb_work", "info" =>"rb_info", "service"=>"rb_service")); //Тип торгового робота
+
 SysStorage::$storage['robots']['stru']['vars']['list'] = array(
     //Специальные
     "script" => array("name"=>"script", "type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"),
@@ -1266,6 +1268,7 @@ SysStorage::$storage['robots']['view']['main'] = array(
     "namelang" => array("name"=>"namelang", "type"=>"text","size"=>255,"width"=>"100%","langlink"=>"name","checktype" => "text","lang" => "altlang"), //Альтернативный язык
     "comm" => array("name"=>"comm", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text"),
     "alias" => array("name"=>"alias", "type"=>"text","size"=>255,"width"=>"60%","checktype" => "text"),
+    "rbtype" => array("name"=>"rbtype", "type"=>"select", "notset" =>true, "viewindex" =>false,  "delim"=>" | ", "checktype" => "routeitem"),
     "vars" => array("name"=>"vars", "type"=>"vars", "view"=>array(
         "script" => array("name"=>"script", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text"),
         "output" => array("name"=>"output", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text"),
