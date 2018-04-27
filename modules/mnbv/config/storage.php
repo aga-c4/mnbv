@@ -1260,7 +1260,7 @@ SysStorage::$storage['robots']['stru']['vars']['list'] = array(
     //Специальные
     "script" => array("name"=>"script", "type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"),
     "output" => array("name"=>"output", "type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"),
-    "scriptvars" => array("name"=>"scriptvars", "type"=>"textarea","editor"=>false,"rows"=>5,"width"=>"100%","table" =>"thline","checktype" => "text"),
+    "scriptvars" => array("name"=>"scriptvars", "type"=>"textarea","editor"=>false,"dbtype"=>"varchar","rows"=>5,"width"=>"100%","table" =>"thline","checktype" => "text"),
 );
 
 SysStorage::$storage['robots']['filter'] = array(
