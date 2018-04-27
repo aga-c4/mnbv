@@ -19,3 +19,4 @@
 /data/storage_dumps/*-status.csv
 /data/storage_dumps/dump/
 /vendor/
+/composer.json
