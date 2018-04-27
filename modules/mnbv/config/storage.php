@@ -1259,6 +1259,7 @@ SysStorage::$storage['zbrobots']['stru']['rbtype'] = array("type"=>"string", "si
 SysStorage::$storage['robots']['stru']['vars']['list'] = array(
     //Специальные
     "script" => array("name"=>"script", "type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"),
+    "rbtype" => array("name"=>"rbtype", "type"=>"select", "viewindex" =>false, "notset" =>true, "checktype" => "roteitem", "linkstorage"=>array("worker"=>"rb_work", "info" =>"rb_info", "service"=>"rb_service")),
     "output" => array("name"=>"output", "type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"),
 );
 
