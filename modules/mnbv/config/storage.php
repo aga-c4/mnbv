@@ -1259,9 +1259,18 @@ SysStorage::$storage['robots']['stru']['rbtype'] = array("type"=>"string", "size
 SysStorage::$storage['robots']['stru']['vars']['list'] = array(
     //Специальные
     "script" => array("name"=>"script", "type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"),
-    "rbtype" => array("name"=>"rbtype", "type"=>"select", "viewindex" =>false, "notset" =>true, "checktype" => "roteitem", "linkstorage"=>array("worker"=>"rb_work", "info" =>"rb_info", "service"=>"rb_service")),
     "output" => array("name"=>"output", "type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"),
+    "scriptvars" => array("name"=>"scriptvars", "type"=>"textarea","editor"=>false,"rows"=>5,"width"=>"100%","table" =>"thline","checktype" => "text"),
 );
+
+SysStorage::$storage['robots']['filter'] = array(
+    "autosubmit" => true,
+    //"fltr_method" => 'post',
+    "view" => array(
+        "name" => array("name"=>"name", "type"=>"like", "checktype" => "routeitem"),
+        "rbtype" => array("name"=>"rbtype", "type"=>"select", "viewindex" =>false, "notset" =>true, "checktype" => "roteitem", "linkstorage"=>array("worker"=>"rb_work", "info" =>"rb_info", "service"=>"rb_service")),
+        "submitstr" => array("name"=>"submitstr", "type"=>"submitstr", "string"=>"Filter"),
+    ));
 
 SysStorage::$storage['robots']['view']['main'] = array(
     //"visfirstline" => array("name"=>"visfirstline", "type"=>"visfirstline", "table" =>"thline", "checktype" => "datetime"),
