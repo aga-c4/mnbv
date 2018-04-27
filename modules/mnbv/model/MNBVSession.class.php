@@ -48,6 +48,18 @@ class MNBVSession {
      */
     public function __construct($GlobVars=false,$sidName='',$sessType='') {
         
+        $location = '';
+        if (SysLogs::$logsEnable) {
+            $debugArr = debug_backtrace();
+            if (!empty($debugArr)&& is_array($debugArr)){
+                $maxLocCount = count($debugArr);
+                $currItem = 0;
+                //При необходимости перепрыгнем через служебные методы, для получения интересующей нас точки входа
+                $location = 'file=['.$debugArr[$currItem]['file'].'] line=['.$debugArr[$currItem]['line'].']'; $currItem++;
+                if ($currItem<$maxLocCount) $location .= ' <== file=['.$debugArr[$currItem]['file'].'] line=['.$debugArr[$currItem]['line'].']';
+            }else $location = 'empty debug_backtrace';
+        }
+        
         $this->sessType = 'PHPSess';
         if ($sessType == 'DB') $this->sessType = 'DB';
         elseif ($sessType == 'Cookie') $this->sessType = 'Cookie';
@@ -56,10 +68,13 @@ class MNBVSession {
         
         if ($this->sessType == 'Nosave'){ //Техническая сессия для кроновских и подобных скриптов
             $this->sid = '';
+            SysLogs::addLog('Session start Nosave in location: '.$location);
         }elseif ($this->sessType == 'Cookie') {
             $this->sid = (!empty($_COOKIE[MNBVSID]))?$_COOKIE[MNBVSID]:''; //У нас будет только идентификатор, никаких переменных не будет
+            SysLogs::addLog('Session start Cookie in location: '.$location);
         }elseif ($this->sessType == 'DB') {//Если сессия в БД, то загрузим из базы данных сессию
             $this->sid = '';
+            SysLogs::addLog('Session start DB in location: '.$location);
         }else{
             if (!empty(Glob::$vars['mnbv_site']['cookiedomain'])) session_set_cookie_params(0, '/', '.'.Glob::$vars['mnbv_site']['cookiedomain']); 
             if (empty($_COOKIE[PHPSESSID])) {
@@ -72,6 +87,7 @@ class MNBVSession {
             } else session_start();
             $this->sid = session_id(); //Установим текущий идентификатор сессии
             if (isset($_SESSION) && is_array($_SESSION)) $this->container = $_SESSION;
+            SysLogs::addLog('Session start default sid=['.$this->sid.'] in location: '.$location);
         }
         
         if ($GlobVars){
