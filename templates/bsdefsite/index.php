@@ -64,7 +64,7 @@ require_once MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'head.php');
 
 
     <div class="container">
-<?=MNBVf::getNavStr($item['obj']['nav_arr'],array('fin_link_ctive'=>false,'link_class'=>'nav','delim'=>' -> '));?><br>
+<?=(!empty($item['obj']['nav_arr']))?MNBVf::getNavStr($item['obj']['nav_arr'],array('fin_link_ctive'=>false,'link_class'=>'nav','delim'=>' -> ')):'';?><br>
 <?php
 echo (!empty($item['page_h1'])) ? ("<h1>".$item['page_h1']."</h1>\n") : '';
 echo (!empty($item['page_content'])) ? ($item['page_content']."\n") : '';
