@@ -9,8 +9,8 @@
 class StorageRobotsrunListController {
 
     /**
-     * Преобразует по требованию массив текущей строки и массив формата его вывода
-     * @param $item массив элементов вывода
+     * РџСЂРµРѕР±СЂР°Р·СѓРµС‚ РїРѕ С‚СЂРµР±РѕРІР°РЅРёСЋ РјР°СЃСЃРёРІ С‚РµРєСѓС‰РµР№ СЃС‚СЂРѕРєРё Рё РјР°СЃСЃРёРІ С„РѕСЂРјР°С‚Р° РµРіРѕ РІС‹РІРѕРґР°
+     * @param $item РјР°СЃСЃРёРІ СЌР»РµРјРµРЅС‚РѕРІ РІС‹РІРѕРґР°
      * @return array
      */
     public function updateItem($obj=false,$view=false){
@@ -23,7 +23,7 @@ class StorageRobotsrunListController {
 
         if ($view!==false && is_array($view)) $result['view'] = $view;
 
-        //Изменение view
+        //РР·РјРµРЅРµРЅРёРµ view
         if ($obj['status']=='working') $result['view']['viewline']['style'] = "background-color::green;font-weight:bold";
         elseif ($obj['status']=='paused') $result['view']['viewline']['style'] = "background-color::#ff6600;font-weight:bold";
         elseif ($obj['status']=='error'||$obj['status']=='starterror'||$obj['status']=='noresponse') $result['viewline']['style'] = "background-color::red;color:white;font-weight:bold";

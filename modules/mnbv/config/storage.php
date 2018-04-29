@@ -1260,7 +1260,7 @@ SysStorage::$storage['robots']['stru']['vars']['list'] = array(
     //Специальные
     "script" => array("name"=>"script", "type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"),
     "output" => array("name"=>"output", "type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"),
-    "scriptvars" => array("name"=>"scriptvars", "type"=>"textarea","editor"=>false,"dbtype"=>"varchar","rows"=>5,"width"=>"100%","table" =>"thline","checktype" => "text"),
+    "scriptvars" => array("type"=>"scriptvars", "creatval"=>"", "dbtype"=>"text"),
 );
 
 SysStorage::$storage['robots']['filter'] = array(
@@ -1319,8 +1319,7 @@ SysStorage::$storage['robotsrun']['stru']['robot'] = array("type"=>"int", "size"
 SysStorage::$storage['robotsrun']['stru']['cronrun'] = array("type"=>"int", "size"=>1, "creatval"=>0, "dbtype"=>"int"); // Необходимость запуска по крону
 SysStorage::$storage['robotsrun']['stru']['rbtype'] = array("type"=>"string", "size"=>50, "creatval"=>"", "dbtype"=>"varchar", "linkstorage"=>array("workers"=>"workers", "info" =>"info", "service"=>"service")); //Тип робота
 
-/*
-SysStorage::$storage['robotsrun']['stru']['vars']['list'] = array(
+SysStorage::$storage['zbrobotsrun']['stru']['vars']['list'] = array(
     //Специальные
     "always" => array("name"=>"always", "type"=>"int", "size"=>1, "creatval"=>0, "dbtype"=>"int"), // Запускать, даже если уже запущено
 
@@ -1333,12 +1332,11 @@ SysStorage::$storage['robotsrun']['stru']['vars']['list'] = array(
     "crmonth" => array("name"=>"crmonth", "type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"),
     "crweek" => array("name"=>"crweek", "type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"),
 
-    "script" => array("name"=>"script", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text"),
-    "output" => array("name"=>"output", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text"),
-
-    "scriptvars" => array("name"=>"scriptvars", "type"=>"textarea","editor"=>false,"rows"=>5,"width"=>"100%","table" =>"thline","checktype" => "text"),
+    "script" => array("name"=>"script", "type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"),
+    "output" => array("name"=>"output", "type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"),
+    "scriptvars" => array("type"=>"scriptvars", "creatval"=>"", "dbtype"=>"text"),
+    
 );
-*/
 
 SysStorage::$storage['robotsrun']['list'] = array(
     "main" => array(
