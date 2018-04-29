@@ -178,8 +178,8 @@ class StorageController {
         
         $item['list'] = array();
         foreach (SysStorage::$storage as $key => $value) {
-            if ($value['group']=='noview') continue;
-            if ((empty($item['storage_group']) || $item['storage_group']==$value['group'])&&(Glob::$vars['user']->get('root')||in_array($value['access2'],Glob::$vars['user']->get('permarr')))) {
+            if (!empty($value['group']) && $value['group']=='noview') continue;
+            if ((empty($item['storage_group']) || (!empty($value['group'])&&$item['storage_group']==$value['group']))&&(Glob::$vars['user']->get('root')||(!empty($value['access2'])&&in_array($value['access2'],Glob::$vars['user']->get('permarr'))))) {
                 $item['list']["$key"]["name"] = MNBVf::getItemName($value,Glob::$vars['mnbv_altlang'],'no-name');
                 $item['list']["$key"]["url"] = '/' . Glob::$vars['mnbv_module'] . '/' . $this->controllerName . '/' . $key . '/' . ((Lang::isDefLang())?'':'altlang/');
             }

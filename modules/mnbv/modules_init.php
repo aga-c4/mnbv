@@ -19,7 +19,6 @@ Glob::$vars['mnbv_site'] = array(
     'protocol' => '//',
     'domain' => $currentDomen,
     'maindomain' => $currentDomen,
-    'cookiedomain' => $currentDomen,
     'cookiedomain' => '.'.$currentDomen,
     'template' => MNBV_DEF_TPL,
     'storage' => MNBV_DEF_SITE_STORAGE,
@@ -77,16 +76,16 @@ Glob::$vars['session'] = new MNBVSession(true); //Инициализация с�
 //Техническая стабильная сессия. Пишется в куку на MNBVSID_TTL дней и обновляется при каждом заходе
 if(empty($_COOKIE[MNBVSID])) {
     Glob::$vars['MNBVSID'] =  (!empty(Glob::$vars['session']->sid))?Glob::$vars['session']->sid:md5(date("YmdHis").rand(0,32000));
-    setcookie(MNBVSID, Glob::$vars['MNBVSID'],(time()+MNBVSID_TTL),"/",'.'.Glob::$vars['mnbv_site']['cookiedomain']);
+    setcookie(MNBVSID, Glob::$vars['MNBVSID'],(time()+MNBVSID_TTL),"/",Glob::$vars['mnbv_site']['cookiedomain']);
     $_COOKIE[MNBVSID] = Glob::$vars['MNBVSID'];
 }else{
     if (!empty(Glob::$vars['session']->sid) && Glob::$vars['session']->sid != $_COOKIE[MNBVSID]) { //Если есть различие между кукой и сессией, то у сессии приоритет, правим куку
         Glob::$vars['MNBVSID'] = Glob::$vars['session']->sid;
-        setcookie(MNBVSID, Glob::$vars['MNBVSID'],(time()+MNBVSID_TTL),"/",'.'.Glob::$vars['mnbv_site']['cookiedomain']);
+        setcookie(MNBVSID, Glob::$vars['MNBVSID'],(time()+MNBVSID_TTL),"/",Glob::$vars['mnbv_site']['cookiedomain']);
         $_COOKIE[MNBVSID] = Glob::$vars['MNBVSID'];
     } else  {
         //Обновим дату хранения куки
-        setcookie(MNBVSID, $_COOKIE[MNBVSID],(time()+MNBVSID_TTL),"/",'.'.Glob::$vars['mnbv_site']['cookiedomain']);
+        setcookie(MNBVSID, $_COOKIE[MNBVSID],(time()+MNBVSID_TTL),"/",Glob::$vars['mnbv_site']['cookiedomain']);
         Glob::$vars['MNBVSID'] =  $_COOKIE[MNBVSID];
     }
 }
@@ -94,7 +93,7 @@ if(empty($_COOKIE[MNBVSID])) {
 //Короткая сессия персонализации персонализации, которая живет только во время текущей сессии
 if(!isset($_COOKIE[MNBVSIDSHORT])) {
     Glob::$vars['MNBVSIDSHORT'] =  md5(date("YmdHis").rand(0,32000));
-    setcookie(MNBVSIDSHORT, Glob::$vars['MNBVSIDSHORT'],0,"/",'.'.Glob::$vars['mnbv_site']['cookiedomain']);
+    setcookie(MNBVSIDSHORT, Glob::$vars['MNBVSIDSHORT'],0,"/",Glob::$vars['mnbv_site']['cookiedomain']);
     $_COOKIE[MNBVSIDSHORT]=Glob::$vars['MNBVSIDSHORT'];
 }else{
     Glob::$vars['MNBVSIDSHORT'] =  $_COOKIE['MNBVSIDSHORT'];
@@ -103,13 +102,13 @@ if(!isset($_COOKIE[MNBVSIDSHORT])) {
 //Длинная сессия персонализации, которая живет максимально долго (до конца эпохи Unix)
 if(!isset($_COOKIE[MNBVSIDLONG])) {
     Glob::$vars['MNBVSIDLONG'] =  md5(date("YmdHis").rand(0,32000));
-    setcookie(MNBVSIDLONG, Glob::$vars['MNBVSIDLONG'],mktime(23,59,0,12,31,2037),"/",'.'.Glob::$vars['mnbv_site']['cookiedomain']);
+    setcookie(MNBVSIDLONG, Glob::$vars['MNBVSIDLONG'],mktime(23,59,0,12,31,2037),"/",Glob::$vars['mnbv_site']['cookiedomain']);
     $_COOKIE[MNBVSIDLONG] = Glob::$vars['MNBVSIDLONG'];
 }else{
     Glob::$vars['MNBVSIDLONG'] =  $_COOKIE[MNBVSIDLONG];
 }
 //Установим в куку Unix метку последнего захода с данного устройства
-setcookie(MNBVSIDLV, time(), mktime(23,59,0,12,31,2037),"/",'.'.Glob::$vars['mnbv_site']['cookiedomain']);
+setcookie(MNBVSIDLV, time(), mktime(23,59,0,12,31,2037),"/",Glob::$vars['mnbv_site']['cookiedomain']);
 
 //----------------------------------------------------------------------------------------------------------------------
 

@@ -76,7 +76,10 @@ class MNBVSession {
             $this->sid = '';
             SysLogs::addLog('Session start DB in location: '.$location);
         }else{
-            if (!empty(Glob::$vars['mnbv_site']['cookiedomain'])) session_set_cookie_params(0, '/', '.'.Glob::$vars['mnbv_site']['cookiedomain']); 
+            if (!empty(Glob::$vars['mnbv_site']['cookiedomain'])) {
+                SysLogs::addLog('Session cookiedomain: ['.Glob::$vars['mnbv_site']['cookiedomain'].']');
+                session_set_cookie_params(0, '/', Glob::$vars['mnbv_site']['cookiedomain']);
+            }
             if (empty($_COOKIE[PHPSESSID])) {
                 if (MNBVSID_TO_PHPSESSID && !empty($_COOKIE[MNBVSID])) {
                     session_id($_COOKIE[MNBVSID]);
