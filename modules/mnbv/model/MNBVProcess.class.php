@@ -76,7 +76,7 @@ class MNBVProcess {
     
     /**
      * Возвращает статус выполнения текущего процесса
-     * @return type
+     * @return bool
      */
     public function status(){
         $result=false;
