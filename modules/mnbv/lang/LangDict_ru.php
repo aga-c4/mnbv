@@ -661,6 +661,8 @@ $langTmpArr = array(
 
         "active" => "Активно",
         "rbtype" => "Тип робота",
+        
+        "balancies" => "Балансы",
 
     ),
     

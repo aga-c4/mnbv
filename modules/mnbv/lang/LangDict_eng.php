@@ -659,6 +659,8 @@ $langTmpArr = array(
         "active" => "Active",
         "rbtype" => "Robot type",
 
+        "balancies" => "Balancies",
+        
     ),
     
     "rb_work" => "Worker", 
