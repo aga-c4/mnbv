@@ -21,3 +21,5 @@
 /vendor/
 /composer.json
 /composer.lock
+/firebase-messaging-sw.js
+
