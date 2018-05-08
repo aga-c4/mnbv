@@ -22,4 +22,4 @@
 /composer.json
 /composer.lock
 /www/firebase-messaging-sw.js
-
+/www/messaging-sw.js
