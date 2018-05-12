@@ -194,7 +194,7 @@ class MNBVf {
      * 'user_agent' - строка с user-agent
      * @return mixed|string
      */
-    function sendCurlQuery($url='',$query='', $param = array()){
+    public static function sendCurlQuery($url='',$query='', $param = array()){
         
         if (is_array($param)) {
             if (!empty($param['headers'])) $headers = $param['headers'];
