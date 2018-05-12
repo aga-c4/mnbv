@@ -62,6 +62,11 @@ class MNBVPush{
         if (!empty($param['icon'])) $icon = SysBF::getFrArr($param,'icon',$this->icon);
         if (!empty($param['click_action'])) $click_action = SysBF::getFrArr($param,'click_action',$this->click_action);
         if (!empty($param['time_to_live'])) $time_to_live = intval(SysBF::getFrArr($param,'time_to_live',$this->time_to_live));
+        
+        $request_headers = array(
+            'Content-Type: application/json',
+            'Authorization: key=' . $this->key,
+        );
 
         $query = [
             'to' => $token,
@@ -73,7 +78,7 @@ class MNBVPush{
             ],
             "time_to_live" => $time_to_live
         ];
-        return  MNBVf::sendCurlQuery($this->apiUrl,$query);
+        return  MNBVf::sendCurlQuery($this->apiUrl,$query,array('headers'=>$request_headers));
 
     }
 

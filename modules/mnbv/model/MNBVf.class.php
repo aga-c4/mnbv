@@ -190,14 +190,14 @@ class MNBVf {
      * @param string $url - URL вызова
      * @param array $query - массив post переменных, если есть
      * @param array $param - массив параметров
-     * 'request_headers' - строка с заголовками запроса
+     * 'headers' - массив с заголовками запроса не ассоциативный
      * 'user_agent' - строка с user-agent
      * @return mixed|string
      */
     function sendCurlQuery($url='',$query='', $param = array()){
         
         if (is_array($param)) {
-            if (!empty($param['request_headers'])) $request_headers = $param['request_headers'];
+            if (!empty($param['headers'])) $headers = $param['headers'];
             if (!empty($param['user_agent'])) $user_agent = $param['user_agent'];
         }
         
@@ -210,7 +210,7 @@ class MNBVf {
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
         }
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        if (!empty($request_headers)) curl_setopt($ch, CURLOPT_HTTPHEADER, $request_headers);
+        if (!empty($request_headers)) curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         if (!empty($user_agent)) curl_setopt($ch, CURLOPT_USERAGENT, $user_agent);
         else curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; SMART_API PHP client; '.php_uname('s').'; PHP/'.phpversion().')');
         if (is_array($query)) {
