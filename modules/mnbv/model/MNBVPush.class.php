@@ -81,7 +81,7 @@ class MNBVPush{
                 ],
                 "time_to_live" => $time_to_live
             ];
-            echo MNBVf::sendCurlQuery($this->apiUrl,$query,array('headers'=>$request_headers));
+            MNBVf::sendCurlQuery($this->apiUrl,$query,array('headers'=>$request_headers));
         }
         
         return true;
