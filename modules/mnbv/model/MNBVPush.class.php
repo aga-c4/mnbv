@@ -54,7 +54,7 @@ class MNBVPush{
      */
     public function sendPush($token,$param=array()) {
        
-        if (empty($token)) return false;
+        if (!is_array($token)&&empty($token)) return false;
         if (!is_array($param)) return false;
         
         if (!empty($param['title'])) $title = SysBF::getFrArr($param,'title',$this->title);
@@ -68,17 +68,23 @@ class MNBVPush{
             'Authorization: key=' . $this->key,
         );
 
-        $query = [
-            'to' => $token,
-            'notification' => [
-                'title' => $title,
-                'body' => $body,
-                'icon' => $icon,
-                'click_action' => $click_action,
-            ],
-            "time_to_live" => $time_to_live
-        ];
-        return  MNBVf::sendCurlQuery($this->apiUrl,$query,array('headers'=>$request_headers));
+        if (!is_array($token)) $tokenArr = array($token); else $tokenArr = $token;
+        
+        foreach($tokenArr as $key=>$value){
+            $query = [
+                'to' => $value,
+                'notification' => [
+                    'title' => $title,
+                    'body' => $body,
+                    'icon' => $icon,
+                    'click_action' => $click_action,
+                ],
+                "time_to_live" => $time_to_live
+            ];
+            MNBVf::sendCurlQuery($this->apiUrl,$query,array('headers'=>$request_headers));
+        }
+        
+        return true;
 
     }
 
