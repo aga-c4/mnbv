@@ -57,11 +57,11 @@ class MNBVPush{
         if (!is_array($token)&&empty($token)) return false;
         if (!is_array($param)) return false;
         
-        if (!empty($param['title'])) $title = SysBF::getFrArr($param,'title',$this->title);
-        if (!empty($param['body'])) $body = SysBF::getFrArr($param,'body',$this->body);
-        if (!empty($param['icon'])) $icon = SysBF::getFrArr($param,'icon',$this->icon);
-        if (!empty($param['click_action'])) $click_action = SysBF::getFrArr($param,'click_action',$this->click_action);
-        if (!empty($param['time_to_live'])) $time_to_live = intval(SysBF::getFrArr($param,'time_to_live',$this->time_to_live));
+        $title = SysBF::getFrArr($param,'title',$this->title);
+        $body = SysBF::getFrArr($param,'body','');
+        $icon = SysBF::getFrArr($param,'icon',$this->icon);
+        $click_action = SysBF::getFrArr($param,'click_action','');
+        $time_to_live = intval(SysBF::getFrArr($param,'time_to_live',$this->time_to_live));
         
         $request_headers = array(
             'Content-Type: application/json',
