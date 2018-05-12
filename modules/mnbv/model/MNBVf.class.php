@@ -186,6 +186,54 @@ class MNBVf {
     }  
     
     /**
+     * Посылает запрос к внешнему URL с помощью cURL и возвращает ответ
+     * @param string $url - URL вызова
+     * @param array $query - массив post переменных, если есть
+     * @return mixed|string
+     */
+    function sendCurlQuery($url='',$query='',$request_headers=''){
+        if (empty($url)) return false;
+        $soap = curl_init();
+        curl_setopt($soap, CURLOPT_URL, $url);
+        curl_setopt($soap, CURLOPT_HEADER, 0);
+        if(getenv("REMOTE_ADDR")=="127.0.0.1"){
+            curl_setopt($soap, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($soap, CURLOPT_SSL_VERIFYHOST, 0);
+        }
+        curl_setopt($soap, CURLOPT_RETURNTRANSFER, 1);
+        if (!empty($request_headers)) curl_setopt($soap, CURLOPT_HTTPHEADER, $request_headers);
+        if (is_array($query)) {
+            $queryJson = json_encode($query);
+            //curl_setopt($soap, CURLOPT_POST, 1);
+            curl_setopt($soap, CURLOPT_CUSTOMREQUEST, 'POST');
+            curl_setopt($soap, CURLOPT_POSTFIELDS, $queryJson);
+        }
+        curl_setopt( $soap, CURLOPT_USERAGENT, "Robot" );
+
+        //Для отладки
+        //curl_setopt($soap, CURLOPT_COOKIESESSION, true); //для указания текущему сеансу начать новую "сессию"
+        //curl_setopt($soap, CURLOPT_FAILONERROR, true); //для подробного отчета при неудаче 400
+        curl_setopt($soap, CURLOPT_FOLLOWLOCATION, true); //для следования любому заголовку "Location: "
+        //curl_setopt($soap, CURLOPT_FORBID_REUSE, true); //для принудительного закрытия соединения после завершения
+        //curl_setopt($soap, CURLOPT_FRESH_CONNECT, true); //для принудительного использования нового соединения вместо закешированного
+        //curl_setopt($soap, CURLOPT_TCP_NODELAY, true); //для отключения алгоритма Нейгла, который пытается уменьшить количество мелких пакетов в сети.
+        //curl_setopt($soap, CURLOPT_HEADER, true); //для включения заголовков в вывод.
+        //curl_setopt($soap, CURLOPT_NOBODY, true); //для исключения тела ответа из вывода.
+        //curl_setopt($soap, CURLOPT_NOSIGNAL, true); //для игнорирования любой функции cURL, посылающей сигналы PHP процессу
+
+        curl_setopt($soap, CURLOPT_CONNECTTIMEOUT, 0); //Количество секунд ожидания при попытке соединения. Используйте 0 для бесконечного ожидания.
+        //curl_setopt($soap, CURLOPT_CONNECTTIMEOUT_MS, 0); //Количество миллисекунд ожидания при попытке соединения. Используйте 0 для бесконечного ожидания.
+
+        $responce = curl_exec($soap);
+        if($errno = curl_errno($soap)) {
+            $responce = "ERROR: ".curl_error($soap);
+            //echo "API.EC => ".$errno.' : '.$responce . "<br>\n";
+        }
+        curl_close($soap);
+        return $responce;
+    }
+    
+    /**
      * Формирует строку с номерами страниц списка для сайта
      * @param array $obj массив свойств объекта, по которому формируем URL
      * @param array $param массив параметров формирования списка страниц сайта:
