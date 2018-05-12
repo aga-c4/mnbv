@@ -210,7 +210,7 @@ class MNBVf {
             curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
         }
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        if (!empty($request_headers)) curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        if (!empty($headers)) curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         if (!empty($user_agent)) curl_setopt($ch, CURLOPT_USERAGENT, $user_agent);
         else curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; SMART_API PHP client; '.php_uname('s').'; PHP/'.phpversion().')');
         if (is_array($query)) {
