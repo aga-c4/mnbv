@@ -189,47 +189,58 @@ class MNBVf {
      * Посылает запрос к внешнему URL с помощью cURL и возвращает ответ
      * @param string $url - URL вызова
      * @param array $query - массив post переменных, если есть
+     * @param array $param - массив параметров
+     * 'request_headers' - строка с заголовками запроса
+     * 'user_agent' - строка с user-agent
      * @return mixed|string
      */
-    function sendCurlQuery($url='',$query='',$request_headers=''){
-        if (empty($url)) return false;
-        $soap = curl_init();
-        curl_setopt($soap, CURLOPT_URL, $url);
-        curl_setopt($soap, CURLOPT_HEADER, 0);
-        if(getenv("REMOTE_ADDR")=="127.0.0.1"){
-            curl_setopt($soap, CURLOPT_SSL_VERIFYPEER, 0);
-            curl_setopt($soap, CURLOPT_SSL_VERIFYHOST, 0);
+    function sendCurlQuery($url='',$query='', $param = array()){
+        
+        if (is_array($param)) {
+            if (!empty($param['request_headers'])) $request_headers = $param['request_headers'];
+            if (!empty($param['user_agent'])) $user_agent = $param['user_agent'];
         }
-        curl_setopt($soap, CURLOPT_RETURNTRANSFER, 1);
-        if (!empty($request_headers)) curl_setopt($soap, CURLOPT_HTTPHEADER, $request_headers);
+        
+        if (empty($url)) return false;
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        if(getenv("REMOTE_ADDR")=="127.0.0.1"){
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        }
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        if (!empty($request_headers)) curl_setopt($ch, CURLOPT_HTTPHEADER, $request_headers);
+        if (!empty($user_agent)) curl_setopt($ch, CURLOPT_USERAGENT, $user_agent);
+        else curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; SMART_API PHP client; '.php_uname('s').'; PHP/'.phpversion().')');
         if (is_array($query)) {
             $queryJson = json_encode($query);
             //curl_setopt($soap, CURLOPT_POST, 1);
-            curl_setopt($soap, CURLOPT_CUSTOMREQUEST, 'POST');
-            curl_setopt($soap, CURLOPT_POSTFIELDS, $queryJson);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $queryJson);
         }
-        curl_setopt( $soap, CURLOPT_USERAGENT, "Robot" );
+        curl_setopt( $ch, CURLOPT_USERAGENT, "Robot" );
 
         //Для отладки
-        //curl_setopt($soap, CURLOPT_COOKIESESSION, true); //для указания текущему сеансу начать новую "сессию"
-        //curl_setopt($soap, CURLOPT_FAILONERROR, true); //для подробного отчета при неудаче 400
-        curl_setopt($soap, CURLOPT_FOLLOWLOCATION, true); //для следования любому заголовку "Location: "
-        //curl_setopt($soap, CURLOPT_FORBID_REUSE, true); //для принудительного закрытия соединения после завершения
-        //curl_setopt($soap, CURLOPT_FRESH_CONNECT, true); //для принудительного использования нового соединения вместо закешированного
-        //curl_setopt($soap, CURLOPT_TCP_NODELAY, true); //для отключения алгоритма Нейгла, который пытается уменьшить количество мелких пакетов в сети.
-        //curl_setopt($soap, CURLOPT_HEADER, true); //для включения заголовков в вывод.
-        //curl_setopt($soap, CURLOPT_NOBODY, true); //для исключения тела ответа из вывода.
-        //curl_setopt($soap, CURLOPT_NOSIGNAL, true); //для игнорирования любой функции cURL, посылающей сигналы PHP процессу
+        //curl_setopt($ch, CURLOPT_COOKIESESSION, true); //для указания текущему сеансу начать новую "сессию"
+        //curl_setopt($ch, CURLOPT_FAILONERROR, true); //для подробного отчета при неудаче 400
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); //для следования любому заголовку "Location: "
+        //curl_setopt($ch, CURLOPT_FORBID_REUSE, true); //для принудительного закрытия соединения после завершения
+        //curl_setopt($ch, CURLOPT_FRESH_CONNECT, true); //для принудительного использования нового соединения вместо закешированного
+        //curl_setopt($ch, CURLOPT_TCP_NODELAY, true); //для отключения алгоритма Нейгла, который пытается уменьшить количество мелких пакетов в сети.
+        //curl_setopt($ch, CURLOPT_HEADER, true); //для включения заголовков в вывод.
+        //curl_setopt($ch, CURLOPT_NOBODY, true); //для исключения тела ответа из вывода.
+        //curl_setopt($ch, CURLOPT_NOSIGNAL, true); //для игнорирования любой функции cURL, посылающей сигналы PHP процессу
 
-        curl_setopt($soap, CURLOPT_CONNECTTIMEOUT, 0); //Количество секунд ожидания при попытке соединения. Используйте 0 для бесконечного ожидания.
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 0); //Количество секунд ожидания при попытке соединения. Используйте 0 для бесконечного ожидания.
         //curl_setopt($soap, CURLOPT_CONNECTTIMEOUT_MS, 0); //Количество миллисекунд ожидания при попытке соединения. Используйте 0 для бесконечного ожидания.
 
-        $responce = curl_exec($soap);
-        if($errno = curl_errno($soap)) {
-            $responce = "ERROR: ".curl_error($soap);
+        $responce = curl_exec($ch);
+        if($errno = curl_errno($ch)) {
+            $responce = "ERROR: ".curl_error($ch);
             //echo "API.EC => ".$errno.' : '.$responce . "<br>\n";
         }
-        curl_close($soap);
+        curl_close($ch);
         return $responce;
     }
     

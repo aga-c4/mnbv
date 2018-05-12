@@ -50,44 +50,31 @@ class MNBVPush{
      * @param type $method метод
      * @param type $req массив с передаваемыми данными. Если в них есть chat_id, то он остается, иначе берется из свойств объекта
      * @param type $token Если задан, то используется в качестве token, иначе он берется из свойства объекта
-     * @return type array результат операции или NULL, если не успешно
+     * @return type array результат операции или false, если не успешно
      */
-    public function telegramApiQuery($method, $req = array(), $token='') {
+    public function sendPush($token,$param=array()) {
        
-        if (!in_array($method, array('getUpdates','sendMessage'))) return false;
-        $realToken = (!empty($token))?$token:$this->token;
+        if (empty($token)) return false;
+        if (!is_array($param)) return false;
         
-        $headers = array();
-        if ($method=='sendMessage') {
-            if (!is_array($req) || empty($req['chat_id'])) $req['chat_id'] = $this->chatId;;
-        }
-        $post_data = http_build_query($req, '', '&');
-        $apiUrl = $this->apiUrl . 'bot' . $realToken . '/' . $method;
-        
-        $ch = null;
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; SMART_API PHP client; '.php_uname('s').'; PHP/'.phpversion().')');
-        curl_setopt($ch, CURLOPT_URL, $apiUrl);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_ENCODING , 'gzip');
-        $res = curl_exec($ch);
-        if($res === false)
-        {
-            $e = curl_error($ch);
-            //debuglog($e);
-            curl_close($ch);
-            return false;
-        }
+        if (!empty($param['title'])) $title = SysBF::getFrArr($param,'title',$this->title);
+        if (!empty($param['body'])) $body = SysBF::getFrArr($param,'body',$this->body);
+        if (!empty($param['icon'])) $icon = SysBF::getFrArr($param,'icon',$this->icon);
+        if (!empty($param['click_action'])) $click_action = SysBF::getFrArr($param,'click_action',$this->click_action);
+        if (!empty($param['time_to_live'])) $time_to_live = intval(SysBF::getFrArr($param,'time_to_live',$this->time_to_live));
 
-        curl_close($ch);
+        $query = [
+            'to' => $token,
+            'notification' => [
+                'title' => $title,
+                'body' => $body,
+                'icon' => $icon,
+                'click_action' => $click_action,
+            ],
+            "time_to_live" => $time_to_live
+        ];
+        return  MNBVf::sendCurlQuery($this->apiUrl,$query);
 
-        $result = json_decode($res, true);
-        //if(!$result) debuglog($res);
-
-        return $result;
     }
 
 }
