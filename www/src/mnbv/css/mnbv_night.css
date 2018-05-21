@@ -16,28 +16,28 @@ body {
 }
 
 input, textarea, select {
-background-color:#333;
-border:1px Solid #fff;
+    background-color:#333;
+    border:1px Solid #fff;
 }
 
 .submit {
-color:#333;
-background-color:#cdebff;
+    color:#333;
+    background-color:#cdebff;
 }
 
 .submit_vid {
-color:blue;
-background-color:#66ff66;
+    color:blue;
+    background-color:#66ff66;
 }
 
 .bigsubmit {
-color:#333;
-background-color:#cdebff;
+    color:#333;
+    background-color:#cdebff;
 }
 
 .bigsubmit_vid {
-color:blue;
-background-color:#66ff66;
+    color:blue;
+    background-color:#66ff66;
 }
 
 table.base th, table.base th.line {
@@ -46,14 +46,14 @@ table.base th, table.base th.line {
 }
 
 table.base th a {
-color:#333;
+    color:#333;
 }
 
 table.base td {
-border-top:1px Solid #ccc;
-border-bottom:1px Solid #ccc;
+    border-top:1px Solid #ccc;
+    border-bottom:1px Solid #ccc;
 }
 
 table.base td a {
-color:#ccc;
+    color:#ccc;
 }
