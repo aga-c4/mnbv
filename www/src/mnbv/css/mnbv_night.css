@@ -17,7 +17,7 @@ body {
 
 input, textarea, select {
     background-color:#333;
-    border:1px Solid #fff;
+    border:1px Solid #ccc;
     color:#ccc;
 }
 
