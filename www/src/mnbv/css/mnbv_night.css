@@ -1,6 +1,6 @@
 body {
     background-color:#000;
-    color:#fff;
+    color:#ccc;
 }
 
 .container {
@@ -8,7 +8,7 @@ body {
 }
 
 .content {
-    color:#fff;
+    color:#ccc;
 }
 
 .content a {
@@ -18,7 +18,7 @@ body {
 input, textarea, select {
     background-color:#333;
     border:1px Solid #fff;
-    color:#fff;
+    color:#ccc;
 }
 
 .submit {
