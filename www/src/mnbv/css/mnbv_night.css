@@ -47,7 +47,7 @@ table.base th, table.base th.line {
 }
 
 table.base th a {
-    color:#000;
+    color:#fff;
 }
 
 table.base td {
@@ -56,7 +56,7 @@ table.base td {
 }
 
 table.base td a {
-    color:#000;
+    color:#fff;
 }
 
 div.dojichart {
