@@ -183,8 +183,8 @@ class SysBF {
     public static function getFrArr($arr,$key,$defval=null,$update=''){
         
         if (!is_array($arr)) $result = $defval;
-        if (!isset($arr[$key])) $result = $defval;
-        $result = $arr[$key];
+        elseif (!isset($arr[$key])) $result = $defval;
+        else $result = $arr[$key];
         
             if ($update==='intval') $result = intval($result);
         elseif ($update==='floatval') $result = floatval($result);
