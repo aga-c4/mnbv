@@ -177,12 +177,23 @@ class SysBF {
      * @param array $arr массив
      * @param string $key ключ
      * @param string $defval дефолтовое значение
+     * @param string $update варианты модификации результата (intval|floatval|strval|trim|strtolower|)
      * @return mixed Значение
      */
-    public static function getFrArr($arr,$key,$defval=null){
-        if (!is_array($arr)) return $defval;
-        if (!isset($arr[$key])) return $defval;
-        return $arr[$key];
+    public static function getFrArr($arr,$key,$defval=null,$update=''){
+        
+        if (!is_array($arr)) $result = $defval;
+        if (!isset($arr[$key])) $result = $defval;
+        $result = $arr[$key];
+        
+            if ($update==='intval') $result = intval($result);
+        elseif ($update==='floatval') $result = floatval($result);
+        elseif ($update==='strval') $result = strval($result);
+        elseif ($update==='trim') $result = trim($result);
+        elseif ($update==='strtolower') $result = strtolower($result);
+        elseif ($update==='strtoupper') $result = strtoupper($result);
+            
+        return $result;
     }
 
     /**
