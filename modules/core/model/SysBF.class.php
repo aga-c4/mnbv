@@ -14,7 +14,7 @@
 class SysBF {
 
     /**
-     * Посылает запрос по HTTP с помощью CURL ExpertSender и возвращает ответ
+     * Посылает запрос по HTTP с помощью CURL и возвращает ответ
      * @param array $param
      * @return mixed|string
      */
@@ -113,10 +113,10 @@ class SysBF {
         //$res = SafeHtml::out(htmlspecialchars(strip_tags($res), ENT_QUOTES, 'UTF-8'));
         elseif($type=='login') $res = preg_replace("/[^0-9a-zA-Zа-яА-ЯЁё_\-]/","",strtolower($res)); //Проверка идентификатора
         elseif($type=='passwd') $res = preg_replace("/[^0-9a-zA-Zа-яА-ЯЁё_\-]/","",$res); //Проверка идентификатора
-        
+
         $lenght = intval($lenght);
         if ($lenght>0) $res = MNBVf::substr($res,0,$lenght);
-        
+
         return $res;
 
     }
@@ -147,10 +147,9 @@ class SysBF {
      */
     public static function getmicrotime()
     {
-        list($usec, $sec) = explode(" ", microtime());
-        return ((float)$usec + (float)$sec);
+        return microtime(true);
     }
-	
+
     /**
      * Список файлов в директории
      * @param string $mode (dir|file|all)
@@ -158,7 +157,7 @@ class SysBF {
      */
     public static function getDirList($path,$mode='all')
     {
-	$fileArr = array();
+        $fileArr = array();
         if ($Dir_list=@opendir("$path")){
             while ($file = readdir($Dir_list)) {
                 $tec_file_nam = $file;
@@ -171,7 +170,7 @@ class SysBF {
 
         return $fileArr;
     }
-    
+
     /**
      * При наличии в массиве $arr элемента с ключем $key выдает его значение, иначе null
      * @param array $arr массив
@@ -181,18 +180,18 @@ class SysBF {
      * @return mixed Значение
      */
     public static function getFrArr($arr,$key,$defval=null,$update=''){
-        
+
         if (!is_array($arr)) $result = $defval;
         elseif (!isset($arr[$key])) $result = $defval;
         else $result = $arr[$key];
-        
+
             if ($update==='intval') $result = intval($result);
         elseif ($update==='floatval') $result = floatval($result);
         elseif ($update==='strval') $result = strval($result);
         elseif ($update==='trim') $result = trim($result);
         elseif ($update==='strtolower') $result = strtolower($result);
         elseif ($update==='strtoupper') $result = strtoupper($result);
-            
+
         return $result;
     }
 
@@ -262,7 +261,7 @@ class SysBF {
         exit();
 
     }
-    
+
     /**
      * Возвращает строку в транслите
      * @param string $string исходная строка
@@ -305,7 +304,7 @@ class SysBF {
      * @return bool - результат операции
      */
     public static function saveFile($filename='',$fileTxt='',$mode='w'){
-	if ($filename == '') return false;
+	    if ($filename == '') return false;
         if ($handle = @fopen($filename,$mode)){
             if (fwrite($handle,$fileTxt)){
                 fclose($handle);
@@ -314,23 +313,23 @@ class SysBF {
             SysLogs::addError('Error: open file '.$filename. ' in ' . __FILE__);
             return false;
         }
-	return true;
+        return true;
     }
-    
+
     /**
      * Корректирует указанную строку из значения указанного массива, убирая слеши - нужно для очистки от служебных смиволов
      * @param pointer $obj - указатель на изменяемый объект
      */
-    public static function stripsl(&$obj) { 
-        if (is_array($obj)) 
-          foreach($obj as $k=>$v) 
-            strips($obj[$k]); 
+    public static function stripsl(&$obj) {
+        if (is_array($obj))
+            foreach($obj as $k=>$v)
+                strips($obj[$k]);
         else $obj = stripslashes($obj);
-    } 
-    
+    }
+
     /**
      * Переводит значение в строку
-     * @param mixed $value 
+     * @param mixed $value
      * @return string - результат операции
      */
     public static function toStr($value){
@@ -364,7 +363,7 @@ class SysBF {
         }
         return $result;
     }
-    
+
     /**
      * Переводит из CP1251 в UTF-8
      * @param $str
@@ -412,7 +411,7 @@ class SysBF {
         SysLogs::$logView = $oldLogView;
 
     }
-	
+
 }
 
 
