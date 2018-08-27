@@ -54,8 +54,8 @@ SysLogs::addLog('Start module [core]');
 //Автозагрузка вендоров
 if(file_exists(APP_VENDORS . 'autoload.php')) require_once (APP_VENDORS . 'autoload.php');
 
-if(file_exists(USER_MODULESPATH . 'core/config/config.php')) require_once (USER_MODULESPATH . 'core/config/config.php');
 require_once APP_MODULESPATH . 'core/config/config.php';
+if(file_exists(USER_MODULESPATH . 'core/config/config.php')) require_once (USER_MODULESPATH . 'core/config/config.php');
 
 //Стартовая инициализация элементов системы: дефолтовая и пользовательская
 if(file_exists(USER_MODULESPATH . 'core/init.php'))  require_once (USER_MODULESPATH . 'core/init.php'); //Пользовательский init, если есть
