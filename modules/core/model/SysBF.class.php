@@ -382,6 +382,36 @@ class SysBF {
     public static function utw($str){
         return iconv("UTF-8","CP1251", $str);
     }
+
+    /**
+     * Записывает в лог общую статистику использования баз данных
+     * @param $view true - выводить лог независимо от установки константы APP_DEBUG_MODE
+     */
+    public static function putFinStatToLog($view=false){
+
+        if (SysLogs::$logComplete) return; //Разрешено отработать этому только 1 раз.
+
+        $oldLogView = SysLogs::$logView;
+        SysLogs::$logView = true;
+
+        //Запишем в лог основные параметры работы текущего процесса
+        $script_datetime_stop = date("Y-m-d G:i:s");
+        $script_time_stop = SysBF::getmicrotime();
+        $time_script = sprintf ("%01.4f",($script_time_stop - Glob::$vars['time_start']));
+        $memory_peak_usage = intval(memory_get_peak_usage()/1024) . 'kB';
+        $memory_fin_usage = intval(memory_get_usage()/1024) . 'kB';
+
+        SysLogs::addLog("---Fin Log: ---");
+        SysLogs::addLog('Starttime: ' . Glob::$vars['datetime_start']);
+        SysLogs::addLog("Endtime: $script_datetime_stop");
+        SysLogs::addLog("Runtime: $time_script".'s.');
+        SysLogs::addLog("Memory peak usage: $memory_peak_usage");
+        SysLogs::addLog("Memory fin usage: $memory_fin_usage");
+
+        SysLogs::$logComplete = true;
+        SysLogs::$logView = $oldLogView;
+
+    }
 	
 }
 
