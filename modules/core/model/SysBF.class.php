@@ -13,65 +13,63 @@
  */
 class SysBF {
 
-    /**
-     * Посылает запрос по HTTP с помощью CURL и возвращает ответ
-     * @param array $param
-     * @return mixed|string
-     */
-    public function sendQuery($url,$contentType,$tip_op='',$query){
-
-        if ($tip_op == 'ImportToListTasks' || strpos($tip_op, 'Transactionals') !== FALSE){
-            $soap = curl_init();
-            curl_setopt($soap, CURLOPT_URL, $url . $tip_op);
-            curl_setopt($soap, CURLOPT_POST, 1);
-            curl_setopt($soap, CURLOPT_HEADER, 0);
-            //if(getenv("REMOTE_ADDR")=="127.0.0.1"){
-            curl_setopt($soap, CURLOPT_SSL_VERIFYPEER, 0);
-            curl_setopt($soap, CURLOPT_SSL_VERIFYHOST, 0);
-            //}
-            curl_setopt($soap, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($soap, CURLOPT_HTTPHEADER,array('Content-Type: '.$contentType.';'));
-            curl_setopt($soap, CURLOPT_POSTFIELDS, $query);
-            $responce = curl_exec($soap);
-            if($errno = curl_errno($soap)) {
-                $responce = "ERROR: ".curl_error($soap);
-                //Log::debug("API.EC => ".$errno.' : '.$responce);
-            }
-            curl_close($soap);
-            return $responce;
-        }else{
-            return 'Метод API не определен';
-        }
-
-    }
-
-    /**
-     * Получает содержимое URL по https://
+        /**
+     * Получает содержимое URL
      * @param $url
-     * @param bool $fileTo
-     * @param string $refer
-     * @param bool $usecookie
+     * @param array $post массив post переменных, если не задан или не массив, то не передаем
+     * @param array $params массив дополнительных параметров:
+     * - useragent,
+     * - refer,
+     * - header (array типа array('Sign: 123', 'Key: dssdsd',...),
+     * - proxy (array типа array('host'=>'145.239.92.106:3128','passwd'=>'test:test')),
+     * - fileto дескриптор файла передачи результат, если надо,
+     * - timeout максимальное время выполнения в секундах, если 0 или не задано, то нет ограничения
      * @return mixed
+     * https://php.ru/manual/function.curl-setopt.html
      */
-    static public function open_https_url($url, $fileTo = false, $refer = "", $usecookie = false) {
+    static public function curl($url, $post='', $params='') {
+
+        if (!is_array($params)) $params=array();
+
         $ch = curl_init();
+        //Основные параметры запроса
         curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); //Для https
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0); //2); // Для https: было можно 0 или false
-        curl_setopt($ch, CURLOPT_HEADER, false); //было 0
-        curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
-        if ($fileTo != false){//Дескриптор открытого файла
-            curl_setopt($ch, CURLOPT_FILE, $fileTo);
+        if (is_array($post)){
+            $post_data = http_build_query($post, '', '&');
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
         }
-        if ($refer != "") {
-            curl_setopt($ch, CURLOPT_REFERER, $refer );
+
+        //Дополнительные параметры
+        $userAgent = (isset($params['useragent']))?$params['useragent']:'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)';
+        if ($userAgent != '') curl_setopt($ch, CURLOPT_USERAGENT, $userAgent);
+        if (isset($params['refer'])) curl_setopt($ch, CURLOPT_REFERER, $params['refer'] ); //это тот адрес, с которого обратился к странице пользователь
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); 
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0); //Для https - отключение проверки сертификата
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0); //Для https - отключение проверки общего имени в сертификате SSL
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1); //Следовать редиректам
+        curl_setopt($ch, CURLOPT_MAXREDIRS, 1); //Максимальное количество редиректов
+        curl_setopt($ch, CURLOPT_FRESH_CONNECT, 1); //TRUE для принудительного использования нового соединения вместо закэшированного.
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3); //Количество секунд ожидания при попытке соединения. Используйте 0 для бесконечного ожидания.
+        if (!empty($params['timeout'])) curl_setopt($ch, CURLOPT_TIMEOUT,intval($params['timeout'])); //Максимально позволенное количество секунд для выполнения cURL-функций.	
+
+        if (isset($params['header']) && is_array($params['header'])) curl_setopt($ch, CURLOPT_HEADER, $params['header']); //Массив того, что пойдет в хедере типа array('Sign: 123', 'Key: dssdsd',...) Возможно CURLOPT_HTTPHEADER
+        else curl_setopt($ch, CURLOPT_HEADER, false);
+        if (!empty($params['header_out'])) curl_setopt($ch, CURLINFO_HEADER_OUT, 1); //TRUE для отслеживания строки запроса дескриптора !!!Посмотреть что это!
+
+        if (isset($params['proxy']) && is_array($params['proxy'] && !empty($params['proxy']['host']))){
+            curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL , 1);
+            curl_setopt($ch, CURLOPT_PROXY, $params['proxy']['host']);
+            if (!empty($params['proxy']['passwd'])) curl_setopt($ch, CURLOPT_PROXYUSERPWD, $params['proxy']['passwd']);
+            curl_setopt($ch, CURLOPT_PROXYTYPE, "CURLPROXY_HTTP");
         }
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER,true); //было 1
+
+        if (!empty($params['fileto']) && $params['fileto']!=false) curl_setopt($ch, CURLOPT_FILE, $params['fileto']); //Дескриптор открытого файла передачи результата
+
         $result =curl_exec ($ch);
         curl_close ($ch);
         return $result;
     }
-
+    
     /**
      * Оставляет в строке допустимые символы
      * @param type $str - входная строка
