@@ -34,7 +34,7 @@ class SysBF {
         $ch = curl_init();
         //Основные параметры запроса
         curl_setopt($ch, CURLOPT_URL, $url);
-        if (is_array($post)){
+        if (is_array($post)&count($post)){
             $post_data = http_build_query($post, '', '&');
             curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
         }
