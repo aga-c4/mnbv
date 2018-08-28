@@ -13,7 +13,7 @@
  */
 class SysBF {
 
-        /**
+    /**
      * Получает содержимое URL
      * @param $url
      * @param array $post массив post переменных, если не задан или не массив, то не передаем
@@ -69,7 +69,7 @@ class SysBF {
         curl_close ($ch);
         return $result;
     }
-    
+
     /**
      * Оставляет в строке допустимые символы
      * @param type $str - входная строка
