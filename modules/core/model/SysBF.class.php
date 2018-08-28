@@ -147,6 +147,20 @@ class SysBF {
     {
         return microtime(true);
     }
+    
+    public function seconds () {
+        return time ();
+    }
+
+    public function milliseconds () {
+        list ($msec, $sec) = explode (' ', microtime ());
+        return $sec . substr ($msec, 2, 3);
+    }
+
+    public function microseconds () {
+        list ($msec, $sec) = explode (' ', microtime ());
+        return $sec . str_pad (substr ($msec, 2, 6), 6, '0');
+    }
 
     /**
      * Список файлов в директории
