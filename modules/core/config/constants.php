@@ -14,6 +14,12 @@ if (!defined("APP_DEBUG_MODE"))
  */
 define("APP_DEBUG_MODE",false);
 
+if (!defined("DIRECTORY_SEPARATOR")) 
+/**
+ * Разделитель при указании путей
+ */
+define("DIRECTORY_SEPARATOR","/");
+
 if (!defined("APP_MODULESPATH"))
 /**
  * Путь к директории с основными модулями системы
