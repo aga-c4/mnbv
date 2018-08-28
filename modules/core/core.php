@@ -54,8 +54,8 @@ SysLogs::addLog('Start module [core]');
 //Автозагрузка вендоров
 if(file_exists(APP_VENDORS . 'autoload.php')) require_once (APP_VENDORS . 'autoload.php');
 
-if(file_exists(USER_MODULESPATH . 'core/config/config.php')) require_once (USER_MODULESPATH . 'core/config/config.php');
 require_once APP_MODULESPATH . 'core/config/config.php';
+if(file_exists(USER_MODULESPATH . 'core/config/config.php')) require_once (USER_MODULESPATH . 'core/config/config.php');
 
 //Стартовая инициализация элементов системы: дефолтовая и пользовательская
 if(file_exists(USER_MODULESPATH . 'core/init.php'))  require_once (USER_MODULESPATH . 'core/init.php'); //Пользовательский init, если есть
@@ -66,7 +66,9 @@ if(file_exists(USER_MODULESPATH . 'core/router.php'))  require_once (USER_MODULE
 else require_once APP_MODULESPATH . 'core/router.php'; //Дефолтовый марщрутизатор, если нет пользовательского
 
 $moduleFile =  APP_MODULESPATH . Glob::$vars['module'] . '/' . Glob::$vars['module'] . '.php';
-if(file_exists($moduleFile)) require_once ($moduleFile);
+$userModuleFile =  USER_MODULESPATH . Glob::$vars['module'] . '/' . Glob::$vars['module'] . '.php';
+if(file_exists($userModuleFile)) require_once ($userModuleFile);
+elseif(file_exists($moduleFile)) require_once ($moduleFile);
 else { //Действие при ошибочном модуле
     SysLogs::addError('Error: Wrong module ['.$moduleFile.']');
     switch (Glob::$vars['tpl_mode']) {
