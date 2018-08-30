@@ -14,7 +14,7 @@
 class SysBF {
 
     /**
-     * Получает содержимое URL
+     * Получает содержимое URL Если $post это массив, который что-то содержит, то передача идет методом post, иначе get
      * @param $url
      * @param array $post массив post переменных, если не задан или не массив, то не передаем
      * @param array $params массив дополнительных параметров:
@@ -35,6 +35,7 @@ class SysBF {
         //Основные параметры запроса
         curl_setopt($ch, CURLOPT_URL, $url);
         if (is_array($post)&count($post)){
+            curl_setopt($ch, CURLOPT_POST, true);
             $post_data = http_build_query($post, '', '&');
             curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
         }
@@ -148,16 +149,16 @@ class SysBF {
         return microtime(true);
     }
     
-    public function seconds () {
+    public static function seconds () {
         return time ();
     }
 
-    public function milliseconds () {
+    public static function milliseconds () {
         list ($msec, $sec) = explode (' ', microtime ());
         return $sec . substr ($msec, 2, 3);
     }
 
-    public function microseconds () {
+    public static function microseconds () {
         list ($msec, $sec) = explode (' ', microtime ());
         return $sec . str_pad (substr ($msec, 2, 6), 6, '0');
     }
