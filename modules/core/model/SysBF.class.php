@@ -14,7 +14,7 @@
 class SysBF {
 
     /**
-     * Получает содержимое URL Если $post это массив, который что-то содержит, то передача идет методом post, иначе get
+     * Получает содержимое URL
      * @param $url
      * @param array $post массив post переменных, если не задан или не массив, то не передаем
      * @param array $params массив дополнительных параметров:
@@ -35,7 +35,6 @@ class SysBF {
         //Основные параметры запроса
         curl_setopt($ch, CURLOPT_URL, $url);
         if (is_array($post)&count($post)){
-            curl_setopt($ch, CURLOPT_POST, true);
             $post_data = http_build_query($post, '', '&');
             curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
         }
@@ -53,7 +52,8 @@ class SysBF {
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 3); //Количество секунд ожидания при попытке соединения. Используйте 0 для бесконечного ожидания.
         if (!empty($params['timeout'])) curl_setopt($ch, CURLOPT_TIMEOUT,intval($params['timeout'])); //Максимально позволенное количество секунд для выполнения cURL-функций.	
 
-        if (isset($params['header']) && is_array($params['header'])) curl_setopt($ch, CURLOPT_HEADER, $params['header']); //Массив того, что пойдет в хедере типа array('Sign: 123', 'Key: dssdsd',...) Возможно CURLOPT_HTTPHEADER
+        if (isset($params['header']) && is_array($params['header'])) curl_setopt($ch, CURLOPT_HTTPHEADER, $params['header']); //Массив того, что пойдет в хедере типа array('Sign: 123', 'Key: dssdsd',...)
+        if (isset($params['printheader'])) curl_setopt($ch, CURLOPT_HEADER, true); //True для вывода хедера вместе с контентом
         else curl_setopt($ch, CURLOPT_HEADER, false);
         if (!empty($params['header_out'])) curl_setopt($ch, CURLINFO_HEADER_OUT, 1); //TRUE для отслеживания строки запроса дескриптора !!!Посмотреть что это!
 
@@ -78,7 +78,7 @@ class SysBF {
      * @param type $lenght - если задано и больше 0, то количество символов в результате
      * @return string - результат операции
      */
-    public static function checkStr($str,$type="",$lenght=0){
+    public static function checkStr($str, $type="", $lenght=0){
 
         if ($str === null) return null; //Пустые значения транслируем насквозь
 
@@ -149,16 +149,16 @@ class SysBF {
         return microtime(true);
     }
     
-    public static function seconds () {
+    public function seconds () {
         return time ();
     }
 
-    public static function milliseconds () {
+    public function milliseconds () {
         list ($msec, $sec) = explode (' ', microtime ());
         return $sec . substr ($msec, 2, 3);
     }
 
-    public static function microseconds () {
+    public function microseconds () {
         list ($msec, $sec) = explode (' ', microtime ());
         return $sec . str_pad (substr ($msec, 2, 6), 6, '0');
     }
@@ -423,6 +423,83 @@ class SysBF {
         SysLogs::$logComplete = true;
         SysLogs::$logView = $oldLogView;
 
+    }
+    
+    
+    /**
+     *
+     * @param $filename
+     * @return mixed|string
+     */
+    public static function mime_content_type($filename) {
+
+        $mime_types = array(
+
+            'txt' => 'text/plain',
+            'csv' => 'text/plain',
+            'htm' => 'text/html',
+            'html' => 'text/html',
+            'php' => 'text/html',
+            'css' => 'text/css',
+            'js' => 'application/javascript',
+            'json' => 'application/json',
+            'xml' => 'application/xml',
+            'swf' => 'application/x-shockwave-flash',
+            'flv' => 'video/x-flv',
+
+            // images
+            'png' => 'image/png',
+            'jpe' => 'image/jpeg',
+            'jpeg' => 'image/jpeg',
+            'jpg' => 'image/jpeg',
+            'gif' => 'image/gif',
+            'bmp' => 'image/bmp',
+            'ico' => 'image/vnd.microsoft.icon',
+            'tiff' => 'image/tiff',
+            'tif' => 'image/tiff',
+            'svg' => 'image/svg+xml',
+            'svgz' => 'image/svg+xml',
+
+            // archives
+            'zip' => 'application/zip',
+            'rar' => 'application/x-rar-compressed',
+            'exe' => 'application/x-msdownload',
+            'msi' => 'application/x-msdownload',
+            'cab' => 'application/vnd.ms-cab-compressed',
+
+            // audio/video
+            'mp3' => 'audio/mpeg',
+            'qt' => 'video/quicktime',
+            'mov' => 'video/quicktime',
+
+            // adobe
+            'pdf' => 'application/pdf',
+            'psd' => 'image/vnd.adobe.photoshop',
+            'ai' => 'application/postscript',
+            'eps' => 'application/postscript',
+            'ps' => 'application/postscript',
+
+            // ms office
+            'doc' => 'application/msword',
+            'rtf' => 'application/rtf',
+            'xls' => 'application/vnd.ms-excel',
+            'ppt' => 'application/vnd.ms-powerpoint',
+            'docx' => 'application/msword',
+            'xlsx' => 'application/vnd.ms-excel',
+            'pptx' => 'application/vnd.ms-powerpoint',
+
+            // open office
+            'odt' => 'application/vnd.oasis.opendocument.text',
+            'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
+        );
+        $filenameArr = explode('.',$filename);
+        $ext = strtolower(array_pop($filenameArr));
+        if (array_key_exists($ext, $mime_types)) {
+            return $mime_types[$ext];
+        }
+        else {
+            return 'application/octet-stream';
+        }
     }
 
 }
