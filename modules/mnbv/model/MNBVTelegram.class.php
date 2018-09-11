@@ -38,7 +38,7 @@ class MNBVTelegram{
      * @param type $token Если задан, то используется в качестве token, иначе он берется из свойства объекта
      * @return type array результат операции или NULL, если не успешно
      */
-    public function telegramApiQuery($method, $req = array(), $token='') {
+    public function telegramApiQuery($method, $req = array(), $token='', $params='') {
        
         if (!in_array($method, array('getUpdates','sendMessage'))) return false;
         $realToken = (!empty($token))?$token:$this->token;
@@ -59,6 +59,15 @@ class MNBVTelegram{
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_ENCODING , 'gzip');
+
+        if (isset($params['proxy']) && is_array($params['proxy'] && !empty($params['proxy']['host']))){
+            curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL , 1);
+            curl_setopt($ch, CURLOPT_PROXY, $params['proxy']['host']);
+            if (!empty($params['proxy']['port'])) curl_setopt($ch, CURLOPT_PROXYPORT, $params['proxy']['port']);
+            if (!empty($params['proxy']['passwd'])) curl_setopt($ch, CURLOPT_PROXYUSERPWD, $params['proxy']['passwd']);
+            curl_setopt($ch, CURLOPT_PROXYTYPE, "CURLPROXY_HTTP");
+        }
+
         $res = curl_exec($ch);
         if($res === false)
         {
