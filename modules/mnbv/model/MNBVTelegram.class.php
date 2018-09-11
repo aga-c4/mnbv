@@ -50,14 +50,37 @@ class MNBVTelegram{
         }
         $post_data = http_build_query($req, '', '&');
         $apiUrl = $this->apiUrl . 'bot' . $realToken . '/' . $method;
-        
+
+
+        /*
+        $prxy       = 'http://94.130.223.179:1080'; // адрес:порт прокси
+        $prxy_auth = 'auth_user:auth_pass';       // логин:пароль для аутентификации
+        /**************** /
+        $ch  = curl_init();
+        $url = "https://api.telegram.org/botXXXXX/sendMessage?chat_id=XXXXX&text=XXXXX"; // где XXXXX - ваши значения
+        curl_setopt_array ($ch, array(CURLOPT_URL => $url, CURLOPT_RETURNTRANSFER => true));
+        /********************* Код для подключения к прокси ********************* /
+        curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);  // тип прокси
+        curl_setopt($ch, CURLOPT_PROXY,  $prxy);                 // ip, port прокси
+        curl_setopt($ch, CURLOPT_PROXYUSERPWD, $prxy_auth);  // авторизация на прокси
+            curl_setopt($ch, CURLOPT_HEADER, false);                // отключение передачи заголовков в запросе
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);            // возврат результата в качестве строки
+            curl_setopt($ch, CURLOPT_POST, 1);                      // использование простого HTTP POST
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);        // отмена проверки сертификата удаленным сервером
+        /*********************************************************************** /
+        $result = curl_exec($ch);  // DIGITAL RESISTANCE!
+        curl_close($ch);
+        */
+
+
         $ch = null;
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/4.0 (compatible; SMART_API PHP client; '.php_uname('s').'; PHP/'.phpversion().')');
         curl_setopt($ch, CURLOPT_URL, $apiUrl);
+        curl_setopt($ch, CURLOPT_POST, 1);                      // использование простого HTTP POST
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, false);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_ENCODING , 'gzip');
 
@@ -66,7 +89,7 @@ class MNBVTelegram{
             curl_setopt($ch, CURLOPT_PROXY, $params['proxy']['host']);
             if (!empty($params['proxy']['port'])) curl_setopt($ch, CURLOPT_PROXYPORT, $params['proxy']['port']);
             if (!empty($params['proxy']['passwd'])) curl_setopt($ch, CURLOPT_PROXYUSERPWD, $params['proxy']['passwd']);
-            curl_setopt($ch, CURLOPT_PROXYTYPE, "CURLPROXY_HTTP");
+            curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
         }
 
         $res = curl_exec($ch);
@@ -77,6 +100,7 @@ class MNBVTelegram{
             curl_close($ch);
             return false;
         }
+
 
         curl_close($ch);
 
