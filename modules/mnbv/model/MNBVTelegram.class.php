@@ -36,6 +36,7 @@ class MNBVTelegram{
      * @param type $method метод
      * @param type $req массив с передаваемыми данными. Если в них есть chat_id, то он остается, иначе берется из свойств объекта
      * @param type $token Если задан, то используется в качестве token, иначе он берется из свойства объекта
+     * @param type $params Массив параметров, тип array("proxy"=>array("host"=>"","port"=>"","login"=>"","passwd":""))
      * @return type array результат операции или NULL, если не успешно
      */
     public function telegramApiQuery($method, $req = array(), $token='', $params='') {
