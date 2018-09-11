@@ -85,7 +85,7 @@ class MNBVTelegram{
         curl_setopt($ch, CURLOPT_ENCODING , 'gzip');
 
         if (isset($params['proxy']) && is_array($params['proxy'] && !empty($params['proxy']['host']))){
-            curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL , 1);
+            //curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL , 1);
             curl_setopt($ch, CURLOPT_PROXY, $params['proxy']['host']);
             if (!empty($params['proxy']['port'])) curl_setopt($ch, CURLOPT_PROXYPORT, $params['proxy']['port']);
             if (!empty($params['proxy']['passwd'])) curl_setopt($ch, CURLOPT_PROXYUSERPWD, $params['proxy']['passwd']);
