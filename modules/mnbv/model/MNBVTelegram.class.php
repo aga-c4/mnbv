@@ -23,11 +23,17 @@ class MNBVTelegram{
      * @var type идентификатор чата
      */    
     public $chatId = '';
+
+    /**
+     * @var string массив настроек proxy
+     */
+    public $proxy = '';
     
     
-    public function __construct($token='',$chatId='') {
+    public function __construct($token='',$chatId='',$proxy='') {
         if (!empty($token)) $this->token = $token;
         if (!empty($chatId)) $this->chatId = $chatId;
+        if (!empty($proxy)) $this->proxy = $proxy;
     }
 
     
@@ -84,9 +90,9 @@ class MNBVTelegram{
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_ENCODING , 'gzip');
 
-        if (isset($params['proxy']) && is_array($params['proxy'] && !empty($params['proxy']['host']))){
+        if (is_array($this->proxy && !empty($this->proxy['host']))){
             //curl_setopt($ch, CURLOPT_HTTPPROXYTUNNEL , 1);
-            curl_setopt($ch, CURLOPT_PROXY, $params['proxy']['host']);
+            curl_setopt($ch, CURLOPT_PROXY, $this->proxy['host']);
             if (!empty($params['proxy']['port'])) curl_setopt($ch, CURLOPT_PROXYPORT, $params['proxy']['port']);
             if (!empty($params['proxy']['passwd'])) curl_setopt($ch, CURLOPT_PROXYUSERPWD, $params['proxy']['passwd']);
             curl_setopt($ch, CURLOPT_PROXYTYPE, CURLPROXY_SOCKS5);
