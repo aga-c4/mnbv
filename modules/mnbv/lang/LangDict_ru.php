@@ -28,6 +28,9 @@ $langTmpArr = array(
     "Storages" => "Хранилища",
     "Access denied" => "Доступ ограничен",
     
+    "Day" => "День",
+    "Night" => "Ночь",
+    
     "NavMainpage" => "Главная",
     "NavRobots" => "Роботы",
     "NavStorages" => "Хранилища",

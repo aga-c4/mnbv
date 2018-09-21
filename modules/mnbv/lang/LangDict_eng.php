@@ -28,6 +28,9 @@ $langTmpArr = array(
     "Storages" => "Storages",
     "Access denied" => "Access denied",
     
+    "Day" => "Day",
+    "Night" => "Night",
+    
     "NavMainpage" => "Main",
     "NavRobots" => "Robots",
     "NavStorages" => "Storages",
