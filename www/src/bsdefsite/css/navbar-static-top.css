@@ -22,13 +22,22 @@ body {
 /* Not required for template or sticky footer method. */
 
 body > .container {
-  padding: 5px 15px 0;
+  /*padding: 5px 15px 0;*/
 }
 .container .text-muted {
   margin: 10px 0;
 }
 
+.ccontainer-fluid {
+  width: 97%;
+}
+
 .footer > .container {
+  padding-right: 5px;
+  padding-left: 5px;
+}
+
+.footer > .container-fluid {
   padding-right: 15px;
   padding-left: 15px;
 }

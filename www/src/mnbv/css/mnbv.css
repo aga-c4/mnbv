@@ -47,11 +47,11 @@ color:blue;
 background-color:#66ff66;
 }
 
-.container > ol, ul {
+.mnbvcontainer > ol, ul {
     margin:0;
     padding:0 0 0 2em;
 }
-.container > li {
+.mnbvcontainer > li {
     margin:3px;
     padding:0;
 }
