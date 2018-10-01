@@ -92,10 +92,15 @@ class MNBVStorage{
         $timeStartFunct = SysBF::getmicrotime();
         
         //Выберем подходящий тип хранилища
-        $storage = strtolower($storage);
-        if (!empty(SysStorage::$storage["$storage"]["db"])&&!empty(SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'])&&in_array(SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'],SysStorage::$dbtypes)){
-            $dbtype = SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'];
-        }else{SysLogs::addError("No storage: $storage");return array(0);}
+        if (is_array($storage)){
+            $mainStorage = strtolower($storage[0]['name']);
+        }else{
+            $mainStorage = strtolower($storage);
+        }
+
+        if (!empty(SysStorage::$storage["$mainStorage"]["db"])&&!empty(SysStorage::$db[SysStorage::$storage["$mainStorage"]["db"]]['dbtype'])&&in_array(SysStorage::$db[SysStorage::$storage["$mainStorage"]["db"]]['dbtype'],SysStorage::$dbtypes)){
+            $dbtype = SysStorage::$db[SysStorage::$storage["$mainStorage"]["db"]]['dbtype'];
+        }else{SysLogs::addError("No storage: $mainStorage");return array(0);}
 
         $cache = ($cache==='cache')?true:false; //Включить кеширование TODO - доработать систему кеширования запроса из базы.
         if (!is_array($filter)) $filter = array();
@@ -144,12 +149,17 @@ class MNBVStorage{
     public static function setObj($storage,$fields=array(),$filter=array(),$accVal=true){
 
         $timeStartFunct = SysBF::getmicrotime();
-        
+
         //Выберем подходящий тип хранилища
-        $storage = strtolower($storage);
-        if (!empty(SysStorage::$storage["$storage"]["db"])&&!empty(SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'])&&in_array(SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'],SysStorage::$dbtypes)){
-            $dbtype = SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'];
-        }else{SysLogs::addError("No storage: $storage");return array(0);}
+        if (is_array($storage)){
+            $mainStorage = strtolower($storage[0]['name']);
+        }else{
+            $mainStorage = strtolower($storage);
+        }
+
+        if (!empty(SysStorage::$storage["$mainStorage"]["db"])&&!empty(SysStorage::$db[SysStorage::$storage["$mainStorage"]["db"]]['dbtype'])&&in_array(SysStorage::$db[SysStorage::$storage["$mainStorage"]["db"]]['dbtype'],SysStorage::$dbtypes)){
+            $dbtype = SysStorage::$db[SysStorage::$storage["$mainStorage"]["db"]]['dbtype'];
+        }else{SysLogs::addError("No storage: $mainStorage");return array(0);}
 
         if (!is_array($filter))$filter = array();
         if (!is_array($fields))$fields = array();
@@ -191,12 +201,17 @@ class MNBVStorage{
     public static function addObj($storage,$fields=array(),$filter=array(),$accVal=true,$params=array()){
 
         $timeStartFunct = SysBF::getmicrotime();
-        
+
         //Выберем подходящий тип хранилища
-        $storage = strtolower($storage);
-        if (!empty(SysStorage::$storage["$storage"]["db"])&&!empty(SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'])&&in_array(SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'],SysStorage::$dbtypes)){
-            $dbtype = SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'];
-        }else{SysLogs::addError("No storage: $storage");return array(0);}
+        if (is_array($storage)){
+            $mainStorage = strtolower($storage[0]['name']);
+        }else{
+            $mainStorage = strtolower($storage);
+        }
+
+        if (!empty(SysStorage::$storage["$mainStorage"]["db"])&&!empty(SysStorage::$db[SysStorage::$storage["$mainStorage"]["db"]]['dbtype'])&&in_array(SysStorage::$db[SysStorage::$storage["$mainStorage"]["db"]]['dbtype'],SysStorage::$dbtypes)){
+            $dbtype = SysStorage::$db[SysStorage::$storage["$mainStorage"]["db"]]['dbtype'];
+        }else{SysLogs::addError("No storage: $mainStorage");return array(0);}
 
         if (!is_array($filter))$filter = array();
         if (!is_array($fields))$fields = array();
@@ -236,12 +251,17 @@ class MNBVStorage{
     public static function delObj($storage,$filter=array(),$accVal=true){
 
         $timeStartFunct = SysBF::getmicrotime();
-        
+
         //Выберем подходящий тип хранилища
-        $storage = strtolower($storage);
-        if (!empty(SysStorage::$storage["$storage"]["db"])&&!empty(SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'])&&in_array(SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'],SysStorage::$dbtypes)){
-            $dbtype = SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'];
-        }else{SysLogs::addError("No storage: $storage");return array(0);}
+        if (is_array($storage)){
+            $mainStorage = strtolower($storage[0]['name']);
+        }else{
+            $mainStorage = strtolower($storage);
+        }
+
+        if (!empty(SysStorage::$storage["$mainStorage"]["db"])&&!empty(SysStorage::$db[SysStorage::$storage["$mainStorage"]["db"]]['dbtype'])&&in_array(SysStorage::$db[SysStorage::$storage["$mainStorage"]["db"]]['dbtype'],SysStorage::$dbtypes)){
+            $dbtype = SysStorage::$db[SysStorage::$storage["$mainStorage"]["db"]]['dbtype'];
+        }else{SysLogs::addError("No storage: $mainStorage");return array(0);}
 
         if (!is_array($filter))$filter = array();
 
@@ -274,10 +294,15 @@ class MNBVStorage{
     public static function checkStorage($storage){
 
         //Выберем подходящий тип хранилища
-        $storage = strtolower($storage);
-        if (!empty(SysStorage::$storage["$storage"]["db"])&&!empty(SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'])&&in_array(SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'],SysStorage::$dbtypes)){
-            $dbtype = SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'];
-        }else{SysLogs::addError("No storage: $storage");return array(0);}
+        if (is_array($storage)){
+            $mainStorage = strtolower($storage[0]['name']);
+        }else{
+            $mainStorage = strtolower($storage);
+        }
+
+        if (!empty(SysStorage::$storage["$mainStorage"]["db"])&&!empty(SysStorage::$db[SysStorage::$storage["$mainStorage"]["db"]]['dbtype'])&&in_array(SysStorage::$db[SysStorage::$storage["$mainStorage"]["db"]]['dbtype'],SysStorage::$dbtypes)){
+            $dbtype = SysStorage::$db[SysStorage::$storage["$mainStorage"]["db"]]['dbtype'];
+        }else{SysLogs::addError("No storage: $mainStorage");return array(0);}
 
         if     ($dbtype === 'mysql') return MNBVMySQLSt::checkStorage($storage);
         elseif ($dbtype === 'mongodb') return MNBVMongoSt::checkStorage($storage);
@@ -305,10 +330,15 @@ class MNBVStorage{
     public static function createStorage($storage){
 
         //Выберем подходящий тип хранилища
-        $storage = strtolower($storage);
-        if (!empty(SysStorage::$storage["$storage"]["db"])&&!empty(SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'])&&in_array(SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'],SysStorage::$dbtypes)){
-            $dbtype = SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'];
-        }else{SysLogs::addError("No storage: $storage");return array(0);}
+        if (is_array($storage)){
+            $mainStorage = strtolower($storage[0]['name']);
+        }else{
+            $mainStorage = strtolower($storage);
+        }
+
+        if (!empty(SysStorage::$storage["$mainStorage"]["db"])&&!empty(SysStorage::$db[SysStorage::$storage["$mainStorage"]["db"]]['dbtype'])&&in_array(SysStorage::$db[SysStorage::$storage["$mainStorage"]["db"]]['dbtype'],SysStorage::$dbtypes)){
+            $dbtype = SysStorage::$db[SysStorage::$storage["$mainStorage"]["db"]]['dbtype'];
+        }else{SysLogs::addError("No storage: $mainStorage");return array(0);}
 
         if     ($dbtype === 'mysql') return MNBVMySQLSt::createStorage($storage);
         elseif ($dbtype === 'mongodb') return MNBVMongoSt::createStorage($storage);
