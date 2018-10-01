@@ -50,6 +50,7 @@ class MNBVMySQLSt implements MNBVdefSt{
      *      Т.е. обычный sql синтаксис, побитый по элементам, если скобка, то используем array(). Если используется конструкция in, то значения передаем в массиве.
      *      Допустимый уровень вложений задается в настройках класса конкретной БД.
      *      В случае выхода за допустимые уровни вложений должна выдаваться ошибка.
+     *      Если нужно отключить экранирование значения, то ставим перед ним "field::"
      * @return boolean|string
      */
     public static function createWhereStr($filter){
@@ -123,7 +124,12 @@ class MNBVMySQLSt implements MNBVdefSt{
                     $wStr .= $inStr . ")";
                 }
             }else{
-                $wStr .= " '".self::codeStr($filter[$key])."'";
+                if (0===stripos($filter[$key],'field::')){ //Вариант без экранирования
+                    $curVal = substr($filter[$key],7);
+                    $wStr .= " " . $curVal;
+                }else{ //Вариант с экранированием
+                    $wStr .= " '".self::codeStr($filter[$key])."'";
+                }
             }
             
             $whereStr .= $wStr;
