@@ -53,6 +53,7 @@ SysStorage::$arraySt["usersgr"] = array(
     "304" => array("id"=>304,"pozid"=>304,"parentid"=>1,"type"=>0,"visible"=>1,"first"=>0,"name"=>"Работа с Z-Broker роботами","namelang"=>"Z-Broker bots","access"=>0,"access2"=>2),
     "305" => array("id"=>305,"pozid"=>305,"parentid"=>1,"type"=>0,"visible"=>1,"first"=>0,"name"=>"Работа с Z-Broker заданиями","namelang"=>"Z-Broker activity","access"=>0,"access2"=>2),
     "306" => array("id"=>306,"pozid"=>306,"parentid"=>1,"type"=>0,"visible"=>1,"first"=>0,"name"=>"Z-Broker менеджеры","namelang"=>"Z-Broker managers","access"=>0,"access2"=>2),
+    "307" => array("id"=>306,"pozid"=>306,"parentid"=>1,"type"=>0,"visible"=>1,"first"=>0,"name"=>"Z-Broker Pro-Users","namelang"=>"Z-Broker Pro-Users","access"=>0,"access2"=>2),
     */
 	
 );
