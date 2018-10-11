@@ -63,8 +63,10 @@ require_once MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'head.php');
     </nav>
 
 
-    <div class="container">
-<?=(!empty($item['obj']['nav_arr']))?MNBVf::getNavStr($item['obj']['nav_arr'],array('fin_link_ctive'=>false,'link_class'=>'nav','delim'=>' -> ')):'';?><br>
+    <div class="mnbvcontainer container">
+        <div class="row">
+            <div class="col-lg-12">
+<?=(!empty($item['obj']['nav_arr']))?MNBVf::getNavStr($item['obj']['nav_arr'],array('fin_link_ctive'=>false,'link_class'=>'mnbv-nav','delim'=>' -> ')):'';?><br>
 <?php
 echo (!empty($item['page_h1'])) ? ("<h1>".$item['page_h1']."</h1>\n") : '';
 echo (!empty($item['page_content'])) ? ($item['page_content']."\n") : '';
@@ -74,7 +76,8 @@ MNBVf::putFinStatToLog();
 if (SysLogs::getLog()!=''){echo "<pre>LOG:\n"  . SysLogs::getLog() . "-------\n</pre>";}
 if (SysLogs::getErrors()!=''){echo "<pre>ERRORS:\n" . SysLogs::getErrors() . "-------\n</pre>";}
 ?>
-
+            </div>
+        </div>
     </div> <!-- /container -->
     
     <footer class="footer">
