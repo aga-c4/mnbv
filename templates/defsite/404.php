@@ -12,6 +12,7 @@ if (!Glob::$vars['console']) header('Content-Type: text/html; charset=utf-8');
 </head>
 <body>
 <h1>404 Not Found!</h1>
+<? MNBVf::putFinStatToLog();?>
 <?=(SysLogs::getErrors()!='')?("<pre>Errors:\n".SysLogs::getErrors().'</pre>'):'';?>
 <?=(SysLogs::getLog()!='')?("<pre>Errors:\n".SysLogs::getLog().'</pre>'):'';?>
 </body>
