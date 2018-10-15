@@ -277,9 +277,9 @@ class DbMysql {
     public static function mysql_fetch_array($result=null, $result_type = "MYSQL_ASSOC") {
         try{
             if ($result) {
-                if ($result_type == 'MYSQL_NUM') return @mysqli_fetch_array($result, MYSQL_NUM);
-                elseif ($result_type == 'MYSQL_BOTH') return @mysqli_fetch_array($result, MYSQL_BOTH);
-                else return @mysqli_fetch_array($result, MYSQL_ASSOC);
+                if ($result_type == 'MYSQL_NUM') return @mysqli_fetch_array($result, MYSQLI_NUM);
+                elseif ($result_type == 'MYSQL_BOTH') return @mysqli_fetch_array($result, MYSQLI_BOTH);
+                else return @mysqli_fetch_array($result, MYSQLI_ASSOC);
             }else return false;
         }catch (Exception $e) {
             SysLogs::addError('Mysql:Error - ' . $e->getMessage());
