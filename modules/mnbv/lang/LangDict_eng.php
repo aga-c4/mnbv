@@ -30,6 +30,8 @@ $langTmpArr = array(
     
     "Day" => "Day",
     "Night" => "Night",
+
+    "objgroup" => "Группа",
     
     "NavMainpage" => "Main",
     "NavRobots" => "Robots",
@@ -663,6 +665,8 @@ $langTmpArr = array(
         "rbtype" => "Robot type",
 
         "balancies" => "Balancies",
+
+        "objgroup" => "Groupe",
         
     ),
     
