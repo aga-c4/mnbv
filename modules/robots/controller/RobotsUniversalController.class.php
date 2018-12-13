@@ -181,9 +181,9 @@ class RobotsUniversalController extends AbstractMnbvsiteController{
                     //echo date("Y-m-d H:i:s",intval($timeStartSec)) . " ValLag=".sprintf("%.8f", $timeValOver-$timeValbefore)."s \n";
 
                     //Вывод сообщения о очередном максимуме расхода памяти
-                    $cur_memory_usage = intval(memory_get_usage() / (1024 * 1024));
-                    if (empty($maxMemUsage) || $cur_memory_usage>$maxMemUsage) {
-                        $maxMemUsage = $cur_memory_usage;
+                    $cur_memory_max_usage = intval(memory_get_peak_usage() / (1024 * 1024));
+                    if (empty($maxMemUsage) || $cur_memory_max_usage>$maxMemUsage) {
+                        $maxMemUsage = $cur_memory_max_usage;
                         echo date("Y-m-d H:i:s") . " New max memory_usage: ".number_format($maxMemUsage, 3)." Mb\n";
                     }
                     ################################[ Конец сервисных операций ]###############################
@@ -205,11 +205,14 @@ class RobotsUniversalController extends AbstractMnbvsiteController{
                     }
                     if ($countIter>3600) {//1 раз в час запускаем эту обработку, которая выдаст лог и удалит из памяти старые данные
                         $countIter=0;
+                        $memory_peak_usage = number_format((memory_get_peak_usage() / (1024 * 1024)), 3)." Mb";
+                        $memory_fin_usage = number_format((memory_get_usage() / (1024 * 1024)), 3)." Mb";
                         echo "------ Log ".date("Y-m-d H:i:s")." -------\n";
                         echo "Iteration time>1s. = " . $longIterSumm . "\n";
                         echo "Max Iteration time = " . $maxTimeDelta . "s.\n";
-                        echo "Max Get time = " . $MaxTimeMrktGet . "s.\n";
-                        echo "Memory_usage: ".number_format((memory_get_usage() / (1024 * 1024)), 3)." Mb\n";
+                        echo "Max BittrexGet time = " . $MaxTimeMrktGet . "s.\n";
+                        echo "Memory peak usage: $memory_peak_usage\n";
+                        echo "Memory fin usage: $memory_fin_usage\n";
                         echo MNBVf::getDBStat() . "\n";
                         //$telegram->telegramApiQuery('sendMessage', array('text'=>'Время: '. date("Y-m-d H:i:s",time())));
                         $maxTimeDelta = 0;
