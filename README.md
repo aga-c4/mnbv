@@ -158,6 +158,9 @@ mklink /j actions D:\OSPanel\domains\mnbv\data\storage_files\actions
 ```
 
 5. Создайте базу данных базовая кодировка utf-8, сравнение utf8_general_ci
+
+CREATE DATABASE `mnbv` CHARACTER SET utf8 COLLATE utf8_general_ci;
+
 По-умолчанию для базы используется название mnbv8. При локальных тестах она
 запускается под пользователем root без пароля. При таких настройках дополнительной
 конфигурации БД перед запуском не потребуется. Для инициализации базы данных
