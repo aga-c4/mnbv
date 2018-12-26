@@ -180,3 +180,11 @@ Glob::$vars['sort_types_st'] = array();
 foreach (Glob::$vars['sort_types'] as $key => $value) {
     Glob::$vars['sort_types_st'][$key] = $key;
 }
+
+//Дефолтовые типы объектов для формирования ЧПУ (URL)
+Glob::$vars['url_types'] = array(
+    "product" => array('id'=>1,'item_pref'=>'pr_','cat_pref'=>'catalog'), //Параметры товара
+    "news" => array('id'=>2,'item_pref'=>'nv_','cat_pref'=>'catalog'), //Параметры новости
+    "article" => array('id'=>3,'item_pref'=>'art_','cat_pref'=>'catalog'), //Параметры статьи
+    "comment" => array('id'=>4,'item_pref'=>'cm_','cat_pref'=>'catalog'), //Параметры отзыв
+);
