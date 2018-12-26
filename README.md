@@ -158,7 +158,6 @@ mklink /j actions D:\OSPanel\domains\mnbv\data\storage_files\actions
 ```
 
 5. Создайте базу данных базовая кодировка utf-8, сравнение utf8_general_ci
-CREATE DATABASE `mnbv` CHARACTER SET utf8 COLLATE utf8_general_ci;
 По-умолчанию для базы используется название mnbv8. При локальных тестах она
 запускается под пользователем root без пароля. При таких настройках дополнительной
 конфигурации БД перед запуском не потребуется. Для инициализации базы данных
@@ -168,6 +167,9 @@ CREATE DATABASE `mnbv` CHARACTER SET utf8 COLLATE utf8_general_ci;
 Далее выполните команду, находясь в этом каталоге: php migration.php db=mnbv migrate
 В результате будет создана база данных. Подробнее об использовании механизма
 миграций читайте в файле, который вызываете "migration.php".
+```
+CREATE DATABASE `mnbv` CHARACTER SET utf8 COLLATE utf8_general_ci;
+```
 
 6. По-умолчанию в конфиге настроены доступы к Mysql базе mnbv8 для пользователя 
 root без пароля. Если в вашем случае это другие доступы, то создайте файл 
