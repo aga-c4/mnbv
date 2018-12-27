@@ -96,6 +96,15 @@ if ($kol_mnbv_route_arr>0 && preg_match("/^sort_([^\/]+)$/ui", Glob::$vars['mnbv
 if (SysBF::getFrArr(Glob::$vars['request'],'sort')) Glob::$vars['mnbv_listsort'] = SysBF::getFrArr(Glob::$vars['request'],'sort'); //Прямое указание имеет преимущество
 if (!empty(Glob::$vars['mnbv_listsort'])) SysLogs::addLog("Site router: list sort = [".Glob::$vars['mnbv_listsort']."]");
 
+
+//Обработаем ЧПУ URL
+//$currMasterUri = implode('/',Glob::$vars['mnbv_route_arr']); //Неразобранный остаток строки
+//if (Glob::$vars['mnbv_controller'] == 'products')  Glob::$vars['mnbv_urlmaster']->get('')
+
+
+
+//Если не нашли ничего по ЧПУ, то пойдем по стандартной схеме разбора URL
+
 //Номер объекта подчиненного хранилища
 if ($kol_mnbv_route_arr>0 && preg_match("/^io([0-9]+)$/ui", Glob::$vars['mnbv_route_arr'][$kol_mnbv_route_arr-1],$matches)){//Есть номера страниц
     Glob::$vars['mnbv_site']['sub_id'] = intval($matches[1]);
