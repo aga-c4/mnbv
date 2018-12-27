@@ -186,8 +186,8 @@ foreach (Glob::$vars['sort_types'] as $key => $value) {
 //alias_delim - отделяет идентификатор объекта от алиаса объекта
 //item_postf - то, что идет после алиаса для всех объектов (к примеру закрывающий слеш)
 Glob::$vars['url_types'] = array(
-    "product" => array('id'=>1,'mod_pref'=>'catalog/','cat_alias_view'=>true,'item_pref'=>'pr_','alias_delim'=>'-','item_postf'=>''),  //Параметры товара
+    "products" => array('id'=>1,'mod_pref'=>'catalog/','cat_alias_view'=>true,'item_pref'=>'pr_','alias_delim'=>'-','item_postf'=>''),  //Параметры товара
     "news" => array('id'=>2,'mod_pref'=>'news/','cat_alias_view'=>true,'item_pref'=>'nv_','alias_delim'=>'-','item_postf'=>''),        //Параметры новости
-    "article" => array('id'=>3,'mod_pref'=>'articles/','cat_alias_view'=>true,'item_pref'=>'art_','alias_delim'=>'-','item_postf'=>''),//Параметры статьи
-    "comment" => array('id'=>4,'mod_pref'=>'comments/','cat_alias_view'=>true,'item_pref'=>'cm_','alias_delim'=>'-','item_postf'=>''), //Параметры отзыв
+    "articles" => array('id'=>3,'mod_pref'=>'articles/','cat_alias_view'=>true,'item_pref'=>'art_','alias_delim'=>'-','item_postf'=>''),//Параметры статьи
+    "actions" => array('id'=>4,'mod_pref'=>'actions/','cat_alias_view'=>true,'item_pref'=>'act_','alias_delim'=>'-','item_postf'=>''), //Параметры отзыв
 );
