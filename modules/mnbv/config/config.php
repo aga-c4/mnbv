@@ -181,10 +181,13 @@ foreach (Glob::$vars['sort_types'] as $key => $value) {
     Glob::$vars['sort_types_st'][$key] = $key;
 }
 
-//Дефолтовые типы объектов для формирования ЧПУ (URL)
+//Дефолтовые типы объектов для формирования ЧПУ (URL).
+//cat_alias_view определяет наличие алиасов в URL ОБЪЕКТА, в категории он будет в любом случае
+//alias_delim - отделяет идентификатор объекта от алиаса объекта
+//item_postf - то, что идет после алиаса для всех объектов (к примеру закрывающий слеш)
 Glob::$vars['url_types'] = array(
-    "product" => array('id'=>1,'item_pref'=>'pr_','cat_pref'=>'catalog'), //Параметры товара
-    "news" => array('id'=>2,'item_pref'=>'nv_','cat_pref'=>'catalog'), //Параметры новости
-    "article" => array('id'=>3,'item_pref'=>'art_','cat_pref'=>'catalog'), //Параметры статьи
-    "comment" => array('id'=>4,'item_pref'=>'cm_','cat_pref'=>'catalog'), //Параметры отзыв
+    "product" => array('id'=>1,'mod_pref'=>'catalog/','cat_alias_view'=>true,'item_pref'=>'pr_','alias_delim'=>'-','item_postf'=>''),  //Параметры товара
+    "news" => array('id'=>2,'mod_pref'=>'news/','cat_alias_view'=>true,'item_pref'=>'nv_','alias_delim'=>'-','item_postf'=>''),        //Параметры новости
+    "article" => array('id'=>3,'mod_pref'=>'articles/','cat_alias_view'=>true,'item_pref'=>'art_','alias_delim'=>'-','item_postf'=>''),//Параметры статьи
+    "comment" => array('id'=>4,'mod_pref'=>'comments/','cat_alias_view'=>true,'item_pref'=>'cm_','alias_delim'=>'-','item_postf'=>''), //Параметры отзыв
 );
