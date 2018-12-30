@@ -54,11 +54,12 @@ class MNBVURL {
         $result = null;
         if (!isset($this->urlTypes[$urltype])) return $result;
         if (empty($siteId)) $siteId = $this->defSiteId;
+        $urltypeInt = $this->urlTypes[$urltype]['id'];
 
         $stRes = MNBVStorage::getObj(
             'urlaliases',
             array('alias','catalias'),
-            array("siteid","=",$siteId,"and","urltype","=",$urltype,"and","idref","=",$id),
+            array("siteid","=",$siteId,"and","urltype","=",$urltypeInt,"and","idref","=",$id),
             array('limit'=>array(0,1)));
         $alias = (!empty($stRes[0])&&isset($stRes[1])&&isset($stRes[1]['alias']))?$stRes[1]['alias']:'';
         $catalias = (!empty($stRes[0])&&isset($stRes[1])&&isset($stRes[1]['catalias']))?$stRes[1]['catalias']:'';
@@ -87,6 +88,7 @@ class MNBVURL {
     public function getIdByURL($urltype,$url,$siteId='') {
         if (!isset($this->urlTypes[$urltype])) return null;
         if (empty($siteId)) $siteId = $this->defSiteId;
+        $urltypeInt = $this->urlTypes[$urltype]['id'];
 
         $itemMask = '/\/';
         if (!empty($this->urlTypes['item_pref'])) $itemMask .= $this->urlTypes['item_pref'];
@@ -107,7 +109,7 @@ class MNBVURL {
         $stRes = MNBVStorage::getObj(
             'urlaliases',
             array('idref'),
-            array("siteid","=",$siteId,"and","urltype","=",$urltype,"and","alias","=",$url),
+            array("siteid","=",$siteId,"and","urltype","=",$urltypeInt,"and","alias","=",$url),
             array('limit'=>array(0,1)));
         $refid = (!empty($stRes[0])&&isset($stRes[1])&&isset($stRes[1]['idref']))?$stRes[1]['idref']:'';
         if (!empty($refid)) return array('obj_id'=>null,'list_id'=>$refid);
@@ -129,16 +131,18 @@ class MNBVURL {
         $result = false;
         if (!isset($this->urlTypes[$urltype])) return $result;
         if ($siteId==='notset') $siteId = $this->defSiteId;
+        $urltypeInt = $this->urlTypes[$urltype]['id'];
         $alias = preg_replace("/\/$/",'',$alias);
         $catalias = preg_replace("/\/$/",'',$catalias);
         $alias = preg_replace("/^\//",'',$alias);
         $catalias = preg_replace("^/\//",'',$catalias);
+        $alias .= '-' . $urltype;
         
         if ($objtype==1) $catalias='notset';
 
         $updateArr = array(
             "siteid" => $siteId, // Идентификатор сайта
-            "urltype" => $urltype, // Идентификатор типа (в конфиге прописаны типы стандартные, можно дополнить)
+            "urltype" => $urltypeInt, // Идентификатор типа (в конфиге прописаны типы стандартные, можно дополнить)
             "alias" => $alias, //алиас объекта
             "idref" => $id, // Идентификатор объекта
             "objtype" => $objtype
@@ -148,7 +152,7 @@ class MNBVURL {
         $stRes = MNBVStorage::getObj(
             'urlaliases',
             array('id'),
-            array("siteid","=",$siteId,"and","urltype","=",$urltype,"and","idref","=",$id),
+            array("siteid","=",$siteId,"and","urltype","=",$urltypeInt,"and","idref","=",$id),
             array('limit'=>array(0,1)));
         $aliasId = (!empty($stRes[0])&&isset($stRes[1])&&isset($stRes[1]['id']))?$stRes[1]['id']:'';
 

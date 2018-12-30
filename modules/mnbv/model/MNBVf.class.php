@@ -711,8 +711,8 @@ class MNBVf {
             $result .= (!empty($obj['typeval']))?$obj['typeval']:'';
         }else{
             
-            if (!empty($obj['use_other_storage']) && !empty(SysStorage::$storage[$item['usestorage']]['castom_url'])){ //Если для данного хранилища надо формировать URL
-                $result .= Glob::$vars['mnbv_urlmaster']->getURLById($obj['id'],Glob::$vars['mnbv_controller'],Glob::$vars['mnbv_site']['id']);
+            if (!empty($obj['use_other_storage']) && !empty(SysStorage::$storage[$item['obj']['use_other_storage']]['castom_url'])){ //Если для данного хранилища надо формировать URL
+                $result .= Glob::$vars['mnbv_urlmaster']->getURLById($obj['id'],$item['obj']['use_other_storage'],Glob::$vars['mnbv_site']['id']);
             }else{
                 if (!empty($obj['use_other_storage']) && isset($obj['page_main_alias'])) { //Вариант с внешним хранилищем
                     $result .= $obj['page_main_alias']; //Сначала добавим корневой алиасэ
