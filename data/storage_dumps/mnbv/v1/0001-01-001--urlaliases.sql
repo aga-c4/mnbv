@@ -35,7 +35,8 @@ CREATE TABLE `mnbv_urlaliases` (
   `urltype` int(2) NOT NULL DEFAULT '0',
   `alias` varchar(100) NOT NULL DEFAULT '',
   `idref` int(11) NOT NULL,
-  `objtype` int(1) NOT NULL DEFAULT '0'
+  `objtype` int(1) NOT NULL DEFAULT '0',
+  `catalias` varchar(100) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
