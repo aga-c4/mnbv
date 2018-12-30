@@ -810,7 +810,7 @@ class StorageController {
             if (!empty(SysStorage::$storage[$item['usestorage']]['castom_url'])){
                 $urlmaster = new MNBVURL(2); 
                 $urlmaster->setItemAlias($item['usestorage'],$item['obj']["id"],$item['obj']['alias'],$item['obj']['type'],$upFolderAlias,$item['obj']['siteid']);
-                SysLogs::addLog("Update URL: urltype=[".$item['usestorage']."] id=[".$item['obj']["id"]."] alias=[".$item['obj']['alias']."] upFolderAlias=[$upFolderAlias] siteId=[".$item['obj']['siteid']."]");
+                SysLogs::addLog("Update URL: urltype=[".$item['usestorage']."] id=[".$item['obj']["id"]."] alias=[".$item['obj']['alias']."] objtype=[".$item['obj']['type']."] upFolderAlias=[$upFolderAlias] siteId=[".$item['obj']['siteid']."]");
             }
 
         }
