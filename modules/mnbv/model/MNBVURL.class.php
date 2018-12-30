@@ -140,7 +140,7 @@ class MNBVURL {
         $alias = preg_replace("/^\//",'',$alias);
         $catalias = preg_replace("^/\//",'',$catalias);
         
-        if ($objtype==1) $catalias='notset';
+        if ($objtype==1) $catalias='';
 
         $updateArr = array(
             "siteid" => $siteId, // Идентификатор сайта
