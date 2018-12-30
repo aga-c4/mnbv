@@ -17,7 +17,7 @@
 
 <? }else{ ?>
 
-<div id="imagearea" style="position:relative; cursor: crosshair; width:<?=SysBF::getFrArr($item,'img_editor_file_w',0);?>px; height:<?=SysBF::getFrArr($item,'img_editor_file_h',0);?>px; border-width:0; background-image: url('<?=SysBF::getFrArr($item,'img_editor_file','')."?cache_id=".date("YmdGis");?>')" align=left  onclick='mouseHandler()' onmousemove='mouseHandler()'>
+<div id="imagearea" style="position:relative; cursor: crosshair; width:<?=SysBF::getFrArr($item,'img_editor_file_w',0);?>px; height:<?=SysBF::getFrArr($item,'img_editor_file_h',0);?>px; border-width:0; background-image: url('<?=SysBF::getFrArr($item,'img_editor_file','')."?cache_id=".date("YmdGis");?>')" align=left  onclick='mouseHandler(event)' onmousemove='mouseHandler(event)'>
     <div id="area"></div>
 </div>
 

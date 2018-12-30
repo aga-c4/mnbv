@@ -1,20 +1,21 @@
-//Определим область выделения ширину и длинну. если "0" - Параметры берутся с выделенной области
+//РћРїСЂРµРґРµР»РёРј РѕР±Р»Р°СЃС‚СЊ РІС‹РґРµР»РµРЅРёСЏ С€РёСЂРёРЅСѓ Рё РґР»РёРЅРЅСѓ. РµСЃР»Рё "0" - РџР°СЂР°РјРµС‚СЂС‹ Р±РµСЂСѓС‚СЃСЏ СЃ РІС‹РґРµР»РµРЅРЅРѕР№ РѕР±Р»Р°СЃС‚Рё
 var tmbwidth = 0;
 var tmbheight = 0;
 
-//Первая точка
+//РџРµСЂРІР°СЏ С‚РѕС‡РєР°
 var x1 = 0;
 var y1 = 0;
-//Вторая точка
+//Р’С‚РѕСЂР°СЏ С‚РѕС‡РєР°
 var x2 = 0;
 var y2 = 0;
-//состояние выделенной области
+//СЃРѕСЃС‚РѕСЏРЅРёРµ РІС‹РґРµР»РµРЅРЅРѕР№ РѕР±Р»Р°СЃС‚Рё
 var ptype = false;
 
 //mouse handler function
 function mouseHandler(mouseEvent)
 {
-	if (!mouseEvent) mouseEvent = window.event;
+	//if (!mouseEvent) mouseEvent = window.event;	
+	mouseEvent = mouseEvent || window.event;
 	if (mouseEvent.button == 2) return;
 	var element = (mouseEvent.target)?mouseEvent.target:mouseEvent.srcElement;
 
@@ -204,13 +205,13 @@ function inpXYUpd()
 };
 function inpWnovUpd()
 {
-	//Вычислим пропорцию
+	//Р’С‹С‡РёСЃР»РёРј РїСЂРѕРїРѕСЂС†РёСЋ
     var pr=document.getElementById('th_width').value/document.getElementById('th_height').value;
 	document.getElementById('th_h').value=document.getElementById('th_w').value/pr;
 };
 function inpHnovUpd()
 {
-	//Вычислим пропорцию
+	//Р’С‹С‡РёСЃР»РёРј РїСЂРѕРїРѕСЂС†РёСЋ
     var pr=document.getElementById('th_width').value/document.getElementById('th_height').value;
 	//document.getElementById('th_w').value=document.getElementById('th_h').value*pr;
 };

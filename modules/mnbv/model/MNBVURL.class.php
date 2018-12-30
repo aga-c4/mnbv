@@ -38,7 +38,7 @@ class MNBVURL {
      * @param array $urlTypes - типы объектов для формирования ЧПУ (URL) импортируется из Glob::$vars['url_types'] обычно.
      * @param string $defSiteId - идентификатор сайта по-умолчанию.
      */
-    public function __construct($urlTypes='notset', $defSiteId='notset') {
+    public function __construct($defSiteId='notset', $urlTypes='notset') {
         if ($defSiteId!=='notset') $this->defSiteId = intval($defSiteId);
         if (is_array($urlTypes)) $this->urlTypes = $urlTypes;
     }
@@ -76,7 +76,7 @@ class MNBVURL {
     /**
      * Вовращает идентификатор объекта по относительному URL возможно не в полной комплектности
      * @param string $objtype тип объекта
-     * @param string $url идентификатор объекта
+     * @param string $url идентификатор объекта $_SERVER['PHP_SELF']
      * @param mixed $siteId идентификатор сайта
      * @return mixed идентификатор объекта, обычно это int, если будет особая настройка системы, то идентификатор может быть string
      */
@@ -84,20 +84,21 @@ class MNBVURL {
         if (!isset($this->urlTypes[$objtype])) return null;
         if (empty($siteId)) $siteId = $this->defSiteId;
 
-        $url = preg_replace("/\/$/",'',$url);
-        $url = preg_replace("/^\//",'',$url);
-
         $itemMask = '/\/';
         if (!empty($this->urlTypes['item_pref'])) $itemMask .= $this->urlTypes['item_pref'];
-        $itemMask .= '\d+/i';
+        $itemMask .= '\(d+)/i';
 
         $refid = 0;
         $itemGetMask = preg_match($itemMask,$url,$matches);
-        if (!empty($itemGetMask)){ //По регулярке пробуем найти объект
-            $refid = intval($matches[0]);
+        if (!empty($itemGetMask)&&!empty($matches[1])){ //По регулярке пробуем найти объект
+            $refid = intval($matches[1]);
         }
-        if (!empty($refid)) return $refid;
+        if (!empty($refid)) return array('obj_id'=>$refid,'list_id'=>null);
 
+        
+        $url = preg_replace("/\/$/",'',$url);
+        $url = preg_replace("/^\//",'',$url);
+        
         //Если объект не найден, то продолжим поиск категории объекта из базы URL
         $stRes = MNBVStorage::getObj(
             'urlaliases',
@@ -105,7 +106,7 @@ class MNBVURL {
             array("siteid","=",$siteId,"and","objtype","=",$objtype,"and","alias","=",$url),
             array('limit'=>array(0,1)));
         $refid = (!empty($stRes[0])&&isset($stRes[1])&&isset($stRes[1]['idref']))?$stRes[1]['idref']:'';
-        if (!empty($refid)) return $refid;
+        if (!empty($refid)) return array('obj_id'=>null,'list_id'=>$refid);
 
         return null;
     }

@@ -745,7 +745,13 @@ class StorageController {
                     
                     //Выполним обработку входных данных
                     if ('on' == SysBF::getFrArr(Glob::$vars['request'],'obd_alias_autogen','')) $updateArr["alias"] = MNBVf::str2alias (SysBF::getFrArr($updateArr,'name','')); //Авто формирование алиаса
-
+                   
+                    //Если требуется, то внесем изменения в хранилище алиасов
+                    if (!empty(SysStorage::$storage[$this->getStorage()]['castom_url'])){
+                        //$urlmaster = new MNBVURL(2); 
+                        //$urlmaster->setItemAlias($objtype,$id,$alias,$catalias,$siteId='notset');
+                    }
+                    
                     if (SysBF::checkStr(SysBF::getFrArr(Glob::$vars['request'],'del',''),'on')==1){ //Удалим данную запись, если это требуется
                         $res = MNBVStorage::delObj($this->getStorage(),array("id",'=',$item["id"]));
                         SysLogs::addLog("Delete object /".$this->getStorage()."/".$item["id"]."/ ".(($res)?'successful!':'error!'));

@@ -32,6 +32,7 @@ $storageRes = MNBVStorage::getObj('sites',
             array(array("domain","=","$currentDomen","or","maindomain","=","$currentDomen"),"and","visible","=",1));
 $siteArr = ($storageRes[0]>0)?$storageRes[1]:null;
 if (!empty($storageRes[0])){ //Домен найден
+    $siteArr['id'] = $siteArr['id'];
     if (empty($siteArr['domain'])) $siteArr['domain'] = $currentDomen;
     if (empty($siteArr['maindomain'])) $siteArr['maindomain'] = $siteArr['domain'];
     if (empty($siteArr['protocol'])) $siteArr['protocol'] = '//';
@@ -51,6 +52,7 @@ if (!empty($storageRes[0])){ //Домен найден
                 array("visible","=",1,'and',"first","=",1));
     $siteArr = ($storageRes[0]>0)?$storageRes[1]:null;
     if (!empty($storageRes[0])){//Объект для редактирования найден
+        $siteArr['id'] = $siteArr['id'];
         if (empty($siteArr['domain'])) $siteArr['domain'] = $currentDomen;
         if (empty($siteArr['maindomain'])) $siteArr['maindomain'] = $siteArr['domain'];
         if (empty($siteArr['cookiedomain'])) $siteArr['cookiedomain'] = (!empty($siteArr['maindomain']))?('.'.$siteArr['maindomain']):'';

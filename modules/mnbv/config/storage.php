@@ -638,6 +638,7 @@ SysStorage::$storage['products'] = array( //Корневая таблица са
     'files_security' => false, //будет ли ограничение доступа к приложенным файлам объектов хранилища
     'files_types' => array('img'=>'all','att'=>'all'), //Допустимые для загрузки типы файлов, array('jpg','bmp',...) или 'all' для всех допустимых (можно единый на все, т.е. вообще без массивов). Если поле не указано, то считается all
     'img_max_size' => 'products', //Настройка для закачки изображений по-умолчанию default, если не заданы какие-нибудь элементы, то берутся из defailt
+    'castom_url' => true, //Если true, то на базе алиасов будут добавляться данные в хранилище для разбора URL
 );
 SysStorage::$storage['products']['stru']['vendor'] = array("type"=>"int", "size"=>11, "creatval"=>0, "dbtype"=>"int", "linkstorage"=>"vendors");
 SysStorage::$storage['products']['stru']['country'] = array("type"=>"int", "size"=>11, "creatval"=>0, "dbtype"=>"int", "linkstorage"=>"countries");

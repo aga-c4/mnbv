@@ -98,27 +98,35 @@ if (!empty(Glob::$vars['mnbv_listsort'])) SysLogs::addLog("Site router: list sor
 
 
 //Обработаем ЧПУ URL
-//$currMasterUri = implode('/',Glob::$vars['mnbv_route_arr']); //Неразобранный остаток строки
-//if (Glob::$vars['mnbv_controller'] == 'products')  Glob::$vars['mnbv_urlmaster']->get('')
+$currMasterUri = '/' . implode('/',Glob::$vars['mnbv_route_arr']); //Неразобранный остаток строки
+Glob::$vars['mnbv_urlmaster'] = new MNBVURL(2); 
 
+//разбор каталога товаров
+if (Glob::$vars['mnbv_controller'] === 'products')  $urlArr = Glob::$vars['mnbv_urlmaster']->getIdByURL(Glob::$vars['mnbv_controller'],$currMasterUri,Glob::$vars['mnbv_site']['id']);
+if (is_array($urlArr)){
+    Glob::$vars['mnbv_site']['sub_id'] = $urlArr['obj_id'];
+    Glob::$vars['mnbv_site']['sub_list_id'] = $urlArr['list_id'];
+}
 
 
 //Если не нашли ничего по ЧПУ, то пойдем по стандартной схеме разбора URL
+if (empty(Glob::$vars['mnbv_site']['sub_id']) && empty(Glob::$vars['mnbv_site']['sub_list_id'])){
+    //Номер объекта подчиненного хранилища
+    if ($kol_mnbv_route_arr>0 && preg_match("/^io([0-9]+)$/ui", Glob::$vars['mnbv_route_arr'][$kol_mnbv_route_arr-1],$matches)){//Есть номера страниц
+        Glob::$vars['mnbv_site']['sub_id'] = intval($matches[1]);
+        unset(Glob::$vars['mnbv_route_arr'][$kol_mnbv_route_arr-1]);
+        $kol_mnbv_route_arr--;
+    }
+    if (SysBF::getFrArr(Glob::$vars['request'],'io')) Glob::$vars['mnbv_site']['sub_id'] = SysBF::getFrArr(Glob::$vars['request'],'io'); //Прямое указание имеет преимущество
 
-//Номер объекта подчиненного хранилища
-if ($kol_mnbv_route_arr>0 && preg_match("/^io([0-9]+)$/ui", Glob::$vars['mnbv_route_arr'][$kol_mnbv_route_arr-1],$matches)){//Есть номера страниц
-    Glob::$vars['mnbv_site']['sub_id'] = intval($matches[1]);
-    unset(Glob::$vars['mnbv_route_arr'][$kol_mnbv_route_arr-1]);
-    $kol_mnbv_route_arr--;
+    //Номер списка подчиненного хранилища
+    if ($kol_mnbv_route_arr>0 && preg_match("/^il([0-9]+)$/ui", Glob::$vars['mnbv_route_arr'][$kol_mnbv_route_arr-1],$matches)){//Есть номера страниц
+        Glob::$vars['mnbv_site']['sub_list_id'] = intval($matches[1]);
+        unset(Glob::$vars['mnbv_route_arr'][$kol_mnbv_route_arr-1]);
+        $kol_mnbv_route_arr--;
+    }
+    if (SysBF::getFrArr(Glob::$vars['request'],'il')) Glob::$vars['mnbv_site']['sub_list_id'] = SysBF::getFrArr(Glob::$vars['request'],'il'); //Прямое указание имеет преимущество
 }
-if (SysBF::getFrArr(Glob::$vars['request'],'io')) Glob::$vars['mnbv_site']['sub_id'] = SysBF::getFrArr(Glob::$vars['request'],'io'); //Прямое указание имеет преимущество
+
 if (!empty(Glob::$vars['mnbv_site']['sub_id'])) SysLogs::addLog("Site router: list subid = [".Glob::$vars['mnbv_site']['sub_id']."]");
-
-//Номер списка подчиненного хранилища
-if ($kol_mnbv_route_arr>0 && preg_match("/^il([0-9]+)$/ui", Glob::$vars['mnbv_route_arr'][$kol_mnbv_route_arr-1],$matches)){//Есть номера страниц
-    Glob::$vars['mnbv_site']['sub_list_id'] = intval($matches[1]);
-    unset(Glob::$vars['mnbv_route_arr'][$kol_mnbv_route_arr-1]);
-    $kol_mnbv_route_arr--;
-}
-if (SysBF::getFrArr(Glob::$vars['request'],'il')) Glob::$vars['mnbv_site']['sub_list_id'] = SysBF::getFrArr(Glob::$vars['request'],'il'); //Прямое указание имеет преимущество
 if (!empty(Glob::$vars['mnbv_site']['sub_list_id'])) SysLogs::addLog("Site router: list subid = [".Glob::$vars['mnbv_site']['sub_list_id']."]");
