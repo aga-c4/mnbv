@@ -710,17 +710,22 @@ class MNBVf {
         if ($obj['type']==2){ //Если это URL, то впишем его
             $result .= (!empty($obj['typeval']))?$obj['typeval']:'';
         }else{
-            if (!empty($obj['use_other_storage']) && isset($obj['page_main_alias'])) { //Вариант с внешним хранилищем
-                $result .= $obj['page_main_alias']; //Сначала добавим корневой алиасэ
-                if (!empty($param['type']) && $param['type']=='list') { //Формируем ссылку на список
-                    $result .= (!empty($obj['folder_alias']))?('/'.$obj['folder_alias']):''; //Алиас объекта
-                    if ($obj['folderid']!==$obj['folder_start_id']) $result .= '/il' . $obj['folderid']; //Идентификатор объекта
-                }else{ //Формируем ссылку на объект
-                    $result .= (!empty($obj['alias']))?('/'.$obj['alias']):''; //Алиас объекта
-                    $result .= (($obj['type']==1)?'/il':'/io') . $obj['id']; //Идентификатор объекта или списка, если это папка
+            
+            if (!empty($obj['use_other_storage']) && !empty(SysStorage::$storage[$item['usestorage']]['castom_url'])){ //Если для данного хранилища надо формировать URL
+                $result .= Glob::$vars['mnbv_urlmaster']->getURLById($obj['id'],Glob::$vars['mnbv_controller'],Glob::$vars['mnbv_site']['id']);
+            }else{
+                if (!empty($obj['use_other_storage']) && isset($obj['page_main_alias'])) { //Вариант с внешним хранилищем
+                    $result .= $obj['page_main_alias']; //Сначала добавим корневой алиасэ
+                    if (!empty($param['type']) && $param['type']=='list') { //Формируем ссылку на список
+                        $result .= (!empty($obj['folder_alias']))?('/'.$obj['folder_alias']):''; //Алиас объекта
+                        if ($obj['folderid']!==$obj['folder_start_id']) $result .= '/il' . $obj['folderid']; //Идентификатор объекта
+                    }else{ //Формируем ссылку на объект
+                        $result .= (!empty($obj['alias']))?('/'.$obj['alias']):''; //Алиас объекта
+                        $result .= (($obj['type']==1)?'/il':'/io') . $obj['id']; //Идентификатор объекта или списка, если это папка
+                    }
+                } else { //Вариант с текущим хранилищем
+                    $result .= (!empty($obj['alias']))?('/'.$obj['alias']):('/id'.$obj['id']);
                 }
-            } else { //Вариант с текущим хранилищем
-                $result .= (!empty($obj['alias']))?('/'.$obj['alias']):('/id'.$obj['id']);
             }
 
             if (!empty(Glob::$vars['mnbv_site']['sorturl']) && !empty($param['sort']) && (empty($obj['vars']['list_sort'])||$param['sort']!=$obj['vars']['list_sort'])) $result .= '/sort_' . $param['sort']; //Если сортировка в папках
