@@ -138,7 +138,7 @@ class MNBVURL {
         
         $alias = preg_replace("/\/$/",'',$alias);
         $alias = preg_replace("/^\//",'',$alias);
-        
+        SysLogs::addLog("Update URL: catalias=[".$catalias."]");
         $catalias = preg_replace("/\/$/",'',$catalias);
         $catalias = preg_replace("^/\//",'',$catalias);
         
@@ -152,6 +152,8 @@ class MNBVURL {
             "objtype" => $objtype
         );
         if ($catalias!=='notset') $updateArr['catalias'] = $catalias;
+        
+        SysLogs::addLog("Update URL: catalias=[".$updateArr['catalias']."]");
 
         $stRes = MNBVStorage::getObj(
             'urlaliases',
