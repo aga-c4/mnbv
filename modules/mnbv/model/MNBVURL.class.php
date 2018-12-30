@@ -58,14 +58,17 @@ class MNBVURL {
 
         $stRes = MNBVStorage::getObj(
             'urlaliases',
-            array('alias','catalias'),
+            array('alias','catalias','objtype'),
             array("siteid","=",$siteId,"and","urltype","=",$urltypeInt,"and","idref","=",$id),
             array('limit'=>array(0,1)));
-        $alias = (!empty($stRes[0])&&isset($stRes[1])&&isset($stRes[1]['alias']))?$stRes[1]['alias']:'';
-        $catalias = (!empty($stRes[0])&&isset($stRes[1])&&isset($stRes[1]['catalias']))?$stRes[1]['catalias']:'';
+        if (empty($stRes[0])) return $result;
+        
+        $objtype = (isset($stRes[1])&&isset($stRes[1]['objtype']))?$stRes[1]['objtype']:'';
+        $alias = (isset($stRes[1])&&isset($stRes[1]['alias']))?$stRes[1]['alias']:'';
+        $catalias = (isset($stRes[1])&&isset($stRes[1]['catalias']))?$stRes[1]['catalias']:'';
 
         $result = '/';
-        if (objtype){//Папка
+        if ($objtype==1){//Папка
             $result .= $alias;
         }else{//Объект
             if (!empty($catalias)&&!empty($this->urlTypes['cat_alias_view'])) $result .= $catalias . '/';
