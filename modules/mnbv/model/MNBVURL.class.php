@@ -140,7 +140,7 @@ class MNBVURL {
         $alias = preg_replace("/^\//",'',$alias);
         SysLogs::addLog("Update URL: catalias=[".$catalias."]");
         $catalias = preg_replace("/\/$/",'',$catalias);
-        $catalias = preg_replace("^/\//",'',$catalias);
+        $catalias = preg_replace("/^\//",'',$catalias);
         
         if ($objtype==1) $catalias='';
 
