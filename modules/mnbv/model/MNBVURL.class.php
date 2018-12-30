@@ -135,12 +135,14 @@ class MNBVURL {
         if (!isset($this->urlTypes[$urltype])) return $result;
         if ($siteId==='notset') $siteId = $this->defSiteId;
         $urltypeInt = $this->urlTypes[$urltype]['id'];
+        
         $alias = preg_replace("/\/$/",'',$alias);
-        $catalias = preg_replace("/\/$/",'',$catalias);
         $alias = preg_replace("/^\//",'',$alias);
+        
+        $catalias = preg_replace("/\/$/",'',$catalias);
         $catalias = preg_replace("^/\//",'',$catalias);
         
-        if ($objtype==1) $catalias='';
+        if ($objtype===1) $catalias='';
 
         $updateArr = array(
             "siteid" => $siteId, // Идентификатор сайта
