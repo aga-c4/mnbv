@@ -46,42 +46,46 @@ class MNBVURL {
     /**
      * Вовращает относительный URL объекта по его идентификатору, типу и сайту
      * @param mixed $id идентификатор объекта
-     * @param string $objtype тип объекта
+     * @param string $urltype тип объекта
      * @param mixed $siteId идентификатор сайта
      * @return string
      */
-    public function getURLById($id,$objtype,$siteId='') {
+    public function getURLById($id,$urltype,$siteId='') {
         $result = null;
-        if (!isset($this->urlTypes[$objtype])) return $result;
+        if (!isset($this->urlTypes[$urltype])) return $result;
         if (empty($siteId)) $siteId = $this->defSiteId;
 
         $stRes = MNBVStorage::getObj(
             'urlaliases',
             array('alias','catalias'),
-            array("siteid","=",$siteId,"and","objtype","=",$objtype,"and","idref","=",$id),
+            array("siteid","=",$siteId,"and","urltype","=",$urltype,"and","idref","=",$id),
             array('limit'=>array(0,1)));
         $alias = (!empty($stRes[0])&&isset($stRes[1])&&isset($stRes[1]['alias']))?$stRes[1]['alias']:'';
         $catalias = (!empty($stRes[0])&&isset($stRes[1])&&isset($stRes[1]['catalias']))?$stRes[1]['catalias']:'';
 
         $result = '/';
-        if (!empty($catalias)&&!empty($this->urlTypes['cat_alias_view'])) $result .= $catalias . '/';
-        if (!empty($this->urlTypes['item_pref'])) $result .= $this->urlTypes['item_pref'];
-        $result .= $id;
-        if (!empty($alias)) $result .= ((!empty($this->urlTypes['alias_delim']))?$this->urlTypes['alias_delim']:'').$alias;
-        if (!empty($this->urlTypes['item_postf'])) $result .= $this->urlTypes['item_postf'];
+        if (objtype){//Папка
+            $result .= $alias;
+        }else{//Объект
+            if (!empty($catalias)&&!empty($this->urlTypes['cat_alias_view'])) $result .= $catalias . '/';
+            if (!empty($this->urlTypes['item_pref'])) $result .= $this->urlTypes['item_pref'];
+            $result .= $id;
+            if (!empty($alias)) $result .= ((!empty($this->urlTypes['alias_delim']))?$this->urlTypes['alias_delim']:'').$alias;
+            if (!empty($this->urlTypes['item_postf'])) $result .= $this->urlTypes['item_postf'];
+        }
 
         return $result;
     }
 
     /**
      * Вовращает идентификатор объекта по относительному URL возможно не в полной комплектности
-     * @param string $objtype тип объекта
+     * @param string $urltype тип объекта
      * @param string $url идентификатор объекта $_SERVER['PHP_SELF']
      * @param mixed $siteId идентификатор сайта
      * @return mixed идентификатор объекта, обычно это int, если будет особая настройка системы, то идентификатор может быть string
      */
-    public function getIdByURL($objtype,$url,$siteId='') {
-        if (!isset($this->urlTypes[$objtype])) return null;
+    public function getIdByURL($urltype,$url,$siteId='') {
+        if (!isset($this->urlTypes[$urltype])) return null;
         if (empty($siteId)) $siteId = $this->defSiteId;
 
         $itemMask = '/\/';
@@ -103,7 +107,7 @@ class MNBVURL {
         $stRes = MNBVStorage::getObj(
             'urlaliases',
             array('idref'),
-            array("siteid","=",$siteId,"and","objtype","=",$objtype,"and","alias","=",$url),
+            array("siteid","=",$siteId,"and","urltype","=",$urltype,"and","alias","=",$url),
             array('limit'=>array(0,1)));
         $refid = (!empty($stRes[0])&&isset($stRes[1])&&isset($stRes[1]['idref']))?$stRes[1]['idref']:'';
         if (!empty($refid)) return array('obj_id'=>null,'list_id'=>$refid);
@@ -114,33 +118,37 @@ class MNBVURL {
     /**
      * Создает или редактирует алиас для заданного объекта
      * @param mixed $id идентификатор объекта
-     * @param string $objtype тип объекта
+     * @param string $urltype тип объекта
      * @param mixed $siteId идентификатор сайта
      * @param string $alias алиас объекта будут убраны слеши в начале и в конце
+     * @param string $urltype тип объекта 0-объект, 1-папка
      * @param string $catalias алиас категории объекта будут убраны слеши в начале и в конце
      * @return bool
      */
-    public function setItemAlias($objtype,$id,$alias,$catalias='notset',$siteId='notset') {
+    public function setItemAlias($urltype,$id,$alias,$objtype=0,$catalias='notset',$siteId='notset') {
         $result = false;
-        if (!isset($this->urlTypes[$objtype])) return $result;
+        if (!isset($this->urlTypes[$urltype])) return $result;
         if ($siteId==='notset') $siteId = $this->defSiteId;
         $alias = preg_replace("/\/$/",'',$alias);
         $catalias = preg_replace("/\/$/",'',$catalias);
         $alias = preg_replace("/^\//",'',$alias);
         $catalias = preg_replace("^/\//",'',$catalias);
+        
+        if ($objtype==1) $catalias='notset';
 
         $updateArr = array(
             "siteid" => $siteId, // Идентификатор сайта
-            "objtype" => $objtype, // Идентификатор типа (в конфиге прописаны типы стандартные, можно дополнить)
+            "urltype" => $urltype, // Идентификатор типа (в конфиге прописаны типы стандартные, можно дополнить)
             "alias" => $alias, //алиас объекта
             "idref" => $id, // Идентификатор объекта
+            "objtype" => $objtype
         );
         if ($catalias!=='notset') $updateArr['catalias'] = $catalias;
 
         $stRes = MNBVStorage::getObj(
             'urlaliases',
             array('id'),
-            array("siteid","=",$siteId,"and","objtype","=",$objtype,"and","idref","=",$id),
+            array("siteid","=",$siteId,"and","urltype","=",$urltype,"and","idref","=",$id),
             array('limit'=>array(0,1)));
         $aliasId = (!empty($stRes[0])&&isset($stRes[1])&&isset($stRes[1]['id']))?$stRes[1]['id']:'';
 

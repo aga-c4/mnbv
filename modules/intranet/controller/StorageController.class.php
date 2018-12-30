@@ -723,35 +723,38 @@ class StorageController {
                     }
 
                     //При необходимости подкорректируем вложенные папки
+                    $upFolderAlias = '';
                     if ($tecNewType==ST_FOLDER && ((isset($updateArr["parentid"])&&$updateArr["parentid"]!=$item['obj']["parentid"])||(isset($updateArr["parentid"])&&isset($updateArr["type"])&&$updateArr["parentid"]!=$item['obj']["parentid"])||$attrArrUpd)) {
                         //SysLogs::addLog("tecNewType=[$tecNewType] parentid=[".((isset($updateArr["parentid"]))?$updateArr["parentid"]:'NotSet')."] type=[".((isset($updateArr["type"]))?$updateArr["type"]:'NotSet')."] attrArrUpd=[".(($attrArrUpd)?'True':'False')."]");
                         $storageRes = MNBVStorage::getObj(
                             $this->getStorage(),
-                            array("id,upfolders,attrup,attr"),
+                            array("id,upfolders,attrup,attr,alias"),
                             array("id","=",$tecNewParentid));
                         if (!empty($storageRes[0])) {//Есть сведения о родительской папке
                             $storageRes2 = MNBVStorage::upObjInfo($storageRes[1]);
                             $updateArr["upfolders"] = $storageRes2["upfolders"];
                             $updateArr["attrup"] = $storageRes2["attrup"];
+                            $upFolderAlias = $storageRes2["alias"];
                         }else{//Нет сведений о родительской папке
                             $updateArr["upfolders"] = '';
                             $updateArr["attrup"] = '';
+                            $upFolderAlias = '';
                         }
 
                         //Внесем изменения в нижестоящие папки
                         $tecNewAttr = (isset($updateArr["attr"]))?$updateArr["attr"]:((isset($item["obj"]["attr"]) && count($item["obj"]["attr"]>0))?json_encode($item["obj"]["attr"]):'');
                         $this->updateUpObjInfo(array("id"=>$item['id'],"upfolders"=>$updateArr["upfolders"],"attrup"=>$updateArr["attrup"],"attr"=>$tecNewAttr));
+                    }else{ //Если папку не меняли, получим данные по родительской папке
+                        $storageRes = MNBVStorage::getObj(
+                            $this->getStorage(),
+                            array("id,alias"),
+                            array("id","=",$tecNewParentid));
+                        if (!empty($storageRes[0])) $upFolderAlias = $storageRes[1]["alias"];
                     }
                     
                     //Выполним обработку входных данных
                     if ('on' == SysBF::getFrArr(Glob::$vars['request'],'obd_alias_autogen','')) $updateArr["alias"] = MNBVf::str2alias (SysBF::getFrArr($updateArr,'name','')); //Авто формирование алиаса
-                   
-                    //Если требуется, то внесем изменения в хранилище алиасов
-                    if (!empty(SysStorage::$storage[$this->getStorage()]['castom_url'])){
-                        //$urlmaster = new MNBVURL(2); 
-                        //$urlmaster->setItemAlias($objtype,$id,$alias,$catalias,$siteId='notset');
-                    }
-                    
+                                      
                     if (SysBF::checkStr(SysBF::getFrArr(Glob::$vars['request'],'del',''),'on')==1){ //Удалим данную запись, если это требуется
                         $res = MNBVStorage::delObj($this->getStorage(),array("id",'=',$item["id"]));
                         SysLogs::addLog("Delete object /".$this->getStorage()."/".$item["id"]."/ ".(($res)?'successful!':'error!'));
@@ -802,9 +805,15 @@ class StorageController {
                     $folderscounter++;
                 }
             }
+            
+            //Если требуется, то внесем изменения в хранилище алиасов
+            if (!empty(SysStorage::$storage[$item['usestorage']]['castom_url'])){
+                $urlmaster = new MNBVURL(2); 
+                $urlmaster->setItemAlias($item['usestorage'],$item['obj']["id"],$item['obj']['alias'],$item['obj']['type'],$upFolderAlias,$item['obj']['siteid']);
+            }
 
         }
-
+        
         //Конец сведений по текущему объекту и по его родительской папке -----------------------------------------------
 
 

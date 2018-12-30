@@ -30,11 +30,12 @@ SET time_zone = "+00:00";
 
 DROP TABLE IF EXISTS `mnbv_urlaliases`;
 CREATE TABLE `mnbv_urlaliases` (
-  `id` int(11) NOT NULL COMMENT 'Id',
+  `id` int(11) NOT NULL,
   `siteid` int(11) NOT NULL DEFAULT '0',
-  `type` int(2) NOT NULL DEFAULT '0',
+  `urltype` int(2) NOT NULL DEFAULT '0',
   `alias` varchar(100) NOT NULL DEFAULT '',
-  `idref` int(11) NOT NULL COMMENT 'Id'
+  `idref` int(11) NOT NULL,
+  `objtype` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
