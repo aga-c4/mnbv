@@ -136,7 +136,6 @@ class MNBVURL {
         $catalias = preg_replace("/\/$/",'',$catalias);
         $alias = preg_replace("/^\//",'',$alias);
         $catalias = preg_replace("^/\//",'',$catalias);
-        $alias .= '-' . $urltype;
         
         if ($objtype==1) $catalias='notset';
 
