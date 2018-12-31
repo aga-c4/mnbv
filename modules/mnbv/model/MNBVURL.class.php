@@ -68,15 +68,15 @@ class MNBVURL {
         $catalias = (isset($stRes[1])&&isset($stRes[1]['catalias']))?$stRes[1]['catalias']:'';
 
         $result = '/';
-        if (!empty($this->urlTypes['mod_pref'])) $result .= $this->urlTypes['mod_pref'].'/';
+        if (!empty($this->urlTypes[$urltype]['mod_pref'])) $result .= $this->urlTypes[$urltype]['mod_pref'].'/';
         if ($objtype==1){//Папка
             $result .= $alias;
         }else{//Объект
-            if (!empty($catalias)&&!empty($this->urlTypes['cat_alias_view'])) $result .= $catalias . '/';
-            if (!empty($this->urlTypes['item_pref'])) $result .= $this->urlTypes['item_pref'];
+            if (!empty($catalias)&&!empty($this->urlTypes[$urltype]['cat_alias_view'])) $result .= $catalias . '/';
+            if (!empty($this->urlTypes[$urltype]['item_pref'])) $result .= $this->urlTypes[$urltype]['item_pref'];
             $result .= $id;
-            if (!empty($alias)) $result .= ((!empty($this->urlTypes['alias_delim']))?$this->urlTypes['alias_delim']:'').$alias;
-            if (!empty($this->urlTypes['item_postf'])) $result .= $this->urlTypes['item_postf'];
+            if (!empty($alias)) $result .= ((!empty($this->urlTypes[$urltype]['alias_delim']))?$this->urlTypes[$urltype]['alias_delim']:'').$alias;
+            if (!empty($this->urlTypes[$urltype]['item_postf'])) $result .= $this->urlTypes[$urltype]['item_postf'];
         }
 
         return $result;
@@ -95,7 +95,7 @@ class MNBVURL {
         $urltypeInt = $this->urlTypes[$urltype]['id'];
 
         $itemMask = '/\/';
-        if (!empty($this->urlTypes['item_pref'])) $itemMask .= $this->urlTypes['item_pref'];
+        if (!empty($this->urlTypes['item_pref'])) $itemMask .= $this->urlTypes[$urltype]['item_pref'];
         $itemMask .= '\(d+)/i';
 
         $refid = 0;
