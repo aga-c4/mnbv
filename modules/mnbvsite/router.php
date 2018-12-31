@@ -1,6 +1,6 @@
 <?php
 /**
- * router.php Маршрутизатор модуля intranet
+ * router.php универсальный маршрутизатор модулей mnbv
  *
  * Created by Konstantin Khachaturyan (AGA-C4)
  * @author Konstantin Khachaturyan (AGA-C4)
