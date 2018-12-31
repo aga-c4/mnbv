@@ -65,10 +65,11 @@ if (!empty(Glob::$vars['mnbv_route_arr'][0])){ //Выбор объекта по 
     SysLogs::addLog("Site router: default page = [".Glob::$vars['mnbv_site']['startid']."]");
 }
 $storageRes = MNBVStorage::getObjAcc(Glob::$vars['mnbv_site']['storage'],
-            array("id"),
+            array("id,script"),
             $currFilterArr);
 Glob::$vars['mnbv_site']['pgid'] = (!empty($storageRes[1]["id"]))?$storageRes[1]["id"]:0;
 SysLogs::addLog("Site router: current page = [".Glob::$vars['mnbv_site']['pgid']."]");
+$curPageScript = (!empty($storageRes[1]["script"]))?$storageRes[1]["script"]:'';
 
 
 
@@ -102,7 +103,7 @@ $currMasterUri = '/' . implode('/',Glob::$vars['mnbv_route_arr']); //Нераз�
 Glob::$vars['mnbv_urlmaster'] = new MNBVURL(2); 
 
 //разбор каталога товаров
-if (Glob::$vars['mnbv_controller'] === 'products')  $urlArr = Glob::$vars['mnbv_urlmaster']->getIdByURL(Glob::$vars['mnbv_controller'],$currMasterUri,Glob::$vars['mnbv_site']['id']);
+if ($curPageScript === 'products')  $urlArr = Glob::$vars['mnbv_urlmaster']->getIdByURL('products',$currMasterUri,Glob::$vars['mnbv_site']['id']);
 if (is_array($urlArr)){
     Glob::$vars['mnbv_site']['sub_id'] = $urlArr['obj_id'];
     Glob::$vars['mnbv_site']['sub_list_id'] = $urlArr['list_id'];
