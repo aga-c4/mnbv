@@ -55,7 +55,7 @@ class ProductsController extends AbstractMnbvsiteController {
             if (!empty($folderId2) && $realFolder = MNBVf::getStorageObject($storage2,$folderId2,array('altlang'=>$item['mnbv_altlang'],'visible'=>true,'access'=>true,'site'=>true))){//Объект для редактирования найден
                 $storage = $storage2;
                 $folderId = $folderId2;
-                $item['obj']['use_other_storage'] = $storage;
+                $item['obj']['parent']['use_other_storage'] = $item['obj']['use_other_storage'] = $storage; //Маркер, что работаем с другим хранилищем
                 $item['obj']['obj_storage'] = $storage; //Маркер, что работаем с другим хранилищем
                 $item['obj']['page_main_alias'] = (!empty($item['obj']['alias']))?('/'.$item['obj']['alias']):('/id'.$item['obj']['id']); //Задается только если производится вывод из неосновного хранилища для правильного формирования URL
                 $item['obj']['folder'] = $realFolder;
@@ -244,7 +244,7 @@ class ProductsController extends AbstractMnbvsiteController {
             if (!empty($objectId2) && $realObject = MNBVf::getStorageObject($storage2,$objectId2,array('altlang'=>$item['mnbv_altlang'],'visible'=>true,'access'=>true,'site'=>true))){//Объект для редактирования найден
                 $storage = $storage2;
                 $realObjectId = $objectId2;
-                $item['obj']['use_other_storage'] = $storage; //Маркер, что работаем с другим хранилищем
+                $item['obj']['parent']['use_other_storage'] = $item['obj']['use_other_storage'] = $storage; //Маркер, что работаем с другим хранилищем
                 $item['obj']['folderid'] = $realObject['parent_id'];
                 $item['obj']['folder_name'] = $realObject['parent_name'];
                 $item['obj']['folder_alias'] = (!empty($realObject['parent']['alias']))?$realObject['parent']['alias']:'';
