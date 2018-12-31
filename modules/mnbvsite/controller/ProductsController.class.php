@@ -59,6 +59,7 @@ class ProductsController extends AbstractMnbvsiteController {
                 $item['obj']['use_other_storage'] = $storage; //Маркер, что работаем с другим хранилищем
                 $item['obj']['page_main_alias'] = (!empty($item['obj']['alias']))?('/'.$item['obj']['alias']):('/id'.$item['obj']['id']); //Задается только если производится вывод из неосновного хранилища для правильного формирования URL
                 $item['obj']['folder'] = $realFolder;
+                $item['obj']['folderid'] = $realFolder['id'];
                 $item['obj']['folder_alias'] = (!empty($realFolder['alias']))?$realFolder['alias']:'';
             }
             
@@ -154,9 +155,11 @@ class ProductsController extends AbstractMnbvsiteController {
             if (!empty($item['obj']['folderid']) && $item['obj']['folderid']!=$item['obj']['folder_start_id']) {
                 $item['obj']['up_folder_url'] = MNBVf::generateObjUrl($realObject['parent'],array('altlang'=>Lang::isDefLang()));
                 $item['obj']['nav_arr'][4] = array('name'=>$item['obj']['folder_name'],'url'=>$item['obj']['up_folder_url']); //Текущая папка
+                SysLogs::addLog("Product controller: nav4=[".$item['obj']['folder_name']."]");
             }
             //Текущий объект
             $item['obj']['nav_arr'][5] = array('name'=>$realObject['name'],'url'=>$item['page_url']);
+            SysLogs::addLog("Product controller: nav5=[".$realObject['name']."]");
         }
         //Конец обработки хлебных крошек ---------------------------------------
         
