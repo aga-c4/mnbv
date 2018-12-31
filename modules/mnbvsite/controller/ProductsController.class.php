@@ -57,7 +57,7 @@ class ProductsController extends AbstractMnbvsiteController {
                 $folderId = $folderId2;
                 $item['obj']['use_other_storage'] = $storage; //Маркер, что работаем с другим хранилищем
                 $item['obj']['page_main_alias'] = (!empty($item['obj']['alias']))?('/'.$item['obj']['alias']):('/id'.$item['obj']['id']); //Задается только если производится вывод из неосновного хранилища для правильного формирования URL
-                $item['obj']['folderid'] = $folderId;
+                $item['obj']['folder'] = $realFolder;
                 $item['obj']['folder_alias'] = (!empty($realFolder['alias']))?$realFolder['alias']:'';
             }
             
@@ -133,7 +133,7 @@ class ProductsController extends AbstractMnbvsiteController {
                 unset($item['list'][strval($key)]);
             }
         }
-
+        
         $item['page_list_url'] = MNBVf::generateObjUrl($item['obj'],array('altlang'=>Lang::isAltLang(),'type'=>'list'));
         
         //Хлебные крошки--------------------------------------------------------
@@ -148,7 +148,12 @@ class ProductsController extends AbstractMnbvsiteController {
 
         При этом размещение этих элементов массива четко предопределено, чтоб при необходимости не выводить часть из них. смещая начало обработки массива к концу.
          */        
-        if (!empty($item['obj']['use_other_storage']) && !empty($item['obj']['folderid']) && $item['obj']['folderid']!=$item['obj']['folder_start_id']) $item['obj']['nav_arr'][4] = array('name'=>$realFolder['name'],'url'=>$item['page_url']); //Текущая страница
+        if (!empty($item['obj']['use_other_storage']) 
+            && !empty($item['obj']['folderid']) 
+            && $item['obj']['folderid']!=$item['obj']['folder_start_id']
+        ) {//Текущая страница
+                $item['obj']['nav_arr'][4] = array('name'=>$realFolder['name'],'url'=>$item['page_url']); 
+        }
         //Конец обработки хлебных крошек ---------------------------------------
         
         
@@ -309,8 +314,10 @@ class ProductsController extends AbstractMnbvsiteController {
          */
         if (!empty($item['obj']['use_other_storage'])) {
             //Папка
-            if (!empty($item['obj']['folderid']) && $item['obj']['folderid']!=$item['obj']['folder_start_id'])
-                $item['obj']['nav_arr'][4] = array('name'=>$item['obj']['folder_name'],'url'=>$item['obj']['folder_url']); //Текущая папка
+            if (!empty($item['obj']['folderid']) && $item['obj']['folderid']!=$item['obj']['folder_start_id']) {
+                $item['obj']['up_folder_url'] = MNBVf::generateObjUrl($item['obj']['parent'],array('altlang'=>Lang::isDefLang()));
+                $item['obj']['nav_arr'][4] = array('name'=>$item['obj']['folder_name'],'url'=>$item['obj']['up_folder_url']); //Текущая папка
+            }
             //Текущий объект
             $item['obj']['nav_arr'][5] = array('name'=>$realObject['name'],'url'=>$item['page_url']);
         }

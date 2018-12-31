@@ -1175,7 +1175,7 @@ class MNBVf {
                 $result['parent_id'] = 0;
             }else{
                 $storageRes = MNBVStorage::getObj($storage,
-                    array('id','type','parentid','alias','visible','first','access','access2','name','namelang','attr','attrup','attrvals','upfolders','files'),
+                    array('id','type','parentid','alias','visible','first','access','access2','name','namelang','attr','attrup','attrvals','upfolders','files','vars'),
                     array('id','=',$parentid));
                 $result['parent'] = ($storageRes[0]>0)?$storageRes[1]:null;
                 $result['parent_id'] = (!empty($result['parent']['id']))?$result['parent']['id']:0;
@@ -1184,6 +1184,7 @@ class MNBVf {
                     $result['parent_name_min'] = mb_substr($result['parent_name'],0,17,'utf-8');
                     if ($result['parent_name']!=$result['parent_name_min']) $result['parent_name_min'] .= '...';
                     if (!Lang::isDefLang() && !empty($result['parent']['namelang'])) $result['parent_name'] = $result['parent']['namelang'];
+                    $result['parent']['vars'] = (!empty($result['parent']['vars']))?SysBF::json_decode($result['parent']['vars']):array();
                 }
             }
 
