@@ -116,12 +116,6 @@ if (is_array($urlArr)){
 
 //Если не нашли ничего по ЧПУ, то пойдем по стандартной схеме разбора URL
 if (empty(Glob::$vars['mnbv_site']['sub_id']) && empty(Glob::$vars['mnbv_site']['sub_list_id'])){
-
-
-if (!empty(Glob::$vars['mnbv_site']['sub_id'])) SysLogs::addLog("Site router: list subid0 = [".Glob::$vars['mnbv_site']['sub_id']."]");
-if (!empty(Glob::$vars['mnbv_site']['sub_list_id'])) SysLogs::addLog("Site router: list subid0 = [".Glob::$vars['mnbv_site']['sub_list_id']."]");
-
-
     //Номер объекта подчиненного хранилища
     if ($kol_mnbv_route_arr>0 && preg_match("/^io([0-9]+)$/ui", Glob::$vars['mnbv_route_arr'][$kol_mnbv_route_arr-1],$matches)){//Есть номера страниц
         Glob::$vars['mnbv_site']['sub_id'] = intval($matches[1]);
