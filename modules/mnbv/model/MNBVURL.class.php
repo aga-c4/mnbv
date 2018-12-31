@@ -59,7 +59,7 @@ class MNBVURL {
         $stRes = MNBVStorage::getObj(
             'urlaliases',
             array('alias','catalias','objtype'),
-            array("siteid","=",$siteId,"and","urltype","=",$urltypeInt,"and","idref","=",$id),
+            array("and","urltype","=",$urltypeInt,"and","idref","=",$id,"and",array("siteid","=",$siteId,"or","siteid","=",0)),
             array('limit'=>array(0,1)));
         if (empty($stRes[0])) return $result;
         
