@@ -683,7 +683,7 @@ class MNBVf {
      * 'type'='list' - это не список и тогда работаем с родительской папкой, иначе это объект и работаем с ним
      * @return string текущий URL
      */
-    public static function  generateObjUrl(array $obj, $param=array())
+    public static function generateObjUrl(array $obj, $param=array())
     {
         $result = ''; // Пока результат пуст
         $default_port = 80; // Порт по-умолчанию 
