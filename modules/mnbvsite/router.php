@@ -73,6 +73,7 @@ $curPageScriptStorage = '';
 if (!empty($storageRes[1]["vars"])) {
     $curPageVars = SysBF::json_decode($storageRes[1]["vars"]);
     $curPageScriptStorage = (!empty($curPageVars["script_storage"]))?$curPageVars["script_storage"]:'';
+    unset(Glob::$vars['mnbv_route_arr'][0]);$kol_mnbv_route_arr--;
 }
 
 
