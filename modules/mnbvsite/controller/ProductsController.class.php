@@ -154,8 +154,8 @@ class ProductsController extends AbstractMnbvsiteController {
             //Папка
             if (!empty($realFolder['parent']['id']) && $realFolder['parent']['id']!=$item['obj']['folder_start_id']) {
                 $item['obj']['up_folder_url'] = MNBVf::generateObjUrl($realFolder['parent'],array('altlang'=>Lang::isDefLang()));
-                $item['obj']['nav_arr'][4] = array('name'=>$item['obj']['folder_name'],'url'=>$item['obj']['up_folder_url']); //Текущая папка
-                SysLogs::addLog("Product controller: nav4=[".$item['obj']['folder_name']."]");
+                $item['obj']['nav_arr'][4] = array('name'=>$realFolder['parent']['name'],'url'=>$item['obj']['up_folder_url']); //Текущая папка
+                SysLogs::addLog("Product controller: nav4=[".$realFolder['parent']['name']."]");
             }
             //Текущий объект
             $item['obj']['nav_arr'][5] = array('name'=>$realFolder['name'],'url'=>$item['page_url']);
