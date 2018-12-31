@@ -124,6 +124,7 @@ class MNBVf {
      */
     public static function getItemName($value,$altlang=false,$defval=''){
         $objName = (!empty($defval))?$defval:$value['name'];
+        SysLogs::addLog("$objName=[$objName]");
         if ($altlang && !empty($value['namelang'])) $objName = $value['namelang'];
         elseif ($altlang && !empty($value[Lang::getAltLangName()."_name"])) $objName = $value[Lang::getAltLangName()."_name"];
         elseif (!empty($value[Glob::$vars['lang']."_name"])) $objName = $value[Glob::$vars['lang']."_name"];
