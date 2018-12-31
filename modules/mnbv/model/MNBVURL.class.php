@@ -95,7 +95,7 @@ class MNBVURL {
         $urltypeInt = $this->urlTypes[$urltype]['id'];
 
         $itemMask = "\/";
-        if (!empty($this->urlTypes['item_pref'])) $itemMask .= $this->urlTypes[$urltype]['item_pref'];
+        if (!empty($this->urlTypes[$urltype]['item_pref'])) $itemMask .= $this->urlTypes[$urltype]['item_pref'];
         $itemMask .= '(d+)';
 
         $refid = 0;
