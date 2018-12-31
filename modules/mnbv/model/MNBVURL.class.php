@@ -104,7 +104,7 @@ class MNBVURL {
             $refid = intval($matches[1]);
         }
         SysLogs::addLog("Site router: itemMask = [" . "/$itemMask/i" . "] itemGetMask=[$itemGetMask] refid=[$refid]");
-        if (!empty($refid)) return array('obj_id'=>$refid,'list_id'=>null);
+        if (!empty($refid)) return array('obj_id'=>$refid);
         
         $url = preg_replace("/\/$/",'',$url);
         $url = preg_replace("/^\//",'',$url);
@@ -117,7 +117,7 @@ class MNBVURL {
             array("urltype","=",$urltypeInt,"and","alias","=",$url,"and",array("siteid","=",$siteId,"or","siteid","=",0)),
             array('limit'=>array(0,1)));
         $refid = (!empty($stRes[0])&&isset($stRes[1])&&isset($stRes[1]['idref']))?$stRes[1]['idref']:'';
-        if (!empty($refid)) return array('obj_id'=>null,'list_id'=>$refid);
+        if (!empty($refid)) return array('list_id'=>$refid);
 
         return null;
     }
