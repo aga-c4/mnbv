@@ -154,12 +154,11 @@ class ProductsController extends AbstractMnbvsiteController {
             //Папка
             if (!empty($realFolder['parent']['id']) && $realFolder['parent']['id']!=$item['obj']['folder_start_id']) {
                 $item['obj']['up_folder_url'] = MNBVf::generateObjUrl($realFolder['parent'],array('altlang'=>!Lang::isDefLang()));
-                $currName = MNBVf::getItemName($realFolder['parent']['name'],!Lang::isDefLang());
-                SysLogs::addLog("altlang=[".!Lang::isDefLang()."] realFolder['parent']['name']=[".$realFolder['parent']['name']."]");
+                $currName = MNBVf::getItemName($realFolder['parent'],!Lang::isDefLang());
                 $item['obj']['nav_arr'][4] = array('name'=>$currName,'url'=>$item['obj']['up_folder_url']); //Текущая папка
             }
             //Текущий объект
-            $currName = MNBVf::getItemName($realFolder['name'],!Lang::isDefLang());
+            $currName = MNBVf::getItemName($realFolder,!Lang::isDefLang());
             $item['obj']['nav_arr'][5] = array('name'=>$currName,'url'=>$item['page_url']);
         }
         //Конец обработки хлебных крошек ---------------------------------------
@@ -325,10 +324,12 @@ class ProductsController extends AbstractMnbvsiteController {
             //Папка
             if (!empty($item['obj']['folderid']) && $item['obj']['folderid']!=$item['obj']['folder_start_id']) {
                 $item['obj']['up_folder_url'] = MNBVf::generateObjUrl($realObject['parent'],array('altlang'=>!Lang::isDefLang()));
-                $item['obj']['nav_arr'][4] = array('name'=>$item['obj']['folder_name'],'url'=>$item['obj']['up_folder_url']); //Текущая папка
+                $currName = MNBVf::getItemName($realObject['parent'],!Lang::isDefLang());
+                $item['obj']['nav_arr'][4] = array('name'=>$currName,'url'=>$item['obj']['up_folder_url']); //Текущая папка
             }
             //Текущий объект
-            $item['obj']['nav_arr'][5] = array('name'=>$realObject['name'],'url'=>$item['page_url']);
+            $currName = MNBVf::getItemName($realObject,!Lang::isDefLang());
+            $item['obj']['nav_arr'][5] = array('name'=>$currName,'url'=>$item['page_url']);
         }
         //Конец обработки хлебных крошек ---------------------------------------
 
