@@ -65,12 +65,15 @@ if (!empty(Glob::$vars['mnbv_route_arr'][0])){ //Выбор объекта по 
     SysLogs::addLog("Site router: default page = [".Glob::$vars['mnbv_site']['startid']."]");
 }
 $storageRes = MNBVStorage::getObjAcc(Glob::$vars['mnbv_site']['storage'],
-            array("id,script"),
+            array("id,vars"),
             $currFilterArr);
 Glob::$vars['mnbv_site']['pgid'] = (!empty($storageRes[1]["id"]))?$storageRes[1]["id"]:0;
 SysLogs::addLog("Site router: current page = [".Glob::$vars['mnbv_site']['pgid']."]");
-$curPageScript = (!empty($storageRes[1]["script"]))?$storageRes[1]["script"]:'';
-
+$curPageScriptStorage = '';
+if (!empty($storageRes[1]["vars"])) {
+    $curPageVars = SysBF::json_decode($storageRes[1]["vars"]);
+    $curPageScriptStorage = (!empty($curPageVars["script_storage"]))?$curPageVars["script_storage"]:'';
+}
 
 
 //Получим основные управляющие переменные из URL----------------------------------------------------
@@ -103,7 +106,7 @@ $currMasterUri = '/' . implode('/',Glob::$vars['mnbv_route_arr']); //Нераз�
 Glob::$vars['mnbv_urlmaster'] = new MNBVURL(2); 
 
 //разбор каталога товаров
-if (!empty($curPageScript))  $urlArr = Glob::$vars['mnbv_urlmaster']->getIdByURL($curPageScript,$currMasterUri,Glob::$vars['mnbv_site']['id']);
+if (!empty($curPageScriptStorage))  $urlArr = Glob::$vars['mnbv_urlmaster']->getIdByURL($curPageScriptStorage,$currMasterUri,Glob::$vars['mnbv_site']['id']);
 if (is_array($urlArr)){
     Glob::$vars['mnbv_site']['sub_id'] = $urlArr['obj_id'];
     Glob::$vars['mnbv_site']['sub_list_id'] = $urlArr['list_id'];
