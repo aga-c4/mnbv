@@ -155,6 +155,7 @@ class ProductsController extends AbstractMnbvsiteController {
             if (!empty($realFolder['parent']['id']) && $realFolder['parent']['id']!=$item['obj']['folder_start_id']) {
                 $item['obj']['up_folder_url'] = MNBVf::generateObjUrl($realFolder['parent'],array('altlang'=>!Lang::isDefLang()));
                 $currName = MNBVf::getItemName($realFolder['parent']['name'],!Lang::isDefLang());
+                SysLogs::addLog("altlang=[".!Lang::isDefLang()."] realFolder['parent']['name']=[".$realFolder['parent']['name']."]");
                 $item['obj']['nav_arr'][4] = array('name'=>$currName,'url'=>$item['obj']['up_folder_url']); //Текущая папка
             }
             //Текущий объект
