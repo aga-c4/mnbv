@@ -710,9 +710,10 @@ class MNBVf {
         if ($obj['type']==2){ //Если это URL, то впишем его
             $result .= (!empty($obj['typeval']))?$obj['typeval']:'';
         }else{
-            
-            if (!empty($obj['use_other_storage']) && !empty(SysStorage::$storage[$obj['use_other_storage']]['custom_url'])){ //Если для данного хранилища надо формировать URL
-                $result .= Glob::$vars['mnbv_urlmaster']->getURLById($obj['id'],$obj['use_other_storage'],Glob::$vars['mnbv_site']['id']);
+            if (!empty($obj['obj_storage'])
+                    && !empty(SysStorage::$storage[$obj['obj_storage']]['base_storage']) 
+                    && !empty(SysStorage::$storage[$obj['obj_storage']]['custom_url'])){ //Если для данного хранилища надо формировать URL как для подчиненного объекта
+                $result .= Glob::$vars['mnbv_urlmaster']->getURLById($obj['id'],$obj['obj_storage'],Glob::$vars['mnbv_site']['id']);
             }else{
                 if (!empty($obj['use_other_storage']) && isset($obj['page_main_alias'])) { //Вариант с внешним хранилищем
                     $result .= $obj['page_main_alias']; //Сначала добавим корневой алиасэ
@@ -1189,6 +1190,7 @@ class MNBVf {
                     $result['parent']['vars'] = (!empty($result['parent']['vars']))?SysBF::json_decode($result['parent']['vars']):array();
                 }
             }
+            $result['parent']['obj_storage'] = $storage;
 
             if (empty($result['parent']['access'])) $result['parent']['access'] = SysStorage::$storage[$storage]['access'];
             if (empty($result['parent']['access2'])) $result['parent']['access2'] = SysStorage::$storage[$storage]['access2'];

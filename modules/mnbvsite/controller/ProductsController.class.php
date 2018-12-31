@@ -55,7 +55,6 @@ class ProductsController extends AbstractMnbvsiteController {
             if (!empty($folderId2) && $realFolder = MNBVf::getStorageObject($storage2,$folderId2,array('altlang'=>$item['mnbv_altlang'],'visible'=>true,'access'=>true,'site'=>true))){//Объект для редактирования найден
                 $storage = $storage2;
                 $folderId = $folderId2;
-                $realFolder['parent']['use_other_storage'] = $storage;
                 $item['obj']['use_other_storage'] = $storage; //Маркер, что работаем с другим хранилищем
                 $item['obj']['page_main_alias'] = (!empty($item['obj']['alias']))?('/'.$item['obj']['alias']):('/id'.$item['obj']['id']); //Задается только если производится вывод из неосновного хранилища для правильного формирования URL
                 $item['obj']['folder'] = $realFolder;
@@ -113,6 +112,7 @@ class ProductsController extends AbstractMnbvsiteController {
         $item['list_size'] = (int)$item['list'][0]; unset($item['list'][0]); //Вынесем размер списка из массива 
         foreach ($item['list'] as $key=>$value) if ($key>0) {
             if (!empty($value["id"])) {
+                $value["obj_storage"] = $storage;
                 if (!empty($item['obj']['use_other_storage']) && isset($item['obj']['page_main_alias'])) {
                     $value['use_other_storage'] = $storage;
                     $value['page_main_alias'] = $item['obj']['page_main_alias'];
@@ -243,7 +243,6 @@ class ProductsController extends AbstractMnbvsiteController {
             if (!empty($objectId2) && $realObject = MNBVf::getStorageObject($storage2,$objectId2,array('altlang'=>$item['mnbv_altlang'],'visible'=>true,'access'=>true,'site'=>true))){//Объект для редактирования найден
                 $storage = $storage2;
                 $realObjectId = $objectId2;
-                $realObject['parent']['use_other_storage'] = $storage;
                 $item['obj']['use_other_storage'] = $storage; //Маркер, что работаем с другим хранилищем
                 $item['obj']['folderid'] = $realObject['parent_id'];
                 $item['obj']['folder_name'] = $realObject['parent_name'];
