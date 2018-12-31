@@ -154,10 +154,12 @@ class ProductsController extends AbstractMnbvsiteController {
             //Папка
             if (!empty($realFolder['parent']['id']) && $realFolder['parent']['id']!=$item['obj']['folder_start_id']) {
                 $item['obj']['up_folder_url'] = MNBVf::generateObjUrl($realFolder['parent'],array('altlang'=>!Lang::isDefLang()));
-                $item['obj']['nav_arr'][4] = array('name'=>MNBVf::getItemName($realFolder['parent']['name'],!Lang::isDefLang()),'url'=>$item['obj']['up_folder_url']); //Текущая папка
+                $currName = MNBVf::getItemName($realFolder['parent']['name'],!Lang::isDefLang());
+                $item['obj']['nav_arr'][4] = array('name'=>$currName,'url'=>$item['obj']['up_folder_url']); //Текущая папка
             }
             //Текущий объект
-            $item['obj']['nav_arr'][5] = array('name'=>MNBVf::getItemName($realFolder['name'],!Lang::isDefLang()),'url'=>$item['page_url']);
+            $currName = MNBVf::getItemName($realFolder['name'],!Lang::isDefLang());
+            $item['obj']['nav_arr'][5] = array('name'=>$currName,'url'=>$item['page_url']);
         }
         //Конец обработки хлебных крошек ---------------------------------------
         
