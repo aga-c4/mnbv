@@ -112,7 +112,7 @@ class ProductsController extends AbstractMnbvsiteController {
         foreach ($item['list'] as $key=>$value) if ($key>0) {
             if (!empty($value["id"])) {
                 if (!empty($item['obj']['use_other_storage']) && isset($item['obj']['page_main_alias'])) {
-                    $value['use_other_storage'] = $item['obj']['use_other_storage'];
+                    $value['use_other_storage'] = $storage;
                     $value['page_main_alias'] = $item['obj']['page_main_alias'];
                     $value['folder_start_id'] = $item['obj']['folder_start_id'];
                     $value['folderid'] = $item['obj']['folderid'];
@@ -236,6 +236,7 @@ class ProductsController extends AbstractMnbvsiteController {
             if (!empty($objectId2) && $realObject = MNBVf::getStorageObject($storage2,$objectId2,array('altlang'=>$item['mnbv_altlang'],'visible'=>true,'access'=>true,'site'=>true))){//Объект для редактирования найден
                 $storage = $storage2;
                 $realObjectId = $objectId2;
+                $realObject['parent']['use_other_storage'] = $storage;
                 $item['obj']['use_other_storage'] = $storage; //Маркер, что работаем с другим хранилищем
                 $item['obj']['folderid'] = $realObject['parent_id'];
                 $item['obj']['folder_name'] = $realObject['parent_name'];

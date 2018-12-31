@@ -1153,9 +1153,11 @@ class MNBVf {
             array('*'),
             $filter);
         $result = ($storageRes[0]>0)?$storageRes[1]:null;
-
+        
         if (!empty($storageRes[0])){//Объект для редактирования найден
 
+            $result['obj_storage'] = $storage;
+            
             //Эти условия специально вынесены таким образом, чтоб ускорить запрос по единственному ключу, если там только id
             if ($param['visible'] && empty($result['visible'])) return null; //Проверка на видимость
             if ($param['site'] && !empty($result['siteid']) && isset(Glob::$vars['mnbv_site']['id']) && $result['siteid']!=Glob::$vars['mnbv_site']['id']) return null; //Проверка на сайт
