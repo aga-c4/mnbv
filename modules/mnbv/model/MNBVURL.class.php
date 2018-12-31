@@ -114,7 +114,7 @@ class MNBVURL {
         $stRes = MNBVStorage::getObj(
             'urlaliases',
             array('idref'),
-            array("siteid","=",$siteId,"and","urltype","=",$urltypeInt,"and","alias","=",$url),
+            array("urltype","=",$urltypeInt,"and","alias","=",$url,"and",array("siteid","=",$siteId,"or","siteid","=",0)),
             array('limit'=>array(0,1)));
         $refid = (!empty($stRes[0])&&isset($stRes[1])&&isset($stRes[1]['idref']))?$stRes[1]['idref']:'';
         if (!empty($refid)) return array('obj_id'=>null,'list_id'=>$refid);
