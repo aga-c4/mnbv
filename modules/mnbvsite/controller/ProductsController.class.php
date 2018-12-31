@@ -115,7 +115,7 @@ class ProductsController extends AbstractMnbvsiteController {
             if (!empty($value["id"])) {
                 $value["obj_storage"] = $storage;
                 $value['use_other_storage'] = $storage;
-                if (!empty($item['obj']['obj_storage']) && isset($item['obj']['page_main_alias'])) {
+                if (!empty($item['obj']['use_other_storage']) && isset($item['obj']['page_main_alias'])) {
                     $value['page_main_alias'] = $item['obj']['page_main_alias'];
                     $value['folder_start_id'] = $item['obj']['folder_start_id'];
                     $value['folderid'] = $item['obj']['folderid'];

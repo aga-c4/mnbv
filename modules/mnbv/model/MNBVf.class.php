@@ -711,7 +711,7 @@ class MNBVf {
             $result .= (!empty($obj['typeval']))?$obj['typeval']:'';
         }else{
             if (!empty($obj['obj_storage'])
-                    && !empty(SysStorage::$storage[$obj['obj_storage']]['base_storage']) 
+                    && empty(SysStorage::$storage[$obj['obj_storage']]['base_storage']) 
                     && !empty(SysStorage::$storage[$obj['obj_storage']]['custom_url'])){ //Если для данного хранилища надо формировать URL как для подчиненного объекта
                 $result .= Glob::$vars['mnbv_urlmaster']->getURLById($obj['id'],$obj['obj_storage'],Glob::$vars['mnbv_site']['id']);
             }else{
