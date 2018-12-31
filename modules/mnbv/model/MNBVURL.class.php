@@ -100,10 +100,11 @@ class MNBVURL {
 
         $refid = 0;
         $itemGetMask = preg_match("/$itemMask/i",$url,$matches);
-        SysLogs::addLog("Site router: itemMask = [".$itemMask."] itemGetMask=[$itemGetMask]");
+        SysLogs::addLog("Site router: itemMask = [" . "/$itemMask/i" . "] itemGetMask=[$itemGetMask]");
         if (!empty($itemGetMask)&&!empty($matches[1])){ //По регулярке пробуем найти объект
             $refid = intval($matches[1]);
         }
+        SysLogs::addLog("Site router: itemMask = [" . "/$itemMask/i" . "] itemGetMask=[$itemGetMask] refid=[$refid]");
         if (!empty($refid)) return array('obj_id'=>$refid,'list_id'=>null);
 
         
