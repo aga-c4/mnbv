@@ -1175,7 +1175,7 @@ class MNBVf {
                 $result['parent_id'] = 0;
             }else{
                 $storageRes = MNBVStorage::getObj($storage,
-                    array('id','type','parentid','alias','visible','first','access','access2','name','namelang','attr','attrup','attrvals','upfolders','files','vars'),
+                    array("id","parentid","pozid","type","typeval","visible","access","access2","first","name","namelang","about","aboutlang","vars","files","siteid","date","alias"),
                     array('id','=',$parentid));
                 $result['parent'] = ($storageRes[0]>0)?$storageRes[1]:null;
                 $result['parent_id'] = (!empty($result['parent']['id']))?$result['parent']['id']:0;
