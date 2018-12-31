@@ -93,7 +93,7 @@ class MNBVURL {
         if (!isset($this->urlTypes[$urltype])) return null;
         if (empty($siteId)) $siteId = $this->defSiteId;
         $urltypeInt = $this->urlTypes[$urltype]['id'];
-/*
+
         $itemMask = "\/";
         if (!empty($this->urlTypes[$urltype]['item_pref'])) $itemMask .= $this->urlTypes[$urltype]['item_pref'];
         $itemMask .= '(\d+)';
@@ -105,7 +105,6 @@ class MNBVURL {
         }
         SysLogs::addLog("Site router: itemMask = [" . "/$itemMask/i" . "] itemGetMask=[$itemGetMask] refid=[$refid]");
         if (!empty($refid)) return array('obj_id'=>$refid,'list_id'=>null);
-*/
         
         $url = preg_replace("/\/$/",'',$url);
         $url = preg_replace("/^\//",'',$url);
