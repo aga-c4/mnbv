@@ -94,12 +94,13 @@ class MNBVURL {
         if (empty($siteId)) $siteId = $this->defSiteId;
         $urltypeInt = $this->urlTypes[$urltype]['id'];
 
-        $itemMask = '/\/';
+        $itemMask = "\/";
         if (!empty($this->urlTypes['item_pref'])) $itemMask .= $this->urlTypes[$urltype]['item_pref'];
-        $itemMask .= '(d+)/i';
+        $itemMask .= '(d+)';
 
         $refid = 0;
-        $itemGetMask = preg_match($itemMask,$url,$matches);
+        $itemGetMask = preg_match("/$itemMask/i",$url,$matches);
+        SysLogs::addLog("Site router: itemMask = [".$itemMask."] itemGetMask=[$itemGetMask]");
         if (!empty($itemGetMask)&&!empty($matches[1])){ //По регулярке пробуем найти объект
             $refid = intval($matches[1]);
         }
