@@ -149,14 +149,6 @@ class ProductsController extends AbstractMnbvsiteController {
 
         При этом размещение этих элементов массива четко предопределено, чтоб при необходимости не выводить часть из них. смещая начало обработки массива к концу.
          */        
-        if (!empty($item['obj']['use_other_storage']) 
-            && !empty($item['obj']['folderid']) 
-            && $item['obj']['folderid']!=$item['obj']['folder_start_id']
-        ) {//Текущая страница
-                $item['obj']['nav_arr'][4] = array('name'=>$realFolder['name'],'url'=>$item['page_url']); 
-        }
-        
-        
         if (!empty($item['obj']['use_other_storage'])) {
             //Папка
             if (!empty($item['obj']['folderid']) && $item['obj']['folderid']!=$item['obj']['folder_start_id']) {
