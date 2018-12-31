@@ -137,7 +137,7 @@ class ProductsController extends AbstractMnbvsiteController {
             }
         }
         
-        $item['page_list_url'] = MNBVf::generateObjUrl($item['obj'],array('altlang'=>Lang::isAltLang(),'type'=>'list'));
+        $item['page_list_url'] = MNBVf::generateObjUrl($realFolder['parent'],array('altlang'=>Lang::isAltLang(),'type'=>'list'));
         
         //Хлебные крошки--------------------------------------------------------
         /*
