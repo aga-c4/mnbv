@@ -96,7 +96,7 @@ class MNBVURL {
 
         $itemMask = '/\/';
         if (!empty($this->urlTypes['item_pref'])) $itemMask .= $this->urlTypes[$urltype]['item_pref'];
-        $itemMask .= '\(d+)/i';
+        $itemMask .= '(d+)/i';
 
         $refid = 0;
         $itemGetMask = preg_match($itemMask,$url,$matches);
