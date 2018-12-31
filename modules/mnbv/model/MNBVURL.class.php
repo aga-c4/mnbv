@@ -68,7 +68,7 @@ class MNBVURL {
         $catalias = (isset($stRes[1])&&isset($stRes[1]['catalias']))?$stRes[1]['catalias']:'';
 
         $result = '/';
-        if (!empty($this->urlTypes[$urltype]['mod_pref'])) $result .= $this->urlTypes[$urltype]['mod_pref'].'/';
+        if (!empty($this->urlTypes[$urltype]['mod_pref'])) $result .= $this->urlTypes[$urltype]['mod_pref'];
         if ($objtype==1){//Папка
             $result .= $alias;
         }else{//Объект
