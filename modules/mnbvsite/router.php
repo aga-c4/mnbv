@@ -101,6 +101,9 @@ if ($kol_mnbv_route_arr>0 && preg_match("/^sort_([^\/]+)$/ui", Glob::$vars['mnbv
 if (SysBF::getFrArr(Glob::$vars['request'],'sort')) Glob::$vars['mnbv_listsort'] = SysBF::getFrArr(Glob::$vars['request'],'sort'); //Прямое указание имеет преимущество
 if (!empty(Glob::$vars['mnbv_listsort'])) SysLogs::addLog("Site router: list sort = [".Glob::$vars['mnbv_listsort']."]");
 
+if (!empty(Glob::$vars['mnbv_site']['sub_id'])) SysLogs::addLog("Site router: list subid0 = [".Glob::$vars['mnbv_site']['sub_id']."]");
+if (!empty(Glob::$vars['mnbv_site']['sub_list_id'])) SysLogs::addLog("Site router: list subid0 = [".Glob::$vars['mnbv_site']['sub_list_id']."]");
+
 
 //Обработаем ЧПУ URL
 $currMasterUri = '/' . implode('/',Glob::$vars['mnbv_route_arr']); //Неразобранный остаток строки
