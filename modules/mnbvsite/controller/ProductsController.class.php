@@ -315,7 +315,7 @@ class ProductsController extends AbstractMnbvsiteController {
         if (!empty($item['obj']['use_other_storage'])) {
             //Папка
             if (!empty($item['obj']['folderid']) && $item['obj']['folderid']!=$item['obj']['folder_start_id']) {
-                $item['obj']['up_folder_url'] = MNBVf::generateObjUrl($item['obj']['parent'],array('altlang'=>Lang::isDefLang()));
+                $item['obj']['up_folder_url'] = MNBVf::generateObjUrl($realObject['parent'],array('altlang'=>Lang::isDefLang()));
                 $item['obj']['nav_arr'][4] = array('name'=>$item['obj']['folder_name'],'url'=>$item['obj']['up_folder_url']); //Текущая папка
             }
             //Текущий объект
