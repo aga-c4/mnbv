@@ -34,12 +34,13 @@ class PglistController extends AbstractMnbvsiteController {
         
         //Хранилище и папка по-умолчанию
         $storage = Glob::$vars['mnbv_site']['storage']; //Текущее хранилище
-        $realFolder = $item['obj'];
         $item['obj']['use_other_storage'] = '';
         $item['obj']['page_main_alias'] = ''; //Задается только если производится вывод из неосновного хранилища для правильного формирования URL
         $item['obj']['folder_start_id'] = (!empty($item['obj']['vars']['script_folder']))?intval($item['obj']['vars']['script_folder']):1;
         $item['obj']['folderid'] = $folderId = $item['id'];
+        $item['obj']['folder_name'] = $item['obj']['parent_name'];
         $item['obj']['folder_alias'] = $item['obj']['alias'];
+        $realFolder = $item['obj'];
 
         //Выбор хранилища и при необходимости перечитаем сведения о папке, которую выводим
         if (!empty($item['obj']['vars']['script_storage']) and (MNBVStorage::isStorage($item['obj']['vars']['script_storage']))) {
@@ -58,6 +59,7 @@ class PglistController extends AbstractMnbvsiteController {
                 $item['obj']['parent']['use_other_storage'] = $item['obj']['use_other_storage'] = $storage; //Маркер, что работаем с другим хранилищем
                 $item['obj']['page_main_alias'] = (!empty($item['obj']['alias']))?('/'.$item['obj']['alias']):('/id'.$item['obj']['id']); //Задается только если производится вывод из неосновного хранилища для правильного формирования URL
                 $realFolder['page_main_alias'] = $realFolder['parent']['page_main_alias'] = $item['obj']['page_main_alias'];
+                $realFolder['use_other_storage'] = $realFolder['parent']['use_other_storage'] = $item['obj']['use_other_storage'];
                 $item['obj']['folder'] = $realFolder;
                 $item['obj']['folderid'] = $realFolder['id'];
                 $item['obj']['folder_name'] = $realObject['parent_name'];
@@ -230,14 +232,14 @@ class PglistController extends AbstractMnbvsiteController {
 
         //Хранилище и папка по-умолчанию
         $storage = Glob::$vars['mnbv_site']['storage']; //Текущее хранилище
-        $realObject = $item['obj'];
-        $realObjectId = $item['id'];
         $item['obj']['use_other_storage'] = '';
         $item['obj']['page_main_alias'] = ''; //Задается только если производится вывод из неосновного хранилища для правильного формирования URL
         $item['obj']['folder_start_id'] = (!empty($item['obj']['vars']['script_folder']))?intval($item['obj']['vars']['script_folder']):1;
         $item['obj']['folderid'] = $item['obj']['parent_id'];
         $item['obj']['folder_name'] = $item['obj']['parent_name'];
         $item['obj']['folder_alias'] = (!empty($item['obj']['parent']['alias']))?$item['obj']['parent']['alias']:'';
+        $realObject = $item['obj'];
+        $realObjectId = $item['id'];
 
         //Выбор хранилища и при необходимости перечитаем сведения о папке, которую выводим-------------
         if (!empty($item['obj']['vars']['script_storage']) and (MNBVStorage::isStorage($item['obj']['vars']['script_storage']))) {
@@ -251,6 +253,7 @@ class PglistController extends AbstractMnbvsiteController {
                 $item['obj']['parent']['use_other_storage'] = $item['obj']['use_other_storage'] = $storage; //Маркер, что работаем с другим хранилищем
                 $item['obj']['page_main_alias'] = (!empty($item['obj']['alias']))?('/'.$item['obj']['alias']):('/id'.$item['obj']['id']); //Задается только если производится вывод из неосновного хранилища для правильного формирования URL
                 $realFolder['page_main_alias'] = $realFolder['parent']['page_main_alias'] = $item['obj']['page_main_alias'];
+                $realFolder['use_other_storage'] = $realFolder['parent']['use_other_storage'] = $item['obj']['use_other_storage'];
                 $item['obj']['folder'] = $realFolder;
                 $item['obj']['folderid'] = $realObject['parent_id'];
                 $item['obj']['folder_name'] = $realObject['parent_name'];
