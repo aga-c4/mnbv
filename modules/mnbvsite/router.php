@@ -102,7 +102,7 @@ if (!empty(Glob::$vars['mnbv_listsort'])) SysLogs::addLog("Site router: list sor
 
 //Обработаем ЧПУ URL
 $currMasterUri = '/' . implode('/',Glob::$vars['mnbv_route_arr']); //Неразобранный остаток строки
-Glob::$vars['mnbv_urlmaster'] = new MNBVURL(2,Glob::$vars['url_types']); 
+Glob::$vars['mnbv_urlmaster'] = new MNBVURL(2); 
 
 //разбор каталога товаров
 SysLogs::addLog("Site router: currMasterUri = [".$currMasterUri."] curPageScriptStorage=[$curPageScriptStorage]");
