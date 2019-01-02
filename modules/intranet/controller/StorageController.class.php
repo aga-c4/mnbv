@@ -808,7 +808,7 @@ class StorageController {
             
             //Если требуется, то внесем изменения в хранилище алиасов
             if (!empty(SysStorage::$storage[$item['usestorage']]['custom_url'])){
-                $urlmaster = new MNBVURL(2); 
+                $urlmaster = new MNBVURL(2,Glob::$vars['url_types']); 
                 $urlmaster->setItemAlias($item['usestorage'],$item['obj']["id"],$item['obj']['alias'],$item['obj']['type'],$upFolderAlias,$item['obj']['siteid']);
                 SysLogs::addLog("Update URL: urltype=[".$item['usestorage']."] id=[".$item['obj']["id"]."] alias=[".$item['obj']['alias']."] objtype=[".$item['obj']['type']."] upFolderAlias=[$upFolderAlias] siteId=[".$item['obj']['siteid']."]");
             }

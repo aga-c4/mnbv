@@ -23,15 +23,18 @@ class MNBVURL {
     /**
      * @var string Дефолтовые типы объектов для формирования ЧПУ (URL) импортируется из Glob::$vars['url_types'] обычно.
      * ключ - название хранилища, либо может быть иной. Схема с названием хранилища удобна, т.к. позволяет автоматизировать передачу данных
+     * mod_pref алиас контроллера
      * cat_alias_view определяет наличие алиасов в URL ОБЪЕКТА, в категории он будет в любом случае
+     * item_pref префикс объекта
      * alias_delim - отделяет идентификатор объекта от алиаса объекта
+     * alias_view - необходимость вывода алиаса объекта
      * item_postf - то, что идет после алиаса для всех объектов (к примеру закрывающий слеш)
      */
     public $urlTypes = array(
-        "products" => array('id'=>1,'mod_pref'=>'catalog/','cat_alias_view'=>true,'item_pref'=>'pr_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''),  //Параметры товара
-        "news" => array('id'=>2,'mod_pref'=>'news/','cat_alias_view'=>true,'item_pref'=>'nv_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''),        //Параметры новости
-        "articles" => array('id'=>3,'mod_pref'=>'articles/','cat_alias_view'=>true,'item_pref'=>'art_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''),//Параметры статьи
-        "actions" => array('id'=>4,'mod_pref'=>'actions/','cat_alias_view'=>true,'item_pref'=>'act_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''), //Параметры отзывов
+        "products" => array('id'=>1,'mod_pref'=>'catalog','cat_alias_view'=>true,'item_pref'=>'pr_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''),  //Параметры товара
+        "news" => array('id'=>2,'mod_pref'=>'news','cat_alias_view'=>true,'item_pref'=>'nv_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''),        //Параметры новости
+        "articles" => array('id'=>3,'mod_pref'=>'articles','cat_alias_view'=>true,'item_pref'=>'art_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''),//Параметры статьи
+        "actions" => array('id'=>4,'mod_pref'=>'actions','cat_alias_view'=>true,'item_pref'=>'act_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''), //Параметры отзывов
     );
     
     /*
@@ -56,6 +59,11 @@ class MNBVURL {
         if (!isset($this->urlTypes[$urltype])) return $result;
         if (empty($siteId)) $siteId = $this->defSiteId;
         $urltypeInt = $this->urlTypes[$urltype]['id'];
+        
+        $mod_pref = '';
+        if (!empty($this->urlTypes[$urltype]['mod_pref'])) {
+            $mod_pref = preg_replace("/\/$/",'',$this->urlTypes[$urltype]['mod_pref']);
+        }
 
         $stRes = MNBVStorage::getObj(
             'urlaliases',
@@ -65,25 +73,25 @@ class MNBVURL {
         if (empty($stRes[0])) {//Если ничего не нашли, сгенерим читаемый URL для объекта или корень.
             if ($objtype!=='notset' && $objtype!==''){
                 $objtype = intval($objtype);
-                $result = '/';
-                if (!empty($this->urlTypes[$urltype]['mod_pref'])) $result .= $this->urlTypes[$urltype]['mod_pref'];
+                $result = '/' . $this->urlTypes[$urltype]['mod_pref'];
                 if ($objtype==0){
+                    $result = '/' . $mod_pref . '/';
                     if (!empty($this->urlTypes[$urltype]['item_pref'])) $result .= $this->urlTypes[$urltype]['item_pref'];
                     $result .= $id;
                 }
             } 
-            return $result;
+            return null;
         }
         
         $objtype = (isset($stRes[1])&&isset($stRes[1]['objtype']))?$stRes[1]['objtype']:'';
         $alias = (isset($stRes[1])&&isset($stRes[1]['alias']))?$stRes[1]['alias']:'';
         $catalias = (isset($stRes[1])&&isset($stRes[1]['catalias']))?$stRes[1]['catalias']:'';
 
-        $result = '/';
-        if (!empty($this->urlTypes[$urltype]['mod_pref'])) $result .= $this->urlTypes[$urltype]['mod_pref'];
+        $result = '/' . $this->urlTypes[$urltype]['mod_pref'];
         if ($objtype==1){//Папка
-            $result .= $alias;
+            $result = '/' . $mod_pref . '/' .$alias;
         }else{//Объект
+            $result = '/' . $mod_pref . '/';
             if (!empty($catalias)&&!empty($this->urlTypes[$urltype]['cat_alias_view'])) $result .= $catalias . '/';
             if (!empty($this->urlTypes[$urltype]['item_pref'])) $result .= $this->urlTypes[$urltype]['item_pref'];
             $result .= $id;
@@ -105,6 +113,11 @@ class MNBVURL {
         if (!isset($this->urlTypes[$urltype])) return null;
         if (empty($siteId)) $siteId = $this->defSiteId;
         $urltypeInt = $this->urlTypes[$urltype]['id'];
+        
+        $mod_pref = '';
+        if (!empty($this->urlTypes[$urltype]['mod_pref'])) {
+            $mod_pref = preg_replace("/\/$/",'',$this->urlTypes[$urltype]['mod_pref']);
+        }
 
         $itemMask = "\/";
         if (!empty($this->urlTypes[$urltype]['item_pref'])) $itemMask .= $this->urlTypes[$urltype]['item_pref'];

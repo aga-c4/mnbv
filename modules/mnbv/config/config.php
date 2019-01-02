@@ -181,13 +181,19 @@ foreach (Glob::$vars['sort_types'] as $key => $value) {
     Glob::$vars['sort_types_st'][$key] = $key;
 }
 
-//Дефолтовые типы объектов для формирования ЧПУ (URL).
-//cat_alias_view определяет наличие алиасов в URL ОБЪЕКТА, в категории он будет в любом случае
-//alias_delim - отделяет идентификатор объекта от алиаса объекта
-//item_postf - то, что идет после алиаса для всех объектов (к примеру закрывающий слеш)
+/*Дефолтовые типы объектов для формирования ЧПУ (URL).
+* @var string Дефолтовые типы объектов для формирования ЧПУ (URL) импортируется из Glob::$vars['url_types'] обычно.
+* ключ - название хранилища, либо может быть иной. Схема с названием хранилища удобна, т.к. позволяет автоматизировать передачу данных
+* mod_pref алиас контроллера
+* cat_alias_view определяет наличие алиасов в URL ОБЪЕКТА, в категории он будет в любом случае
+* item_pref префикс объекта
+* alias_delim - отделяет идентификатор объекта от алиаса объекта
+* alias_view - необходимость вывода алиаса объекта
+* item_postf - то, что идет после алиаса для всех объектов (к примеру закрывающий слеш)
+ */
 Glob::$vars['url_types'] = array(
-    "products" => array('id'=>1,'mod_pref'=>'catalog/','cat_alias_view'=>true,'item_pref'=>'pr_','alias_delim'=>'-','item_postf'=>''),  //Параметры товара
-    "news" => array('id'=>2,'mod_pref'=>'news/','cat_alias_view'=>true,'item_pref'=>'nv_','alias_delim'=>'-','item_postf'=>''),        //Параметры новости
-    "articles" => array('id'=>3,'mod_pref'=>'articles/','cat_alias_view'=>true,'item_pref'=>'art_','alias_delim'=>'-','item_postf'=>''),//Параметры статьи
-    "actions" => array('id'=>4,'mod_pref'=>'actions/','cat_alias_view'=>true,'item_pref'=>'act_','alias_delim'=>'-','item_postf'=>''), //Параметры отзыв
+    "products" => array('id'=>1,'mod_pref'=>'catalog','cat_alias_view'=>true,'item_pref'=>'pr_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''),  //Параметры товара
+    "news" => array('id'=>2,'mod_pref'=>'news','cat_alias_view'=>true,'item_pref'=>'nv_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''),        //Параметры новости
+    "articles" => array('id'=>3,'mod_pref'=>'articles','cat_alias_view'=>true,'item_pref'=>'art_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''),//Параметры статьи
+    "actions" => array('id'=>4,'mod_pref'=>'actions','cat_alias_view'=>true,'item_pref'=>'act_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''), //Параметры отзывов
 );
