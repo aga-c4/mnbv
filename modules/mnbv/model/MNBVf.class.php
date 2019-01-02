@@ -260,7 +260,7 @@ class MNBVf {
     public static function getSiteItemsNums(array $obj,$param=array()){
 
         $result = '';
-        $page_list_url = (!empty($param['page_list_url']))?$param['page_list_url']:'notset';
+        $page_list_url = (!isset($param['page_list_url']))?$param['page_list_url']:'notset';
         $list_size = (!empty($param['list_size']))?intval($param['list_size']):0;
         $list_max_items = (!empty($param['list_max_items']))?intval($param['list_max_items']):1;
         $centre_bl = (!empty($param['centre_bl']))?intval($param['centre_bl']):5;
@@ -713,9 +713,9 @@ class MNBVf {
             $result .= (!empty($obj['typeval']))?$obj['typeval']:'';
         }else{
                             
-            if (!empty($param['page_list_url']) && $param['page_list_url']!=='notset') {
+            if (isset($param['page_list_url']) && $param['page_list_url']!=='notset') {
                 $result .= $param['page_list_url'];
-                SysLogs::addLog("TEST: page_list_url=[" . $obj['page_list_url'] . "] ");
+                SysLogs::addLog("TEST: page_list_url=[" . $obj['page_list_url'] . "]");
             }else{
                 
                 SysLogs::addLog("TEST: "
