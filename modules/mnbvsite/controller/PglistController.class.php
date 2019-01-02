@@ -149,7 +149,17 @@ class PglistController extends AbstractMnbvsiteController {
 
         При этом размещение этих элементов массива четко предопределено, чтоб при необходимости не выводить часть из них. смещая начало обработки массива к концу.
          */        
-        if (!empty($item['obj']['use_other_storage']) && !empty($item['obj']['folderid']) && $item['obj']['folderid']!=$item['obj']['folder_start_id']) $item['obj']['nav_arr'][4] = array('name'=>$realFolder['name'],'url'=>$item['page_url']); //Текущая страница
+        if (!empty($item['obj']['use_other_storage'])) {
+            //Папка
+            if (!empty($realFolder['parent']['id']) && $realFolder['parent']['id']!=$item['obj']['folder_start_id']) {
+                $item['obj']['up_folder_url'] = MNBVf::generateObjUrl($realFolder['parent'],array('altlang'=>!Lang::isDefLang(),'type'=>'list'));
+                $currName = MNBVf::getItemName($realFolder['parent'],!Lang::isDefLang());
+                $item['obj']['nav_arr'][4] = array('name'=>$currName,'url'=>$item['obj']['up_folder_url']); //Текущая папка
+            }
+            //Текущий объект
+            $currName = MNBVf::getItemName($realFolder,!Lang::isDefLang());
+            $item['obj']['nav_arr'][5] = array('name'=>$currName,'url'=>$item['page_url']);
+        }
         //Конец обработки хлебных крошек ---------------------------------------
         
         

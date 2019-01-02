@@ -136,7 +136,7 @@ class ProductsController extends AbstractMnbvsiteController {
             }
         }
         
-        $item['page_list_url'] = MNBVf::generateObjUrl($realFolder,array('altlang'=>Lang::isAltLang(),'type'=>'list'));
+        $item['page_list_url'] = MNBVf::generateObjUrl($realFolder['parent'],array('altlang'=>!Lang::isAltLang(),'type'=>'list'));
         
         //Хлебные крошки--------------------------------------------------------
         /*
@@ -153,7 +153,7 @@ class ProductsController extends AbstractMnbvsiteController {
         if (!empty($item['obj']['use_other_storage'])) {
             //Папка
             if (!empty($realFolder['parent']['id']) && $realFolder['parent']['id']!=$item['obj']['folder_start_id']) {
-                $item['obj']['up_folder_url'] = MNBVf::generateObjUrl($realFolder['parent'],array('altlang'=>!Lang::isDefLang()));
+                $item['obj']['up_folder_url'] = MNBVf::generateObjUrl($realFolder['parent'],array('altlang'=>!Lang::isDefLang(),'type'=>'list'));
                 $currName = MNBVf::getItemName($realFolder['parent'],!Lang::isDefLang());
                 $item['obj']['nav_arr'][4] = array('name'=>$currName,'url'=>$item['obj']['up_folder_url']); //Текущая папка
             }
