@@ -252,9 +252,9 @@ class PglistController extends AbstractMnbvsiteController {
                 $realObjectId = $objectId2;
                 $item['obj']['parent']['use_other_storage'] = $item['obj']['use_other_storage'] = $storage; //Маркер, что работаем с другим хранилищем
                 $item['obj']['page_main_alias'] = (!empty($item['obj']['alias']))?('/'.$item['obj']['alias']):('/id'.$item['obj']['id']); //Задается только если производится вывод из неосновного хранилища для правильного формирования URL
-                $realFolder['page_main_alias'] = $realFolder['parent']['page_main_alias'] = $item['obj']['page_main_alias'];
-                $realFolder['use_other_storage'] = $realFolder['parent']['use_other_storage'] = $item['obj']['use_other_storage'];
-                $item['obj']['folder'] = $realFolder;
+                $realObject['page_main_alias'] = $realObject['parent']['page_main_alias'] = $item['obj']['page_main_alias'];
+                $realObject['use_other_storage'] = $realObject['parent']['use_other_storage'] = $item['obj']['use_other_storage'];
+                $item['obj']['folder'] = $realObject;
                 $item['obj']['folderid'] = $realObject['parent_id'];
                 $item['obj']['folder_name'] = $realObject['parent_name'];
                 $item['obj']['folder_alias'] = (!empty($realObject['parent']['alias']))?$realObject['parent']['alias']:'';
