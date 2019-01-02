@@ -61,7 +61,6 @@ class ProductsController extends AbstractMnbvsiteController {
                 $item['obj']['folderid'] = $realFolder['id'];
                 $item['obj']['folder_alias'] = (!empty($realFolder['alias']))?$realFolder['alias']:'';
             }
-            
         }
         $item['page_list_url'] = MNBVf::generateObjUrl($realFolder['parent'],array('altlang'=>!Lang::isAltLang(),'type'=>'list'));
         
@@ -203,6 +202,7 @@ class ProductsController extends AbstractMnbvsiteController {
 
         //Настройки номеров страниц---------------------------------------------
         $item['page_list_num_conf'] = array(
+        'page_list_url' => $item['page_list_url'],
         'list_size' => $item['list_size'],
         'list_max_items' => $item['list_max_items'],
         'list_sort' => $item['list_sort'],

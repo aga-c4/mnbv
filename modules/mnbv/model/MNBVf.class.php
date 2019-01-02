@@ -248,6 +248,7 @@ class MNBVf {
      * Формирует строку с номерами страниц списка для сайта
      * @param array $obj массив свойств объекта, по которому формируем URL
      * @param array $param массив параметров формирования списка страниц сайта:
+     * 'page_list_url' - базовый URL списка к которому надо добавить номер страницы, если задан, то используется для генерации URL
      * 'list_size' - полный размер списка
      * 'list_max_items' - максимальное количество элементов на странице
      * 'list_filter' - текущий фильтр, по-умолчанию ''
@@ -259,6 +260,7 @@ class MNBVf {
     public static function getSiteItemsNums(array $obj,$param=array()){
 
         $result = '';
+        $page_list_url = (!empty($param['page_list_url']))?$param['page_list_url']:'notset';
         $list_size = (!empty($param['list_size']))?intval($param['list_size']):0;
         $list_max_items = (!empty($param['list_max_items']))?intval($param['list_max_items']):1;
         $centre_bl = (!empty($param['centre_bl']))?intval($param['centre_bl']):5;
@@ -278,22 +280,23 @@ class MNBVf {
         if ($blockStart<1) $blockStart = 1;
         if ($blockEnd>$pages) $blockEnd = $pages;
         
+        
         //Первая страница и многоточие
-        if ($list_page!=1) $result .= '<a href="'.MNBVf::generateObjUrl($obj,array('altlang'=>Lang::isAltLang(),'sort'=>$list_sort,'pg'=>1,'type'=>'list')).'">1</a>';
+        if ($list_page!=1) $result .= '<a href="'.MNBVf::generateObjUrl($obj,array('altlang'=>Lang::isAltLang(),'sort'=>$list_sort,'pg'=>1,'type'=>'list','page_list_url'=>$page_list_url)).'">1</a>';
         else $result .= '<span style="font-weight:bold;">[1]</span>';  
         if ($blockStart>3) $result .= '...';else$result .= ',';
         
         //Блок
         for ($i=$blockStart;$i<=$blockEnd;$i++) {
             if ($i==1||$i==$pages) continue;
-            if ($list_page!=$i) $result .= '<a href="'.MNBVf::generateObjUrl($obj,array('altlang'=>Lang::isAltLang(),'sort'=>$list_sort,'pg'=>$i,'type'=>'list')).'">'.$i.'</a>';
+            if ($list_page!=$i) $result .= '<a href="'.MNBVf::generateObjUrl($obj,array('altlang'=>Lang::isAltLang(),'sort'=>$list_sort,'pg'=>$i,'type'=>'list','page_list_url'=>$page_list_url)).'">'.$i.'</a>';
             else $result .= '<span style="font-weight:bold;">['.$i.']</span>';
             if ($i!=$pages&&$i<$blockEnd) $result .= ',';
         }
         
         //Многоточие и последняя страница
         if ($blockEnd<$pages-1) $result .= '...';
-        if ($list_page!=$pages) $result .= '<a href="'.MNBVf::generateObjUrl($obj,array('altlang'=>Lang::isAltLang(),'sort'=>$list_sort,'pg'=>$pages,'type'=>'list')).'">'.$pages.'</a>';
+        if ($list_page!=$pages) $result .= '<a href="'.MNBVf::generateObjUrl($obj,array('altlang'=>Lang::isAltLang(),'sort'=>$list_sort,'pg'=>$pages,'type'=>'list','page_list_url'=>$page_list_url)).'">'.$pages.'</a>';
         else $result .= '<span style="font-weight:bold;">['.$pages.']</span>';
         
         return $result;     
@@ -678,7 +681,7 @@ class MNBVf {
     /**
      * Возвращает URL текущего объекта $obj. //URL состоит из Протокол + домен + [алиас если есть] + сортировка + [страница если есть] + ? [id=Номер, если есть] [&sort=Сортирока, если задана (приоритет)] [&pg=Номер страницы списка, если задан  (приоритет)]
      * @param $obj массив свойств текущего объекта
-     * @param $param параметры формирования: array('altlang'='true/false', 'sort'='', 'pg'='', 'page_main_alias'='', 'type'='list'); 
+     * @param $param параметры формирования: array('altlang'='true/false', 'sort'='', 'pg'='', 'page_main_alias'='', 'type'='list', page_list_url='notset'); 
      * Если какой то элемент не задан, он не выводится. Если pg <2, то не выводится. Если sort=дефолтовый для данного раздела ($obj['list_sort']), тоже не выводится.
      * 'type'='list' - это не список и тогда работаем с родительской папкой, иначе это объект и работаем с ним
      * @return string текущий URL
@@ -704,39 +707,46 @@ class MNBVf {
         
         //Формирование папок
         if (!empty($param['altlang'])) $result .= '/'.Lang::getAltLangName();
-        //die(var_dump($obj['page_main_alias']));
         
         //Основной алиас
         if ($obj['type']==2){ //Если это URL, то впишем его
             $result .= (!empty($obj['typeval']))?$obj['typeval']:'';
         }else{
-            SysLogs::addLog("TEST: "
-                    . "obj_storage=[".$obj['obj_storage']."] "
-                    . "base_storage=[".SysStorage::$storage[$obj['obj_storage']]['base_storage']."] "
-                    . "custom_url=[".SysStorage::$storage[$obj['obj_storage']]['custom_url']."] "
-                    . "name=[".$obj['name']."]");
-            if (!empty($obj['obj_storage'])
-                    && empty(SysStorage::$storage[$obj['obj_storage']]['base_storage']) 
-                    && !empty(SysStorage::$storage[$obj['obj_storage']]['custom_url']))
-            { //Если для данного хранилища надо формировать URL как для подчиненного объекта
-                $result .= Glob::$vars['mnbv_urlmaster']->getURLById($obj['id'],$obj['obj_storage'],Glob::$vars['mnbv_site']['id']);
+            
+            if (!empty($param['page_list_url']) && $param['page_list_url']!=='notset') {
+                $result .= $param['page_list_url'];
             }else{
-                if (!empty($obj['use_other_storage']) && isset($obj['page_main_alias'])) { //Вариант с внешним хранилищем
-                    $result .= $obj['page_main_alias']; //Сначала добавим корневой алиас
-                    if (!empty($param['type']) && $param['type']=='list') { //Формируем ссылку на список
-                        $result .= (!empty($obj['folder_alias']))?('/'.$obj['folder_alias']):''; //Алиас объекта
-                        if ($obj['folderid']!==$obj['folder_start_id']) $result .= '/il' . $obj['folderid']; //Идентификатор объекта
-                    }else{ //Формируем ссылку на объект
-                        $result .= (!empty($obj['alias']))?('/'.$obj['alias']):''; //Алиас объекта
-                        $result .= (($obj['type']==1)?'/il':'/io') . $obj['id']; //Идентификатор объекта или списка, если это папка
+                SysLogs::addLog("TEST: "
+                        . "obj_storage=[".$obj['obj_storage']."] "
+                        . "base_storage=[".SysStorage::$storage[$obj['obj_storage']]['base_storage']."] "
+                        . "custom_url=[".SysStorage::$storage[$obj['obj_storage']]['custom_url']."] "
+                        . "name=[".$obj['name']."]");
+                if (!empty($obj['obj_storage'])
+                        && empty(SysStorage::$storage[$obj['obj_storage']]['base_storage']) 
+                        && !empty(SysStorage::$storage[$obj['obj_storage']]['custom_url']))
+                { //Если для данного хранилища надо формировать URL как для подчиненного объекта
+                    $result .= Glob::$vars['mnbv_urlmaster']->getURLById($obj['id'],$obj['obj_storage'],Glob::$vars['mnbv_site']['id']);
+                }else{
+                    if (!empty($obj['use_other_storage']) && isset($obj['page_main_alias'])) { //Вариант с внешним хранилищем
+                        $result .= $obj['page_main_alias']; //Сначала добавим корневой алиас
+                        if (!empty($param['type']) && $param['type']=='list') { //Формируем ссылку на список
+                            $result .= (!empty($obj['folder_alias']))?('/'.$obj['folder_alias']):''; //Алиас объекта
+                            if ($obj['folderid']!==$obj['folder_start_id']) $result .= '/il' . $obj['folderid']; //Идентификатор объекта
+                        }else{ //Формируем ссылку на объект
+                            $result .= (!empty($obj['alias']))?('/'.$obj['alias']):''; //Алиас объекта
+                            $result .= (($obj['type']==1)?'/il':'/io') . $obj['id']; //Идентификатор объекта или списка, если это папка
+                        }
+                    } else { //Вариант с текущим хранилищем
+                        $result .= (!empty($obj['alias']))?('/'.$obj['alias']):('/id'.$obj['id']);
                     }
-                } else { //Вариант с текущим хранилищем
-                    $result .= (!empty($obj['alias']))?('/'.$obj['alias']):('/id'.$obj['id']);
                 }
             }
 
             if (!empty(Glob::$vars['mnbv_site']['sorturl']) && !empty($param['sort']) && (empty($obj['vars']['list_sort'])||$param['sort']!=$obj['vars']['list_sort'])) $result .= '/sort_' . $param['sort']; //Если сортировка в папках
-            if (!empty(Glob::$vars['mnbv_site']['pginurl']) && !empty($param['pg']) && $param['pg']>1) $result .= '/pg' . $param['pg']; //Если страницы в папках
+            if (!empty(Glob::$vars['mnbv_site']['pginurl']) && !empty($param['pg']) && $param['pg']>1) {
+                $result = preg_replace("/\/$/",'',$result);
+                $result .= '/pg' . $param['pg']; //Если страницы в папках
+            }
 
             //Формирование параметров
             $urlParams = '';
