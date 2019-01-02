@@ -55,9 +55,10 @@ class PglistController extends AbstractMnbvsiteController {
             if (!empty($folderId2) && $realFolder = MNBVf::getStorageObject($storage2,$folderId2,array('altlang'=>$item['mnbv_altlang'],'visible'=>true,'access'=>true,'site'=>true))){//Объект для редактирования найден
                 $storage = $storage2;
                 $folderId = $folderId2;
-                $item['obj']['use_other_storage'] = $storage; //Маркер, что работаем с другим хранилищем
+                $item['obj']['parent']['use_other_storage'] = $item['obj']['use_other_storage'] = $storage; //Маркер, что работаем с другим хранилищем
                 $item['obj']['page_main_alias'] = (!empty($item['obj']['alias']))?('/'.$item['obj']['alias']):('/id'.$item['obj']['id']); //Задается только если производится вывод из неосновного хранилища для правильного формирования URL
-                $item['obj']['folderid'] = $folderId;
+                $item['obj']['folder'] = $realFolder;
+                $item['obj']['folderid'] = $realFolder['id'];
                 $item['obj']['folder_alias'] = (!empty($realFolder['alias']))?$realFolder['alias']:'';
             }
             
@@ -111,6 +112,8 @@ class PglistController extends AbstractMnbvsiteController {
         $item['list_size'] = (int)$item['list'][0]; unset($item['list'][0]); //Вынесем размер списка из массива 
         foreach ($item['list'] as $key=>$value) if ($key>0) {
             if (!empty($value["id"])) {
+                $value["obj_storage"] = $storage;
+                $value['use_other_storage'] = $storage;
                 if (!empty($item['obj']['use_other_storage']) && isset($item['obj']['page_main_alias'])) {
                     $value['use_other_storage'] = $item['obj']['use_other_storage'];
                     $value['page_main_alias'] = $item['obj']['page_main_alias'];
@@ -132,7 +135,7 @@ class PglistController extends AbstractMnbvsiteController {
             }
         }
 
-        $item['page_list_url'] = MNBVf::generateObjUrl($item['obj'],array('altlang'=>Lang::isAltLang(),'type'=>'list'));
+        $item['page_list_url'] = MNBVf::generateObjUrl($realFolder,array('altlang'=>Lang::isAltLang(),'type'=>'list'));
         
         //Хлебные крошки--------------------------------------------------------
         /*
@@ -228,7 +231,7 @@ class PglistController extends AbstractMnbvsiteController {
             if (!empty($objectId2) && $realObject = MNBVf::getStorageObject($storage2,$objectId2,array('altlang'=>$item['mnbv_altlang'],'visible'=>true,'access'=>true,'site'=>true))){//Объект для редактирования найден
                 $storage = $storage2;
                 $realObjectId = $objectId2;
-                $item['obj']['use_other_storage'] = $storage; //Маркер, что работаем с другим хранилищем
+                $item['obj']['parent']['use_other_storage'] = $item['obj']['use_other_storage'] = $storage; //Маркер, что работаем с другим хранилищем
                 $item['obj']['folderid'] = $realObject['parent_id'];
                 $item['obj']['folder_name'] = $realObject['parent_name'];
                 $item['obj']['folder_alias'] = (!empty($realObject['parent']['alias']))?$realObject['parent']['alias']:'';
@@ -254,6 +257,10 @@ class PglistController extends AbstractMnbvsiteController {
             if (!empty($realObject['aboutlang'])) $realObject['about'] = $realObject['aboutlang'];
             if (!empty($realObject['textlang'])) $realObject['text'] = $realObject['textlang'];
         }
+        //------------------------------------------------------------------------------
+        
+        //Расчитаем цену со скидкой-----------------------------------------------------
+        $realObject['discount_price'] = MNBVDiscount::getPrice($realObject["id"], $realObject["price"]);  
         //------------------------------------------------------------------------------
 
         //Метатеги----------------------------------------------------------------------
@@ -302,10 +309,14 @@ class PglistController extends AbstractMnbvsiteController {
          */
         if (!empty($item['obj']['use_other_storage'])) {
             //Папка
-            if (!empty($item['obj']['folderid']) && $item['obj']['folderid']!=$item['obj']['folder_start_id'])
-                $item['obj']['nav_arr'][4] = array('name'=>$item['obj']['folder_name'],'url'=>$item['obj']['folder_url']); //Текущая папка
+            if (!empty($item['obj']['folderid']) && $item['obj']['folderid']!=$item['obj']['folder_start_id']) {
+                $item['obj']['up_folder_url'] = MNBVf::generateObjUrl($realObject['parent'],array('altlang'=>!Lang::isDefLang()));
+                $currName = MNBVf::getItemName($realObject['parent'],!Lang::isDefLang());
+                $item['obj']['nav_arr'][4] = array('name'=>$currName,'url'=>$item['obj']['up_folder_url']); //Текущая папка
+            }
             //Текущий объект
-            $item['obj']['nav_arr'][5] = array('name'=>$realObject['name'],'url'=>$item['page_url']);
+            $currName = MNBVf::getItemName($realObject,!Lang::isDefLang());
+            $item['obj']['nav_arr'][5] = array('name'=>$currName,'url'=>$item['page_url']);
         }
         //Конец обработки хлебных крошек ---------------------------------------
 
@@ -314,6 +325,12 @@ class PglistController extends AbstractMnbvsiteController {
         $item['page_content'] = $item['page_content2'] = '';
         //Автозамена шаблонов на приложенные файлы
         $item['sub_obj']['text'] = MNBVf::updateTxt($item['sub_obj']['text'],$item['sub_obj']['files'],Glob::$vars['mnbv_site'],array(400,300));
+        
+        $item['sub_obj']['sub_obj_storage'] = $storage;
+
+        $item['sub_obj']['form_folder'] = array(
+            "attrvals" => array("name"=>"attrvalsmini", "type"=>"attrvalsmini", "active"=>'print', "viewindex" =>false), //Значения атрибутов для папки укороченный вариант
+        );
 
         //Шаблон вывода объекта
         $item['page_sctpl'] = 'tpl_pgview.php'; //По-умолчанию
