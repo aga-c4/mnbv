@@ -133,8 +133,7 @@ class MNBVURL {
         
         //$url = preg_replace("/^\//",'',$url);
         $url = preg_replace("/^\/{0,}".$this->urlTypes[$urltype]['mod_pref']."\/{0,}/i",'',$url);
-        $url = preg_replace("/^\//",'',$url);
-        $url = preg_replace("/\/$/",'',$url);
+        $url = preg_replace("/\/{0,}$/",'',$url);
         if (!empty($this->urlTypes[$urltype]['mod_pref'])) $url = str_replace($this->urlTypes[$urltype]['mod_pref'],'',$url);
         
         //Если объект не найден, то продолжим поиск категории объекта из базы URL
