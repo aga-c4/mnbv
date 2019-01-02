@@ -681,7 +681,7 @@ class MNBVf {
     /**
      * Возвращает URL текущего объекта $obj. //URL состоит из Протокол + домен + [алиас если есть] + сортировка + [страница если есть] + ? [id=Номер, если есть] [&sort=Сортирока, если задана (приоритет)] [&pg=Номер страницы списка, если задан  (приоритет)]
      * @param $obj массив свойств текущего объекта
-     * @param $param параметры формирования: array('altlang'='true/false', 'sort'='', 'pg'='', 'page_main_alias'='', 'type'='list', page_list_url='notset'); 
+     * @param $param параметры формирования: array('altlang'='true/false', 'sort'='', 'pg'='', 'page_main_alias'='', 'type'='list', 'page_list_url'='notset'); 
      * Если какой то элемент не задан, он не выводится. Если pg <2, то не выводится. Если sort=дефолтовый для данного раздела ($obj['list_sort']), тоже не выводится.
      * 'type'='list' - это не список и тогда работаем с родительской папкой, иначе это объект и работаем с ним
      * @return string текущий URL
@@ -712,15 +712,18 @@ class MNBVf {
         if ($obj['type']==2){ //Если это URL, то впишем его
             $result .= (!empty($obj['typeval']))?$obj['typeval']:'';
         }else{
-            
+                            
             if (!empty($param['page_list_url']) && $param['page_list_url']!=='notset') {
                 $result .= $param['page_list_url'];
+                SysLogs::addLog("TEST: page_list_url=[" . $obj['page_list_url'] . "] ");
             }else{
+                
                 SysLogs::addLog("TEST: "
-                        . "obj_storage=[".$obj['obj_storage']."] "
-                        . "base_storage=[".SysStorage::$storage[$obj['obj_storage']]['base_storage']."] "
-                        . "custom_url=[".SysStorage::$storage[$obj['obj_storage']]['custom_url']."] "
-                        . "name=[".$obj['name']."]");
+                    . "obj_storage=[".$obj['obj_storage']."] "
+                    . "base_storage=[".SysStorage::$storage[$obj['obj_storage']]['base_storage']."] "
+                    . "custom_url=[".SysStorage::$storage[$obj['obj_storage']]['custom_url']."] "
+                    . "name=[".$obj['name']."]");
+                            
                 if (!empty($obj['obj_storage'])
                         && empty(SysStorage::$storage[$obj['obj_storage']]['base_storage']) 
                         && !empty(SysStorage::$storage[$obj['obj_storage']]['custom_url']))
