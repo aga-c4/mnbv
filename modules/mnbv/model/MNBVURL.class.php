@@ -47,10 +47,11 @@ class MNBVURL {
      * Вовращает относительный URL объекта по его идентификатору, типу и сайту
      * @param mixed $id идентификатор объекта
      * @param string $urltype тип объекта
+     * @param int $objtype тип объекта по-умолчанию 'notset'
      * @param mixed $siteId идентификатор сайта
      * @return string
      */
-    public function getURLById($id,$urltype,$siteId='') {
+    public function getURLById($id,$urltype,$objtype='notset',$siteId='') {
         $result = null;
         if (!isset($this->urlTypes[$urltype])) return $result;
         if (empty($siteId)) $siteId = $this->defSiteId;
@@ -61,7 +62,18 @@ class MNBVURL {
             array('alias','catalias','objtype'),
             array("urltype","=",$urltypeInt,"and","idref","=",$id,"and",array("siteid","=",$siteId,"or","siteid","=",0)),
             array('limit'=>array(0,1)));
-        if (empty($stRes[0])) return $result;
+        if (empty($stRes[0])) {//Если ничего не нашли, сгенерим читаемый URL для объекта или корень.
+            if ($objtype!=='notset' && $objtype!==''){
+                $objtype = intval($objtype);
+                $result = '/';
+                if (!empty($this->urlTypes[$urltype]['mod_pref'])) $result .= $this->urlTypes[$urltype]['mod_pref'];
+                if ($objtype==0){
+                    if (!empty($this->urlTypes[$urltype]['item_pref'])) $result .= $this->urlTypes[$urltype]['item_pref'];
+                    $result .= $id;
+                }
+            } 
+            return $result;
+        }
         
         $objtype = (isset($stRes[1])&&isset($stRes[1]['objtype']))?$stRes[1]['objtype']:'';
         $alias = (isset($stRes[1])&&isset($stRes[1]['alias']))?$stRes[1]['alias']:'';
