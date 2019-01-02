@@ -202,12 +202,12 @@ class ProductsController extends AbstractMnbvsiteController {
 
         //Настройки номеров страниц---------------------------------------------
         $item['page_list_num_conf'] = array(
-        'page_list_url' => $item['page_list_url'],
-        'list_size' => $item['list_size'],
-        'list_max_items' => $item['list_max_items'],
-        'list_sort' => $item['list_sort'],
-        'list_page' => $item['list_page'],
-        'centre_bl' => 5);
+            'page_list_url' => $item['page_list_url'],
+            'list_size' => $item['list_size'],
+            'list_max_items' => $item['list_max_items'],
+            'list_sort' => $item['list_sort'],
+            'list_page' => $item['list_page'],
+            'centre_bl' => 5);
         //----------------------------------------------------------------------
         
 
