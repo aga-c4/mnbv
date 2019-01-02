@@ -151,6 +151,7 @@ class PglistController extends AbstractMnbvsiteController {
          */        
         if (!empty($item['obj']['use_other_storage'])) {
             //Папка
+            SysLogs::addLog('parent=[' . $realFolder['parent']['id'] . '] <=> folder_start_id=[' . $item['obj']['folder_start_id'] . ']');
             if (!empty($realFolder['parent']['id']) && $realFolder['parent']['id']!=$item['obj']['folder_start_id']) {
                 $item['obj']['up_folder_url'] = MNBVf::generateObjUrl($realFolder['parent'],array('altlang'=>!Lang::isDefLang(),'type'=>'list'));
                 $currName = MNBVf::getItemName($realFolder['parent'],!Lang::isDefLang());
