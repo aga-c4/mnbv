@@ -64,6 +64,7 @@ class ProductsController extends AbstractMnbvsiteController {
         }
         $item['page_list_url'] = MNBVf::generateObjUrl($realFolder['parent'],array('altlang'=>Lang::isAltLang(),'type'=>'list'));
         
+        SysLogs::addLog('page_list_url: [' . $item['page_list_url'] . ']');
         SysLogs::addLog('Select mnbv script storage: [' . $storage . '] page_main_alias=['.$item['obj']['page_main_alias'].']');
         SysLogs::addLog('Select mnbv script storage folder: [' . $folderId . ']');
         $item['img_max_size'] = MNBVf::getImgMaxSize($storage,Glob::$vars['img_max_size']);
