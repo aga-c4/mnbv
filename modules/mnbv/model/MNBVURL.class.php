@@ -133,6 +133,7 @@ class MNBVURL {
         
         $url = preg_replace("/^\//",'',$url);
         $url = preg_replace("/^".$this->urlTypes[$urltype]['mod_pref']."/i",'',$url);
+        $url = preg_replace("/^\//",'',$url);
         $url = preg_replace("/\/$/",'',$url);
         if (!empty($this->urlTypes[$urltype]['mod_pref'])) $url = str_replace($this->urlTypes[$urltype]['mod_pref'],'',$url);
         
