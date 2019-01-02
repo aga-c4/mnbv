@@ -68,7 +68,7 @@ if (isset($value['files']["img"]["1"]) && $tecObjTxtCode = MNBVf::getObjCodeByUR
 <? 
 //Номера страниц
 if (isset($item['list_max_items'])&&isset($item['list_size'])&&$item['list_max_items']<$item['list_size']) {
-    echo Lang::get("Pages").': ' . MNBVf::getSiteItemsNums($item['obj']['folder'],$item['page_list_num_conf']);
+    echo Lang::get("Pages").': ' . MNBVf::getSiteItemsNums($item['obj'],$item['page_list_num_conf']);
 } 
 ?>
 
