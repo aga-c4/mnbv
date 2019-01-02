@@ -714,7 +714,7 @@ class MNBVf {
         }else{
                             
             if (isset($param['page_list_url']) && $param['page_list_url']!=='notset') {
-                $result .= $param['page_list_url'];
+                $result .= $obj['page_main_alias'] . $param['page_list_url'];
                 SysLogs::addLog("TEST: page_list_url=[" . $obj['page_list_url'] . "]");
             }else{
                 
@@ -728,7 +728,7 @@ class MNBVf {
                         && empty(SysStorage::$storage[$obj['obj_storage']]['base_storage']) 
                         && !empty(SysStorage::$storage[$obj['obj_storage']]['custom_url']))
                 { //Если для данного хранилища надо формировать URL как для подчиненного объекта
-                    $result .= $obj['page_main_alias'] . Glob::$vars['mnbv_urlmaster']->getURLById($obj['id'],$obj['obj_storage'],Glob::$vars['mnbv_site']['id']);
+                    $result .= Glob::$vars['mnbv_urlmaster']->getURLById($obj['id'],$obj['obj_storage'],Glob::$vars['mnbv_site']['id']);
                 }else{
                     if (!empty($obj['use_other_storage']) && isset($obj['page_main_alias'])) { //Вариант с внешним хранилищем
                         $result .= $obj['page_main_alias']; //Сначала добавим корневой алиас
