@@ -28,8 +28,7 @@ if (strtolower(Glob::$vars['mnbv_route_arr'][0]) == Lang::getAltLangName()){//Е
     Glob::$vars['mnbv_altlang'] = true;
     Lang::setAltLang(true); //Установим маркер альтернативного языка
     Lang::setLang(strtolower(Glob::$vars['mnbv_route_arr'][0]));
-    unset(Glob::$vars['mnbv_route_arr'][0]);
-    $kol_mnbv_route_arr--;
+    array_shift(Glob::$vars['mnbv_route_arr']);$kol_mnbv_route_arr--;
     
     //Пересоберем заново массив mnbv_route_arr
     $res = array();
@@ -52,10 +51,12 @@ if (!empty(Glob::$vars['mnbv_route_arr'][0])){ //Выбор объекта по 
         $pgid = intval($matches[1]);
         $currFilterArr = array("id",'=',$pgid,'and',"visible",'=',1);
         SysLogs::addLog("Site router: alias page id = [$pgid]");
+        $unsertFirst = true;
     }else{
         $tecObjAlias = strtolower(Glob::$vars['mnbv_route_arr'][0]);
         $currFilterArr = array("alias",'=',$tecObjAlias,'and',"visible",'=',1);
         SysLogs::addLog("Site router: page alias = [$tecObjAlias]");
+        $unsertFirst = true;
     }
 }elseif($pgid = SysBF::checkStr(SysBF::getFrArr(Glob::$vars['request'],'id',0),'int')){ //Выбор дефолтового объекта
     $currFilterArr = array("id",'=',$pgid,'and',"visible",'=',1);
@@ -73,7 +74,7 @@ $curPageScriptStorage = '';
 if (!empty($storageRes[1]["vars"])) {
     $curPageVars = SysBF::json_decode($storageRes[1]["vars"]);
     $curPageScriptStorage = (!empty($curPageVars["script_storage"]))?$curPageVars["script_storage"]:'';
-    unset(Glob::$vars['mnbv_route_arr'][0]);$kol_mnbv_route_arr--;
+    if (!empty($unsertFirst)) array_shift(Glob::$vars['mnbv_route_arr']);$kol_mnbv_route_arr--;
 }
 
 
@@ -86,8 +87,7 @@ if ($kol_mnbv_route_arr>0 && empty(Glob::$vars['mnbv_route_arr'][$kol_mnbv_route
 //Номер страницы списка
 if ($kol_mnbv_route_arr>0 && preg_match("/^pg([0-9]+)$/ui", Glob::$vars['mnbv_route_arr'][$kol_mnbv_route_arr-1],$matches)){//Есть номера страниц
     Glob::$vars['mnbv_listpg'] = intval($matches[1]);
-    unset(Glob::$vars['mnbv_route_arr'][$kol_mnbv_route_arr-1]);
-    $kol_mnbv_route_arr--;
+    unset(Glob::$vars['mnbv_route_arr'][$kol_mnbv_route_arr-1]);$kol_mnbv_route_arr--;
 }
 if (SysBF::getFrArr(Glob::$vars['request'],'pg')) Glob::$vars['mnbv_listpg'] = SysBF::getFrArr(Glob::$vars['request'],'pg'); //Прямое указание имеет преимущество
 if (!empty(Glob::$vars['mnbv_listpg'])) SysLogs::addLog("Site router: list pg = [".Glob::$vars['mnbv_listpg']."]");
@@ -95,8 +95,7 @@ if (!empty(Glob::$vars['mnbv_listpg'])) SysLogs::addLog("Site router: list pg = 
 //Тип сортировки списка
 if ($kol_mnbv_route_arr>0 && preg_match("/^sort_([^\/]+)$/ui", Glob::$vars['mnbv_route_arr'][$kol_mnbv_route_arr-1],$matches)){//Есть сортировка
     Glob::$vars['mnbv_listsort'] = strtolower($matches[1]);
-    unset(Glob::$vars['mnbv_route_arr'][$kol_mnbv_route_arr-1]);
-    $kol_mnbv_route_arr--;
+    unset(Glob::$vars['mnbv_route_arr'][$kol_mnbv_route_arr-1]);$kol_mnbv_route_arr--;
 }
 if (SysBF::getFrArr(Glob::$vars['request'],'sort')) Glob::$vars['mnbv_listsort'] = SysBF::getFrArr(Glob::$vars['request'],'sort'); //Прямое указание имеет преимущество
 if (!empty(Glob::$vars['mnbv_listsort'])) SysLogs::addLog("Site router: list sort = [".Glob::$vars['mnbv_listsort']."]");
