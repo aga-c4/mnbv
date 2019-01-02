@@ -715,7 +715,7 @@ class MNBVf {
                             
             if (isset($param['page_list_url']) && $param['page_list_url']!=='notset') {
                 $result .= $param['page_list_url'];
-                SysLogs::addLog("TEST: page_list_url=[" . $obj['page_list_url'] . "]");
+                SysLogs::addLog("TEST: page_list_url=[" . $param['page_list_url'] . "]");
             }else{
                 
                 SysLogs::addLog("TEST: "
