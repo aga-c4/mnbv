@@ -683,7 +683,7 @@ class MNBVf {
      * @param $obj массив свойств текущего объекта
      * @param $param параметры формирования: array('altlang'='true/false', 'sort'='', 'pg'='', 'page_main_alias'='', 'type'='list', 'page_list_url'='notset'); 
      * Если какой то элемент не задан, он не выводится. Если pg <2, то не выводится. Если sort=дефолтовый для данного раздела ($obj['list_sort']), тоже не выводится.
-     * 'type'='list' - это не список и тогда работаем с родительской папкой, иначе это объект и работаем с ним
+     * 'type'='list' - работать с родительской папкой, иначе работаем с текущим объектом (устаревший параметр, стараемся не использовать).
      * @return string текущий URL
      */
     public static function generateObjUrl(array $obj, $param=array())
