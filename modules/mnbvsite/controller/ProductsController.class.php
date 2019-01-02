@@ -63,6 +63,8 @@ class ProductsController extends AbstractMnbvsiteController {
             }
             
         }
+        $item['page_list_url'] = MNBVf::generateObjUrl($realFolder['parent'],array('altlang'=>!Lang::isAltLang(),'type'=>'list'));
+        
         SysLogs::addLog('Select mnbv script storage: [' . $storage . '] page_main_alias=['.$item['obj']['page_main_alias'].']');
         SysLogs::addLog('Select mnbv script storage folder: [' . $folderId . ']');
         $item['img_max_size'] = MNBVf::getImgMaxSize($storage,Glob::$vars['img_max_size']);
@@ -135,8 +137,6 @@ class ProductsController extends AbstractMnbvsiteController {
                 unset($item['list'][strval($key)]);
             }
         }
-        
-        $item['page_list_url'] = MNBVf::generateObjUrl($realFolder['parent'],array('altlang'=>!Lang::isAltLang(),'type'=>'list'));
         
         //Хлебные крошки--------------------------------------------------------
         /*
