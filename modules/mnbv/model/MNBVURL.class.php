@@ -60,7 +60,7 @@ class MNBVURL {
         if (empty($siteId)) $siteId = $this->defSiteId;
         $urltypeInt = $this->urlTypes[$urltype]['id'];
         
-        $mod_pref = $this->urlTypes[$urltype]['mod_pref'];
+        $mod_pref = '';
         if (!empty($this->urlTypes[$urltype]['mod_pref'])) {
             $mod_pref = preg_replace("/\/$/",'',$this->urlTypes[$urltype]['mod_pref']);
         }
@@ -80,7 +80,7 @@ class MNBVURL {
                     $result .= $id;
                 }
             } 
-            return null;
+            return $result;
         }
         
         $objtype = (isset($stRes[1])&&isset($stRes[1]['objtype']))?$stRes[1]['objtype']:'';

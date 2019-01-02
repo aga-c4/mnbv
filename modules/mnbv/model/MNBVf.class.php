@@ -282,7 +282,7 @@ class MNBVf {
         
         
         //Первая страница и многоточие
-        if ($list_page!=1) $result .= '<a href="'.MNBVf::generateObjUrl($obj,array('altlang'=>Lang::isAltLang(),'sort'=>$list_sort,'pg'=>1,'type'=>'list','page_list_url'=>$page_list_url)).'">1</a>';
+        if ($list_page!=1) $result .= '<a href="'.MNBVf::($obj,array('altlang'=>Lang::isAltLang(),'sort'=>$list_sort,'pg'=>1,'type'=>'list','page_list_url'=>$page_list_url)).'">1</a>';
         else $result .= '<span style="font-weight:bold;">[1]</span>';  
         if ($blockStart>3) $result .= '...';else$result .= ',';
         
@@ -685,7 +685,7 @@ class MNBVf {
      * Если какой то элемент не задан, он не выводится. Если pg <2, то не выводится. Если sort=дефолтовый для данного раздела ($obj['list_sort']), тоже не выводится.
      * 'type'='list' - это не список и тогда работаем с родительской папкой, иначе это объект и работаем с ним
      * @return string текущий URL
-     */
+     */generateObjUrl
     public static function generateObjUrl(array $obj, $param=array())
     {
         $result = ''; // Пока результат пуст
