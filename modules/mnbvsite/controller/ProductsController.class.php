@@ -39,6 +39,7 @@ class ProductsController extends AbstractMnbvsiteController {
         $item['obj']['page_main_alias'] = ''; //Задается только если производится вывод из неосновного хранилища для правильного формирования URL
         $item['obj']['folder_start_id'] = (!empty($item['obj']['vars']['script_folder']))?intval($item['obj']['vars']['script_folder']):1;
         $item['obj']['folderid'] = $folderId = $item['id'];
+        $item['obj']['folder_name'] = $item['obj']['parent_name'];
         $item['obj']['folder_alias'] = $item['obj']['alias'];
 
         //Выбор хранилища и при необходимости перечитаем сведения о папке, которую выводим
@@ -57,8 +58,10 @@ class ProductsController extends AbstractMnbvsiteController {
                 $folderId = $folderId2;
                 $item['obj']['parent']['use_other_storage'] = $item['obj']['use_other_storage'] = $storage; //Маркер, что работаем с другим хранилищем
                 $item['obj']['page_main_alias'] = (!empty($item['obj']['alias']))?('/'.$item['obj']['alias']):('/id'.$item['obj']['id']); //Задается только если производится вывод из неосновного хранилища для правильного формирования URL
+                $realFolder['page_main_alias'] = $realFolder['parent']['page_main_alias'] = $item['obj']['page_main_alias'];
                 $item['obj']['folder'] = $realFolder;
                 $item['obj']['folderid'] = $realFolder['id'];
+                $item['obj']['folder_name'] = $realObject['parent_name'];
                 $item['obj']['folder_alias'] = (!empty($realFolder['alias']))?$realFolder['alias']:'';
             }
         }
