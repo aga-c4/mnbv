@@ -65,7 +65,6 @@ class MNBVURL {
             $mod_pref = preg_replace("/\/$/",'',$this->urlTypes[$urltype]['mod_pref']);
         }
 
-        
         $stRes = MNBVStorage::getObj(
             'urlaliases',
             array('alias','catalias','objtype'),

@@ -685,7 +685,7 @@ class MNBVf {
      * Если какой то элемент не задан, он не выводится. Если pg <2, то не выводится. Если sort=дефолтовый для данного раздела ($obj['list_sort']), тоже не выводится.
      * 'type'='list' - это не список и тогда работаем с родительской папкой, иначе это объект и работаем с ним
      * @return string текущий URL
-     */generateObjUrl
+     */
     public static function generateObjUrl(array $obj, $param=array())
     {
         $result = ''; // Пока результат пуст
