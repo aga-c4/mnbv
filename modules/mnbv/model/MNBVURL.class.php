@@ -28,10 +28,10 @@ class MNBVURL {
      * item_postf - то, что идет после алиаса для всех объектов (к примеру закрывающий слеш)
      */
     public $urlTypes = array(
-        "products" => array('id'=>1,'mod_pref'=>'catalog/','cat_alias_view'=>true,'item_pref'=>'pr_','alias_delim'=>'-','item_postf'=>''),  //Параметры товара
-        "news" => array('id'=>2,'mod_pref'=>'news/','cat_alias_view'=>true,'item_pref'=>'nv_','alias_delim'=>'-','item_postf'=>''),        //Параметры новости
-        "articles" => array('id'=>3,'mod_pref'=>'articles/','cat_alias_view'=>true,'item_pref'=>'art_','alias_delim'=>'-','item_postf'=>''),//Параметры статьи
-        "actions" => array('id'=>4,'mod_pref'=>'actions/','cat_alias_view'=>true,'item_pref'=>'act_','alias_delim'=>'-','item_postf'=>''), //Параметры отзыв
+        "products" => array('id'=>1,'mod_pref'=>'catalog/','cat_alias_view'=>true,'item_pref'=>'pr_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''),  //Параметры товара
+        "news" => array('id'=>2,'mod_pref'=>'news/','cat_alias_view'=>true,'item_pref'=>'nv_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''),        //Параметры новости
+        "articles" => array('id'=>3,'mod_pref'=>'articles/','cat_alias_view'=>true,'item_pref'=>'art_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''),//Параметры статьи
+        "actions" => array('id'=>4,'mod_pref'=>'actions/','cat_alias_view'=>true,'item_pref'=>'act_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''), //Параметры отзывов
     );
     
     /*
@@ -75,7 +75,7 @@ class MNBVURL {
             if (!empty($catalias)&&!empty($this->urlTypes[$urltype]['cat_alias_view'])) $result .= $catalias . '/';
             if (!empty($this->urlTypes[$urltype]['item_pref'])) $result .= $this->urlTypes[$urltype]['item_pref'];
             $result .= $id;
-            if (!empty($alias)) $result .= ((!empty($this->urlTypes[$urltype]['alias_delim']))?$this->urlTypes[$urltype]['alias_delim']:'').$alias;
+            if (!empty($alias)&&!empty($this->urlTypes[$urltype]['alias_view'])) $result .= ((!empty($this->urlTypes[$urltype]['alias_delim']))?$this->urlTypes[$urltype]['alias_delim']:'').$alias;
             if (!empty($this->urlTypes[$urltype]['item_postf'])) $result .= $this->urlTypes[$urltype]['item_postf'];
         }
 
