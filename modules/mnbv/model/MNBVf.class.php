@@ -710,6 +710,10 @@ class MNBVf {
         if ($obj['type']==2){ //Если это URL, то впишем его
             $result .= (!empty($obj['typeval']))?$obj['typeval']:'';
         }else{
+            SysLogs::addLog("TEST: "
+                    . "obj_storage=[".$obj['obj_storage']."] "
+                    . "base_storage=[".SysStorage::$storage[$obj['obj_storage']]['base_storage']."] "
+                    . "custom_url=[".SysStorage::$storage[$obj['obj_storage']]['custom_url']."]");
             if (!empty($obj['obj_storage'])
                     && empty(SysStorage::$storage[$obj['obj_storage']]['base_storage']) 
                     && !empty(SysStorage::$storage[$obj['obj_storage']]['custom_url']))
