@@ -200,7 +200,7 @@ class PglistController extends AbstractMnbvsiteController {
 
         //Настройки номеров страниц---------------------------------------------
         $item['page_list_num_conf'] = array(
-            //'page_list_url' => $item['page_list_url'],
+            'page_list_url' => $item['page_list_url'],
             'list_size' => $item['list_size'],
             'list_max_items' => $item['list_max_items'],
             'list_sort' => $item['list_sort'],
