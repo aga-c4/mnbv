@@ -282,21 +282,21 @@ class MNBVf {
         
         
         //Первая страница и многоточие
-        if ($list_page!=1) $result .= '<a href="'.MNBVf::generateObjUrl($obj,array('altlang'=>Lang::isAltLang(),'sort'=>$list_sort,'pg'=>1,'type'=>'list','page_list_url'=>$page_list_url)).'">1</a>';
+        if ($list_page!=1) $result .= '<a href="'.MNBVf::generateObjUrl($obj,array('altlang'=>Lang::isAltLang(),'sort'=>$list_sort,'pg'=>1,'page_list_url'=>$page_list_url)).'">1</a>';
         else $result .= '<span style="font-weight:bold;">[1]</span>';  
         if ($blockStart>3) $result .= '...';else$result .= ',';
         
         //Блок
         for ($i=$blockStart;$i<=$blockEnd;$i++) {
             if ($i==1||$i==$pages) continue;
-            if ($list_page!=$i) $result .= '<a href="'.MNBVf::generateObjUrl($obj,array('altlang'=>Lang::isAltLang(),'sort'=>$list_sort,'pg'=>$i,'type'=>'list','page_list_url'=>$page_list_url)).'">'.$i.'</a>';
+            if ($list_page!=$i) $result .= '<a href="'.MNBVf::generateObjUrl($obj,array('altlang'=>Lang::isAltLang(),'sort'=>$list_sort,'pg'=>$i,'page_list_url'=>$page_list_url)).'">'.$i.'</a>';
             else $result .= '<span style="font-weight:bold;">['.$i.']</span>';
             if ($i!=$pages&&$i<$blockEnd) $result .= ',';
         }
         
         //Многоточие и последняя страница
         if ($blockEnd<$pages-1) $result .= '...';
-        if ($list_page!=$pages) $result .= '<a href="'.MNBVf::generateObjUrl($obj,array('altlang'=>Lang::isAltLang(),'sort'=>$list_sort,'pg'=>$pages,'type'=>'list','page_list_url'=>$page_list_url)).'">'.$pages.'</a>';
+        if ($list_page!=$pages) $result .= '<a href="'.MNBVf::generateObjUrl($obj,array('altlang'=>Lang::isAltLang(),'sort'=>$list_sort,'pg'=>$pages,'page_list_url'=>$page_list_url)).'">'.$pages.'</a>';
         else $result .= '<span style="font-weight:bold;">['.$pages.']</span>';
         
         return $result;     
