@@ -282,7 +282,7 @@ class MNBVf {
         
         
         //Первая страница и многоточие
-        if ($list_page!=1) $result .= '<a href="'.MNBVf::($obj,array('altlang'=>Lang::isAltLang(),'sort'=>$list_sort,'pg'=>1,'type'=>'list','page_list_url'=>$page_list_url)).'">1</a>';
+        if ($list_page!=1) $result .= '<a href="'.MNBVf::generateObjUrl($obj,array('altlang'=>Lang::isAltLang(),'sort'=>$list_sort,'pg'=>1,'type'=>'list','page_list_url'=>$page_list_url)).'">1</a>';
         else $result .= '<span style="font-weight:bold;">[1]</span>';  
         if ($blockStart>3) $result .= '...';else$result .= ',';
         
