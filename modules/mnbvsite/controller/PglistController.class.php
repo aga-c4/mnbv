@@ -332,7 +332,7 @@ class PglistController extends AbstractMnbvsiteController {
         if (!empty($item['obj']['use_other_storage'])) {
             //Папка
             if (!empty($item['obj']['folderid']) && $item['obj']['folderid']!=$item['obj']['folder_start_id']) {
-                $item['obj']['up_folder_url'] = MNBVf::generateObjUrl($realObject['parent'],array('altlang'=>!Lang::isDefLang()));
+                $item['obj']['up_folder_url'] = MNBVf::generateObjUrl($realObject['parent'],array('altlang'=>!Lang::isDefLang(),'type'=>'list'));
                 $currName = MNBVf::getItemName($realObject['parent'],!Lang::isDefLang());
                 $item['obj']['nav_arr'][4] = array('name'=>$currName,'url'=>$item['obj']['up_folder_url']); //Текущая папка
             }
