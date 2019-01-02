@@ -714,7 +714,7 @@ class MNBVf {
         }else{
                             
             if (isset($param['page_list_url']) && $param['page_list_url']!=='notset') {
-                $result .= $obj['page_main_alias'] . $param['page_list_url'];
+                $result .= $param['page_list_url'];
                 SysLogs::addLog("TEST: page_list_url=[" . $obj['page_list_url'] . "]");
             }else{
                 
