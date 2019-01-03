@@ -33,15 +33,15 @@ class ParserPg {
      */
     public function upload(){
 
-        if (true||$this->url!='https://shop.nag.ru/search?word=cisco&count=0'){
+        if (true||$this->url!='https://test.domain/search?word=word'){
             $res = SysBf::curl($this->url,'',array('printheader'=>true));
             $this->timestamp = microtime(true);
             $this->header = ParserBf::text_between($res, '', "\r\n\r\n");
             $this->content = ParserBf::text_between($res, "\r\n\r\n" , '');
             $this->status = intval(ParserBf::text_between($this->header, ' ', " "));
-            if ($this->url=='https://shop.nag.ru/search?word=cisco&count=0') SysBf::saveFile('tmp/nag-source.csv',$this->content); 
+            if ($this->url=='https://test.domain/search?word=word') SysBf::saveFile('tmp/test-source.csv',$this->content); 
         }else{
-            $this->content = file_get_contents('D:\OSPanel\domains\parser\tmp\nag-source.csv');
+            $this->content = file_get_contents('D:\OSPanel\domains\parser\tmp\test-source.csv');
             $this->header = '';
             $this->status = 200;
         }
