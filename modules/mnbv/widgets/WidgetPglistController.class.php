@@ -217,7 +217,7 @@ class WidgetPglistController extends AbstractWidgetControllerController {
         }
 
         $item['list_storage'] = $this->storage;
-        $item['list_link'] = MNBVf::requestUrl(!Lang::isDefLang(),$this->list_link);
+        $item['list_link'] = MNBVf::requestUrl(!Lang::isDefLang()?'swlang':'',$this->list_link);
         $item['list_link_name'] = $this->list_link_name;
 
         require $tplFile;
