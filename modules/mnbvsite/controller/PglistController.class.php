@@ -66,7 +66,7 @@ class PglistController extends AbstractMnbvsiteController {
                 $item['obj']['folder_alias'] = (!empty($realFolder['alias']))?$realFolder['alias']:'';
             }
         }
-        $item['page_list_url'] = MNBVf::generateObjUrl($realFolder,array('altlang'=>Lang::isAltLang()));
+        $item['page_list_url'] = MNBVf::generateObjUrl($realFolder,array('altlang'=>false)); //Язык базовый, потом при преобразовании будет доработан
         
         SysLogs::addLog('page_list_url: [' . $item['page_list_url'] . ']');        
         SysLogs::addLog('Select mnbv script storage: [' . $storage . '] page_main_alias=['.$item['obj']['page_main_alias'].']');
