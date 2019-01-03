@@ -39,7 +39,7 @@ require_once MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'head.php');
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="/" style="margin-top: 0px;"><img src="<?=WWW_SRCPATH.MNBV_MAINMODULE;?>/img/logo/logomini1.png" width="27" height="30" border="0"></a>
+          <a class="navbar-brand" href="<?=MNBVf::requestUrl(Lang::isAltLang()?'altlang':'','/');?>" style="margin-top: 0px;"><img src="<?=WWW_SRCPATH.MNBV_MAINMODULE;?>/img/logo/logomini1.png" width="27" height="30" border="0"></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
 <?MNBVf::startVidget('gormenu',$item,3);?>
