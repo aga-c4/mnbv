@@ -1273,7 +1273,7 @@ SysStorage::$storage['robots']['filter'] = array(
     //"fltr_method" => 'post',
     "view" => array(
         "name" => array("name"=>"name", "type"=>"like", "checktype" => "routeitem"),
-        "rbtype" => array("name"=>"rbtype", "type"=>"select", "viewindex" =>false, "notset" =>true, "checktype" => "roteitem", "linkstorage"=>array("worker"=>"rb_work", "info" =>"rb_info", "service"=>"rb_service")),
+        "rbtype" => array("name"=>"rbtype", "type"=>"select", "viewindex" =>false, "notset" =>true, "checktype" => "routeitem", "linkstorage"=>array("worker"=>"rb_work", "info" =>"rb_info", "service"=>"rb_service")),
         "submitstr" => array("name"=>"submitstr", "type"=>"submitstr", "string"=>"Filter"),
     ));
 
@@ -1354,8 +1354,8 @@ SysStorage::$storage['robotsrun']['filter'] = array(
     //"fltr_method" => 'post',
     "view" => array(
         "name" => array("name"=>"name", "type"=>"like", "checktype" => "routeitem"),
-        "rbtype" => array("name"=>"rbtype", "type"=>"select", "viewindex" =>false, "notset" =>true, "checktype" => "roteitem", "linkstorage"=>array("workers"=>"workers", "info" =>"info", "service"=>"service")),
-        "status" => array("name"=>"status", "type"=>"select", "viewindex" =>false, "notset" =>true, "checktype" => "roteitem", "linkstorage"=>array("waighting" =>"Waight", "working"=>"Working", "noresponse"=>"No response", "paused"=>"Paused","killed"=>"Killed", "stopped"=>"Stopped", "success"=>"Success", "starterror"=>"Start Error", "error"=>"Error")),
+        "rbtype" => array("name"=>"rbtype", "type"=>"select", "viewindex" =>false, "notset" =>true, "checktype" => "routeitem", "linkstorage"=>array("workers"=>"workers", "info" =>"info", "service"=>"service")),
+        "status" => array("name"=>"status", "type"=>"select", "viewindex" =>false, "notset" =>true, "checktype" => "routeitem", "linkstorage"=>array("waighting" =>"Waight", "working"=>"Working", "noresponse"=>"No response", "paused"=>"Paused","killed"=>"Killed", "stopped"=>"Stopped", "success"=>"Success", "starterror"=>"Start Error", "error"=>"Error")),
         "submitstr" => array("name"=>"submitstr", "type"=>"submitstr", "string"=>"Filter"),
 ));
 
