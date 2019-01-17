@@ -640,6 +640,8 @@ $langTmpArr = array(
         "market" => "Market",
         "apikey" => "API Key",
         "apisecret" => "API secret",
+        "sgalias" => "Signal", //Алиас сигнала
+        "sgtype" => "Type", //Тип сигнала
 
         "command" => "Command",
         "status" => "Status",
