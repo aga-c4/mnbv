@@ -86,7 +86,7 @@ class MNBVTelegram{
         curl_setopt($ch, CURLOPT_URL, $apiUrl);
         curl_setopt($ch, CURLOPT_POST, 1);                      // использование простого HTTP POST
         curl_setopt($ch, CURLOPT_POSTFIELDS, $post_data);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, false);
+        if (!empty($headers)) curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_ENCODING , 'gzip');
 
