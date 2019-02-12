@@ -25,11 +25,11 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `mnbv_urlaliases`
+-- Структура таблицы `mnbv_tmp`
 --
 
 DROP TABLE IF EXISTS `mnbv_tmp`;
-CREATE TABLE `mnbv_urlaliases` (
+CREATE TABLE `mnbv_tmp` (
   `id` varchar(100) NOT NULL DEFAULT '',
   `ts` int(11) NOT NULL DEFAULT '0',
   `tsto` int(11) NOT NULL DEFAULT '0',
@@ -37,9 +37,9 @@ CREATE TABLE `mnbv_urlaliases` (
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
 --
--- Индексы таблицы `mnbv_urlaliases`
+-- Индексы таблицы `mnbv_tmp`
 --
-ALTER TABLE `mnbv_urlaliases`
+ALTER TABLE `mnbv_tmp`
   ADD PRIMARY KEY (`id`);
   
  COMMIT;
