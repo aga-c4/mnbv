@@ -33,7 +33,7 @@ CREATE TABLE `mnbv_tmp` (
   `id` varchar(100) NOT NULL DEFAULT '',
   `ts` int(11) NOT NULL DEFAULT '0',
   `tsto` int(11) NOT NULL DEFAULT '0',
-  `val` int(2) text NOT NULL
+  `val` text NOT NULL
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
 --
