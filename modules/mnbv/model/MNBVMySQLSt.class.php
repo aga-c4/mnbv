@@ -155,6 +155,7 @@ class MNBVMySQLSt implements MNBVdefSt{
      *      В случае выхода за допустимые уровни вложений должна выдаваться ошибка.
      * @param array $conf - массив управляющих настроек
      *      $conf = array(
+     *                  "group" => "поле", //поле для группировки
      *                  "countFoundRows" => false, //включить подсчет всех значений по-умолчанию false 
      *                  "sort" => array("key"=>"inc|desc"), //перечисляются ключи, последний может иметь маркер обратной сортировки
      *                  "limit" => array(первая_позиция , смещение), //массив содержащий позицию первого элемента и количество элементов
@@ -215,6 +216,12 @@ class MNBVMySQLSt implements MNBVdefSt{
         else $whereStr = ' WHERE' . $whereStr;
         if (trim($whereStr) == 'WHERE') $whereStr = '';
         
+        //Строка группировки
+        $groupStr = '';
+        if (!empty($conf["group"])) {
+            $groupStr = ' GROUP BY ' . $conf["group"];
+        }
+
         //Строка сортировки
         $orderStr = '';
         if (!empty($conf["sort"]) && is_array($conf["sort"])) {
@@ -228,7 +235,7 @@ class MNBVMySQLSt implements MNBVdefSt{
         $myDb = SysStorage::getLink($main_storage,$connectStatus);
         if ($myDb===null) return array(0); //Если линка нет, то возвращаем пустой ответ
 
-        $query = "SELECT$sqlFlags$fieldsStr$fromStr$whereStr$orderStr$LimitStr;";
+        $query = "SELECT$sqlFlags$fieldsStr$fromStr$whereStr$groupStr$orderStr$LimitStr;";
         $mysqlres = $myDb->query($query);
         while ($res=DBMysql::mysql_fetch_array($mysqlres)){
             $item = array(); //Массив, содержащий элементы 1 записи из базы
