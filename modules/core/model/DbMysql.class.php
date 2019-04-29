@@ -288,6 +288,22 @@ class DbMysql {
     }
 
     /**
+     * Обрабатывает ряд результата запроса, возвращая объект
+     * @param null $result - результат запроса
+     * @return array|bool - false, если ошибка или нет больше данных
+     */
+    public static function mysql_fetch_object($result=null) {
+        try{
+            if ($result) {
+                return @mysqli_fetch_object($result);
+            }else return false;
+        }catch (Exception $e) {
+            SysLogs::addError('Mysql:Error - ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
      * Возвращает численный массив, содержащий ряды ответа MYSQL
      * @param null $result - Результат запроса
      * @param int $result_type - 'OBJECT' или Массив ответа(MYSQL_ASSOC - ассоциативный (по-умолчанию), MYSQL_NUM - численный или MYSQL_BOTH - оба)
