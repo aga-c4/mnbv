@@ -198,7 +198,7 @@ class SysBF {
         elseif (!isset($arr[$key])) $result = $defval;
         else $result = $arr[$key];
 
-            if ($update==='intval') $result = intval($result);
+            if ($update==='') $result = intval($result);
         elseif ($update==='floatval') $result = floatval($result);
         elseif ($update==='strval') $result = strval($result);
         elseif ($update==='trim') $result = trim($result);
