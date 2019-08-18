@@ -107,7 +107,7 @@ Glob::$vars['mnbv_urlmaster'] = new MNBVURL(2,Glob::$vars['url_types']);
 //разбор каталога товаров
 SysLogs::addLog("Site router: currMasterUri = [".$currMasterUri."] curPageScriptStorage=[$curPageScriptStorage]");
 if (!empty($curPageScriptStorage))  $urlArr = Glob::$vars['mnbv_urlmaster']->getIdByURL($curPageScriptStorage,$currMasterUri,Glob::$vars['mnbv_site']['id']);
-if (is_array($urlArr)){
+if (isset($urlArr) && is_array($urlArr)){
     if (!empty($urlArr['obj_id'])) Glob::$vars['mnbv_site']['sub_id'] = $urlArr['obj_id'];
     if (!empty($urlArr['list_id'])) Glob::$vars['mnbv_site']['sub_list_id'] = $urlArr['list_id'];
 }
