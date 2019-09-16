@@ -47,6 +47,21 @@ class MNBVf {
         return result;
 
     }
+
+    /**
+     * Возвращает true, если запрос с мобильного браузера, есть защит от повторной проверки.
+     * @return bool маркер мобильного браузера
+     */
+    public static function isMobileBrowser() {
+        static $isMobile = null;
+        if ($isMobile === null) {
+            if(!empty($_SERVER['HTTP_USER_AGENT']) && stripos($_SERVER['HTTP_USER_AGENT'], 'Mobile')) {
+                $isMobile = true; //!((bool)strpos($_SERVER['HTTP_USER_AGENT'],'iPad'));
+            } else
+                $isMobile = false;
+        }
+        return $isMobile;
+    }
     
     /**
      * По строке возвращаяет timestmp из заданного формата, по-умолчанию - 'Y-m-d\TH:i:s.u' (2011-01-01T15:03:01.012345)
