@@ -730,15 +730,16 @@ class MNBVf {
                             
             if (isset($param['page_list_url']) && $param['page_list_url']!=='notset') {
                 $result .= $param['page_list_url'];
-                SysLogs::addLog("TEST: page_list_url=[" . $param['page_list_url'] . "]");
+                //SysLogs::addLog("TEST: page_list_url=[" . $param['page_list_url'] . "]");
             }else{
-                
+                /*
                 SysLogs::addLog("TEST: "
                     . "obj_storage=[".$obj['obj_storage']."] "
                     . "base_storage=[".SysStorage::$storage[$obj['obj_storage']]['base_storage']."] "
                     . "custom_url=[".SysStorage::$storage[$obj['obj_storage']]['custom_url']."] "
                     . "name=[".$obj['name']."]");
-                            
+                */
+                
                 if (!empty($obj['obj_storage'])
                         && empty(SysStorage::$storage[$obj['obj_storage']]['base_storage']) 
                         && !empty(SysStorage::$storage[$obj['obj_storage']]['custom_url']))
