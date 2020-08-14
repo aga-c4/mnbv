@@ -33,6 +33,7 @@ class Glob {
         'datetime_start' => '', //Время запуска скрипта date("Y-m-d G:i:s")
         'time_start' => '', //Время запуска скрипта Unix
         'autoload_console_log_view' => false, //Если true, то в консоли выведет сообщения о загрузке классов Нужно для отладки. Установите также этот маркер в core.php
+        'core_charset' => 'utf-8', //Базовая кодировка консоли. вывода, файлов и остального
     );
     
     public static function get($key){

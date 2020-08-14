@@ -6,6 +6,7 @@ $startTplMode = 'html'; //Формат ответа (txt,html,json,none)
 $systemLogView = false; //Видимость Лога работы скрипта
 $systemLogRTView = false; //Выводить сообщения непосредственно при их формировании
 $systemLogSave = false; //Сохранение Лога работы скрипта
+$systemLogBakCreate = false; //Сохранение Лога работы скрипта
 $systemErrorsView = false; //Видимость Ошибок работы скрипта
 $sysremRedirectsAllow = true; //Разрешение системных редиректов
 

@@ -272,6 +272,7 @@ class SysStorage {
      * @param array $storageArr - массив с добавляемыми свойствами базы данных
      */
     public static function setdb($db,array $dbArr){
+        if (!isset(self::$db["$db"])) self::$db["$db"] = array();
         if (is_array($dbArr)) foreach ($dbArr as $key=>$value) self::$db["$db"]["$key"] = $value;
     }
 

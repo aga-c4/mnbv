@@ -308,6 +308,73 @@ class SysBF {
         );
         return strtr($string, $converter);
     }
+    
+    /**
+     * Преобразование строки транслита - очистка лишних символов (нормализация)
+     * @param $str
+     * @return mixed|string
+     */
+    public static function updTranslitStr($str) {
+        $str = self::rus2translit($str);
+        $str = strtolower($str);
+        $str = preg_replace('~[^-a-z0-9_]+~u', '_', $str);
+        return  trim($str, "_");
+    }
+    
+    /**
+     * Переводит из Win1251 в UTF8
+     */
+    public static function Win2Utf($str){
+      return iconv("CP1251", "UTF-8", $str);
+    }
+    
+    /**
+     * Переводит из UTF8 в Win1251
+     */
+    public static function Utf2Win($str){
+      return iconv("UTF-8","CP1251", $str);
+    }
+    
+    /**
+     * Возвращает строку csv из массива
+     * @param array $fields
+     * @param string $delimiter
+     * @param string $enclosure
+     * @return string
+     */
+    public static function getCSVLine($fields = array(), $delimiter = ',', $enclosure = '"') {
+        $str = '';
+        $escape_char = '\\';
+        foreach ($fields as $value) {
+          if (strpos($value, $delimiter) !== false ||
+              strpos($value, $enclosure) !== false ||
+              strpos($value, "\n") !== false ||
+              strpos($value, "\r") !== false ||
+              strpos($value, "\t") !== false ||
+              strpos($value, ' ') !== false) {
+            $str2 = $enclosure;
+            $escaped = 0;
+            $len = strlen($value);
+            for ($i=0;$i<$len;$i++) {
+              if ($value[$i] == $escape_char) {
+                $escaped = 1;
+              } else if (!$escaped && $value[$i] == $enclosure) {
+                $str2 .= $enclosure;
+              } else {
+                $escaped = 0;
+              }
+              $str2 .= $value[$i];
+            }
+            $str2 .= $enclosure;
+            $str .= $str2.$delimiter;
+          } else {
+            $str .= $value.$delimiter;
+          }
+        }
+        $str = substr($str,0,-1);
+        $str .= "\n";
+        return $str;
+    }
 
     /**
      * Создает/(перезаписывает по-умолчанию) файл, сохраняет в него данные из переменной.
@@ -317,7 +384,7 @@ class SysBF {
      * @return bool - результат операции
      */
     public static function saveFile($filename='',$fileTxt='',$mode='w'){
-	    if ($filename == '') return false;
+	if ($filename == '') return false;
         if ($handle = @fopen($filename,$mode)){
             if (fwrite($handle,$fileTxt)){
                 fclose($handle);
@@ -420,6 +487,26 @@ class SysBF {
         SysLogs::addLog("Memory peak usage: $memory_peak_usage");
         SysLogs::addLog("Memory fin usage: $memory_fin_usage");
 
+        if ((defined('APP_DEBUG_MODE') && APP_DEBUG_MODE) || $view) { //Если это ражим отладки Добавим статистику по базам данных
+            
+            //Статистика запросов MySQL---
+            $mysqlStat = DbMysql::mysqlStat();
+            SysLogs::addLog("\n---MySQL statistic: ---");
+            foreach ($mysqlStat as $key=>$value){
+                if (is_array($value)){
+                    $counter=1;
+                    foreach ($value as $mysqlQu) {
+                        SysLogs::addLog("Query$counter: ".str_replace("\n",' ',$mysqlQu));
+                        $counter++;
+                    }
+                }else{
+                    SysLogs::addLog("$key: ".$value);
+                }
+            }
+            
+        }
+        
+        
         SysLogs::$logComplete = true;
         SysLogs::$logView = $oldLogView;
 
@@ -427,11 +514,12 @@ class SysBF {
     
     
     /**
-     *
-     * @param $filename
+     * Формирует строку типа файла для заголовка html
+     * @param string $filename
+     * @param array $mimeArr если задан массив, то из него берутся подстановки в порядке приоритета
      * @return mixed|string
      */
-    public static function mime_content_type($filename) {
+    public static function mime_content_type($filename, $mimeArr='') {
 
         $mime_types = array(
 
@@ -492,7 +580,14 @@ class SysBF {
             'odt' => 'application/vnd.oasis.opendocument.text',
             'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
         );
-        $filenameArr = explode('.',$filename);
+        
+        if (is_array($mimeArr)) {
+            foreach ($mimeArr as $key => $value) {
+                $mime_types[$key] = $value;
+            }
+        }
+        
+        $filenameArr = explode('.', $filename);
         $ext = strtolower(array_pop($filenameArr));
         if (array_key_exists($ext, $mime_types)) {
             return $mime_types[$ext];
@@ -501,7 +596,153 @@ class SysBF {
             return 'application/octet-stream';
         }
     }
+    
+    /**
+     * Создает BAK файл на базе текущего имени файла в той же папке
+     * @param type $filename
+     * @return boolean результат операции
+     */
+    public static function createBakFile($filename){
+        if (file_exists($filename)) return copy($filename,$filename.'.bak');
+        return false;
+    }
 
+    /**
+     * Объединяет массивы рекурсивно перезаписывая данные из $arr2 в $arr1. 
+     * Если оба параметра не являются массивом - вернется null.
+     * Если один из параметров - не массив, то вернется неизмененный другой параметр
+     * Если элемент массив, то наложение происходит с учетом уже имеющихся в первом массиве полей.
+     * Если один из параметров не является массивом, то вернется другой массив.
+     * Основное назначение - обработка многоуровневых конфигов в массивах.
+     * @param type $arr1
+     * @param type $arr2
+     * @param string $keyCreate массив значений ключей для которых массивы будут не дополняться, а перезаписываться.
+     * @return type
+     */
+    public static function arrayRecurMerge($arr1 = null,$arr2 = null,$keyCreate=false){
+        if (!is_array($arr1) && !is_array($arr2)) return null;
+        if (!is_array($arr1)) return $arr2;
+        if (!is_array($arr2)) return $arr1;
+        
+        $result = $arr1;
+        if (!empty($arr2['clear_current_array'])) $result = array();  
+        foreach ($arr2 as $key=>$value){
+            if (is_array($value)) {
+                if ($key === 'clear_current_array') continue;
+                if (!isset($result[$key]) || !is_array($result[$key]) || (is_array($keyCreate)&& in_array($key, $keyCreate))) $result[$key] = $value;
+                else $result[$key] = self::arrayRecurMerge($result[$key],$value);
+            }else{
+                $result[$key] = $value;
+            }
+        }
+        return $result;
+    }
+    
+    /**
+    * Проверяет должен ли быть произведен запуск в текущее время.
+    * @param type $ts - метка времени
+    * @param type $conf - конфиг крона
+    * @return bool результат проверки
+    */
+    public static function cronTsValidate($ts,$conf){
+
+        if (!is_array($conf)) return false;
+        //date("Y-m-d H:i:s",$ts);
+        $m = intval(date("i",$ts));
+        $h = intval(date("G",$ts));
+        $day = intval(date("j",$ts));
+        $mon = intval(date("n",$ts));
+        $week = intval(date("w",$ts));
+
+        if (isset($conf['m']) && !self::cronItemValidate($m,$conf['m'])) return false;
+        if (isset($conf['h']) && !self::cronItemValidate($h,$conf['h'])) return false;
+        if (isset($conf['day']) && !self::cronItemValidate($day,$conf['day'])) return false;
+        if (isset($conf['mon']) && !self::cronItemValidate($mon,$conf['mon'])) return false;
+        if (isset($conf['week']) && !self::cronItemValidate($week,$conf['week'])) return false;
+
+        return true;
+    }
+    
+    /**
+    * Валидирует int по состоянию элемента Cron
+    * @param int $value значение для проверки
+    * @param string $confStr строка проверки элемента
+    * @return bool результат проверки
+    */
+    public static function cronItemValidate($value,$confStr){
+
+        $value = intval($value);
+        $confStr = strval($confStr);
+        
+            $curItem = strval($conf['m']);
+            $curArr = preg_split("/",$confStr);
+            if (isset($curArr[1])) $curArr[1] = intval($curArr[1]);
+            $curDelta = (!empty($curArr[1]))?$curArr[1]:1;
+            if ($curArr[0]==='*' && 0===$value%$curDelta) return true;
+            if (false===strpos($curArr[0],'-')){
+                if (intval($curArr[0])!=$value) return false;
+            }else{
+                $curBorder = preg_split("/-/",$curItem);
+                if (!isset($curBorder[0])){
+                    $curBorder[0] = intval($curBorder[0]);
+                    if ($value<$curBorder[0]) return false;
+                    if (0!==$value%$curDelta) return false;
+                }
+                if (!isset($curBorder[1])){
+                    $curBorder[1] = intval($curBorder[1]);
+                    if ($value>$curBorder[1]) return false;
+                    if (0!==$value%$curDelta) return false;
+                }
+            }
+
+        return true;
+    }
+    
+    /**
+     * Проверяет соответствует ли IP адрес сети, из параметра $ip и сети в стандартных форматах сеть/маска
+     * @param string $ipIn ip адрес
+     * @param string $netIn маска сети либо числом, либо 4мя октетами
+     * @return boolean результат проверки
+     */
+    public static function ipNetValidate($ipIn, $netIn){
+	$ip = self::updateToFullIp($ipIn);
+	$netArr = explode('/', $netIn);
+	
+	$netIn = strval($netIn);
+	$netArr = explode('/', $netIn);
+	$netArr[0] = self::updateToFullIp($netArr[0]);
+	if (empty($netArr[0])) return false;
+	if (!isset($netArr[1])) return false;
+	if (false===strpos($netArr[1],'.')) $mask = long2ip(pow(2, 32)-pow(2, (32-intval($netArr[1]))));
+	else $mask = self::updateToFullIp($netArr[1]);
+	$net = $netArr[0];
+	
+	// Преобразование IP в беззнаковое десятичное целое число:
+        $ipD = (int)sprintf("%u", ip2long($ip));
+        $maskD = (int)sprintf("%u", ip2long($mask));
+        $netD = (int)sprintf("%u", ip2long($net));
+
+        if (($ipD & $maskD) == $netD) return true;
+        else return false;
+    }
+
+    /**
+     * Убирает лишние нули и пробелы из IP адреса
+     * @param type $ip
+     * @return string
+     */
+    public static function updateToFullIp($ip){
+            $ip = trim($ip);
+            $ipArr = explode('.', $ip);
+            $counter = 0;
+            $result = '';
+            foreach($ipArr as $value){
+                    $counter++;
+                    $result .= ((!empty($result))?'.':'') . intval($value);
+            }	
+            for($i=$counter;$i<4;$i++) $result .= ((!empty($result)?'.':'')) . 0;
+            return $result;
+    }
+
+    
 }
-
-

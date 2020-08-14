@@ -22,6 +22,7 @@ Glob::$vars['time_start'] = SysBF::getmicrotime();
 if (isset ($systemLogView)) SysLogs::$logView = ($systemLogView)?true:false; //Видимость Лога работы скрипта
 if (isset ($systemLogRTView)) SysLogs::$logRTView = ($systemLogRTView)?true:false; //Выводить сообщения непосредственно при их формировании
 if (isset ($systemLogSave)) SysLogs::$logSave = ($systemLogSave)?true:false; //Сохранение Лога работы скрипта
+if (isset ($systemLogBakCreate)) SysLogs::$logBakCreate = ($systemLogBakCreate)?true:false; //Сохранение Лога работы скрипта
 if (isset ($systemErrorsView)) SysLogs::$errorsView = ($systemErrorsView)?true:false; //Видимость Ошибок работы скрипта
 
 /*

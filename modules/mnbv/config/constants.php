@@ -111,23 +111,11 @@ define("MNBV_DEF_SITE_OBJ",1);
 
 //Пути к WWW папкам ---------------------------------------------
 
-if (!defined("WWW_SRCPATH")) 
-/**
- * Путь к директории со статикой модулей
- */
-define("WWW_SRCPATH",'/src/');
-
 if (!defined("WWW_IMGPATH")) 
 /**
  * Путь к директории img модуля mnbv
  */
 define("WWW_IMGPATH",WWW_SRCPATH.'mnbv/img/');
-
-if (!defined("WWW_DUMPPATH")) 
-/**
- * Путь к директории tmp
- */
-define("WWW_DUMPPATH",'/tmp/');
 
 if (!defined("MNBV_WWW_DATAPATH")) 
 /**

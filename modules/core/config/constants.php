@@ -38,6 +38,12 @@ if (!defined("CORE_PATH"))
  */
 define("CORE_PATH",APP_MODULESPATH . 'core/');
 
+if (!defined("APP_TEMPLATES")) 
+/**
+ * Путь к директории с шаблонами
+ */
+define("APP_TEMPLATES",'templates/');
+
 if (!defined("USER_TEMPLATES")) 
 /**
  * Путь к директории с пользовательскими шаблонами
@@ -85,6 +91,12 @@ if (!defined("APP_UPLPATH"))
  * Путь к директории загрузки
  */
 define("APP_UPLPATH", APP_DUMPPATH.'upl/');
+
+if (!defined("APP_MODULESTMPPATH")) 
+/**
+ * Путь к директории загрузки
+ */
+define("APP_MODULESTMPPATH", APP_DUMPPATH.'modules/');
 
 if (!defined("APP_DATAPATH")) 
 /**
@@ -146,3 +158,14 @@ if (!defined("PHPSESSID"))
  */
 define("PHPSESSID",'PHPSESSID');
 
+if (!defined("WWW_SRCPATH")) 
+/**
+ * Путь к директории со статикой модулей
+ */
+define("WWW_SRCPATH",'/src/');
+
+if (!defined("WWW_DUMPPATH")) 
+/**
+ * Путь к директории tmp
+ */
+define("WWW_DUMPPATH",'tmp/');
