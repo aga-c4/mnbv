@@ -274,6 +274,9 @@ class ProductsController extends AbstractMnbvsiteController {
         //Подготовим переменные скрипта, если есть
         $realObject['vars']['scriptvars'] = (!empty($item['obj']['vars']['scriptvars']))?SysBF::json_decode($item['obj']['vars']['scriptvars']):array();
 
+        //Расчитаем цену со скидкой. У жестко забитого oldprice - приоритет.
+        $realObject['discount_price'] = MNBVDiscount::getPrice($realObject["id"], $realObject["price"]);
+        
         //Поправим имя, описание и текст в соответствии с altlang
         if (!Lang::isDefLang()){
             if (!empty($realObject['namelang'])) $realObject['name'] = $realObject['namelang'];
