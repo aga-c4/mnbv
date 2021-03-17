@@ -169,7 +169,10 @@ mklink /j actions D:\OSPanel\domains\mnbv\data\storage_files\actions
 миграций читайте в файле, который вызываете "migration.php".
 ```
 CREATE DATABASE `mnbv` CHARACTER SET utf8 COLLATE utf8_general_ci;
-```
+
+
+Создайте файл групп пользователей без .default на базе 
+\data\storages\array\mnbv_users_groups.default.php
 
 6. По-умолчанию в конфиге настроены доступы к Mysql базе mnbv8 для пользователя 
 root без пароля. Если в вашем случае это другие доступы, то создайте файл 
