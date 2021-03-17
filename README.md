@@ -168,7 +168,9 @@ mklink /j actions D:\OSPanel\domains\mnbv\data\storage_files\actions
 В результате будет создана база данных. Подробнее об использовании механизма
 миграций читайте в файле, который вызываете "migration.php".
 
+```php
 CREATE DATABASE `mnbv8` CHARACTER SET utf8 COLLATE utf8_general_ci;
+```
 
 6. Создайте файл групп пользователей без .default на базе 
 \data\storages\array\mnbv_users_groups.default.php
