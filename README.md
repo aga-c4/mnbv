@@ -134,7 +134,7 @@ composer для подключения внешних библиотек
 	start_robot.default.php
 	www/index_default.php
         data/storages/array/mnbv_users_groups.default.php
-        data/storage_dumpsmigration.default.php
+        data/storage_dumps/migration.default.php
 удалив default на конце.
 
 3. Перейдите в папку "www/tmp" и создайте там символическую ссылку "imgeditor" на

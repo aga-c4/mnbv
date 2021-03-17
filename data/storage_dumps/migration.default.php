@@ -4,7 +4,7 @@
  * запускаем так:
  * php migration.php [db=dbAlias] [help|info|migrate|dump]
  *
- * dbAlias - database alias for info or migrate
+ * dbAlias - database alias for info or migrate (mnbv - default alias)
  * help - info about script
  * info - info about database status and version
  * migrate - run migrations
@@ -121,7 +121,7 @@ if (!empty($dbAlias) && !isset($request['help']) && false!==$db->getConfig($conf
     echo "COMMAND:
 php migration.php [db=dbAlias] [help|info|migrate]
 
-dbAlias - database alias for info or migrate
+dbAlias - database alias for info or migrate (mnbv - default alias)
 help - info about script
 info - info about database status and version
 migrate - run migrations

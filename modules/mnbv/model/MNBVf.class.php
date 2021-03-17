@@ -47,6 +47,7 @@ class MNBVf {
         return result;
 
     }
+    
 
     /**
      * Возвращает true, если запрос с мобильного браузера, есть защит от повторной проверки.
@@ -138,7 +139,7 @@ class MNBVf {
      * @return string название хранилища на приемлемом языке
      */
     public static function getItemName($value,$altlang=false,$defval=''){
-        $objName = (!empty($defval))?$defval:$value['name'];
+        $objName = (!empty($defval))?$defval:'';
         if ($altlang && !empty($value['namelang'])) $objName = $value['namelang'];
         elseif ($altlang && !empty($value[Lang::getAltLangName()."_name"])) $objName = $value[Lang::getAltLangName()."_name"];
         elseif (!empty($value[Glob::$vars['lang']."_name"])) $objName = $value[Glob::$vars['lang']."_name"];
@@ -199,7 +200,7 @@ class MNBVf {
         return $result;     
         
     }  
-    
+   
     /**
      * Посылает запрос к внешнему URL с помощью cURL и возвращает ответ
      * @param string $url - URL вызова
@@ -488,7 +489,7 @@ class MNBVf {
         return false;
     }
 
-        
+       
     /**
      * Выводит данные в заданном шаблоне и формате
      * @param string $tplPath - путь к шаблону дизайна
@@ -655,8 +656,7 @@ class MNBVf {
      * @param $uri если задано, то будет подставлено в REQUEST_URI
      * @return string текущий URL
      */
-    public static function requestUrl($swlang='',$uri='')
-    {
+    public static function requestUrl($swlang='',$uri=''){
         $result = ''; // Пока результат пуст
         $default_port = 80; // Порт по-умолчанию
         $realUri = (!empty($uri))?$uri:((!empty($_SERVER['REQUEST_URI']))?$_SERVER['REQUEST_URI']:'');  
@@ -854,7 +854,7 @@ class MNBVf {
         return $navStr;
     }
 
-        /**
+    /**
      * Служит для анализа входных данных при редактировании vars,attr,attrvals 
      * Получает реальное значение по ключу и возвращает его, если надо удалить 
      * объект, то возвращает delete.
@@ -1275,7 +1275,7 @@ class MNBVf {
      */
     public static function createStorageObject($storage,$parentid=0,$params=array()){
         $thisTime = time();
-        $thisDateTime = date("Y-m-d H:i:s",time($thisTime));
+        $thisDateTime = date("Y-m-d H:i:s",$thisTime);
         
         //Сформируем массив параметров--------
         $param = array(
@@ -1370,7 +1370,7 @@ class MNBVf {
     public static function addStorageObject($storage,$updateArr=array(),$parentArr=false){
         
         $thisTime = time();
-        $thisDateTime = date("Y-m-d H:i:s",time($thisTime));
+        $thisDateTime = date("Y-m-d H:i:s",$thisTime);
         
         if (!isset($updateArr['parentid'])) $updateArr['parentid'] = 0;
         if (!isset($updateArr['pozid'])) $updateArr['pozid'] = 100;
@@ -2122,8 +2122,7 @@ class MNBVf {
         echo "\n\n";
         
     }
-    
-    
+   
     /**
      * Вывод свойств типового объекта с подготовкой значений в массив типа array('key_name'=>'value')
      * @param $usestorage - хранилище

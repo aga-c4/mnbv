@@ -39,7 +39,7 @@ class CartController extends AbstractMnbvsiteController {
     public function action_index($item=array(),$tpl_mode='html', $console=false){
 
         $thisTime = time();
-        $thisDateTime = date("Y-m-d H:i:s",time($thisTime));
+        $thisDateTime = date("Y-m-d H:i:s",$thisTime);
         //$this->setStorage('carts');
         
         $storage = $this->getStorage();

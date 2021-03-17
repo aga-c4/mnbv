@@ -62,7 +62,7 @@ class ProductsController extends AbstractMnbvsiteController {
                 $realFolder['use_other_storage'] = $realFolder['parent']['use_other_storage'] = $item['obj']['use_other_storage'];
                 $item['obj']['folder'] = $realFolder;
                 $item['obj']['folderid'] = $realFolder['id'];
-                $item['obj']['folder_name'] = $realObject['parent_name'];
+                $item['obj']['folder_name'] = $realFolder['name'];
                 $item['obj']['folder_alias'] = (!empty($realFolder['alias']))?$realFolder['alias']:'';
             }
         }

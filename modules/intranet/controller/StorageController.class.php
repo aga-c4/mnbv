@@ -250,7 +250,7 @@ class StorageController {
     public function action_admlist($tpl_mode='html', $console=false){
 
         $thisTime = time();
-        $thisDateTime = date("Y-m-d H:i:s",time($thisTime));
+        $thisDateTime = date("Y-m-d H:i:s",$thisTime);
         $this->setStorage(Glob::$vars['mnbv_usestorage']);
 
         $item = array(); //Массив данных, передаваемых во View
@@ -300,8 +300,8 @@ class StorageController {
         //При наличии специализированного контроллера обработки данного хранилища подгрузим и выполним его
         //$storageSubController =  MNBVf::getRealFileName(Glob::$vars['mnbv_module'], MOD_CONTROLLERSPATH . 'Storage'.SysBF::trueName($this->getStorage(),'title').'ListController.php');
         //if(file_exists($storageSubController)) include $storageSubController;
-
-        $act = SysBF::checkStr(SysBF::getFrArr(Glob::$vars['request'],'act',''),'strictstr');
+        
+        $act = SysBF::checkStr(SysBF::getFrArr(Glob::$vars['request'],'act',''),'strictstr');   
         switch ($act){
             
             case 'update': //Редактирование элемента списка      
@@ -359,6 +359,8 @@ class StorageController {
                 $gaccess2 = (!empty($item["parent"]["access2"]))?$item["parent"]["access2"]:SysStorage::$storage[$this->getStorage()]['access2']; //Наследуем из вышестоящего раздела, если это корень, то из свойств хранилища
                 $gtype = SysBF::checkStr((SysBF::getFrArr(Glob::$vars['request'],'gtype',0)),'int');
                 $gsiteid = (!empty($item["parent"]["siteid"]))?$item["parent"]["siteid"]:0;
+                
+                SysLogs::addLog("Create object gname=[$gname]");
                 
                 if (!empty($gname)){
 
