@@ -1,6 +1,6 @@
 <?php
 /**
- * Description of gormenuController
+ * Description of WidgetPglistController
  *
  * Created by Konstantin Khachaturyan (AGA-C4)
  * @author Konstantin Khachaturyan (AGA-C4)
@@ -89,12 +89,6 @@ class WidgetPglistController extends AbstractWidgetControllerController {
     }
     
     /**
-     * Метод по-умолчанию
-     * @param string $tpl_mode - формат вывода
-     * @param bool $console - если true, то вывод в консоль
-     */
-    
-    /**
      * Вывод виджета
      * @param type $item - массив данных шаблона, который приходит из контроллера модуля. Если не хотите передавать, можно не задавать, либо задать ''
      * @param type $param входные параметры (может быть массивом, либо переменной), если не задано, то запускается виджет без параметров. В параметрах может быть:
@@ -102,7 +96,7 @@ class WidgetPglistController extends AbstractWidgetControllerController {
      * 'folderid' - папка из которой будут выбираться объекты. Если не задано, то 1
      * 'list_main_alias' - основная часть URL на базе которой будет формироваться URL элемента списка хранилища добавляя туда язык, идентификатор и алиас
      * 'folder_start_id' - идентификатор корневой папки списка в хранилище (нужно чтоб корректно URL формировать)
-     * 'list_max_items' - количество выводимых элементов
+     * 'list_max_items' - количество выводимых элементов, 0 - без ограничения
      * 'list_sort' - сортировка списка
      * 'only_first' - true|false выводить только объекты, выделенные свойством First (Гл)
      * 'filter_type' - ('objects'|'folders'|'all') - типы объектов связей (по-умолчанию objects), если не задано, то без фильтра ('all')
@@ -119,19 +113,12 @@ class WidgetPglistController extends AbstractWidgetControllerController {
         if (!is_array($item)) $item = array();
         $this->param = $param;
 
-        $tplFile = MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'units/'.((!empty($vidget_tpl))?$vidget_tpl:'wdg_'.$this->thisWidgetName.'.php'));
-        if(!file_exists($tplFile)) {
-            SysLogs::addError('Error: Wrong widget template [' . $tplFile . ']');
-            return;
-        }
-        $this->tpl = $tplFile;
-
         //Формирование массива параметров виджета-----------------------------------------
         if (!is_array($param)) return;
         if (empty($param['storage']) || !MNBVStorage::isStorage($param['storage'])) return; else $this->storage = $param['storage'];
         if (!empty($param['folderid'])) $this->folder = intval($param['folderid']);
         if (!empty($param['folder_start_id'])) $this->folder_start_id = intval($param['folder_start_id']);
-        if (!empty($param['list_max_items'])) $this->list_max_items = intval($param['list_max_items']);
+        if (isset($param['list_max_items'])) $this->list_max_items = intval($param['list_max_items']);
         if (!empty($param['list_sort'])) $this->list_sort = $param['list_sort'];
         if (!empty($param['filter_type'])) $this->filter_type = $param['filter_type'];
         if (!empty($param['list_main_alias'])) $this->list_main_alias = $param['list_main_alias'];
@@ -140,6 +127,12 @@ class WidgetPglistController extends AbstractWidgetControllerController {
         if (isset($param['only_first'])) $this->only_first = (!empty($param['only_first']))?true:false;
         if (isset($param['obj_prop_conf']) && is_array($param['obj_prop_conf'])) $this->obj_prop_conf = $param['obj_prop_conf'];
 
+        $tplFile = MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'units/'.((!empty($vidget_tpl))?$vidget_tpl:'wdg_'.$this->thisWidgetName.'.php'));
+        if(!file_exists($tplFile)) {
+            SysLogs::addError('Error: Wrong widget template [' . $tplFile . ']');
+            return;
+        }
+        $this->tpl = $tplFile;
 
         //Сведения о папке, которую выводим
         if ($folder = MNBVf::getStorageObject($this->storage,$this->folder,array('altlang'=>$item['mnbv_altlang'],'visible'=>true,'access'=>true,'site'=>true))){//Объект для редактирования найден
@@ -163,7 +156,8 @@ class WidgetPglistController extends AbstractWidgetControllerController {
         elseif ($this->filter_type=='folders') array_push($quFilterArr,'and','type','=',1);
         if (!empty($this->only_first)) array_push($quFilterArr,'and','first','=',1);
 
-        $quConfArr = array("sort"=>array(), "limit"=>array($item['list_start_item'],$item['list_max_items'])); //Сортировка
+        $quConfArr = array();
+        if (!empty($item['list_max_items'])) $quConfArr["limit"] = array($item['list_start_item'], $item['list_max_items']);
 
         //Сортировка списка------------------------------------------------------------
         $quConfArr["sort"] = array();

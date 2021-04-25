@@ -9,6 +9,8 @@
  */
 SysLogs::addLog('Submodules_init start mnbv_module = ['.Glob::$vars['mnbv_module'].'].' );
 
+Glob::$vars['session'] = new MNBVSession(true); //Инициализация сессии
+
 //Установки языка и инициализация словаря
 SysLogs::addLog('lang=['.Glob::$vars['lang'].'] def_lang=['.Glob::$vars['def_lang'].'] Lang::lang=['.Lang::getLang().'] Lang::def_lang=['.Lang::getDefLang().'] Lang::alt_lang=['.((Lang::isAltLang())?'TRUE':'FALSE').']');
 if (Lang::getLang() != Lang::getDefLang()) MNBVf::requireFile(MNBV_PATH . 'lang/LangDict_'.Glob::$vars['lang'].'.php'); //Переподключим основной словарь с языком пользователя

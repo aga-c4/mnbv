@@ -64,6 +64,14 @@ class ProductsController extends AbstractMnbvsiteController {
                 $item['obj']['folderid'] = $realFolder['id'];
                 $item['obj']['folder_name'] = $realFolder['name'];
                 $item['obj']['folder_alias'] = (!empty($realFolder['alias']))?$realFolder['alias']:'';
+                
+                //Метатеги----------------------------------------------------------------------
+                Glob::$vars['page_title'] = (!empty($realFolder['vars']['title']))?$realFolder['vars']['title']:((!empty($realFolder['name']))?$realFolder['name']:'');
+                Glob::$vars['page_keywords'] = (!empty($realFolder['vars']['keywords']))?$realFolder['vars']['keywords']:'';
+                Glob::$vars['page_description'] = (!empty($realFolder['vars']['description']))?$realFolder['vars']['description']:'';
+                $item['page_h1'] = (!empty($realFolder['name']))?$realFolder['name']:'';
+                //------------------------------------------------------------------------------
+                
             }
         }
         $item['page_list_url'] = MNBVf::generateObjUrl($realFolder,array('altlang'=>false)); //Язык базовый, потом при преобразовании будет доработан
@@ -194,13 +202,13 @@ class ProductsController extends AbstractMnbvsiteController {
         $item['list_sort_types'] = array(
             'price' => 'price', //сортировка по цене
             'price_desc' => 'price_desc', //сортировка по цене по убыванию
-            'id' => 'id', //сортировка по id объекта
-            'id_desc' => 'id_desc', //сортировка по id объекта по убыванию
-            'date' => 'date', //сортировка по date объекта
-            'date_desc' => 'date_desc', //сортировка по date объекта по убыванию
-            'pozid' => 'pozid', //сортировка по позиции объекта, названию
+            //'id' => 'id', //сортировка по id объекта
+            //'id_desc' => 'id_desc', //сортировка по id объекта по убыванию
+            //'date' => 'date', //сортировка по date объекта
+            //'date_desc' => 'date_desc', //сортировка по date объекта по убыванию
+            //'pozid' => 'pozid', //сортировка по позиции объекта, названию
             'name' => 'name', //сортировка по полю name не важно включен альтернативный язык или нет
-            'name_desc' => 'name_desc', //сортировка по полю name не важно включен альтернативный язык или нет
+            //'name_desc' => 'name_desc', //сортировка по полю name не важно включен альтернативный язык или нет
         );
         //----------------------------------------------------------------------
 
@@ -287,7 +295,7 @@ class ProductsController extends AbstractMnbvsiteController {
 
         //Метатеги----------------------------------------------------------------------
         Glob::$vars['page_title'] = (!empty($realObject['vars']['title']))?$realObject['vars']['title']:((!empty($realObject['name']))?$realObject['name']:'');
-        Glob::$vars['page_keywords'] = (!empty($realObject['vars']['title']))?$realObject['vars']['keywords']:'';
+        Glob::$vars['page_keywords'] = (!empty($realObject['vars']['keywords']))?$realObject['vars']['keywords']:'';
         Glob::$vars['page_description'] = (!empty($realObject['vars']['description']))?$realObject['vars']['description']:'';
         $item['page_h1'] = (!empty($realObject['name']))?$realObject['name']:'';
         //------------------------------------------------------------------------------

@@ -61,6 +61,8 @@ class AuthController extends AbstractMnbvsiteController {
             $item['user'] = array();
             //$item['user']['login'] = 'Login';
         }
+        
+        $item['page_h1'] = '';
 
         //View------------------------
         MNBVf::render(Glob::$vars['mnbv_tpl_file'],$item,$tpl_mode);

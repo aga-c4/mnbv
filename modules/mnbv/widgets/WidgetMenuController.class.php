@@ -7,7 +7,7 @@
  * Date: 09.04.15
  * Time: 00:00
  */
-class WidgetGormenuController extends AbstractWidgetControllerController {
+class WidgetMenuController extends AbstractWidgetControllerController {
     
     /**
      * @var string алиас текущего виджета
@@ -50,7 +50,7 @@ class WidgetGormenuController extends AbstractWidgetControllerController {
 
         if (is_array($param)){ //Если массив, то данные по идентификатору меню и текущему объекту берем из него
             if (!empty($param['menuId'])) $menuId = intval($param['menuId']); else return;
-            $activeObjId = (!empty($param['menuId']))?intval($param['activeObjId']):0;     
+            $activeObjId = (!empty($param['activeObjId']))?intval($param['activeObjId']):0;     
         }else{ //Если не массив, то это идентификатор текущего меню
             $menuId = intval($param);
         }

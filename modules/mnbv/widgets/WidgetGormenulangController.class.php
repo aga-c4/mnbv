@@ -30,12 +30,6 @@ class WidgetGormenulangController extends AbstractWidgetControllerController {
     }
     
     /**
-     * Метод по-умолчанию
-     * @param string $tpl_mode - формат вывода
-     * @param bool $console - если true, то вывод в консоль
-     */
-    
-    /**
      * Вывод виджета
      * @param type $item - массив данных шаблона, который приходит из контроллера модуля. Если не хотите передавать, можно не задавать, либо задать ''
      * @param type $param входные параметры (может быть массивом, либо переменной), если не задано, то запускается виджет без параметров

@@ -156,7 +156,10 @@ class ImgeditorController{
 
         }
 
-        $filename0 = Glob::$vars['session']->get('img_editor_file');
+        $filename0 = '';
+        if (isset(Glob::$vars['session'])) {
+            $filename0 = Glob::$vars['session']->get('img_editor_file');
+        }
         if (!empty($filename0)){
             $item["img_editor_file"] = WWW_DUMPPATH . Glob::$vars['mnbv_module'] . '/' .Glob::$vars['session']->get('img_editor_file');
             $item["img_editor_file_w"] = Glob::$vars['session']->get('img_editor_file_w');

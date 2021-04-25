@@ -58,7 +58,7 @@ class ContactsController extends AbstractMnbvsiteController {
             "from_fio" => array("name"=>"from_fio", "type"=>"text", "print_name"=>"name", "size"=>255,"width"=>"100%","checktype" => "text"), //Основной язык
             "email" => array("name"=>"email", "type"=>"text", "size"=>255,"width"=>"100%","checktype" => "text"), //Основной язык
             "phone" => array("name"=>"phone", "type"=>"text", "size"=>255,"width"=>"100%","checktype" => "text"), //Основной язык
-            "text" => array("name"=>"text", "type"=>"textarea", "print_name"=>"Message", "editor"=>false,"rows"=>20,"width"=>"100%","table" =>"thline","checktype" => "text"), //Основной язык
+            "text" => array("name"=>"text", "type"=>"textarea", "print_name"=>"Message", "editor"=>false,"rows"=>10,"width"=>"100%","table" =>"thline","checktype" => "text"), //Основной язык
         );
         
         $item['sub_obj']['messageOk'] = false;

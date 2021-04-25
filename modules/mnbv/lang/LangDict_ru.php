@@ -548,6 +548,8 @@ $langTmpArr = array(
     "Start Error"=>"Ошибка запуска",
     "Error"=>"Ошибка",
     
+    "All actions"=>"Все акции",
+    
     "Create storage" => "Создать хранилище",
     "mLang" => "рус", //Основной язык
     "mAltLang" => "англ", //Альтернативный язык

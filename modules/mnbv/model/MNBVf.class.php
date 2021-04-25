@@ -816,30 +816,36 @@ class MNBVf {
      * @param array $navArr массив хлебных крошек {'name'=>'','url'=>''}...
      * @param array $params массив параметров формирования строки: 
      * - 'start_item' стартовый элемент массива, по-умолчанию 0;
-     * - 'fin_item_view'  выводить финальный элемент массива, по-умолчанию true;
-     * - 'fin_link_ctive' линк на финальном элементе массива, по-умолчанию true.
+     * - 'fin_item_view'  выводить финальный элемент массива, по-умолчанию false;
+     * - 'fin_link_ctive' линк на финальном элементе массива, по-умолчанию false.
+     * - 'allow_item_keys' массив допустимых ключей для вывода, имеет приоритет перед start_item
      * - 'link_class' класс линка, может понадобиться при верстке
      * - 'delim' - разделитель, по-умолчанию ' / '
+     * - 'fintag' - финальные теги и что еще надо после строки
      * @return string сформированная строка навигации
      */
     public static function getNavStr(array $navArr, $params=array()){
         
         $startItem = 0; 
-        $finItemView = true;
-        $finlinkActive = true;
+        $finItemView = false;
+        $finlinkActive = false;
+        $allowItemKeys = false;
         $linkClass = '';
         $delim = ' / ';
+        $fintag = '';
         
         //Обработаем массив параметров
         if (isset($params['start_item'])) $startItem = intval($params['start_item']); 
         if (isset($params['fin_item_view'])) $finItemView = ($params['fin_item_view'])?true:false;
         if (isset($params['fin_link_ctive'])) $finlinkActive = ($params['fin_link_ctive'])?true:false;
+        if (isset($params['allow_item_keys']) && is_array($params['allow_item_keys'])) $allowItemKeys = $params['allow_item_keys'];
         if (isset($params['link_class'])) $linkClass = ' class="'.$params['link_class'].'"'; 
         if (isset($params['delim'])) $delim = $params['delim']; 
+        if (isset($params['fintag'])) $fintag = $params['fintag']; 
     
         $navStr = $navLast = $navLastNoLink = '';
         foreach ($navArr as $key => $value) {
-            if ($key>=$startItem){
+            if (($allowItemKeys!==false && in_array($key,$allowItemKeys)) || ($allowItemKeys===false && $key>=$startItem)){
                 $navStr .= $navLast; //Прицепим к навигации предыдущую строку
                 $navLast = $navLastNoLink = '';
                 if (!empty($value['name'])) {
@@ -850,6 +856,8 @@ class MNBVf {
         }
         
         if ($finItemView) $navStr .= ($finlinkActive)?$navLast:$navLastNoLink; //Прицепим к навигации предыдущую строку 
+        
+        if ($navStr!=='') $navStr .= $fintag;
         
         return $navStr;
     }

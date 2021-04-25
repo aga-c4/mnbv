@@ -147,14 +147,14 @@ composer для подключения внешних библиотек
 команды Windows:
 ```
 Для папки www/tmp:
-mklink /j imgeditor D:\OSPanel\domains\mnbv\tmp\imgeditor
+mklink /j imgeditor ..\..\tmp\imgeditor
 
 Для папки www/data:
-mklink /j site D:\OSPanel\domains\mnbv\data\storage_files\site
-mklink /j news D:\OSPanel\domains\mnbv\data\storage_files\news
-mklink /j articles D:\OSPanel\domains\mnbv\data\storage_files\articles
-mklink /j products D:\OSPanel\domains\mnbv\data\storage_files\products
-mklink /j actions D:\OSPanel\domains\mnbv\data\storage_files\actions
+mklink /j site ..\..\data\storage_files\site
+mklink /j news ..\..\data\storage_files\news
+mklink /j articles ..\..\data\storage_files\articles
+mklink /j products ..\..\data\storage_files\products
+mklink /j actions ..\..\data\storage_files\actions
 ```
 
 5. Создайте базу данных базовая кодировка utf-8, сравнение utf8_general_ci

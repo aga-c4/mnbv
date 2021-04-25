@@ -1,0 +1,13 @@
+.my-nav-link{
+    font-size: 1.25rem;  
+}
+
+.prodlist-img-a{
+    height:200px;
+    display:block;
+    overflow:hidden
+}
+
+.prodlist-img{
+    width: auto;
+}

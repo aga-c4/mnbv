@@ -751,7 +751,7 @@ SysStorage::$storage['orders'] = array(
     'filter' => $storageDefFilterArr, //Формат фильтра
     'varuse' => false, //разрешено ли использование элементов данного хранилища как значение поля
     'attruse' => false, //Есть ли у данного хранилища атрибуты, если не требуются, то для быстродействия лучше отключать.
-	'files_security' => true, //будет ли ограничение доступа к приложенным файлам объектов хранилища
+    'files_security' => true, //будет ли ограничение доступа к приложенным файлам объектов хранилища
 );
 SysStorage::$storage['orders']['stru']['userid'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar");
 SysStorage::$storage['orders']['stru']['phone'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"); 
@@ -785,7 +785,7 @@ SysStorage::$storage['messages'] = array(
     'filter' => $storageDefFilterArr, //Формат фильтра
     'varuse' => false, //разрешено ли использование элементов данного хранилища как значение поля
     'attruse' => false, //Есть ли у данного хранилища атрибуты, если не требуются, то для быстродействия лучше отключать.
-	'files_security' => true, //будет ли ограничение доступа к приложенным файлам объектов хранилища
+    'files_security' => true, //будет ли ограничение доступа к приложенным файлам объектов хранилища
 );
 SysStorage::$storage['messages']['stru']['userid'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar");
 SysStorage::$storage['messages']['stru']['phone'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"); 
@@ -1077,6 +1077,7 @@ SysStorage::$storage['menu']["view"] = array(
         )),
         "submitstr" => array("name"=>"submitstr", "type"=>"submitstr","table" =>"thline","string"=>"Edit"),
         "siteid" => array("name"=>"siteid", "type"=>"select", "viewindex" =>true, "notset" =>true, "filter_type"=>"objects", "filter_folder"=>1, "checktype" => "id"),
+        "parentid" => array("name"=>"parentid", "type"=>"select", "viewindex" =>true, "notset" =>true, "filter_type"=>"folders", "checktype" => "id"),
     )
 );
 //------------------------------------------
