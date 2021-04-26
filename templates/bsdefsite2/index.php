@@ -32,12 +32,12 @@ require_once MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'head.php');
 //MNBVf::startVidget('gormenu',$item,3);
 echo MNBVf::startVidget('pglist',$item,array(
     'storage' => 'products',//хранилище из которого будут забираться объекты, если не задано, то виджет не выводит ничего
-    'folderid' => 0,//папка из которой будут выбираться объекты. Если не задано, то без учета папки
+    'folderid' => 1,//папка из которой будут выбираться объекты. Если не задано, то без учета папки
     'list_main_alias' => '/catalog',//основная часть URL на базе которой будет формироваться URL элемента списка хранилища добавляя туда язык, идентификатор и алиас
     'folder_start_id' => 1,//идентификатор корневой папки списка в хранилище (нужно чтоб корректно URL формировать)
     'list_max_items' => 0,//количество выводимых элементов
     'list_sort' => 'posid', //сортировка списка
-    'only_first' =>true, //выводить только объекты, выделенные свойством First (Гл)
+    //'only_first' =>true, //выводить только объекты, выделенные свойством First (Гл)
     'filter_type' => 'folders',//('objects'|'folders'|'all') - типы объектов связей (по-умолчанию objects), если не задано, то без фильтра ('all')
     'list_link' => '/catalog',//ссылка на полный список объектов, если требуется
     'list_link_name' => Lang::get('Products catalog'),//анкор ссылки на полный список объектов, если требуется
@@ -153,9 +153,7 @@ MNBVf::startVidget('pglist',$item,array(
 ),
 'wdg_prodlist.php');
 ?>
-<br>
-<hr><br>
-<b><?=Lang::get('Last news');?>:</b><br>
+<div class="w-100 mt-3 pl-1"><a href="/news" class="h5 text-dark font-weight-bold text-decoration-none"><?=Lang::get('News');?></a></div>
 <? //Виджет новостей
 MNBVf::startVidget('pglist',$item,array(
     'storage' => 'news',//хранилище из которого будут забираться объекты, если не задано, то виджет не выводит ничего
@@ -168,11 +166,10 @@ MNBVf::startVidget('pglist',$item,array(
     'list_link' => '/news',//ссылка на полный список объектов, если требуется
     'list_link_name' => Lang::get('News archive'),//анкор ссылки на полный список объектов, если требуется
     'altlang' => Lang::isAltLang(),//вывод на альтернативном языке
-));
+    ),
+'wdg_newslist.php');
 ?>
-<br>
-<hr><br>
-<b><?=Lang::get('Last articles');?>:</b><br>
+<div class="w-100 mt-3 p-1"><a href="/articles" class="h5 text-dark font-weight-bold text-decoration-none"><?=Lang::get('Articles');?></a></div>
 <? //Виджет статей
 MNBVf::startVidget('pglist',$item,array(
     'storage' => 'articles',//хранилище из которого будут забираться объекты, если не задано, то виджет не выводит ничего
@@ -186,7 +183,8 @@ MNBVf::startVidget('pglist',$item,array(
     'list_link' => '/articles',//ссылка на полный список объектов, если требуется
     'list_link_name' => Lang::get('Articles archive'),//анкор ссылки на полный список объектов, если требуется
     'altlang' => Lang::isAltLang(),//вывод на альтернативном языке
-));
+),
+'wdg_articleslist.php');
 ?>
 
     </div>

@@ -205,6 +205,12 @@ class WidgetPglistController extends AbstractWidgetControllerController {
                     $item['list'][strval($key)]['about'] = SysBF::getFrArr($value,'aboutlang','');
                 }
                 $item['list'][strval($key)]['obj_prop_arr'] = MNBVf::objPropGenerator($this->storage, $value, $this->obj_prop_conf, Lang::isAltLang(),'array');
+                
+                if ($this->storage==='products'){ //Для хранилища товаров посчитаем скидку подробнее в ProductsController.php
+                    $discountParamsArr = array('user' => 'current','discmaxpr'=>$value["discmaxpr"],'discmaxval'=>$value["discmaxval"],'discminmargpr'=>$value["discminmargpr"],'discminmargval'=>$value["discminmargval"]);
+                    $item['list'][strval($key)]['discount_price'] = MNBVDiscount::getPrice($value["id"], $value["price"],$value["cost"],$discountParamsArr);
+                }
+                
             }else{ //Косячная запись, удалим
                 unset($item['list'][strval($key)]);
             }

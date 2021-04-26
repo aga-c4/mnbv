@@ -7,14 +7,17 @@
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-1">
 <?
 //Список объектов
+$itemCounter = 0;
 foreach ($item['list'] as $key=>$value) if ($key>0) {
+    $dopItemClassStr = ($itemCounter>2)?' d-md-block d-lg-none d-xl-block':'';
+    $itemCounter++;
 ?>
 <?
 /*(SysBF::getFrArr($value,'type')!=1)?(MNBVf::getDateStr(SysBF::getFrArr($value,'date',0),array('mnbv_format'=>'type1')).': '):'';
  * col-sm-12 col-md-6 col-lg-4 col-xl-3
  */ 
 ?>
-    <div class="col mb-2">
+    <div class="col mb-2<?=$dopItemClassStr;?>">
         <div class="card m-1 bg-light h-100 shadow">
 <?
 if (isset($value['files']["img"]["1"]) && $tecObjTxtCode = MNBVf::getObjCodeByURL(SysBF::getFrArr($value['files']["img"]["1"],'src',''))){//Нашли специфический объект (видео, ютуб.....), выводим его 
@@ -44,7 +47,7 @@ if (isset($value['files']["img"]["1"]) && $tecObjTxtCode = MNBVf::getObjCodeByUR
 <? if (!empty($value['price']) && $value['price']>0){
     ?>Цена: <span style="font-weight:bold;"><?=SysBF::getFrArr($value,'price','');?>р.</span>
 <? if (!empty($value['oldprice']) && $value['oldprice']>$value['price']){ ?> 
-            <span style="text-decoration: line-through;"><?=$value['oldprice'];?>р.</span>
+            <span class="text-decoration-line-through"><?=$value['oldprice'];?>р.</span>
 <?}?>
     <br>
 <? if (!empty($value['discount_price']) && $value['discount_price']>0 && $value['discount_price']<$value['price']){?><?=Lang::get("Discount price");?>: <span style="font-weight:bold;color:green;"><?=SysBF::getFrArr($value,'discount_price','');?>р.</span><br>
@@ -53,7 +56,9 @@ if (isset($value['files']["img"]["1"]) && $tecObjTxtCode = MNBVf::getObjCodeByUR
 <?}?>
 <? if (empty($value['type']) || $value['type']!=1 && !empty($item['sub_obj']['price']) && $item['sub_obj']['price']>0){?>
             <a href="<?=MNBVf::requestUrl((!Lang::isDefLang())?'altlang':'',SysBF::getFrArr(Glob::$vars,'cart_url',''));?>?product_id=<?=$value['id'];?>" class="btn btn-primary"><?=Lang::get('Buy');?></a>
-<? } ?>
+<? } 
+//print_r($value);
+?>
             </div>
         </div>
     </div>    

@@ -554,11 +554,13 @@ SysStorage::$storage['countries']['view']["main"] = array(
     "clear3" => array("name"=>"clear1", "type"=>"lineblock", "table" =>"tdline", "string"=>""),
     "text" => array("name"=>"text", "type"=>"textarea","editor"=>true,"rows"=>20,"width"=>"100%","langlink"=>"textlang","table" =>"thline","checktype" => "text","lang" => "lang"), //Основной язык
     "textlang" => array("name"=>"textlang", "type"=>"textarea","editor"=>true,"rows"=>20,"width"=>"100%","langlink"=>"text","table" =>"thline","checktype" => "text","lang" => "altlang"), //Альтернативный язык
+    /*
     "clear4" => array("name"=>"clear1", "type"=>"lineblock", "table" =>"thline", "string"=>"Discount limits"),
     "discmaxpr" => array("name"=>"discmaxpr", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"),     //Максимальное значение скидки, %
     "discmaxval" => array("name"=>"discmaxval", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"),    //Максимальное значение скидки, вал
     "discminmargpr" => array("name"=>"discminmargpr", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"), //Минимальное значение маржинальности для применнеия скидки, %
     "discminmargval" => array("name"=>"discminmargval", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"),//Минимальное значение маржинальности для применнеия скидки, вал
+     */
     "submitstr" => array("name"=>"submitstr", "type"=>"submitstr","table" =>"thline","string"=>"Edit"),
     "type" => array("name"=>"type", "type"=>"select", "viewindex" =>false,  "delim"=>" | ", "checktype" => "int"),
     "parentid" => array("name"=>"parentid", "type"=>"select", "viewindex" =>true, "notset" =>true, "filter_type"=>"folders", "checktype" => "id"),
@@ -609,11 +611,13 @@ SysStorage::$storage['actions']['view']['info'] = array(
     "clear1" => array("name"=>"clear1", "type"=>"lineblock", "table" =>"thline", "string"=>"Discount limits"),
     "discpr" => array("name"=>"discpr", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"),
     "discval" => array("name"=>"discval", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"),
+    /*
     "discmaxpr" => array("name"=>"discmaxpr", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"),     //Максимальное значение скидки, %
     "discmaxval" => array("name"=>"discmaxval", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"),    //Максимальное значение скидки, вал
     "discminmargpr" => array("name"=>"discminmargpr", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"), //Минимальное значение маржинальности для применнеия скидки, %
     "discminmargval" => array("name"=>"discminmargval", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"),//Минимальное значение маржинальности для применнеия скидки, вал
-
+    */
+    
     "products" => array("name"=>"products", "type"=>"textarea","editor"=>false,"rows"=>15,"width"=>"100%","table" =>"thline","checktype" => "text"), //Основной язык
     "folders" => array("name"=>"folders", "type"=>"textarea","editor"=>false,"rows"=>15,"width"=>"100%","table" =>"thline","checktype" => "text"), //Основной язык
     "vendor" => array("name"=>"vendor", "type"=>"textarea","editor"=>false,"rows"=>15,"width"=>"100%","table" =>"thline","checktype" => "text"), //Основной язык

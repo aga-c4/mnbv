@@ -113,7 +113,7 @@ class PglistController extends AbstractMnbvsiteController {
         
         //Список объектов
         $item['list'] = MNBVStorage::getObjAcc($storage,
-                array("id","parentid","pozid","type","typeval","visible","access","access2","first","name","namelang","about","aboutlang","vars","files","siteid","date","alias"),
+                array("id","parentid","pozid","type","typeval","visible","access","access2","first","name","namelang","about","aboutlang","text","vars","files","siteid","date","alias"),
                 $quFilterArr,$quConfArr);
         $item['list_size'] = (int)$item['list'][0]; unset($item['list'][0]); //Вынесем размер списка из массива 
         foreach ($item['list'] as $key=>$value) if ($key>0) {

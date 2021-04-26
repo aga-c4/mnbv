@@ -121,7 +121,7 @@ class ProductsController extends AbstractMnbvsiteController {
         
         //Список объектов
         $item['list'] = MNBVStorage::getObjAcc($storage,
-                array("id","parentid","pozid","type","typeval","visible","access","access2","first","name","namelang","about","aboutlang","vars","files","siteid","date","alias",'oldprice','price'),
+                array("id","parentid","pozid","type","typeval","visible","access","access2","first","name","namelang","about","aboutlang","vars","files","siteid","date","alias",'oldprice','price','cost','discmaxpr','discmaxval','discminmargpr','discminmargval'),
                 $quFilterArr,$quConfArr);
         $item['list_size'] = (int)$item['list'][0]; unset($item['list'][0]); //Вынесем размер списка из массива 
         foreach ($item['list'] as $key=>$value) if ($key>0) {
@@ -143,8 +143,18 @@ class ProductsController extends AbstractMnbvsiteController {
                     if (!empty($value['namelang'])) $item['list'][strval($key)]['name'] = $value['namelang'];
                     $item['list'][strval($key)]['about'] = SysBF::getFrArr($value,'aboutlang','');
                 }
-                //Расчитаем цену со скидкой. У жестко забитого oldprice - приоритет.
-                $item['list'][strval($key)]['discount_price'] = MNBVDiscount::getPrice($value["id"], $value["price"]);
+                
+                //Расчитаем цену со скидкой для конкретного пользовтеля с учетом ограничений
+                //TODO - необходимо доработать алгоритм с учетом макс скидок по вендорам, категориям и товарам. 
+                //возможно на первом этапе это будет установка в категории этих порогов с перекрытием в отдельных товарах.
+                //в таком случае работа будет вестись на уровне отдельных товаров, а категории и вендоры будут использоваться
+                //для фильтрации при массовом назначении этого параметра. Видимо пока это оптимальный вариант.
+                //discmaxpr - максимальная скидка в процентах
+                //discmaxval - максимальная скидка в валюте
+                //discminmargpr - порог маржи в процентах, ниже которого скидка не может быть
+                //discminmargval - порог маржи в рублях, ниже которого скидка не может быть
+                $discountParamsArr = array('user' => 'current','discmaxpr'=>$value["discmaxpr"],'discmaxval'=>$value["discmaxval"],'discminmargpr'=>$value["discminmargpr"],'discminmargval'=>$value["discminmargval"]);
+                $item['list'][strval($key)]['discount_price'] = MNBVDiscount::getPrice($value["id"], $value["price"], $value["cost"],$discountParamsArr);
             }else{ //Косячная запись, удалим
                 unset($item['list'][strval($key)]);
             }
@@ -282,8 +292,17 @@ class ProductsController extends AbstractMnbvsiteController {
         //Подготовим переменные скрипта, если есть
         $realObject['vars']['scriptvars'] = (!empty($item['obj']['vars']['scriptvars']))?SysBF::json_decode($item['obj']['vars']['scriptvars']):array();
 
-        //Расчитаем цену со скидкой. У жестко забитого oldprice - приоритет.
-        $realObject['discount_price'] = MNBVDiscount::getPrice($realObject["id"], $realObject["price"]);
+        //Расчитаем цену со скидкой для конкретного пользовтеля с учетом ограничений
+        //TODO - необходимо доработать алгоритм с учетом макс скидок по вендорам, категориям и товарам. 
+        //возможно на первом этапе это будет установка в категории этих порогов с перекрытием в отдельных товарах.
+        //в таком случае работа будет вестись на уровне отдельных товаров, а категории и вендоры будут использоваться
+        //для фильтрации при массовом назначении этого параметра. Видимо пока это оптимальный вариант.
+        //discmaxpr - максимальная скидка в процентах
+        //discmaxval - максимальная скидка в валюте
+        //discminmargpr - порог маржи в процентах, ниже которого скидка не может быть
+        //discminmargval - порог маржи в рублях, ниже которого скидка не может быть
+        $discountParamsArr = array('user' => 'current','discmaxpr'=>$realObject["discmaxpr"],'discmaxval'=>$realObject["discmaxval"],'discminmargpr'=>$realObject["discminmargpr"],'discminmargval'=>$realObject["discminmargval"]);
+        $realObject['discount_price'] = MNBVDiscount::getPrice($realObject["id"], $realObject["price"], $realObject["cost"],$discountParamsArr);
         
         //Поправим имя, описание и текст в соответствии с altlang
         if (!Lang::isDefLang()){

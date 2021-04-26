@@ -25,13 +25,16 @@ function CheckListSort(){
 <br>
 <? } ?>
 
-<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-1">
+<div class="row row-cols-1 row-cols-md-1 row-cols-lg-2 row-cols-xl-2 g-1">
 <?
 //Список объектов
 foreach ($item['list'] as $key=>$value) if ($key>0) {
 ?>
     <div class="col mb-2">
-        <div class="card m-1 bg-light h-100 shadow">
+        <div class="card mb-0 mr-2 bg-white h-100">
+            
+            <div class="row g-0">
+                <div class="col-md-4">
 <?
 if (isset($value['files']["img"]["1"]) && $tecObjTxtCode = MNBVf::getObjCodeByURL(SysBF::getFrArr($value['files']["img"]["1"],'src',''))){//Нашли специфический объект (видео, ютуб.....), выводим его 
     //Ютуб заменяем превьюшкой
@@ -54,9 +57,15 @@ if (isset($value['files']["img"]["1"]) && $tecObjTxtCode = MNBVf::getObjCodeByUR
     }
 } 
 ?>
-        <div class="card-body">
-            <h5 class="card-title"><a href="<?=SysBF::getFrArr($value,'url','');?>"><?=SysBF::getFrArr($value,'name','');?></a></h5>
-            <?=(!empty($value['about']))?('<p class="card-text">'.$value['about'].'</p>'):'';?>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title"><a href="<?=SysBF::getFrArr($value,'url','');?>"><?=SysBF::getFrArr($value,'name','');?></a></h5>
+                        <?=(SysBF::getFrArr($value,'type')!=1)?('<span class="card-subtitle mb-2 text-muted">'.MNBVf::getDateStr(SysBF::getFrArr($value,'date',0),array('mnbv_format'=>'type1')).'</span>'):'';?>
+                        <?=(!empty($value['about']))?('<p class="card-text">'.$value['about'].'</p>'):'';?>
+                    </div>
+                </div>
             </div>
         </div>
     </div>    
