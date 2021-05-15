@@ -99,6 +99,31 @@ class ProductsController extends AbstractMnbvsiteController {
             // /ff_ПОЛЕ_123/ - ПОЛЕ=123 если параметр строковый или текстовый, то поиск по like '%строка%'
             // /ff_ПОЛЕ_123_not/ - ПОЛЕ!=123
         }
+        
+        //Фильтрация по атрибутам-----------------------------------------------
+        //Формирование массива выбранных элементов фильтров и диапазонов
+        $filterValsArr = array(
+            "price"=>array(300,700),
+            "country"=>array(2,3),
+            "instock"=>array(1,2),
+            "attr4"=>array(11)
+            );
+        
+        $cache = new MNBVCache();
+        $attr_filters = $cache->get("prodfilters:$folderId",true);
+        //echo "(prodfilters:$folderId=>[$attrFiltersCacheStr])";
+        if (!is_array($attr_filters) || !empty(Glob::$vars['no_cache'])){ //Необходимо перегенерить кеш
+            $attr_filters = MNBVf::objFilterGenerator('attributes',$realFolder,array('folderid'=>(!empty($folderId))?$folderId:Glob::$vars['prod_storage_rootid'])); //Специально без выделения пунктов, чтоб можно было закешировать.
+            $cache->set("prodfilters:$folderId",$attr_filters,Glob::$vars['prod_filters_cache_ttl']);
+        }
+        
+        //Если фильтры найдены, подготовим элементы для их вывода в шаблоне
+        if (is_array($attr_filters) && isset($attr_filters['list'])) {
+            $attr_filters = MNBVf::selectFilterItems($attr_filters,$filterValsArr);
+            $item['attr_filters'] = $attr_filters['list'];
+            $item['attr_filters_selected_nums'] = $attr_filters['selected'];
+        }
+        //----------------------------------------------------------------------
 
         //Сортировка списка------------------------------------------------------------
         $quConfArr["sort"] = array();
@@ -159,6 +184,7 @@ class ProductsController extends AbstractMnbvsiteController {
                 unset($item['list'][strval($key)]);
             }
         }
+        if (empty($item['list_size']) && $folderId!=Glob::$vars['prod_storage_rootid']) unset($item['attr_filters']);
         
         //Хлебные крошки--------------------------------------------------------
         /*
@@ -221,8 +247,7 @@ class ProductsController extends AbstractMnbvsiteController {
             //'name_desc' => 'name_desc', //сортировка по полю name не важно включен альтернативный язык или нет
         );
         //----------------------------------------------------------------------
-
-
+        
         //Настройки номеров страниц---------------------------------------------
         $item['page_list_num_conf'] = array(
             'page_list_url' => $item['page_list_url'],

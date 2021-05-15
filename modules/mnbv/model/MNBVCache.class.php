@@ -33,16 +33,20 @@ class MNBVCache {
      * Установка элемента контейнера
      * @param string $id алиас элемента
      * @param int $ttl время жизни кеша в секундах
+     * @param bool $assoc - выдать как ассоциативный массив (по умолчанию false)
      */
-    public function set($id, $val, $ttl=0)
+    public function set($id, $val, $ttl=0, $assoc=false)
     {
+        $assoc = (!empty($assoc))?true:false;
         $ttl = intval($ttl);
         if ($val==null) return false;
+        
+        $valJson = json_encode($val,$assoc);
 
         $updateArr = array();
         $updateArr['ts'] = time();
         $updateArr['tsto'] = ($ttl==0)?0:$updateArr['ts'] + $ttl;
-        $updateArr['val'] = $val;
+        $updateArr['val'] = $valJson;
 
         $storageRes = MNBVStorage::getObj(
             $this->storage,
@@ -51,8 +55,10 @@ class MNBVCache {
         if (empty($storageRes[0])){
             $updateArr['id'] = $id;
             MNBVStorage::addObj($this->storage, $updateArr);
+            SysLogs::addLog("Cache ADD key[$id] ttl[$ttl]");
         }else{
             MNBVStorage::setObj($this->storage, $updateArr, array("id",'=',$id));
+            SysLogs::addLog("Cache UPDATE key[$id] ttl[$ttl]");
         }
 
         return true;
@@ -62,12 +68,14 @@ class MNBVCache {
     /**
      * Получение элемента контейнера
      * @param string $id алиас элемента
+     * @param bool $assoc - выдать как ассоциативный массив (по умолчанию false)
      * @param int $lag лаг, после которого значение считается устаревшим, если 0, то смотрим по сведениям из самого кеша (tsto>=time())
      * @return mixed Результат операции или NULL, если ничего не найдено
      */
-    public function get($id, $lag=0)
+    public function get($id, $assoc=false, $lag=0)
     {
 
+        $assoc = (!empty($assoc))?true:false;
         $lag = intval($lag);
         if ($lag==0) {
             $uslArr = array("id","=","$id","and","tsto",">=",time());
@@ -80,9 +88,11 @@ class MNBVCache {
             array("ts","tsto","val"),
             $uslArr,
             array("limit" => array(0,1)));
-        if (empty($storageRes[0])){
-            return $storageRes[1]["val"];
+        if (!empty($storageRes[0])){
+            SysLogs::addLog("Cache GET key[$id] lag[$lag]");
+            return json_decode($storageRes[1]["val"],$assoc);
         }else{
+            SysLogs::addLog("Cache GET key[$id] lag[$lag] nof found!");
             return null;
         }
 

@@ -1221,12 +1221,12 @@ class MNBVf {
                 $result['parent_id'] = 0;
             }else{
                 $storageRes = MNBVStorage::getObj($storage,
-                    array("id","parentid","pozid","type","typeval","visible","access","access2","first","name","namelang","about","aboutlang","vars","files","siteid","date","alias"),
+                    array("*"),
                     array('id','=',$parentid));
                 $result['parent'] = ($storageRes[0]>0)?$storageRes[1]:null;
                 $result['parent_id'] = (!empty($result['parent']['id']))?$result['parent']['id']:0;
                 if (!empty($result['parent'])) {
-                    $result['parent_name'] = MNBVf::getItemName($result['parent'],$param['altlang']);
+                      $result['parent_name'] = MNBVf::getItemName($result['parent'],$param['altlang']);
                     $result['parent_name_min'] = mb_substr($result['parent_name'],0,17,'utf-8');
                     if ($result['parent_name']!=$result['parent_name_min']) $result['parent_name_min'] .= '...';
                     if (!Lang::isDefLang() && !empty($result['parent']['namelang'])) $result['parent_name'] = $result['parent']['namelang'];
@@ -1271,7 +1271,32 @@ class MNBVf {
         
         return $result;
     }
-     
+    
+    /**
+     * Преобразует decimal в int (сдвигая влево на заданное количество разрядов)
+     * @param type $value значение
+     * @param type $dm количество разрядов
+     * @return type
+     */
+    public static function decimal2int($value,$dm=0){
+        $dm = intval($dm);
+        if (empty($dm)) return $value;
+        return round($value*pow(10,$dm));
+    }
+    
+    /**
+     * Преобразует int в decimal (сдвигая вправо на заданное количество разрядов)
+     * @param type $value значение
+     * @param type $dm количество разрядов
+     * @return type
+     */
+    public static function int2decimal($value,$dm=0){
+        $dm = intval($dm);
+        if (empty($dm)) return $value;
+        return $value*pow(10, -$dm);
+    }
+    
+    
     /**
      * Создает объект в хранилище в заданной папке
      * @param $storage - хранилище
@@ -1602,7 +1627,7 @@ class MNBVf {
                         }
 
                     }else{
-                        $storName = ($view["linkstorage"]!='this')?$view["linkstorage"]:"$storage";
+                        $storName = (!empty($viewArr["linkstorage"])&&$view["linkstorage"]!='this')?$view["linkstorage"]:"$storage";
                         $paramArr = array();
                         if (isset($view["filter_folder"])) array_push($paramArr,'and','parentid','=',$view["filter_folder"]);
                         if (isset($view["filter_vis"])) array_push($paramArr,'and','visible','=',1);
@@ -1689,22 +1714,17 @@ class MNBVf {
             }elseif (isset($obj["attrview"]) && $viewArr["type"]=="attrvals") {
                 foreach ($obj["attrview"] as $value) {//Выводе неиндексируемых переменых
                     if (!(!isset($value["lang"]) || $value["lang"]=="all" || ($value["lang"]=="lang" && !Lang::isAltLang()) || ($value["lang"]=="altlang" && $altlang))) continue; //Если данное поле не подлежит выводу по текущему языку, то идем далее
-                    if (empty($viewArr["viewindex"])) $value["viewindex"]=false; //В режиме просмотра - индексы не показываются, только значения
-                    if (isset($viewArr["active"]) && $viewArr["active"]=="print") $value["active"]="print";
                     if ($print=='print') MNBVf::formValsGenerator($usestorage, $obj['attrvals'], $value,  $altlang, 'obav_', 'obavk_', 'obavd_',"def-lang");
                     else $result[] = MNBVf::formValsGeneratorToArr($usestorage, $obj['attrvals'], $value, $altlang,"def-lang");
                 }
             }elseif (isset($obj["attrview"]) && $viewArr["type"]=="attrvalsmini") {
                 foreach ($obj["attrviewmini"] as $value) {//Выводе неиндексируемых переменых укороченном
                     if (!(!isset($value["lang"]) || $value["lang"]=="all" || ($value["lang"]=="lang" && !Lang::isAltLang()) || ($value["lang"]=="altlang" && $altlang))) continue; //Если данное поле не подлежит выводу по текущему языку, то идем далее
-                    if (empty($viewArr["viewindex"])) $value["viewindex"]=false;  //Управление индексами массово на уровне атрибутов
-                    if (isset($viewArr["active"]) && $viewArr["active"]=="print") $value["active"]="print";
                     if ($print=='print') MNBVf::formValsGenerator($usestorage, $obj['attrvals'], $value,  $altlang, 'obav_', 'obavk_', 'obavd_',"def-lang");
                     else $result[] = MNBVf::formValsGeneratorToArr($usestorage, $obj['attrvals'], $value, $altlang,"def-lang");
                 }
             }elseif ($viewArr["type"]=="attr") {//Вывод структуры атрибутов
                 if (!is_array($obj['attr']))continue;
-
                 //Вывод атрибутов более высокого уровня
                 if (is_array($obj['attrup'])){
                 foreach ($obj['attrup'] as $attrId=>$attrv) {//Вывод списка атрибутов
@@ -1969,7 +1989,7 @@ class MNBVf {
                 if (!empty($viewArr["notset"])) $valueStr = Lang::get("Not set"); $value=0;
                 if (isset($viewArr["linkstorage"]) && is_array($viewArr["linkstorage"]) && isset($viewArr["linkstorage"]["$realVal"])) {$valueStr = Lang::get($viewArr["linkstorage"]["$realVal"]);}
                 elseif (!empty($viewArr["linkstorage"]) && !is_array($viewArr["linkstorage"])) {//Это хранилище, выберем элемент из хранилища по id
-                    $storName = ($viewArr["linkstorage"]!='this')?$viewArr["linkstorage"]:"$usestorage";
+                    $storName = (!empty($viewArr["linkstorage"])&&$viewArr["linkstorage"]!='this')?$viewArr["linkstorage"]:"$usestorage";
                     $storageRes = MNBVStorage::getObjAcc($storName,array("name","namelang"),array("id",'=',"$realVal","and","visible",'=',1),array("sort"=>array("pozid"=>"inc",((Lang::isDefLang())?"name":"namelang")=>"inc")));
                     $valueArr = ($storageRes[0]>0)?$storageRes[1]:null;
                     if (isset($valueArr[(Lang::isDefLang())?"name":"namelang"])){$value=$realVal;$valueStr=$valueArr[(Lang::isDefLang())?"name":"namelang"];}
@@ -1984,7 +2004,7 @@ class MNBVf {
                         echo '<OPTION value="'.$key.'"'.(($key==$realVal)?' selected':'').'>'.(($viewindex)?('['.$key.'] '):'').Lang::get($value)."</OPTION>\n";
                     }
                 } else {//Это хранилище, выберем элемент из хранилища по id
-                    $storName = ($viewArr["linkstorage"]!='this')?$viewArr["linkstorage"]:"$usestorage";
+                    $storName = (!empty($viewArr["linkstorage"])&&$viewArr["linkstorage"]!='this')?$viewArr["linkstorage"]:"$usestorage";
                     $paramArr = array();
                     if (isset($viewArr["filter_folder"])) array_push($paramArr,'and','parentid','=',$viewArr["filter_folder"]);
                     if (isset($viewArr["filter_vis"])) array_push($paramArr,'and','visible','=',1);
@@ -2012,7 +2032,7 @@ class MNBVf {
                 if (!empty($viewArr["notset"])) $valueStr = Lang::get("Not set"); $value=0;
                 if (isset($viewArr["linkstorage"]) && is_array($viewArr["linkstorage"]) && isset($viewArr["linkstorage"]["$realVal"])) {$valueStr = Lang::get($viewArr["linkstorage"]["$realVal"]);}
                 elseif (!empty($viewArr["linkstorage"]) && !is_array($viewArr["linkstorage"])) {//Это хранилище, выберем элемент из хранилища по id
-                    $storName = ($viewArr["linkstorage"]!='this')?$viewArr["linkstorage"]:"$usestorage";
+                    $storName = (!empty($viewArr["linkstorage"])&&$viewArr["linkstorage"]!='this')?$viewArr["linkstorage"]:"$usestorage";
                     $storageRes = MNBVStorage::getObjAcc($storName,array("name","namelang"),array('id','=',"$realVal",'and','visible','=',1),array("sort"=>array("pozid"=>"inc",((Lang::isDefLang())?"name":"namelang")=>"inc")));
                     $valueArr = ($storageRes[0]>0)?$storageRes[1]:null;
                     if (isset($valueArr[(Lang::isDefLang())?"name":"namelang"])){$value=$realVal;$valueStr=$valueArr[(Lang::isDefLang())?"pozid,name":"pozid,namelang"];}
@@ -2028,7 +2048,7 @@ class MNBVf {
                         if ($delimSt == '') $delimSt = $delimStr;
                     }
                 } else {//Это хранилище, выберем элемент из хранилища по id
-                    $storName = ($viewArr["linkstorage"]!='this')?$viewArr["linkstorage"]:"$usestorage";
+                    $storName = (!empty($viewArr["linkstorage"])&&$viewArr["linkstorage"]!='this')?$viewArr["linkstorage"]:"$usestorage";
                     $paramArr = array();
                     if (isset($viewArr["filter_folder"])) array_push($paramArr,'and','parentid','=',$viewArr["filter_folder"]);
                     if (isset($viewArr["filter_vis"])) array_push($paramArr,'and','visible','=',1);
@@ -2062,7 +2082,7 @@ class MNBVf {
                         }
                     }
                 } else {//Это хранилище, выберем элемент из хранилища по id
-                    $storName = ($viewArr["linkstorage"]!='this')?$viewArr["linkstorage"]:"$usestorage";
+                    $storName = (!empty($viewArr["linkstorage"])&&$viewArr["linkstorage"]!='this')?$viewArr["linkstorage"]:"$usestorage";
                     $paramArr = array();
                     if (isset($viewArr["filter_folder"])) array_push($paramArr,'and','parentid','=',$viewArr["filter_folder"]);
                     if (isset($viewArr["filter_vis"])) array_push($paramArr,'and','visible','=',1);
@@ -2144,7 +2164,12 @@ class MNBVf {
         $pgid = SysBF::getFrArr($obj,'id',0); //Id данного объекта
         $vKey = (!empty($viewArr["name"]))?$viewArr["name"]:'clear'; //Название поля хранилища
         if (empty($viewArr["name"])) return array(); //Название поля хранилища
-        if (!empty($viewArr["viewindex"])) $viewindex = true; else $viewindex = false;
+        //if (!empty($viewArr["viewindex"])) $viewindex = true; else $viewindex = false;
+        
+        //Метод используется для вывода, индексы и пустые значения не выводим
+        $viewindex = false;
+        $viewArr["notset"] = false;
+        
         $delimStr = (!empty($viewArr["delim"]))?$viewArr["delim"]:'';
 
         //Название, если требуется
@@ -2173,9 +2198,10 @@ class MNBVf {
             //Получим значение из привязанного поля
             $valueStr = '';$value='';
             if (!empty($viewArr["notset"])) $valueStr = Lang::get("Not set"); $value=0;
-            if (isset($viewArr["linkstorage"]) && is_array($viewArr["linkstorage"]) && isset($viewArr["linkstorage"]["$realVal"])) {$valueStr = Lang::get($viewArr["linkstorage"]["$realVal"]);}
-            elseif (!empty($viewArr["linkstorage"]) && !is_array($viewArr["linkstorage"])) {//Это хранилище, выберем элемент из хранилища по id
-                $storName = ($viewArr["linkstorage"]!='this')?$viewArr["linkstorage"]:"$usestorage";
+            if (isset($viewArr["linkstorage"]) && is_array($viewArr["linkstorage"]) && isset($viewArr["linkstorage"]["$realVal"])) {
+                $valueStr = Lang::get($viewArr["linkstorage"]["$realVal"]);                
+            } elseif (!empty($viewArr["linkstorage"]) && !is_array($viewArr["linkstorage"])) {//Это хранилище, выберем элемент из хранилища по id
+                $storName = (!empty($viewArr["linkstorage"])&&$viewArr["linkstorage"]!='this')?$viewArr["linkstorage"]:"$usestorage";
                 $storageRes = MNBVStorage::getObjAcc($storName,array("name","namelang"),array("id",'=',"$realVal",'and','visible','=',1),array("sort"=>array("pozid"=>"inc",((Lang::isDefLang())?"name":"namelang")=>"inc")));
                 $valueArr = ($storageRes[0]>0)?$storageRes[1]:null;
                 if (isset($valueArr[(Lang::isDefLang())?"name":"namelang"])){$value=$realVal;$valueStr=$valueArr[(Lang::isDefLang())?"name":"namelang"];}
@@ -2188,12 +2214,13 @@ class MNBVf {
             //Получим значение из привязанного поля
             $valueStr = '';$value='';
             if (!empty($viewArr["notset"])) $valueStr = Lang::get("Not set"); $value=0;
-            if (isset($viewArr["linkstorage"]) && is_array($viewArr["linkstorage"]) && isset($viewArr["linkstorage"]["$realVal"])) {$valueStr = Lang::get($viewArr["linkstorage"]["$realVal"]);}
-            elseif (!empty($viewArr["linkstorage"]) && !is_array($viewArr["linkstorage"])) {//Это хранилище, выберем элемент из хранилища по id
-                $storName = ($viewArr["linkstorage"]!='this')?$viewArr["linkstorage"]:"$usestorage";
-                $storageRes = MNBVStorage::getObjAcc($storName,array("name","namelang"),array('id','=',"$realVal",'and','visible','=',1),array("sort"=>array("pozid"=>"inc",((Lang::isDefLang())?"name":"namelang")=>"inc")));
+            if (isset($viewArr["linkstorage"]) && is_array($viewArr["linkstorage"]) && isset($viewArr["linkstorage"]["$realVal"])) {
+                $valueStr = Lang::get($viewArr["linkstorage"]["$realVal"]);                
+            } elseif (!empty($viewArr["linkstorage"]) && !is_array($viewArr["linkstorage"])) {//Это хранилище, выберем элемент из хранилища по id
+                $storName = (!empty($viewArr["linkstorage"])&&$viewArr["linkstorage"]!='this')?$viewArr["linkstorage"]:"$usestorage";
+                $storageRes = MNBVStorage::getObjAcc($storName,array("name","namelang"),array("id",'=',"$realVal",'and','visible','=',1),array("sort"=>array("pozid"=>"inc",((Lang::isDefLang())?"name":"namelang")=>"inc")));
                 $valueArr = ($storageRes[0]>0)?$storageRes[1]:null;
-                if (isset($valueArr[(Lang::isDefLang())?"name":"namelang"])){$value=$realVal;$valueStr=$valueArr[(Lang::isDefLang())?"pozid,name":"pozid,namelang"];}
+                if (isset($valueArr[(Lang::isDefLang())?"name":"namelang"])){$value=$realVal;$valueStr=$valueArr[(Lang::isDefLang())?"name":"namelang"];}
                 if ($valueStr==='') $valueStr = $valueArr["name"];
             }
             $result["value"] = (($viewindex)?('['.$value.'] '):'') . $valueStr;
@@ -2201,6 +2228,7 @@ class MNBVf {
             $realVal = SysBF::getFrArr($obj,$vKey);
             $result["realval"] = $realValArr = SysBF::json_decode($realVal);
             $delimSt = '';
+            $result["value"] = '';
             if (!empty($viewArr["notset"])&&in_array(0,$realValArr)) {$delimSt = $delimStr; $result["value"] .= (($viewindex)?('[0] '):'').Lang::get("Not set")."\n";}
             if (isset($viewArr["linkstorage"]) && is_array($viewArr["linkstorage"])) {
                 foreach ($viewArr["linkstorage"] as $key => $value) {
@@ -2210,7 +2238,7 @@ class MNBVf {
                     }
                 }
             } else {//Это хранилище, выберем элемент из хранилища по id
-                $storName = ($viewArr["linkstorage"]!='this')?$viewArr["linkstorage"]:"$usestorage";
+                $storName = (!empty($viewArr["linkstorage"])&&!empty($viewArr["linkstorage"])&&$viewArr["linkstorage"]!='this')?$viewArr["linkstorage"]:"$usestorage";
                 $paramArr = array();
                 if (isset($viewArr["filter_folder"])) array_push($paramArr,'and','parentid','=',$viewArr["filter_folder"]);
                 if (isset($viewArr["filter_vis"])) array_push($paramArr,'and','visible','=',1);
@@ -2223,6 +2251,7 @@ class MNBVf {
                 if ($storageRes[0]>0) foreach ($storageRes as $poz=>$valueArr){
                     $key=$valueArr["id"];
                     if ($poz==0) continue;
+                    if (!in_array($key,$realValArr)) continue;
                     $valueStr = $valueArr[(Lang::isDefLang())?"name":"namelang"];
                     if ($valueStr==='') $valueStr = $valueArr["name"];
                     $result["value"] .= $delimSt . (($viewindex)?('['.$key.'] '):'').Lang::get($valueStr)."\n";
@@ -2233,5 +2262,374 @@ class MNBVf {
         return $result;
         
     }
+    
+    /**
+     * устанавливает выделенные фильтры и их выделенные значения по входному массиву $filterValsArr
+     * @param array $useAttrArr - массив фильтров
+     * @param mixed $filterValsArr - массив выделенных позиций фильтров
+     */
+    public static function selectFilterItems($useAttrArr, $filterValsArr=array()){
+        if (!isset($useAttrArr['list'])||!is_array($useAttrArr['list'])) return $useAttrArr;
+        if (!is_array($filterValsArr)) return $useAttrArr;
+        $selectedCnt = 0;
+        
+        foreach ($filterValsArr as $key => $fvalue) {
+            if (!is_array($fvalue)) continue;
+            if (!isset($useAttrArr["list"]["$key"])) continue;
+            
+            if (!empty($useAttrArr["list"]["$key"]["filter_type"]) && $useAttrArr["list"]["$key"]["filter_type"]=='slider'){ //Слайдер
+                //Это число, по которому нужно сделать слайдер
+                $minRval = $useAttrArr["list"]["$key"]["minval"];
+                $maxRval = $useAttrArr["list"]["$key"]["maxval"];
+
+                if (isset($fvalue[0]) && $fvalue[0]>=$minRval) {
+                    $minRval = $fvalue[0];
+                    if (empty($useAttrArr['list']["$key"]["selected"])) {
+                        $useAttrArr['list']["$key"]["selected"] = true;
+                        $selectedCnt++;
+                    }
+                }
+                
+                if (isset($fvalue[1]) && $fvalue[1]<=$maxRval) {
+                    $maxRval = $fvalue[1];
+                    if (empty($useAttrArr['list']["$key"]["selected"])) {
+                        $useAttrArr['list']["$key"]["selected"] = true;
+                        $selectedCnt++;
+                    }
+                }
+                
+                $useAttrArr['list']["$key"]["minRval"] = $minRval;
+                $useAttrArr['list']["$key"]["maxRval"] = $maxRval;
+                
+            }else{ //Группа чекбоксов
+            
+                foreach ($fvalue as $itemValue) {
+                    if (isset($useAttrArr['list']["$key"]["vals"])
+                            && isset($useAttrArr['list']["$key"]["vals"]["$itemValue"])){
+                        $useAttrArr['list']["$key"]["vals"]["$itemValue"]["selected"] = true;
+                        if (empty($useAttrArr['list']["$key"]["selected"])) {
+                            $useAttrArr['list']["$key"]["selected"] = true;
+                            $selectedCnt++;
+                        }
+                    }
+                }
+            
+            }
+        }
+        
+        $useAttrArr['selected'] = $selectedCnt;
+        return $useAttrArr;
+    }
+    
+    /**
+     * Выдает массив параметров заданного раздела со всеми возможными значениями и с выделением выбранных по состоянию фильтров
+     * @param $usestorage - хранилище с параметрами товаров (фильты только для параметров с перечислениями из этого хранилища).
+     * @param array $obj - объект текущей папки
+     * @param array $params - массив параметров
+     * 'folderid' - идентификатор папки из которой выводятся товары, если 0 или не задано, то без учета папки.
+     */
+    public static function objFilterGenerator($usestorage, array $obj, $params=array()){
+        $catFolderid = SysBF::getFrArr($params,'folderid',Glob::$vars['prod_storage_rootid'],'intval');
+
+        //Сформируем список описаний атрибутов из attr и attrup
+        $useAttrArr = array();
+        
+        //При необходимости используем параметры каталога (цена, бренд, страна, наличие)
+        $useAttrArr["price"] = Array(
+            "attrid" => "price",
+            "pozid" => 1,
+            "name" => 'Цена',
+            "namelang" => 'Price',
+            "dnuse" => 1,
+            "inshort" => 1,
+            "infilter" => 1,
+            "filter_type" => "slider",
+            "view" => Array (
+                "active" => 'update',
+                "table" => 'td',
+                "type" => 'text',
+                "width" => '100%',
+                "filter_type" => 'all',
+                "checktype" => 'decimal',
+                "lang" => 'all',
+                "size" => 8,
+                "dbtype" => 'decimal',
+                "dmsize" => 2,
+            ),
+            "minval" => 0,
+            "maxval" => 0,
+        );
+        
+        //Посчитаем минимальную и максимальную цену товара
+        $quFilterArr = array();
+        if ($catFolderid!=Glob::$vars['prod_storage_rootid']) array_push($quFilterArr, "parentid","=",$catFolderid,"and");
+        array_push($quFilterArr, "type","!=",ST_FOLDER);
+        $res = MNBVStorage::getObjAcc(Glob::$vars['prod_storage'],
+                array(array("min(price)","min"),array("max(price)","max")),
+                $quFilterArr);
+        if (!empty($res[0])) {
+            $qRes = $res[1];
+            $useAttrArr["price"]["minval"] = $qRes["min"];
+            $useAttrArr["price"]["maxval"] = $qRes["max"];
+        }
+        if ($useAttrArr["price"]["minval"]==$useAttrArr["price"]["maxval"]) unset($useAttrArr["price"]); 
+        
+        $useAttrArr["country"] = Array(
+            "attrid" => "country",
+            "pozid" => 2,
+            "name" => 'Страна',
+            "namelang" => 'Country',
+            "dnuse" => 1,
+            "inshort" => 1,
+            "infilter" => 1,
+            "filter_type" => 'checkbox_gr',
+            "view" => Array (
+                "active" => 'update',
+                "table" => 'td',
+                "type" => 'select',
+                "viewindex" => 0,
+                "linkstorage" => 'attributes',
+                "filter_folder" => 4,
+                "filter_type" => 'objects',
+                "checktype" => 'int',
+                "lang" => 'all',
+                "dbtype" => 'int',
+                "notset" => 1,
+            ),
+        );
+
+        $curFltFndItm = array();
+        $quFilterArr = array();
+        if ($catFolderid!=Glob::$vars['prod_storage_rootid']) array_push($quFilterArr, "parentid","=",$catFolderid,"and");
+        array_push($quFilterArr, "type","!=",ST_FOLDER);
+        $res = MNBVStorage::getObjAcc(Glob::$vars['prod_storage'],
+                array("country",array("count(*)","qty")),
+                $quFilterArr,
+                array("group" => "country"));
+        if (!empty($res[0])) {
+            unset($res[0]);
+            foreach($res as $value) {
+                if (!empty($value["country"])){
+                    $curFltFndItm[strval($value["country"])] = $value["qty"];
+                }
+            }
+        }
+        if (count($curFltFndItm)) {      
+            $fList = MNBVStorage::getObjAcc(Glob::$vars['prod_country_storage'],
+                    array("id","parentid","name","namelang","pozid"),
+                    array("parentid","=",Glob::$vars['prod_country_folderid']),
+                    array("sort"=>array("pozid"=>"inc","name"=>"inc")));
+            if (((int)$fList[0])>0) {
+                unset($fList[0]); //Вынесем размер списка из массива 
+                foreach ($fList as $key=>$value) {
+                    if (!isset($curFltFndItm[strval($value["id"])])) continue;
+                    if (!isset($useAttrArr["country"]["vals"]) || !is_array($useAttrArr["country"]["vals"])) $useAttrArr["country"]["vals"] = array();
+                    $useAttrArr["country"]["vals"][strval($value["id"])] = array(
+                        "id" => $value["id"],
+                        "name" => $value["name"],
+                        "namelang" => $value["namelang"],
+                        "qty" => $curFltFndItm[strval($value["id"])],
+                    );   
+                }
+            }
+        }
+        if (!isset($useAttrArr["country"]["vals"]) || count($useAttrArr["country"]["vals"])==0) unset($useAttrArr["country"]); 
+ 
+        $useAttrArr["instock"] = Array(
+            "attrid" => "instock",
+            "pozid" => 2,
+            "name" => 'Наличие',
+            "namelang" => 'In stock',
+            "dnuse" => 1,
+            "inshort" => 1,
+            "infilter" => 1,
+            "filter_type" => 'checkbox_gr',
+            "view" => Array (
+                "active" => 'update',
+                "table" => 'td',
+                "type" => 'select',
+                "viewindex" => 0,
+                "linkstorage" => 'attributes',
+                "filter_folder" => 4,
+                "filter_type" => 'objects',
+                "checktype" => 'int',
+                "lang" => 'all',
+                "dbtype" => 'int',
+                "notset" => 1,
+                "filter_type" => 'checkbox_gr',
+            ),
+            "vals" => array(),             
+        );
+        
+        //Посчитаем минимальную и максимальную цену товара
+        $inStockTypes = array(
+            "1" => Array(
+                "id" => "1",
+                "name" => "Есть в наличии",
+                "namelang" => "In stock",
+            ),
+            "2" => Array(
+                "id" => "2",
+                "name" => "Ограниченное количество",
+                "namelang" => "Limited quantity",
+            ),
+            "3" => Array(
+                "id" => "3",
+                "name" => "Под заказ",
+                "namelang" => "Under the order",
+            ),
+            "4" => Array(
+                "id" => "4",
+                "name" => "Нет в наличии",
+                "namelang" => "Not in stock",
+            ),
+        );
+        $quFilterArr = array();
+        if ($catFolderid!=Glob::$vars['prod_storage_rootid']) array_push($quFilterArr, "parentid","=",$catFolderid,"and");
+        array_push($quFilterArr, "type","!=",ST_FOLDER);
+        $res = MNBVStorage::getObjAcc(Glob::$vars['prod_storage'],
+                array("instock","name","namelang",array("count(*)","qty")),
+                $quFilterArr,
+                array("group" => "instock","sort" => array("instock"=>"inc")));
+        if (!empty($res[0])) {
+            unset($res[0]);
+            foreach($res as $value) {
+                if (!empty($value["instock"])){
+                    $useAttrArr["instock"]["vals"][strval($value["instock"])] = $inStockTypes[strval($value["instock"])];
+                    $useAttrArr["instock"]["vals"][strval($value["instock"])]["qty"] = $value["qty"];
+                }
+            }
+        }
+        if (!isset($useAttrArr["instock"]["vals"]) || count($useAttrArr["instock"]["vals"])==0) unset($useAttrArr["instock"]); 
+        
+        $ids = array();
+        if (is_array($obj["attrup"]) && count($obj["attrup"])){
+            foreach($obj["attrup"] as $attrItem) {
+                if (empty($attrItem["infilter"])) continue; //Возможно сделать вдальнейшем регулировку этого условия по входному параметру
+                $useAttrArr["attr".$attrItem["attrid"]] = $attrItem;
+                $ids[] = intval($attrItem['attrid']);
+            }
+        }
+        
+        if (is_array($obj["attr"]) && count($obj["attr"])){
+            foreach($obj["attr"] as $attrItem) {
+                if (empty($attrItem["infilter"])) continue; //Возможно сделать вдальнейшем регулировку этого условия по входному параметру
+                $useAttrArr["attr".$attrItem["attrid"]] = $attrItem;
+                $ids[] = intval($attrItem['attrid']);
+            }
+        }
+        $idsStr = implode(',', $ids);
+        
+        if (count($ids)){
+            
+            //Посчитаем количества в фильтрах типа чекбоксов (перечислений)
+            $curFltFndItm = array();
+            if (!empty(SysStorage::$storage[Glob::$vars['prod_storage']])
+                && isset(SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'])
+                && isset(SysStorage::$storage[SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse']])){
+                $fList = MNBVStorage::getObjAcc(SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'],
+                        array("attrid","vint",array("count(*)","qty")),
+                        array("vint",">",0),
+                        array("group" => "attrid,vint"));
+                if (((int)$fList[0])>0) {
+                    unset($fList[0]); //Вынесем размер списка из массива 
+                    foreach ($fList as $key=>$value) {
+                        if (!isset($curFltFndItm[strval($value["attrid"])])) $curFltFndItm[strval($value["attrid"])] = array();
+                        $curFltFndItm[strval($value["attrid"])][strval($value["vint"])] = $value["qty"];
+                    }
+                }
+            }
+        
+            //Список объектов
+            $fList = MNBVStorage::getObjAcc($usestorage,
+                    array("id","parentid","name","namelang","pozid","type","vars"),
+                    array(array("id","in",$ids),"or",array("parentid","in",$ids)),
+                    array("sort"=>array("pozid"=>"inc","name"=>"inc")));
+            if (((int)$fList[0])>0) {
+                unset($fList[0]); //Вынесем размер списка из массива 
+                foreach ($fList as $key=>$value) {
+                    if ($value["type"]==ST_FOLDER || in_array($value["id"],$ids)){ //Свойства атрибута
+                        if (!isset($useAttrArr["attr".$value["id"]])) continue;
+                        if (!empty($value['vars'])){
+                            $curItemAttr = SysBF::json_decode($value['vars']);
+                            if (is_array($curItemAttr)) {
+                                
+                                $useAttrArr["attr".$value["id"]]["view"] = $curItemAttr;
+                                
+                                $useAttrArr["attr".$value["id"]]["filter_type"] = "";
+                                if (($useAttrArr["attr".$value["id"]]["view"]["dbtype"]=='int' || $useAttrArr["attr".$value["id"]]["view"]["dbtype"]=='decimal')
+                                        && $useAttrArr["attr".$value["id"]]["view"]["type"]=='text'){
+                                    
+                                    //Это число, по которому можно сделать слайдер
+                                    $useAttrArr["attr".$value["id"]]["filter_type"] = "slider";
+                                    
+                                    //Найдем диапазон для слайдера, если это инт, введенный вручную
+                                    if (!empty(SysStorage::$storage[Glob::$vars['prod_storage']])
+                                        && isset(SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'])
+                                        && isset(SysStorage::$storage[SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse']])){
+                                        
+                                        $quFilterArr = array("attrid","=",$value["id"]);
+                                        if ($catFolderid!=Glob::$vars['prod_storage_rootid']) array_push($quFilterArr,"and","objparentid","=",$catFolderid);
+                                        $res = MNBVStorage::getObjAcc(SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'],
+                                                array(array("min(vint)","min"),array("max(vint)","max")),
+                                                $quFilterArr);
+                                        if (!empty($res[0])) {
+                                            $dmsize = 0;
+                                            if ($useAttrArr["attr".$value["id"]]["view"]["dbtype"]=='decimal'
+                                                    && !empty($useAttrArr["attr".$value["id"]]["view"]["dmsize"])) $dmsize = $useAttrArr["attr".$value["id"]]["view"]["dmsize"];
+                                                    
+                                            $useAttrArr["attr".$value["id"]]["minval"] = MNBVf::int2decimal($res[1]["min"],$dmsize);
+                                            $useAttrArr["attr".$value["id"]]["maxval"] = MNBVf::int2decimal($res[1]["max"],$dmsize);
+                                            $useAttrArr["attr".$value["id"]]["minRval"] = $useAttrArr["attr".$value["id"]]["minval"];
+                                            $useAttrArr["attr".$value["id"]]["maxRval"] = $useAttrArr["attr".$value["id"]]["maxval"];
+                                        }
+                                    }
+                                    
+                                    if ($useAttrArr["attr".$value["id"]]["minval"]==$useAttrArr["attr".$value["id"]]["maxval"]) unset($useAttrArr["attr".$value["id"]]); 
+                                    
+                                }elseif ($useAttrArr["attr".$value["id"]]["view"]["dbtype"]=='int'
+                                        && in_array($useAttrArr["attr".$value["id"]]["view"]["type"],array("select","radio","checkbox","list"))){
+                                    //Можно отфильтровать группой чекбоксов
+                                    $useAttrArr["attr".$value["id"]]["filter_type"] = "checkbox_gr";
+                                }
+                                
+                                if (empty($useAttrArr["attr".$value["id"]]["filter_type"])) {
+                                    unset ($useAttrArr["attr".$value["id"]]);
+                                    continue;
+                                }
+                                
+                            }
+                        }
+                    }else{ //Перечисления значений
+                        if (!isset($useAttrArr["attr".$value["parentid"]])) continue;
+                        if (!isset($curFltFndItm[strval($value["parentid"])][strval($value["id"])])) continue; //Не используемые фильтры не показываем
+                        if (!isset($useAttrArr["attr".$value["parentid"]]["vals"]) || !is_array($useAttrArr["attr".$value["parentid"]]["vals"])) $useAttrArr["attr".$value["parentid"]]["vals"] = array();
+                        $useAttrArr["attr".$value["parentid"]]["vals"][strval($value["id"])] = array(
+                            "id" => $value["id"],
+                            "name" => $value["name"],
+                            "namelang" => $value["namelang"],
+                            "qty" => $curFltFndItm[strval($value["parentid"])][strval($value["id"])]
+                        ); 
+                    }
+                }
+            }
+            
+            //Удалим неиспользуемые фильтры
+            foreach($useAttrArr as $attrid => $value){
+                if ($value["filter_type"] == 'checkbox_gr' && (!isset($value["vals"])||count($value["vals"])==0)) { 
+                    unset ($useAttrArr[$attrid]);
+                }
+            }
+
+        }
+        
+        return array(
+            "selected" => 0,
+            "list" => $useAttrArr
+            );
+        
+    }
+
 
 }
+                

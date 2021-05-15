@@ -150,6 +150,75 @@ class StorageController {
 
         return true;
     }
+    
+    
+    /**
+     * Удаляет из индекса атрибутов элементы, связанные с заданными атрибутами во всех нижестоящих папках
+     * @param $storage - алиас хранилища к которому привязаны атрибуты
+     * @param $folderId - id папки от которой вниз пойдет обновление
+     * @param $delAttrIdArr - массив с идентификаторами атрибутов
+     */
+    private function delDnAttr($storage,$folderId,$delAttrIdArr=array()){
+
+        $folderId = intval($folderId);
+        if (empty($folderId)) return true; //Если не задан идентификатор папки, то ничего не делаем
+        
+        //При необходимости удалим из индекса удаленные поля
+        if (empty(SysStorage::$storage[$storage]['arrtindexuse']) || !isset(SysStorage::$storage[SysStorage::$storage[$storage]['arrtindexuse']])) return true;
+
+        $storageRes = MNBVStorage::getObj(
+            $this->getStorage(),
+            array("id"),
+            array("parentid","=",$folderId,"and","type","=",ST_FOLDER));
+        if (!empty($storageRes[0])) {
+            unset($storageRes[0]);
+            foreach ($storageRes as $value){
+                foreach($delAttrIdArr as $realKeyId){
+                    $res = MNBVStorage::delObj(SysStorage::$storage[$storage]['arrtindexuse'],
+                            array("objparentid","=",$value['id'],"and","attrid","=",$realKeyId));
+                    SysLogs::addLog("Delete Index Attr[{$realKeyId}] to objparentid[{$value['id']}] " . (($res)?($res.' successful!'):' error!'));
+                }
+                $this->delDnAttr($storage,$value['id'],$delAttrIdArr);
+            }
+        }
+        return true;
+    }
+
+     /**
+     * Поправляет uttrup в нижестоящих папках
+     * @param $folderId - id папки от которой вниз пойдет обновление
+     * @param $attrArr - массив с атрибутами вышестоящей категории
+     */
+    private function updDnAttrup ($folderId,$attrArr=array()){
+
+        $folderId = intval($folderId);
+        if (empty($folderId)) return true; //Если не задан идентификатор папки, то ничего не делаем
+        
+        $updateArr = array();
+        if (count($attrArr)>0) $updateArr["attrup"] = json_encode($attrArr); else $updateArr["attr"] = '';	
+        
+        $storageRes = MNBVStorage::getObj(
+            $this->getStorage(),
+            array("id,parentid,attr"),
+            array("parentid","=",$folderId,"and","type","=",ST_FOLDER));
+        if (!empty($storageRes[0])) {
+            unset($storageRes[0]);
+            foreach($storageRes as $value){
+                //Поправим текущую папку
+                $res = MNBVStorage::setObj($this->getStorage(), $updateArr, array("id",'=',$value["id"]));
+                SysLogs::addLog("Update Attrup objid[{$value['id']}] " . (($res)?($res.' successful!'):' error!'));
+                
+                //Дополним $attrArr полями из текущей папки
+                $useAttrArr = $attrArr;
+                if (!empty($value['attr'])) {
+                    $curItemAttr = SysBF::json_decode($value['attr']);
+                    if (is_array($curItemAttr)) foreach($curItemAttr as $attrVal) $useAttrArr[] = $attrVal;
+                }
+                $this->delDnAttr($value['id'],$useAttrArr);
+            }
+        }
+        return true;
+    }   
 
     /**
      * Вывод страницы помощи
@@ -179,6 +248,7 @@ class StorageController {
         $item['list'] = array();
         foreach (SysStorage::$storage as $key => $value) {
             if (!empty($value['group']) && $value['group']=='noview') continue;
+            if (!empty($value['list']) && !is_array($value['list'])) continue;
             if ((empty($item['storage_group']) || (!empty($value['group'])&&$item['storage_group']==$value['group']))&&(Glob::$vars['user']->get('root')||(!empty($value['access2'])&&in_array($value['access2'],Glob::$vars['user']->get('permarr'))))) {
                 $item['list']["$key"]["name"] = MNBVf::getItemName($value,Glob::$vars['mnbv_altlang'],'no-name');
                 $item['list']["$key"]["url"] = '/' . Glob::$vars['mnbv_module'] . '/' . $this->controllerName . '/' . $key . '/' . ((Lang::isDefLang())?'':'altlang/');
@@ -601,7 +671,7 @@ class StorageController {
 
         //Сведения по текущему объекту и по его родительской папке -----------------------------------------------------
         if ($item['obj'] = MNBVf::getStorageObject($this->getStorage(),$item["id"],array('altlang'=>Glob::$vars['mnbv_altlang']))){//Объект для редактирования найден
-            
+  
         if (Lang::getLang() != Lang::getDefLang() && !empty($item['obj']['parent']['namelang'])) $item['obj']['parent_name'] = $item['obj']['parent']['namelang'];
         $item['obj']['parent_url'] = '/' . $this->thisModuleName . '/' . $this->controllerName . '/' . $this->getStorage() . '/'  . ((Glob::$vars['mnbv_altlang'])?'altlang/':'');
         if (!empty($item['obj']['parent']['parentid'])) $item['obj']['parent_url'] = '/' . $this->thisModuleName . '/' . $this->controllerName . '/' . $this->getStorage() . '/' . ((!empty($item['obj']['parent']['parentid']))?($item['obj']['parent']['parentid'] . '/'):'');
@@ -649,6 +719,7 @@ class StorageController {
                     $varsArr = $item['obj']['vars'];
                     $attrValsArr = $item['obj']['attrvals'];
                     $attrArr = $item['obj']['attr'];
+                    $attrDBAddArr = array();
                     $attrDelArr = array(); //Массив маркеров удаления атрибутов
                     $varsArrUpd = $attrArrUpd = $attrValsArrUpd = false; //Маркеры необходимости редактирования
                     $attrAddArr = array("objid"=>intval($item["id"])); //Массив добавленного атрибута
@@ -698,16 +769,77 @@ class StorageController {
                             $attrArrUpd = true;
                         } elseif (preg_match("/^obav_/",$key)) {                           
                             $realKey = preg_replace("/^obav_/","",$key);
-                            if (!isset($item["obj"]["attrview"]["$realKey"]))continue;
+                            $realKeyId = intval(preg_replace("/^attr/","",$realKey));
+                            if (empty($realKeyId) || !isset($item["obj"]["attrview"]["$realKey"]))continue;
                             $realKeyView = $item["obj"]["attrview"]["$realKey"];
                             $keyType = ($realKeyView["dbtype"])?$realKeyView["dbtype"]:'';
-                            $keyViewType = ($realKeyView["type"])?$realKeyView["type"]:'';                            
+                            $keyViewType = ($realKeyView["type"])?$realKeyView["type"]:'';  
                             $value = MNBVf::updateValsByType($realKey,$keyType,$keyViewType,$value,$prefView='obav_',$prefKey='obavk_', $prefUpd='obavd_');
                             if ($realKey=='passwd'&&$value=='')continue; //Исключение - если пароль пустой, то не меняем его
                             $checkType = (isset($realKeyView["checktype"]))?$realKeyView["checktype"]:'';                           
                             if (!empty($value)) $attrValsArr["$realKey"] = SysBF::checkStr($value,$checkType); 
                             elseif(isset($attrValsArr["$realKey"]))unset($attrValsArr["$realKey"]);
-                            $attrValsArrUpd = true;                              
+                            $attrValsArrUpd = true;  
+                            
+                            //Подготовим данные для сохранения в таблицу (елси это требуется).
+                            if ($realKeyView["dbtype"]==="decimal"){
+                                $attrDBAddArr[] = array(
+                                    "objid"=>$item["id"],
+                                    "objparentid"=>$item['obj']['parent']['id'],
+                                    "attrid"=>$realKeyId,
+                                    "vint"=>MNBVf::decimal2int($attrValsArr["$realKey"],intval($realKeyView["dmsize"])),
+                                );
+                            } elseif ($realKeyView["dbtype"]==="int" && $realKeyView["type"]==="list"){
+                                //В этом режиме можно выбрать несколько значений за раз, запишем просто их последовательно в базу
+                                $listItemValArr = json_decode($attrValsArr["$realKey"]);
+                                $curCnt=0;                 
+                                if (is_array($listItemValArr)) foreach ($listItemValArr as $lval){
+                                    $attrDBAddArr[] = array(
+                                        "objid"=>$item["id"],
+                                        "objparentid"=>$item['obj']['parent']['id'],
+                                        "attrid"=>$realKeyId,
+                                        "vint"=>$lval,
+                                        "type"=>'list'.$curCnt, //Костылек - в первую запись пишем маркер, по которому удалим из индекса все итемы, а потом добавим
+                                    );   
+                                    $curCnt++;
+                                }
+                            } elseif ($realKeyView["dbtype"]==="int"){
+                                $attrDBAddArr[] = array(
+                                    "objid"=>$item["id"],
+                                    "objparentid"=>$item['obj']['parent']['id'],
+                                    "attrid"=>$realKeyId,
+                                    "vint"=>(!empty($attrValsArr["$realKey"]))?$attrValsArr["$realKey"]:0,
+                                );                                
+                            }  elseif ($realKeyView["dbtype"]==="string"){
+                                $attrDBAddArr[] = array(
+                                    "objid"=>$item["id"],
+                                    "objparentid"=>$item['obj']['parent']['id'],
+                                    "attrid"=>$realKeyId,
+                                    "vstr"=>(!empty($attrValsArr["$realKey"]))?$attrValsArr["$realKey"]:'',
+                                );
+                            }   
+                                
+                            /* 
+                             * Array(
+                                    [attr3] => Array
+                                        (
+                                            [active] => update
+                                            [table] => td
+                                            [type] => text
+                                            [width] => 100%
+                                            [filter_type] => all
+                                            [checktype] => decimal
+                                            [lang] => all
+                                            [size] => 11
+                                            [dmsize] => 3,
+                                            [dbtype] => decimal
+                                            [pozid] => 300
+                                            [inshort] => 1
+                                            [name] => attr3
+                                            [namedef] => Вес,кг
+                                            [namelang] => Weight,kg
+                                        )
+                             */
                         }
 
                     }
@@ -720,23 +852,49 @@ class StorageController {
                     if ($varsArrUpd) {if (count($varsArr)>0) $updateArr["vars"] = json_encode($varsArr); else $updateArr["vars"] = '';}
                     if ($attrValsArr){if (count($attrValsArr)>0) $updateArr["attrvals"] = json_encode($attrValsArr); else $updateArr["attrvals"] = '';}
                     if ($attrArrUpd) {
-                        foreach($attrDelArr as $value) unset($attrArr[$value]); //Удалим из массива выбранные элементы
+                        $delAttrIdArr = array();
+                        foreach($attrDelArr as $value) {
+                            //При необходимости удалим из индекса удаленные поля    
+                            //echo "$value => [{$attrArr[$value]['attrid']}]; ";
+                            if (!empty(SysStorage::$storage[$this->getStorage()]['arrtindexuse'])
+                                && isset(SysStorage::$storage[SysStorage::$storage[$this->getStorage()]['arrtindexuse']])){
+                                $res = MNBVStorage::delObj(SysStorage::$storage[$this->getStorage()]['arrtindexuse'],
+                                    array("objparentid","=",$item["id"],"and","attrid","=",$attrArr[$value]['attrid']));
+                                SysLogs::addLog("Delete Index Attr[{$attrArr[$value]['attrid']}] to objparentid[{$item["id"]}] " . (($res)?($res.' successful!'):' error!'));
+                                $delAttrIdArr[] = $attrArr[$value]['attrid'];
+                            }
+                            
+                            unset($attrArr[$value]); //Удалим из массива выбранные элементы
+                        }
+                        if (count($delAttrIdArr)) $this->delDnAttr($this->getStorage(),$item["id"],$delAttrIdArr);
                         if (count($attrArr)>0) $updateArr["attr"] = json_encode($attrArr); else $updateArr["attr"] = '';
+                        if (count($item['obj']['attr'])>0) $oldAttr = json_encode($item['obj']['attr']); else $oldAttr = '';
+                        
+                        if ($updateArr["attr"]!==$oldAttr) {
+                            $attrArrFin = $item['obj']['attrup'];
+                            foreach ($attrArr as $attrvl) $attrArrFin[] = $attrvl;
+                            $this->updDnAttrup($item["id"],$attrArrFin);
+                        }
+                        
                     }
 
                     //При необходимости подкорректируем вложенные папки
                     $upFolderAlias = '';
-                    if ($tecNewType==ST_FOLDER && ((isset($updateArr["parentid"])&&$updateArr["parentid"]!=$item['obj']["parentid"])||(isset($updateArr["parentid"])&&isset($updateArr["type"])&&$updateArr["parentid"]!=$item['obj']["parentid"])||$attrArrUpd)) {
-                        //SysLogs::addLog("tecNewType=[$tecNewType] parentid=[".((isset($updateArr["parentid"]))?$updateArr["parentid"]:'NotSet')."] type=[".((isset($updateArr["type"]))?$updateArr["type"]:'NotSet')."] attrArrUpd=[".(($attrArrUpd)?'True':'False')."]");
+                    //||(isset($updateArr["parentid"])&&isset($updateArr["type"])&&$updateArr["parentid"]!=$item['obj']["parentid"] это там было не понятно зачем, оставил, потом разберусь
+                    if ($tecNewType==ST_FOLDER && ((isset($updateArr["parentid"])&&$updateArr["parentid"]!=$item['obj']["parentid"])||$attrArrUpd)) {
+                        SysLogs::addLog("DnFolders update: tecNewType=[$tecNewType] updateArr={parentid=[".((isset($updateArr["parentid"]))?$updateArr["parentid"]:'NotSet')."] type=[".((isset($updateArr["type"]))?$updateArr["type"]:'NotSet')."] attrArrUpd=[".(($attrArrUpd)?'True':'False')."])");
                         $storageRes = MNBVStorage::getObj(
                             $this->getStorage(),
                             array("id,upfolders,attrup,attr,alias"),
                             array("id","=",$tecNewParentid));
                         if (!empty($storageRes[0])) {//Есть сведения о родительской папке
+                            //die(var_dump($storageRes[1]));
                             $storageRes2 = MNBVStorage::upObjInfo($storageRes[1]);
                             $updateArr["upfolders"] = $storageRes2["upfolders"];
                             $updateArr["attrup"] = $storageRes2["attrup"];
                             $upFolderAlias = $storageRes2["alias"];
+                            //SysLogs::addLog("------------>storageRes[1]={'alias':'{$storageRes[1]["alias"]}', 'id':'{$storageRes[1]["id"]}'}");
+                            //SysLogs::addLog("------------>storageRes2={'alias':'{$storageRes2["alias"]}', 'id':'{$storageRes2["id"]}','attrup':'{$storageRes2["attrup"]}'}");
                         }else{//Нет сведений о родительской папке
                             $updateArr["upfolders"] = '';
                             $updateArr["attrup"] = '';
@@ -768,6 +926,37 @@ class StorageController {
                         $updateArr["editip"] = GetEnv('REMOTE_ADDR');
                         $res = MNBVStorage::setObj($this->getStorage(), $updateArr, array("id",'=',$item["id"]));
                         SysLogs::addLog("Update object /".$this->getStorage()."/".$item["id"]."/ ".(($res)?'successful!':'error!'));
+                        
+                        //При необходимости удалим из индекса удаленные поля
+                        
+                        
+                        //Доработаем индекс
+                        if (count($attrDBAddArr)
+                                && !empty(SysStorage::$storage[$this->getStorage()]['arrtindexuse'])
+                                && isset(SysStorage::$storage[SysStorage::$storage[$this->getStorage()]['arrtindexuse']])
+                                ){ //Есть что добавить в индекс атрибутов и индекс такой существует и используется
+                            foreach($attrDBAddArr as $addAtrItem){
+                                if (!empty($addAtrItem["type"]) && $addAtrItem["type"]==='list0'){ //Если это список, то чистим индекс и заново заполняем
+                                    $res = MNBVStorage::delObj(SysStorage::$storage[$this->getStorage()]['arrtindexuse'],
+                                            array("objid","=",$addAtrItem["objid"],"and","attrid","=",$addAtrItem["attrid"]));
+                                    SysLogs::addLog("Delete Index Attr[{$addAtrItem['attrid']}] to object[{$addAtrItem['objid']}] " . (($res)?($res.' successful!'):' error!'));
+                                }
+                                    
+                                $res = MNBVStorage::getObj(
+                                    SysStorage::$storage[$this->getStorage()]['arrtindexuse'],
+                                    array("id"),
+                                    array("objid","=",$addAtrItem["objid"],"and","attrid","=",$addAtrItem["attrid"])); 
+                                if (!empty($res[0]) && !isset($addAtrItem["type"])) {
+                                    $res = MNBVStorage::setObj(SysStorage::$storage[$this->getStorage()]['arrtindexuse'], $addAtrItem, array("id",'=',$res[1]["id"]));
+                                    SysLogs::addLog("Update Index Attr[{$addAtrItem['attrid']}] to object[{$addAtrItem['objid']}] " . (($res)?($res.' successful!'):' error!'));
+                                } else {    
+                                    if (isset($addAtrItem["type"])) unset($addAtrItem["type"]);
+                                    $res = MNBVStorage::addObj(SysStorage::$storage[$this->getStorage()]['arrtindexuse'], $addAtrItem);
+                                    SysLogs::addLog("Create Index Attr[{$addAtrItem['attrid']}] to object[{$addAtrItem['objid']}] " . (($res)?($res.' successful!'):' error!'));
+                                }
+                            }
+                        }
+                        
                         $reloadObjects = true;
                     }
 

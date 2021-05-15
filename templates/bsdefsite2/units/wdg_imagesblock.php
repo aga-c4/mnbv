@@ -4,6 +4,10 @@
  */
 ?>
 <!-- Images -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/css/lightbox.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.8.2/js/lightbox.min.js"></script>
+
+<div class="lightbox-gallery">       
 <?
 //Вывод изображения
 if (isset($item['sub_obj']['files']["img"]["1"]) && $tecObjTxtCode = MNBVf::getObjCodeByURL(SysBF::getFrArr($item['sub_obj']['files']["img"]["1"],'src',''))){//Нашли специфический объект (видео, ютуб.....), выводим его
@@ -28,13 +32,14 @@ if (isset($item['sub_obj']['files']["img"]["1"]) && $tecObjTxtCode = MNBVf::getO
         // data-gallery="gallery1" чтоб привеязать к одной галерее с последовательным переходом.
         ?>
         <a href='<?=SysBF::getFrArr($item['sub_obj']['files']["img"]["1"],'src_big','');?>' 
-           data-toggle="lightbox" data-title="<?=SysBF::getFrArr($item['sub_obj']['files']["img"]["1"],'name','');?>">
+           data-lightbox="lightbox" data-title="<?=SysBF::getFrArr($item['sub_obj']['files']["img"]["1"],'name','');?>">
             <img src='<?=SysBF::getFrArr($item['sub_obj']['files']["img"]["1"],'src','');?>'<?=$imgWStr;?><?=$imgWStr;?> 
                 style="max-width: 98%;">
         </a><br>
     <?
     }
 }
+
 //Под основным изображением выведем минигаллерею с открытием больших картинок
 //Вывод типа: <a href='URL_big' data-toggle="lightbox" data-title='$row->name'><img src='URL'></a>
 $formImgNum = (isset($item["img_max_size"]["form_img_num"]))?intval($item["img_max_size"]["form_img_num"]):5; //количество изображений в панели редактирования
@@ -52,11 +57,12 @@ for ($i=2;$i<=$formImgNum;$i++){
         $u = SysBF::getFrArr($item['sub_obj']['files']["img"]["$i"],'src_min','');
 
         //URL ссылка большой картинки
-        $a1 = (SysBF::getFrArr($item['sub_obj']['files']["img"]["$i"],'src_big'))?'<a href="'.$item['sub_obj']['files']["img"]["$i"]['src_big'].'" data-toggle="lightbox" data-title="'.$n.'">':'';
+        $a1 = (SysBF::getFrArr($item['sub_obj']['files']["img"]["$i"],'src_big'))?'<a href="'.$item['sub_obj']['files']["img"]["$i"]['src_big'].'" data-lightbox="lightbox" data-title="'.$n.'">':'';
         $a2 = (!empty($a1))?'</a>':'';
 
-        echo $a1 . '<img src="' . $u . '""' . $imgWStr . $imgWStr . '>' . $a2 . "\n";
+        echo $a1 . '<img class="img-fluid" src="' . $u . '""' . $imgWStr . $imgWStr . '>' . $a2 . "\n";
     }
 }
-?>
+?>        
+</div>
 <!-- /Images -->

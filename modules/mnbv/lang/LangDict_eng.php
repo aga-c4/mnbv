@@ -30,6 +30,8 @@ $langTmpArr = array(
     
     "Day" => "Day",
     "Night" => "Night",
+    
+    "Code" => "Code",
 
     "objgroup" => "Группа",
     
@@ -519,6 +521,11 @@ $langTmpArr = array(
     "Object attributes" => "Object attributes",
     "Size" => "Size",
     "Click to resize" => "Click to resize",
+    "Discard changes" => "Discard changes",
+    "All filters" => "All filters",
+    "Filters short list" => "Filters short list",
+    "Short list" => "Short list",
+    "View all" => "View all",
 
     "Last news" => "Last news",
     "News archive" => "News archive",
@@ -546,12 +553,19 @@ $langTmpArr = array(
     "Success"=>"Success",
     "Start Error"=>"Start Error",
     "Error"=>"Error",
+    "Filters"=>"Filters",
+    "Use filters"=>"Use filters",
     
     "All actions"=>"All actions",
     
     "Create storage" => "Create storage",
     "mLang" => "ru", //Основной язык
     "mAltLang" => "eng", //Альтернативный язык
+    
+    "instock" => "In stock",
+    "limited" => "Limited",
+    "underorder" => "Under order",
+    "notinstock" => "Not in stock",
 
     //Свойства объекта SysBaseObj module/mnbv/model/SisBaseObj.php
     "sysBaseObj" => array(
@@ -626,8 +640,16 @@ $langTmpArr = array(
         "Message" => "Message",
         
         "cost" => "Cost",
+        "prefix" => "Prefix",
+        "prefixlang" => "Prefix",
         "vendor" => "Vendor",
+        "partnumber" => "Partnumber",
+        "quantity" => "Quantity",
+        "barcode" => "Barcode(EAN)",
+        "model" => "Model",
         "country" => "Country",
+        "ndspr" => "Tax,%",
+        "instock" => "Instock",
         
         "discpr" => 'Discount,%',        //Скидка, %
         "discval" => 'Discount,val',       //Скидка, вал
@@ -712,12 +734,12 @@ $langTmpArr = array(
         'visible_desc' => 'visibledesc',
         'first' => 'first',
         'first_desc' => 'first desc',
-        'name' => 'name',
+        'name' => 'Name',
         'name_desc' => 'name desc',
         'namelang' => 'namelang',
         'namelang_desc' => 'namelang desc',
-        'price' => 'price',
-        'price_desc' => 'price desc',
+        'price' => 'Price',
+        'price_desc' => 'Price desc',
     ),
     
     //Дашборд

@@ -170,6 +170,7 @@ Glob::$vars['file_types'] = array(
 
 //Варианты сортировок в рамках системы MNBV. Ключ - алиас сортировки, значение - массив сортировки для формирования запроса
 Glob::$vars['sort_types'] = array(
+    'default' => array("pozid"=>"inc","name"=>"inc"), //сортировка по позиции объекта, названию
     'id' => array("id"=>"inc"), //сортировка по id объекта
     'id_desc' => array("id"=>"desc"), //сортировка по id объекта по убыванию
     'date' => array("date"=>"inc"), //сортировка по date объекта
@@ -210,3 +211,19 @@ Glob::$vars['url_types'] = array(
     "articles" => array('id'=>3,'mod_pref'=>'articles','cat_alias_view'=>true,'item_pref'=>'art_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''),//Параметры статьи
     "actions" => array('id'=>4,'mod_pref'=>'actions','cat_alias_view'=>true,'item_pref'=>'act_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''), //Параметры отзывов
 );
+
+/**
+ * Шаблон автогенерации названия товара
+ * Автозамены:
+ * {{prefix}} - Префикс
+ * {{vendor}} - Вендор
+ * {{vendor}} - Модель
+ * {{partnumber}} - Артикул
+ */
+Glob::$vars['prod_name_tpl'] = '{{prefix}} {{vendor}} {{vendor}}';
+
+Glob::$vars['prod_storage'] = 'products'; //Хранилище списка товаров
+Glob::$vars['prod_storage_rootid'] = 1; //Корневая папка каталога товаров
+Glob::$vars['prod_country_storage'] = 'countries'; //Хранилище списка стран
+Glob::$vars['prod_country_folderid'] = 1; //Идентификатор папки со странами в хранилище
+Glob::$vars['prod_filters_cache_ttl'] = 5*60; //Время жизни кеша фильтра в каталоге товара

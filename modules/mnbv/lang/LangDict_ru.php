@@ -30,6 +30,8 @@ $langTmpArr = array(
     
     "Day" => "День",
     "Night" => "Ночь",
+    
+    "Code" => "Код",
 
     "objgroup" => "Группа",
     
@@ -520,6 +522,11 @@ $langTmpArr = array(
     "Object attributes" => "Атрибуты объекта",
     "Size" => "Размер",
     "Click to resize" => "Изменить размер",
+    "Discard changes" => "Отменить изменения",
+    "All filters" => "Все фильтры",
+    "Short list" => "Сокращенный список",
+    "Filters short list" => "Сокращенный список фильтров",
+    "View all" => "Смотреть все",
 
     "Last news" => "Последние новости",
     "News archive" => "Архив новостей",
@@ -547,12 +554,19 @@ $langTmpArr = array(
     "Success"=>"Успешно",
     "Start Error"=>"Ошибка запуска",
     "Error"=>"Ошибка",
+    "Filters"=>"Фильтры",
+    "Use filters"=>"Показать",
     
     "All actions"=>"Все акции",
     
     "Create storage" => "Создать хранилище",
     "mLang" => "рус", //Основной язык
     "mAltLang" => "англ", //Альтернативный язык
+    
+    "instock" => "В наличии",
+    "limited" => "Огр. количество",
+    "underorder" => "Под заказ",
+    "notinstock" => "Нет в наличии",
 
     //Свойства объекта SysBaseObj module/mnbv/model/SisBaseObj.php
     "sysBaseObj" => array(
@@ -629,8 +643,16 @@ $langTmpArr = array(
         "Message" => "Сообщение",
         
         "cost" => "Закуп.Цена",
+        "prefix" => "Префикс",
+        "prefixlang" => "Префикс др.яз.",
         "vendor" => "Производитель",
+        "partnumber" => "Артикул",
+        "quantity" => "Количество",
+        "barcode" => "Штрихкод(EAN)",
+        "model" => "Модель",
         "country" => "Страна",
+        "ndspr" => "НДС,%",
+        "instock" => "Наличие",
         
         "discpr" => 'Скидка,%',        //Скидка, %
         "discval" => 'Скидка,вал',       //Скидка, вал
@@ -714,12 +736,12 @@ $langTmpArr = array(
         'visible_desc' => 'видимость убывание',
         'first' => 'Гл',
         'first_desc' => 'Гл убывание',
-        'name' => 'имя',
+        'name' => 'По названию',
         'name_desc' => 'имя убывание',
         'namelang' => 'имя_англ',
         'namelang_desc' => 'имя_англ убывание',
-        'price' => 'цена',
-        'price_desc' => 'цена убывание',
+        'price' => 'Сначала дешевые',
+        'price_desc' => 'Сначала дорогие',
     ),
     
     //Дашборд

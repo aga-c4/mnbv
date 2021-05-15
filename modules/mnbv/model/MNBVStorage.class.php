@@ -359,7 +359,18 @@ class MNBVStorage{
      * @return array ("attrview"=> array(),"attrviewmini" => array(),);
      */
     public static function getAttrViewArr ($attrup){
-            
+        /*
+        $cache = new MNBVCache();
+        $attrFiltersCacheStr = $cache->get("prodfilters:$folderId");
+        //echo "(prodfilters:$folderId=>[$attrFiltersCacheStr])";
+        if ($attrFiltersCacheStr!==null && empty(Glob::$vars['no_cache'])){ //Кеш приемлем, используем и нет жесткой блокировки его работы
+            $attr_filters = json_decode($attrFiltersCacheStr,TRUE);
+        } else{ //Кеш протух или не существует
+            $attr_filters = MNBVf::objFilterGenerator('attributes',$realFolder,array('folderid'=>(!empty($folderId))?$folderId:Glob::$vars['prod_storage_rootid'])); //Специально без выделения пунктов, чтоб можно было закешировать.
+            $attr_filtersstr = json_encode($attr_filters,TRUE);
+            $cache->set("prodfilters:$folderId",$attr_filtersstr,Glob::$vars['prod_filters_cache_ttl']);
+        }
+        */  
         $result = array(
             "attrview" => array(),
             "attrviewmini" => array(),
@@ -397,6 +408,8 @@ class MNBVStorage{
             $result["attrview"]["$key"] = $resultAttrview["$key"];
             if ($resultAttrview["$key"]["inshort"]) $result["attrviewmini"]["$key"] = $resultAttrviewmini["$key"];
         }
+        
+        
         
         return $result;
 
@@ -499,7 +512,7 @@ class MNBVStorage{
         return true;
     }
     
-        /**
+    /**
      * Получение данных по вышестоящему объекту
      * @param $objArr {"id"=>int/string, "upfolders"=>string, "attrup"=>string, "attr"=>string}
      * @param $typeinp - строка содержащая тип входных данных('string' - строка (по-умолчанию), 'array' - массив). Необязательный параметр
@@ -516,6 +529,8 @@ class MNBVStorage{
             if ($typeout==='string') return array("upfolders"=>"","attrup"=>"");
             else return $result;
         }
+        
+        $result["id"] = $objArr['id'];
 
         if (!empty($objArr['upfolders'])){
             if ($typeinp==='string') $upfolders = json_decode($objArr['upfolders'],true);
@@ -539,9 +554,14 @@ class MNBVStorage{
         if (empty($attrup)) $attrup = array();
 
         foreach($attr as $value) if (!$dnuse || !empty($value["dnuse"])) $attrup[] = $value;
+        
         if ($typeout==='string') $result["attrup"] = (count($attrup)>0)?json_encode($attrup):'';
         else $result["attrup"] = $attrup;
-
+        
+        if (isset($objArr["alias"])) $result["alias"] = $objArr["alias"];        
+        //SysLogs::addLog("------------>objArr={'alias':'{$objArr["alias"]}', 'id':'{$objArr["id"]}'}");
+        //SysLogs::addLog("------------>objArr=[".print_r($objArr)."]");
+        
         return $result;
     }
 

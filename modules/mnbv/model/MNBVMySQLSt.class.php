@@ -20,6 +20,7 @@ class MNBVMySQLSt implements MNBVdefSt{
      * @return string результат операции
      */
     public static function codeStr($str,$type=''){
+        if (!is_string($str)) return $str;
         $res = $str;
         //$res=preg_replace("/`/","&#96;",$res);
         //$res=preg_replace("/’/","&#39;",$res);
