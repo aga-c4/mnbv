@@ -89,7 +89,8 @@ class MNBVURL {
 
         $result = '/' . $this->urlTypes[$urltype]['mod_pref'];
         if ($objtype==1){//Папка
-            $result = '/' . $mod_pref . '/' .$alias;
+            if (!empty($alias)) $result = '/' . $mod_pref . '/' .$alias;
+            else $result .= '/il' . $id;
         }else{//Объект
             $result = '/' . $mod_pref . '/';
             if (!empty($catalias)&&!empty($this->urlTypes[$urltype]['cat_alias_view'])) $result .= $catalias . '/';
@@ -98,6 +99,8 @@ class MNBVURL {
             if (!empty($alias)&&!empty($this->urlTypes[$urltype]['alias_view'])) $result .= ((!empty($this->urlTypes[$urltype]['alias_delim']))?$this->urlTypes[$urltype]['alias_delim']:'').$alias;
             if (!empty($this->urlTypes[$urltype]['item_postf'])) $result .= $this->urlTypes[$urltype]['item_postf'];
         }
+        
+        //SysLogs::addLog("TEST: ----->URL!!! id=[".$id."] result=[$result]");
 
         return $result;
     }

@@ -706,6 +706,8 @@ class MNBVf {
         $result = ''; // Пока результат пуст
         $default_port = 80; // Порт по-умолчанию 
         
+        $getStart = false;
+        
         if (!empty(Glob::$vars['mnbv_site']['fullurl'])){ //Если требуется формировать URL с протоколом и доменом
 
             if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS']=='on')) {
@@ -745,34 +747,54 @@ class MNBVf {
                         && !empty(SysStorage::$storage[$obj['obj_storage']]['custom_url']))
                 { //Если для данного хранилища надо формировать URL как для подчиненного объекта
                     $result .= Glob::$vars['mnbv_urlmaster']->getURLById($obj['id'],$obj['obj_storage'],$obj['type'],Glob::$vars['mnbv_site']['id']);
+                    //SysLogs::addLog("TEST: ----->URL!!! id=[".$obj['id']."] type=[{$obj['type']}] result=[$result]");
                 }else{
                     if (!empty($obj['use_other_storage']) && isset($obj['page_main_alias'])) { //Вариант с внешним хранилищем
                         $result .= $obj['page_main_alias']; //Сначала добавим корневой алиас
                         if (!empty($param['type']) && $param['type']=='list') { //Формируем ссылку на список
                             $result .= (!empty($obj['folder_alias']))?('/'.$obj['folder_alias']):''; //Алиас объекта
-                            if ($obj['folderid']!==$obj['folder_start_id']) $result .= '/il' . $obj['folderid']; //Идентификатор объекта
+                            if ((empty($obj['folder_alias'])) && $obj['folderid']!==$obj['folder_start_id']) $result .= '/il' . $obj['folderid']; //Идентификатор объекта
                         }else{ //Формируем ссылку на объект
                             $result .= (!empty($obj['alias']))?('/'.$obj['alias']):''; //Алиас объекта
-                            $result .= (($obj['type']==1)?'/il':'/io') . $obj['id']; //Идентификатор объекта или списка, если это папка
+                            if ($obj['type']==1) {
+                                if (empty($obj['alias'])) $result .= '/il' . $obj['id']; //Идентификатор объекта или списка, если это папка
+                            }else{
+                                $result .= '/io' . $obj['id']; //Идентификатор объекта или списка, если это папка
+                            }
                         }
                     } else { //Вариант с текущим хранилищем
                         $result .= (!empty($obj['alias']))?('/'.$obj['alias']):('/id'.$obj['id']);
                     }
                 }
             }
+            
+            if (false!==strpos($result,'?')) $getStart = true;
+            
+            if (!$getStart) {
+                //Номера страниц как папки
+                if (!empty(Glob::$vars['mnbv_site']['pginurl']) && !empty($param['pg']) && $param['pg']>1) {
+                    $result = preg_replace("/\/$/",'',$result);
+                    $result .= '/pg' . $param['pg']; //Если страницы в папках
+                }
 
-            if (!empty(Glob::$vars['mnbv_site']['sorturl']) && !empty($param['sort']) && (empty($obj['vars']['list_sort'])||$param['sort']!=$obj['vars']['list_sort'])) $result .= '/sort_' . $param['sort']; //Если сортировка в папках
-            if (!empty(Glob::$vars['mnbv_site']['pginurl']) && !empty($param['pg']) && $param['pg']>1) {
-                $result = preg_replace("/\/$/",'',$result);
-                $result .= '/pg' . $param['pg']; //Если страницы в папках
+                //Сортировка
+                if (!empty(Glob::$vars['mnbv_site']['sorturl']) 
+                        && !empty($param['sort']) && (empty($obj['vars']['list_sort'])||$param['sort']!=$obj['vars']['list_sort'])) {
+                    $result .= '/sort_' . $param['sort']; //Если сортировка в папках
+                }
             }
 
-            //Формирование параметров
-            $urlParams = '';
             //if (empty($obj['alias'])) $urlParams .= (($urlParams=='')?'?':'&').'id='.$obj['id'];
-            if (empty(Glob::$vars['mnbv_site']['sorturl']) && !empty($param['sort']) && (empty($obj['vars']['list_sort'])||$param['sort']!=$obj['vars']['list_sort'])) $urlParams .= (($urlParams=='')?'?':'&').'sort='.$param['sort'];
-            if (empty(Glob::$vars['mnbv_site']['pginurl']) && !empty($param['pg']) && $param['pg']>1) $urlParams .= (($urlParams=='')?'?':'&').'pg='.$param['pg'];
-            $result .= $urlParams;
+            if (($getStart || empty(Glob::$vars['mnbv_site']['sorturl'])) 
+                && !empty($param['sort']) && (empty($obj['vars']['list_sort'])||$param['sort']!=$obj['vars']['list_sort'])) {
+                $result .= (($getStart)?'&':'?').'sort='.$param['sort'];
+                $getStart = true;
+            }
+            if (($getStart || empty(Glob::$vars['mnbv_site']['pginurl'])) && !empty($param['pg']) && $param['pg']>1) {
+                $result .= (($getStart)?'&':'?').'pg='.$param['pg'];
+                $getStart = true;
+            }
+
         }
         
         if ($result=='') $result = '/';
@@ -2274,11 +2296,11 @@ class MNBVf {
         $selectedCnt = 0;
         
         foreach ($filterValsArr as $key => $fvalue) {
-            if (!is_array($fvalue)) continue;
             if (!isset($useAttrArr["list"]["$key"])) continue;
             
             if (!empty($useAttrArr["list"]["$key"]["filter_type"]) && $useAttrArr["list"]["$key"]["filter_type"]=='slider'){ //Слайдер
                 //Это число, по которому нужно сделать слайдер
+                if (!is_array($fvalue)) $fvalue = array($fvalue,$fvalue);
                 $minRval = $useAttrArr["list"]["$key"]["minval"];
                 $maxRval = $useAttrArr["list"]["$key"]["maxval"];
 
@@ -2303,6 +2325,7 @@ class MNBVf {
                 
             }else{ //Группа чекбоксов
             
+                if (!is_array($fvalue)) $fvalue = array($fvalue);
                 foreach ($fvalue as $itemValue) {
                     if (isset($useAttrArr['list']["$key"]["vals"])
                             && isset($useAttrArr['list']["$key"]["vals"]["$itemValue"])){
@@ -2371,6 +2394,8 @@ class MNBVf {
             $qRes = $res[1];
             $useAttrArr["price"]["minval"] = $qRes["min"];
             $useAttrArr["price"]["maxval"] = $qRes["max"];
+            $useAttrArr["price"]["minRval"] = $qRes["min"];
+            $useAttrArr["price"]["maxRval"] = $qRes["max"];
         }
         if ($useAttrArr["price"]["minval"]==$useAttrArr["price"]["maxval"]) unset($useAttrArr["price"]); 
         

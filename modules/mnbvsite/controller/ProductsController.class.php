@@ -102,12 +102,7 @@ class ProductsController extends AbstractMnbvsiteController {
         
         //Фильтрация по атрибутам-----------------------------------------------
         //Формирование массива выбранных элементов фильтров и диапазонов
-        $filterValsArr = array(
-            "price"=>array(300,700),
-            "country"=>array(2,3),
-            "instock"=>array(1,2),
-            "attr4"=>array(11)
-            );
+        $filterValsArr = (isset(Glob::$vars['mnbv_listfilter'])&&is_array(Glob::$vars['mnbv_listfilter']))?Glob::$vars['mnbv_listfilter']:array();
         
         $cache = new MNBVCache();
         $attr_filters = $cache->get("prodfilters:$folderId",true);
@@ -162,6 +157,7 @@ class ProductsController extends AbstractMnbvsiteController {
                 $item['list'][strval($key)]['files'] = (!empty($value['files']))?MNBVf::updateFilesArr($storage,$value["id"],$value['files']):array();
                 if (Lang::isDefLang()){//Дефолтовый язык
                     $item['list'][strval($key)]['url'] = MNBVf::generateObjUrl($value); //Формирование URL из текущего адреса
+                    //echo "['id':'{$value['id']}','name':'{$value['name']}','alias':'{$value['alias']}'] url=>[{$item['list'][strval($key)]['url']}]";
                 }else{//Альтернативный язык
                     $item['list'][strval($key)]['url'] = MNBVf::generateObjUrl($value,array('altlang'=>true)); //Формирование URL из текущего адреса
                     //Поправим имя, описание и текст в соответствии с altlang
@@ -248,7 +244,7 @@ class ProductsController extends AbstractMnbvsiteController {
         );
         //----------------------------------------------------------------------
         
-        //Настройки номеров страниц---------------------------------------------
+        //Настройки номеров страниц---------------------------------------------            
         $item['page_list_num_conf'] = array(
             'page_list_url' => $item['page_list_url'],
             'list_size' => $item['list_size'],
@@ -256,6 +252,11 @@ class ProductsController extends AbstractMnbvsiteController {
             'list_sort' => $item['list_sort'],
             'list_page' => $item['list_page'],
             'centre_bl' => 5);
+        if (!empty(Glob::$vars['mnbv_listfilterstr'])) { //Добавим текущие фильтры
+            $item['page_list_num_conf']['page_list_url'] .= ((false===strpos($item['page_list_num_conf']['page_list_url'],'?'))?'?':'&').Glob::$vars['mnbv_listfilterstr']; 
+            $item['page_list_num_conf']['page_list_url'];
+        }
+        SysLogs::addLog("Pagination base url=[".$item['page_list_num_conf']['page_list_url']."]");
         //----------------------------------------------------------------------
         
 

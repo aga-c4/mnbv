@@ -191,6 +191,7 @@ class WidgetPglistController extends AbstractWidgetControllerController {
                 $value['attrvals'] = (!empty($value['attrvals']))?SysBF::json_decode($value['attrvals']):array();
 
                 $value['folderid'] = $this->folder;
+                $value["obj_storage"] = $this->storage;
                 $value['use_other_storage'] = $this->storage;
                 $value['page_main_alias'] = $this->list_main_alias;
                 $value['folder_start_id'] = $this->folder_start_id;

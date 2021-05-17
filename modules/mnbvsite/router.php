@@ -136,3 +136,36 @@ if (empty(Glob::$vars['mnbv_site']['sub_id']) && empty(Glob::$vars['mnbv_site'][
 
 if (!empty(Glob::$vars['mnbv_site']['sub_id'])) SysLogs::addLog("Site router: list subid = [".Glob::$vars['mnbv_site']['sub_id']."]");
 if (!empty(Glob::$vars['mnbv_site']['sub_list_id'])) SysLogs::addLog("Site router: list subid = [".Glob::$vars['mnbv_site']['sub_list_id']."]");
+
+//Фильтрация списка
+if (SysBF::getFrArr(Glob::$vars['request'],'filters')) {
+    Glob::$vars['mnbv_listfilterstr'] = SysBF::getFrArr(Glob::$vars['request'],'filters');
+    $listfilterstr = 'filters=';
+    
+    Glob::$vars['mnbv_listfilter'] = array();
+    $filterArr = preg_split("/;/", Glob::$vars['mnbv_listfilterstr']);
+    foreach ($filterArr as $filterItemStr){
+        $tecArr = preg_split("/:/", $filterItemStr);
+        if (empty($tecArr[0]) || !isset($tecArr[1])) continue; //Нет значения фильтра
+        if ($listfilterstr!=='filters=') $listfilterstr .= ';';
+        $listfilterstr .= $tecArr[0] . ':';
+        if (false!==strpos($tecArr[1],',')) {
+            $tecArr[1] = str_replace(' ', '', $tecArr[1]);
+            $listfilterstr .= $tecArr[1];
+            $tecArr[1] = preg_split("/,/", $tecArr[1]);
+        }elseif (false!==strpos($tecArr[1],'-')) {
+            $tecArr[1] = str_replace(' ', '', $tecArr[1]);
+            $listfilterstr .= $tecArr[1];
+            $tecArr[1] = preg_split("/-/", $tecArr[1]);
+        }else{
+            $listfilterstr .= $tecArr[1];
+        }
+        Glob::$vars['mnbv_listfilter'][strval($tecArr[0])] = $tecArr[1];
+    }
+    Glob::$vars['mnbv_listfilterstr'] = '';
+    if ($listfilterstr!=='filters=') Glob::$vars['mnbv_listfilterstr'] = $listfilterstr;
+    $filtersQty = count(Glob::$vars['mnbv_listfilter']);
+    if (empty($filtersQty)) unset(Glob::$vars['mnbv_listfilter']); //Если нет фильтров, то не передаем этого массива вовсе
+    if (!empty(Glob::$vars['mnbv_listfilterstr'])) SysLogs::addLog("Site router: list filter = [".Glob::$vars['mnbv_listfilterstr']."] found $filtersQty filter items");
+}
+
