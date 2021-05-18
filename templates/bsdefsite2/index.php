@@ -37,6 +37,7 @@ require_once MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'head.php');
 //MNBVf::startVidget('gormenu',$item,3);
 echo MNBVf::startVidget('pglist',$item,array(
     'storage' => 'products',//хранилище из которого будут забираться объекты, если не задано, то виджет не выводит ничего
+    'vidget_alias' => 'gormenucatalog',//Алиас текущего виджета для идентификации (иногда важно знать в каком конкретно месте вызывается виджет)
     'folderid' => 1,//папка из которой будут выбираться объекты. Если не задано, то без учета папки
     'list_main_alias' => '/catalog',//основная часть URL на базе которой будет формироваться URL элемента списка хранилища добавляя туда язык, идентификатор и алиас
     'folder_start_id' => 1,//идентификатор корневой папки списка в хранилище (нужно чтоб корректно URL формировать)
@@ -216,6 +217,7 @@ MNBVf::startVidget('pg',$item,array(
 ?>
                     
                     Сopyright © 2006-<?=date("Y");?>, AGA-C4  <?=SysBF::getFrArr($item,'site_name');?>
+                    [Page generation <?=sprintf ("%01.4f",(SysBF::getmicrotime() - Glob::$vars['time_start']));?>s]
                 </div>
             </div>
         </div>

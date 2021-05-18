@@ -126,6 +126,7 @@ class WidgetPglistController extends AbstractWidgetControllerController {
         if (!empty($param['list_link_name'])) $this->list_link_name = $param['list_link_name'];
         if (isset($param['only_first'])) $this->only_first = (!empty($param['only_first']))?true:false;
         if (isset($param['obj_prop_conf']) && is_array($param['obj_prop_conf'])) $this->obj_prop_conf = $param['obj_prop_conf'];
+        $vidget_alias = (!empty($param['vidget_alias']))?$param['vidget_alias']:'';
 
         $tplFile = MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'units/'.((!empty($vidget_tpl))?$vidget_tpl:'wdg_'.$this->thisWidgetName.'.php'));
         if(!file_exists($tplFile)) {
@@ -133,7 +134,7 @@ class WidgetPglistController extends AbstractWidgetControllerController {
             return;
         }
         $this->tpl = $tplFile;
-
+        
         //Сведения о папке, которую выводим
         if ($folder = MNBVf::getStorageObject($this->storage,$this->folder,array('altlang'=>$item['mnbv_altlang'],'visible'=>true,'access'=>true,'site'=>true))){//Объект для редактирования найден
             $this->folder_alias = SysBF::getFrArr($folder,'alias','');
@@ -177,10 +178,25 @@ class WidgetPglistController extends AbstractWidgetControllerController {
         //------------------------------------------------------------------------------
 
         //Список объектов
-        $item['list'] = MNBVStorage::getObjAcc($this->storage,
-            array("*"),
-            $quFilterArr,$quConfArr);
-        $item['list_size'] = (int)$item['list'][0]; unset($item['list'][0]); //Вынесем размер списка из массива
+        if ($vidget_alias==='gormenucatalog') {
+            $cache = new MNBVCache();
+            $item['list'] = $cache->get("gormenucatalog",true);
+            if (!is_array($item['list']) || !empty(Glob::$vars['no_cache'])){ //Необходимо перегенерить кеш
+                $item['list'] = MNBVStorage::getObjAcc($this->storage,
+                    array("*"),
+                    $quFilterArr,$quConfArr);
+                $item['list_size'] = (int)$item['list'][0]; unset($item['list'][0]); //Вынесем размер списка из массива
+                $cache->set("gormenucatalog",$item['list'],Glob::$vars['gormenu_cache_ttl']);
+            }else{
+                $item['list_size'] = count($item['list']);
+            }
+        }else{
+            $item['list'] = MNBVStorage::getObjAcc($this->storage,
+                array("*"),
+                $quFilterArr,$quConfArr);
+            $item['list_size'] = (int)$item['list'][0]; unset($item['list'][0]); //Вынесем размер списка из массива
+        }
+        
         foreach ($item['list'] as $key=>$value) if ($key>0) {
             if (!empty($value["id"])) {
 

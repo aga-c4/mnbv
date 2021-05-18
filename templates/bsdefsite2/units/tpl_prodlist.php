@@ -7,8 +7,7 @@
 
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 my-2">
     
-<?  if (!empty($item['list_size'])&&$item['list_size']>1){
-        if (isset($item['attr_filters']) && is_array($item['attr_filters']) && count($item['attr_filters'])){ ?>
+<? if (isset($item['attr_filters']) && is_array($item['attr_filters']) && count($item['attr_filters'])){ ?>
 <div class="col">
     <?/*
     <button class="btn btn-primary w-100" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
@@ -21,14 +20,15 @@
 </div>
 <? } ?>
 
-<?if (!empty($item['list_sort_types'])&&is_array($item['list_sort_types'])){?>
+<?if (!empty($item['list_size'])&&$item['list_size']>1
+        &&!empty($item['list_sort_types'])&&is_array($item['list_sort_types'])){?>
 <SCRIPT>
 function CheckListSort(){
     sortAlias = document.listsort.list_sort_select.value;
     if (sortAlias=='default') {
-        location.href = '<?=SysBF::getFrArr($item,'page_list_url','');?>';
+        location.href = '<?=SysBF::getFrArr($item,'page_list_filters_url','');?>';
     } else {
-        location.href = '<?=SysBF::getFrArr($item,'page_list_url','');?>' + '/sort_' + sortAlias;
+        location.href = '<?=SysBF::getFrArr($item,'page_list_filters_url','');?>' + 'sort=' + sortAlias;
     }
 }
 </SCRIPT>  
@@ -44,7 +44,7 @@ function CheckListSort(){
     ?>
 </form>
 </div>
-<? }} ?>
+<? } ?>
 </div>
 
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-1">
@@ -179,13 +179,12 @@ if (isset($item['list_max_items'])&&isset($item['list_size'])&&$item['list_max_i
                           $( "#f<?=$attrAlias;?>" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
                         }
                       });
-                      $( "#f<?=$attrAlias;?>" ).val( $( "#<?=$attrAlias;?>-slider-range" ).slider( "values", 0 ) +
-                        " - " + $( "#<?=$attrAlias;?>-slider-range" ).slider( "values", 1 ) );
+                      $( "#f<?=$attrAlias;?>" ).val( $( "#<?=$attrAlias;?>-slider-range" ).slider( "values", 0 ) + " - " + $( "#<?=$attrAlias;?>-slider-range" ).slider( "values", 1 ) );
                     } );
                     </script>
 
                     <h5><?=SysBF::getFrArr($attrValue,'name','');?></h5>
-                    <div id="<?=$attrAlias;?>-slider-range"></div>
+                    <div id="<?=$attrAlias;?>-slider-range" onmouseup="attrFilterGo('viewonlylistsize');"></div>
                     <input type="text" id="f<?=$attrAlias;?>" readonly style="border:0; color:#f6931f; font-weight:bold;">
                 </div>
                 
@@ -210,7 +209,7 @@ if (isset($item['list_max_items'])&&isset($item['list_size'])&&$item['list_max_i
                                 $itemsCnt++;
                                 
                         ?>     
-                            <div class="checkbox"><label><input type="checkbox"<?=(!empty($attrItemVal["selected"]))?' checked':'';?> name="f<?=$attrAlias;?>[]" class="cb-<?=$attrAlias;?> flt-chkbx" value="<?=$attrItemAlias;?>"> <?=$attrItemVal["name"];?><?=(!empty($attrItemVal["qty"]))?" ({$attrItemVal["qty"]})":'';?></label></div>
+                        <div class="checkbox"><label><input type="checkbox"<?=(!empty($attrItemVal["selected"]))?' checked':'';?> name="f<?=$attrAlias;?>[]" class="cb-<?=$attrAlias;?> flt-chkbx" value="<?=$attrItemAlias;?>"> <?=$attrItemVal["name"];?><?=(!empty($attrItemVal["qty"]))?" ({$attrItemVal["qty"]})":'';?></label></div>
                         <? 
                             } 
                             
@@ -304,7 +303,7 @@ if (isset($item['list_max_items'])&&isset($item['list_size'])&&$item['list_max_i
                     </script>
 
                     <h5><?=SysBF::getFrArr($attrValue,'name','');?></h5>
-                    <div id="<?=$attrAlias;?>-slider-range"></div>
+                    <div id="<?=$attrAlias;?>-slider-range" onmouseup="attrFilterGo('viewonlylistsize');"></div>
                     <input type="text" id="f<?=$attrAlias;?>" readonly style="border:0; color:#f6931f; font-weight:bold;">
                 </div>
                 
@@ -378,7 +377,6 @@ if (isset($item['list_max_items'])&&isset($item['list_size'])&&$item['list_max_i
       <div class="modal-footer ">
           <script>
             //Приведение слайдера к начальному значению
-                
             function attrSliderDef(){ //функция собирается на этапе генерации шаблона из фильтров слайдеров
                 <? foreach ($sliderDefArr as $key=>$value) { ?>
                         
@@ -386,6 +384,7 @@ if (isset($item['list_max_items'])&&isset($item['list_size'])&&$item['list_max_i
                 $( "#f<?=$key;?>" ).val( $( "#<?=$key;?>-slider-range" ).slider( "values", 0 ) + " - " + $( "#<?=$key;?>-slider-range" ).slider( "values", 1 ) );
                 
                 <? } ?>
+                attrFilterGo('viewonlylistsize');
             }
             
             function attrSliderReset(){ //функция собирается на этапе генерации шаблона из фильтров слайдеров
@@ -393,12 +392,13 @@ if (isset($item['list_max_items'])&&isset($item['list_size'])&&$item['list_max_i
                         
                 $( "#<?=$key;?>-slider-range" ).slider( "values", [<?=$value['minr'];?>,<?=$value['maxr'];?>] );
                 $( "#f<?=$key;?>" ).val( $( "#<?=$key;?>-slider-range" ).slider( "values", 0 ) + " - " + $( "#<?=$key;?>-slider-range" ).slider( "values", 1 ) );
-                
+
                 <? } ?>
+                attrFilterGo('viewonlylistsize');
             }
             
             //Переходит на URL с фильтрами
-            function attrFilterGo(){ //функция собирается на этапе генерации шаблона из фильтров
+            function attrFilterGo(viewonlylistsize){ //функция собирается на этапе генерации шаблона из фильтров
                 var result = '';
                 var curVal = '';
                 
@@ -423,9 +423,18 @@ if (isset($item['list_max_items'])&&isset($item['list_size'])&&$item['list_max_i
                 
                 <? } ?>
                 
-                if (result!='') result = '?filters=' + result.replace( /\s/g, '');
-                document.location.href =  '<?=$item['page_list_url'];?>' + result;
-
+                if (result!='') result = 'filters=' + result.replace( /\s/g, '');
+                
+                if (viewonlylistsize=='viewonlylistsize'){
+                    $.ajax({
+                        url: '<?=$item['page_list_sort_url'];?>' + result + '&viewonlylistsize=true',
+                        success: function(html){
+                            $("#flt-goqty").text(html);
+                        }
+                    });
+                }else{
+                    document.location.href =  '<?=$item['page_list_sort_url'];?>' + result;
+                }
             }
             
             function chkbx2Str(chkbval){
@@ -438,9 +447,10 @@ if (isset($item['list_max_items'])&&isset($item['list_size'])&&$item['list_max_i
                 }
                 return result;
             }
-
+            $('.flt-chkbx').change(function() {attrFilterGo('viewonlylistsize');});
+            $(document).ready(function(){attrFilterGo('viewonlylistsize');});
           </script>
-          <button class="btn btn-primary" type="button" onclick='attrFilterGo();'><?=Lang::get("Use filters");?></button>
+          <button class="btn btn-primary" type="button" onclick='attrFilterGo();'><?=Lang::get("Use filters");?> <span class="badge rounded-pill bg-light text-dark" id="flt-goqty">12</span></button>
           <button class="btn btn-secondary" type="button" onclick='filterform.reset();attrSliderReset();'><?=Lang::get("Discard changes");?></button>
           <button class="btn btn-secondary" type="button" onclick='$(".flt-chkbx").prop("checked",false);attrSliderDef();'><?=Lang::get("Clear");?></button>
       </div>

@@ -52,6 +52,9 @@ class MNBVMySQLSt implements MNBVdefSt{
      *      Допустимый уровень вложений задается в настройках класса конкретной БД.
      *      В случае выхода за допустимые уровни вложений должна выдаваться ошибка.
      *      Если нужно отключить экранирование значения, то ставим перед ним "field::"
+     * Примеры подзапросов для in или not in: 
+     * array("select","objid","from",SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'],"where",array("attrid","=","$key","and","vint","in",$value["vals"]))
+     * array("select","objid","from",SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'],"where",array("attrid","=","$key","and","vint",">=",$value["vals"][0],"and","vint","<=",$value["vals"][1]))  
      * @return boolean|string
      */
     public static function createWhereStr($filter){
@@ -121,7 +124,33 @@ class MNBVMySQLSt implements MNBVdefSt{
                 }else{
                     $wStr .= " (";
                     $inStr = '';
-                    foreach($filter[$key] as $inArr) $inStr .= (($inStr!='')?', ':'')."'".self::codeStr($inArr)."'";
+                    if (strtolower(trim($filter[$key][0]))==='select'){ //Вариант с подзапросом
+                        //Примеры подзапросов для in или not in: 
+                        //array("select","objid","from","storage_alias","where",array("attrid","=","$key","and","vint","in",$value["vals"],"group","objid"))
+                        //array("select","objid","from","storage_alias","where",array("attrid","=","$key","and","vint",">=",$value["vals"][0],"and","vint","<=",$value["vals"][1]))  
+                        //select id,name from mnbv_products where
+                        //id in (select objid from mnbv_attrvals where vint in (20,21) and attrid=17 group by objid) 
+                        //and id in (select objid id from mnbv_attrvals where vint>30000 and vint<60000 and attrid=3 group by objid);   
+                        if (strtolower($filter[$key][0])==='select'
+                                && !empty($filter[$key][1]) 
+                                && strtolower($filter[$key][2])==='from'
+                                && !empty($filter[$key][3]) && !empty(SysStorage::$storage[strtolower($filter[$key][3])])
+                                && is_array($filter[$key][5]) && count($filter[$key][5])
+                                ){
+                            
+                            $inStr .= 'select '.$filter[$key][1].' from '.SysStorage::$storage[strtolower($filter[$key][3])]['table'].' where ';
+                            
+                            //проверим на массив
+                            $res = self::createWhereStr($filter[$key][5]);
+                            if ($res!==false){
+                                $inStr .= $res;
+                            }
+                        }else{//Выражение не сложилось, сделаем невыполнимое условие
+                            $wStr = ' 1=0';
+                        }
+                    }else{ //Обычное перечисление
+                        foreach($filter[$key] as $inArr) $inStr .= (($inStr!='')?', ':'')."'".self::codeStr($inArr)."'";
+                    }
                     $wStr .= $inStr . ")";
                 }
             }else{

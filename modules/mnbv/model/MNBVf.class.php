@@ -694,9 +694,9 @@ class MNBVf {
     }
     
     /**
-     * Возвращает URL текущего объекта $obj. //URL состоит из Протокол + домен + [алиас если есть] + сортировка + [страница если есть] + ? [id=Номер, если есть] [&sort=Сортирока, если задана (приоритет)] [&pg=Номер страницы списка, если задан  (приоритет)]
+     * Возвращает URL текущего объекта $obj. //URL состоит из Протокол + домен + [алиас если есть] + сортировка + [страница если есть] + ? [id=Номер, если есть] [&filters=Фильтры по атрибутам] [&sort=Сортирока, если задана (приоритет)] [&pg=Номер страницы списка, если задан  (приоритет)]
      * @param $obj массив свойств текущего объекта
-     * @param $param параметры формирования: array('altlang'='true/false', 'sort'='', 'pg'='', 'page_main_alias'='', 'type'='list', 'page_list_url'='notset'); 
+     * @param $param параметры формирования: array('altlang'='true/false', 'filters'=>'', 'sort'='', 'pg'='', 'page_main_alias'='', 'getonly'=>false, 'fingetpref'=>false, 'type'='list', 'page_list_url'='notset'); 
      * Если какой то элемент не задан, он не выводится. Если pg <2, то не выводится. Если sort=дефолтовый для данного раздела ($obj['list_sort']), тоже не выводится.
      * 'type'='list' - работать с родительской папкой, иначе работаем с текущим объектом (устаревший параметр, стараемся не использовать).
      * @return string текущий URL
@@ -723,7 +723,7 @@ class MNBVf {
         }
         
         //Формирование папок
-        if (!empty($param['altlang'])) $result .= '/'.Lang::getAltLangName();
+        if (!empty($param['altlang']) && (!isset($param['page_list_url']) || $param['page_list_url']==='notset')) $result .= '/'.Lang::getAltLangName();
         
         //Основной алиас
         if ($obj['type']==2){ //Если это URL, то впишем его
@@ -770,30 +770,39 @@ class MNBVf {
             
             if (false!==strpos($result,'?')) $getStart = true;
             
-            if (!$getStart) {
-                //Номера страниц как папки
-                if (!empty(Glob::$vars['mnbv_site']['pginurl']) && !empty($param['pg']) && $param['pg']>1) {
-                    $result = preg_replace("/\/$/",'',$result);
-                    $result .= '/pg' . $param['pg']; //Если страницы в папках
-                }
-
+            $pgView = false;
+            $sortView = false;
+            if (!$getStart && !empty($params['getonly'])) {
                 //Сортировка
                 if (!empty(Glob::$vars['mnbv_site']['sorturl']) 
                         && !empty($param['sort']) && (empty($obj['vars']['list_sort'])||$param['sort']!=$obj['vars']['list_sort'])) {
                     $result .= '/sort_' . $param['sort']; //Если сортировка в папках
+                    $sortView = true;
+                }
+                
+                //Номера страниц как папки
+                if (!empty(Glob::$vars['mnbv_site']['pginurl']) && !empty($param['pg']) && $param['pg']>1) {
+                    $result = preg_replace("/\/$/",'',$result);
+                    $result .= '/pg' . $param['pg']; //Если страницы в папках
+                    $pgView = true;
                 }
             }
 
             //if (empty($obj['alias'])) $urlParams .= (($urlParams=='')?'?':'&').'id='.$obj['id'];
-            if (($getStart || empty(Glob::$vars['mnbv_site']['sorturl'])) 
-                && !empty($param['sort']) && (empty($obj['vars']['list_sort'])||$param['sort']!=$obj['vars']['list_sort'])) {
+            if (!empty($param['filters'])) {
+                $result .= (($getStart)?'&':'?').$param['filters'];
+                $getStart = true;
+            }
+            if (!$sortView && !empty($param['sort']) && (empty($obj['vars']['list_sort'])||$param['sort']!=$obj['vars']['list_sort'])) {
                 $result .= (($getStart)?'&':'?').'sort='.$param['sort'];
                 $getStart = true;
             }
-            if (($getStart || empty(Glob::$vars['mnbv_site']['pginurl'])) && !empty($param['pg']) && $param['pg']>1) {
+            if (!$pgView && !empty($param['pg']) && $param['pg']>1) {
                 $result .= (($getStart)?'&':'?').'pg='.$param['pg'];
                 $getStart = true;
             }
+            
+            if (!empty($param["fingetpref"])) $result .= ($getStart)?'&':'?';
 
         }
         
@@ -2294,26 +2303,28 @@ class MNBVf {
         if (!isset($useAttrArr['list'])||!is_array($useAttrArr['list'])) return $useAttrArr;
         if (!is_array($filterValsArr)) return $useAttrArr;
         $selectedCnt = 0;
+        $finFilterValsArr = array();
         
         foreach ($filterValsArr as $key => $fvalue) {
             if (!isset($useAttrArr["list"]["$key"])) continue;
             
             if (!empty($useAttrArr["list"]["$key"]["filter_type"]) && $useAttrArr["list"]["$key"]["filter_type"]=='slider'){ //Слайдер
                 //Это число, по которому нужно сделать слайдер
-                if (!is_array($fvalue)) $fvalue = array($fvalue,$fvalue);
+                if (!is_array($fvalue)) $fvalue = array("id"=>$useAttrArr["list"]["$key"]["attrid"],"type"=>"range","vals"=>array($fvalue,$fvalue));
+                
                 $minRval = $useAttrArr["list"]["$key"]["minval"];
                 $maxRval = $useAttrArr["list"]["$key"]["maxval"];
 
-                if (isset($fvalue[0]) && $fvalue[0]>=$minRval) {
-                    $minRval = $fvalue[0];
+                if (isset($fvalue["vals"][0]) && $fvalue["vals"][0]>=$minRval) {
+                    $minRval = $fvalue["vals"][0];
                     if (empty($useAttrArr['list']["$key"]["selected"])) {
                         $useAttrArr['list']["$key"]["selected"] = true;
                         $selectedCnt++;
                     }
                 }
                 
-                if (isset($fvalue[1]) && $fvalue[1]<=$maxRval) {
-                    $maxRval = $fvalue[1];
+                if (isset($fvalue["vals"][1]) && $fvalue["vals"][1]<=$maxRval) {
+                    $maxRval = $fvalue["vals"][1];
                     if (empty($useAttrArr['list']["$key"]["selected"])) {
                         $useAttrArr['list']["$key"]["selected"] = true;
                         $selectedCnt++;
@@ -2322,24 +2333,30 @@ class MNBVf {
                 
                 $useAttrArr['list']["$key"]["minRval"] = $minRval;
                 $useAttrArr['list']["$key"]["maxRval"] = $maxRval;
+                $finFilterValsArr[$key] = array("id"=>$useAttrArr["list"]["$key"]["attrid"],"type"=>"range","vals"=>array($minRval,$maxRval));
                 
             }else{ //Группа чекбоксов
             
-                if (!is_array($fvalue)) $fvalue = array($fvalue);
-                foreach ($fvalue as $itemValue) {
+                if (!is_array($fvalue)) $fvalue = array("id"=>$useAttrArr["list"]["$key"]["attrid"],"type"=>"list","vals"=>array($fvalue));
+                $finFilterValsArr[$key] = array("id"=>$useAttrArr["list"]["$key"]["attrid"],"type"=>"list","vals"=>array());
+                
+                foreach ($fvalue["vals"] as $itemValue) {
                     if (isset($useAttrArr['list']["$key"]["vals"])
                             && isset($useAttrArr['list']["$key"]["vals"]["$itemValue"])){
                         $useAttrArr['list']["$key"]["vals"]["$itemValue"]["selected"] = true;
+                        $finFilterValsArr[$key]["vals"][] = $itemValue;
                         if (empty($useAttrArr['list']["$key"]["selected"])) {
                             $useAttrArr['list']["$key"]["selected"] = true;
                             $selectedCnt++;
                         }
                     }
                 }
+                if (count($finFilterValsArr[$key]["vals"])==0) unset($finFilterValsArr[$key]);
             
             }
         }
         
+        if (count($finFilterValsArr)) $useAttrArr["selected_items"] = $finFilterValsArr;
         $useAttrArr['selected'] = $selectedCnt;
         return $useAttrArr;
     }

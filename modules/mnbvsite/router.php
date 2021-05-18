@@ -152,11 +152,11 @@ if (SysBF::getFrArr(Glob::$vars['request'],'filters')) {
         if (false!==strpos($tecArr[1],',')) {
             $tecArr[1] = str_replace(' ', '', $tecArr[1]);
             $listfilterstr .= $tecArr[1];
-            $tecArr[1] = preg_split("/,/", $tecArr[1]);
+            $tecArr[1] = array("type"=>"list","vals"=>preg_split("/,/", $tecArr[1]));
         }elseif (false!==strpos($tecArr[1],'-')) {
             $tecArr[1] = str_replace(' ', '', $tecArr[1]);
             $listfilterstr .= $tecArr[1];
-            $tecArr[1] = preg_split("/-/", $tecArr[1]);
+            $tecArr[1] = array("type"=>"range","vals"=>preg_split("/-/", $tecArr[1]));
         }else{
             $listfilterstr .= $tecArr[1];
         }

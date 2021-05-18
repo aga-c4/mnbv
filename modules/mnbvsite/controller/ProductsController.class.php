@@ -32,6 +32,10 @@ class ProductsController extends AbstractMnbvsiteController {
      */
     public function action_list($item=array(),$tpl_mode='html', $console=false){
         
+        if (SysBF::getFrArr(Glob::$vars['request'],'viewonlylistsize')) {
+            $viewOnlyListSize = true;
+        }
+        
         //Хранилище и папка по-умолчанию
         $storage = Glob::$vars['mnbv_site']['storage']; //Текущее хранилище
         $item['obj']['use_other_storage'] = '';
@@ -47,7 +51,7 @@ class ProductsController extends AbstractMnbvsiteController {
             //Привязанное хранилище существует
             $storage2 = $item['obj']['vars']['script_storage'];
             
-            if (!empty(Glob::$vars['mnbv_site']['sub_list_id'])){//Есть номера субобъектов
+            if (!empty(Glob::$vars['mnbv_site']['sub_list_id'])){//Есть номера субобъектов (папка каталога товаров)
                 $folderId2 = intval(Glob::$vars['mnbv_site']['sub_list_id']);
             } elseif (!empty($item['obj']['vars']['script_folder'])){ //Попробуем найти корневой объект для вывода
                 $folderId2 = intval($item['obj']['vars']['script_folder']);
@@ -74,9 +78,7 @@ class ProductsController extends AbstractMnbvsiteController {
                 
             }
         }
-        $item['page_list_url'] = MNBVf::generateObjUrl($realFolder,array('altlang'=>false)); //Язык базовый, потом при преобразовании будет доработан
         
-        SysLogs::addLog('page_list_url: [' . $item['page_list_url'] . ']');
         SysLogs::addLog('Select mnbv script storage: [' . $storage . '] page_main_alias=['.$item['obj']['page_main_alias'].']');
         SysLogs::addLog('Select mnbv script storage folder: [' . $folderId . ']');
         $item['img_max_size'] = MNBVf::getImgMaxSize($storage,Glob::$vars['img_max_size']);
@@ -103,41 +105,81 @@ class ProductsController extends AbstractMnbvsiteController {
         //Фильтрация по атрибутам-----------------------------------------------
         //Формирование массива выбранных элементов фильтров и диапазонов
         $filterValsArr = (isset(Glob::$vars['mnbv_listfilter'])&&is_array(Glob::$vars['mnbv_listfilter']))?Glob::$vars['mnbv_listfilter']:array();
+        $finFilterValsArr = false;
         
-        $cache = new MNBVCache();
-        $attr_filters = $cache->get("prodfilters:$folderId",true);
-        //echo "(prodfilters:$folderId=>[$attrFiltersCacheStr])";
-        if (!is_array($attr_filters) || !empty(Glob::$vars['no_cache'])){ //Необходимо перегенерить кеш
-            $attr_filters = MNBVf::objFilterGenerator('attributes',$realFolder,array('folderid'=>(!empty($folderId))?$folderId:Glob::$vars['prod_storage_rootid'])); //Специально без выделения пунктов, чтоб можно было закешировать.
-            $cache->set("prodfilters:$folderId",$attr_filters,Glob::$vars['prod_filters_cache_ttl']);
+        if (empty($folderId) || $folderId!=Glob::$vars['prod_storage_rootid']){ //Фильтры только для заданной категории, кроме случая с указанием конкретных товаров, в таком случае делаем фильтры корневой категории каталога
+            $cache = new MNBVCache();
+            $attr_filters = $cache->get("prodfilters:$folderId",true);
+            //echo "(prodfilters:$folderId=>[$attrFiltersCacheStr])";
+            if (!is_array($attr_filters) || !empty(Glob::$vars['no_cache'])){ //Необходимо перегенерить кеш
+                $attr_filters = MNBVf::objFilterGenerator('attributes',$realFolder,array('folderid'=>(!empty($folderId))?$folderId:Glob::$vars['prod_storage_rootid'])); //Специально без выделения пунктов, чтоб можно было закешировать.
+                $cache->set("prodfilters:$folderId",$attr_filters,Glob::$vars['prod_filters_cache_ttl']);
+            }
+
+            //Если фильтры найдены, подготовим элементы для их вывода в шаблоне
+            if (is_array($attr_filters) && isset($attr_filters['list'])) {
+                $attr_filters = MNBVf::selectFilterItems($attr_filters,$filterValsArr);
+                $item['attr_filters'] = $attr_filters['list'];
+                $item['attr_filters_selected_nums'] = $attr_filters['selected'];
+                if (isset($attr_filters['selected_items']) && is_array($attr_filters['selected_items'])) $finFilterValsArr = $attr_filters['selected_items'];
+            }
         }
         
-        //Если фильтры найдены, подготовим элементы для их вывода в шаблоне
-        if (is_array($attr_filters) && isset($attr_filters['list'])) {
-            $attr_filters = MNBVf::selectFilterItems($attr_filters,$filterValsArr);
-            $item['attr_filters'] = $attr_filters['list'];
-            $item['attr_filters_selected_nums'] = $attr_filters['selected'];
+        //Доработаем условие фильтрации списка 
+        if (is_array($finFilterValsArr) 
+                && !empty(SysStorage::$storage[Glob::$vars['prod_storage']])
+                && isset(SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'])
+                && isset(SysStorage::$storage[SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse']])){
+            //Есть хранилище значений атрибутов, добавим условия выбора из него
+            
+            foreach($finFilterValsArr as $key=>$value){
+                if (empty($value["id"])) continue;
+                $value["id"] = intval($value["id"]);
+                if (false!==strpos($key,'attr')){//Это атрибуты
+                    if ($value["type"]==='list'){
+                        if (is_array($value["vals"]) && count($value["vals"])) {
+                            array_push($quFilterArr, "and","id","in",array("select","objid","from",SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'],"where",array("attrid","=",$value["id"],"and","vint","in",$value["vals"])));
+                        }
+                    }if ($value["type"]==='range'){
+                        if (is_array($value["vals"]) && count($value["vals"])) {
+                            array_push($quFilterArr, "and","id","in",array("select","objid","from",SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'],"where",array("attrid","=","$key","and","vint",">=",$value["vals"][0],"and","vint","<=",$value["vals"][1])));
+                        }
+                    }
+                }else{//Это поля таблицы товаров
+                    if ($value["type"]==='list'){
+                        if (is_array($value["vals"]) && count($value["vals"])) {
+                            array_push($quFilterArr, "and",$key,"in",$value["vals"]);
+                        }
+                    }if ($value["type"]==='range'){
+                        if (is_array($value["vals"]) && count($value["vals"])) {
+                            array_push($quFilterArr, "and",$key,">=",$value["vals"][0],"and",$key,"<=",$value["vals"][1]);
+                        }
+                    }
+                }
+            }
         }
         //----------------------------------------------------------------------
 
+        
         //Сортировка списка------------------------------------------------------------
         $quConfArr["sort"] = array();
         $item['list_sort'] = '';
-        $item['real_list_sort'] = (!empty($item['obj']['vars']['list_sort']))?$item['obj']['vars']['list_sort']:''; //Если задано на странице, берем от туда или ''
-        if (!empty($realFolder['vars']['list_sort'])) $item['real_list_sort'] = $realFolder['vars']['list_sort']; //Приоритет у сортировки конечной папки
-        if (!empty(Glob::$vars['mnbv_listsort'])) {//Самый высокий приоритет у ручной установке через маршрутизатор
-            $item['list_sort'] = $item['real_list_sort'] = (MNBVf::validateSortType(Glob::$vars['mnbv_listsort']))?Glob::$vars['mnbv_listsort']:'';
-        }
-        if (!Lang::isDefLang()){ //Если требуется, то будем сортировать по имени на альтернативном языке
-            if ($item['real_list_sort'] == 'name') $item['real_list_sort'] = 'namelang';
-            elseif ($item['real_list_sort'] == 'name_desc') $item['real_list_sort'] = 'namelang_desc';
-        }
-        if (!MNBVf::validateSortType($item['real_list_sort'])) $item['real_list_sort'] = '';
+        if (empty($viewOnlyListSize)) {
+            $item['real_list_sort'] = (!empty($item['obj']['vars']['list_sort']))?$item['obj']['vars']['list_sort']:''; //Если задано на странице, берем от туда или ''
+            if (!empty($realFolder['vars']['list_sort'])) $item['real_list_sort'] = $realFolder['vars']['list_sort']; //Приоритет у сортировки конечной папки
+            if (!empty(Glob::$vars['mnbv_listsort'])) {//Самый высокий приоритет у ручной установке через маршрутизатор
+                $item['list_sort'] = $item['real_list_sort'] = (MNBVf::validateSortType(Glob::$vars['mnbv_listsort']))?Glob::$vars['mnbv_listsort']:'';
+            }
+            if (!Lang::isDefLang()){ //Если требуется, то будем сортировать по имени на альтернативном языке
+                if ($item['real_list_sort'] == 'name') $item['real_list_sort'] = 'namelang';
+                elseif ($item['real_list_sort'] == 'name_desc') $item['real_list_sort'] = 'namelang_desc';
+            }
+            if (!MNBVf::validateSortType($item['real_list_sort'])) $item['real_list_sort'] = '';
 
-        $quConfArr["sort"] = MNBVf::getSortArr($item['real_list_sort']); //Сформируем массив для сортировки
-        SysLogs::addLog('Select mnbv script real_list_sort: [' . $item['real_list_sort'] . ']');
-        //------------------------------------------------------------------------------
-
+            $quConfArr["sort"] = MNBVf::getSortArr($item['real_list_sort']); //Сформируем массив для сортировки
+            SysLogs::addLog('Select mnbv script real_list_sort: [' . $item['real_list_sort'] . ']');
+        }
+        //------------------------------------------------------------------------------       
         
         //Список объектов
         $item['list'] = MNBVStorage::getObjAcc($storage,
@@ -155,15 +197,21 @@ class ProductsController extends AbstractMnbvsiteController {
                     $value['folder_alias'] = $item['obj']['folder_alias'];
                 }
                 $item['list'][strval($key)]['files'] = (!empty($value['files']))?MNBVf::updateFilesArr($storage,$value["id"],$value['files']):array();
-                if (Lang::isDefLang()){//Дефолтовый язык
-                    $item['list'][strval($key)]['url'] = MNBVf::generateObjUrl($value); //Формирование URL из текущего адреса
-                    //echo "['id':'{$value['id']}','name':'{$value['name']}','alias':'{$value['alias']}'] url=>[{$item['list'][strval($key)]['url']}]";
-                }else{//Альтернативный язык
-                    $item['list'][strval($key)]['url'] = MNBVf::generateObjUrl($value,array('altlang'=>true)); //Формирование URL из текущего адреса
-                    //Поправим имя, описание и текст в соответствии с altlang
+                
+                $params = array();
+                if (!Lang::isDefLang()) {
+                    $params['altlang'] = array('altlang'=>true);
                     if (!empty($value['namelang'])) $item['list'][strval($key)]['name'] = $value['namelang'];
                     $item['list'][strval($key)]['about'] = SysBF::getFrArr($value,'aboutlang','');
                 }
+                
+                if ($value['type']!=1){ //Это объект, передадим внутрь фильтрацию, сортировку и пагинацию
+                    if (!empty(Glob::$vars['mnbv_listfilterstr'])) $params['filters'] = Glob::$vars['mnbv_listfilterstr'];
+                    if (!empty(Glob::$vars['mnbv_listsort'])) $params['sort'] = Glob::$vars['mnbv_listsort'];
+                    if (!empty(Glob::$vars['mnbv_listpg'])) $params['pg'] = Glob::$vars['mnbv_listpg'];
+                    $params['getonly'] = true;
+                }
+                $item['list'][strval($key)]['url'] = MNBVf::generateObjUrl($value,$params); //Формирование URL из текущего адреса
                 
                 //Расчитаем цену со скидкой для конкретного пользовтеля с учетом ограничений
                 //TODO - необходимо доработать алгоритм с учетом макс скидок по вендорам, категориям и товарам. 
@@ -180,37 +228,7 @@ class ProductsController extends AbstractMnbvsiteController {
                 unset($item['list'][strval($key)]);
             }
         }
-        if (empty($item['list_size']) && $folderId!=Glob::$vars['prod_storage_rootid']) unset($item['attr_filters']);
-        
-        //Хлебные крошки--------------------------------------------------------
-        /*
-        Хлебные крошки. Идея такова - есть массив на текущем языке где поля:
-        0 => array('name'=>'Главная','url'=>'/') - Формируется в основном контроллере сайта
-        1 => array('name'=>'Категория текущего уровня','url'=>'...') - Формируется в основном контроллере сайта, если не совпадает с главной страницей
-        2 => array('name'=>'Название текущей страницы','url'=>'URL текущей страницы') - Формируется в основном контроллере сайта 
-        3 => array('name'=>'Категория влолженного хранилища 1 уровня','url'=>'...') - Формируется в субконтроллере сайта  если не совпадает с категорией текущего уровня или со стартовой
-        4 => array('name'=>'Категория влолженного хранилища текущего уровня','url'=>'...') - Формируется в субконтроллере
-        5 => array('name'=>'Название текущего объекта влолженного хранилища ','url'=>'...') - Формируется в субконтроллере сайта
-
-        При этом размещение этих элементов массива четко предопределено, чтоб при необходимости не выводить часть из них. смещая начало обработки массива к концу.
-         */        
-        if (!empty($item['obj']['use_other_storage'])) {
-            //Папка
-            SysLogs::addLog('parent=[' . $realFolder['parent']['id'] . '] <=> folder_start_id=[' . $item['obj']['folder_start_id'] . ']');
-            
-            if (!empty($realFolder['id']) && $realFolder['id']!=$item['obj']['folder_start_id']) {
-                if (!empty($realFolder['parent']['id']) && $realFolder['parent']['id']!=$item['obj']['folder_start_id']) {
-                    $item['obj']['up_folder_url'] = MNBVf::generateObjUrl($realFolder['parent'],array('altlang'=>!Lang::isDefLang()));
-                    $currName = MNBVf::getItemName($realFolder['parent'],!Lang::isDefLang());
-                    $item['obj']['nav_arr'][4] = array('name'=>$currName,'url'=>$item['obj']['up_folder_url']); //Текущая папка
-                }
-                //Текущий объект
-                $currName = MNBVf::getItemName($realFolder,!Lang::isDefLang());
-                $item['obj']['nav_arr'][5] = array('name'=>$currName,'url'=>$item['page_url']);
-            }
-        }
-        //Конец обработки хлебных крошек ---------------------------------------
-        
+        //if (empty($item['list_size']) && $folderId!=Glob::$vars['prod_storage_rootid']) unset($item['attr_filters']);
         
         //Подготовим описание категории-----------------------------------------
         $item['page_content'] = $item['page_content2'] = '';
@@ -244,21 +262,75 @@ class ProductsController extends AbstractMnbvsiteController {
         );
         //----------------------------------------------------------------------
         
+        //Базовые URL для шаблона
+        $item['page_list_url'] = MNBVf::generateObjUrl($realFolder,array('altlang'=>false,)); //Чистый URL
+        SysLogs::addLog('page_list_url: [' . $item['page_list_url'] . ']');
+        
+        $params = array();
+        if (!Lang::isDefLang()) $params['altlang'] = array('altlang'=>true);
+        if (!empty(Glob::$vars['mnbv_listfilterstr'])) $params['filters'] = Glob::$vars['mnbv_listfilterstr'];
+        if (!empty(Glob::$vars['mnbv_listsort'])) $params['sort'] = Glob::$vars['mnbv_listsort'];
+        $item['page_list_paginationurl'] = MNBVf::generateObjUrl($realFolder,$params); //URL для пагинации
+        SysLogs::addLog('page_list_paginationurl: [' . $item['page_list_paginationurl'] . ']');
+        
+        $params = array();
+        if (!Lang::isDefLang()) $params['altlang'] = array('altlang'=>true);
+        if (!empty(Glob::$vars['mnbv_listfilterstr'])) $params['filters'] = Glob::$vars['mnbv_listfilterstr'];
+        $params['fingetpref'] = true; //В конце URL добавить префикс Get параметра
+        $item['page_list_filters_url'] = MNBVf::generateObjUrl($realFolder,$params); //URL для формы сортировки с сохранением фильтров
+        SysLogs::addLog('page_list_filters_url: [' . $item['page_list_filters_url'] . ']');
+        
+        $params = array();
+        if (!Lang::isDefLang()) $params['altlang'] = array('altlang'=>true);
+        if (!empty(Glob::$vars['mnbv_listsort'])) $params['sort'] = Glob::$vars['mnbv_listsort'];
+        $params['fingetpref'] = true; //В конце URL добавить префикс Get параметра
+        $item['page_list_sort_url'] = MNBVf::generateObjUrl($realFolder,$params); //URL для формы фильтров с сохранением сортировки
+        SysLogs::addLog('page_list_sort_url: [' . $item['page_list_sort_url'] . ']');
+        
         //Настройки номеров страниц---------------------------------------------            
         $item['page_list_num_conf'] = array(
-            'page_list_url' => $item['page_list_url'],
+            'page_list_url' => $item['page_list_paginationurl'],
             'list_size' => $item['list_size'],
             'list_max_items' => $item['list_max_items'],
             'list_sort' => $item['list_sort'],
             'list_page' => $item['list_page'],
             'centre_bl' => 5);
-        if (!empty(Glob::$vars['mnbv_listfilterstr'])) { //Добавим текущие фильтры
-            $item['page_list_num_conf']['page_list_url'] .= ((false===strpos($item['page_list_num_conf']['page_list_url'],'?'))?'?':'&').Glob::$vars['mnbv_listfilterstr']; 
-            $item['page_list_num_conf']['page_list_url'];
-        }
-        SysLogs::addLog("Pagination base url=[".$item['page_list_num_conf']['page_list_url']."]");
         //----------------------------------------------------------------------
         
+        
+        //Хлебные крошки--------------------------------------------------------
+        /*
+        Хлебные крошки. Идея такова - есть массив на текущем языке где поля:
+        0 => array('name'=>'Главная','url'=>'/') - Формируется в основном контроллере сайта
+        1 => array('name'=>'Категория текущего уровня','url'=>'...') - Формируется в основном контроллере сайта, если не совпадает с главной страницей
+        2 => array('name'=>'Название текущей страницы','url'=>'URL текущей страницы') - Формируется в основном контроллере сайта 
+        3 => array('name'=>'Категория влолженного хранилища 1 уровня','url'=>'...') - Формируется в субконтроллере сайта  если не совпадает с категорией текущего уровня или со стартовой
+        4 => array('name'=>'Категория влолженного хранилища текущего уровня','url'=>'...') - Формируется в субконтроллере
+        5 => array('name'=>'Название текущего объекта влолженного хранилища ','url'=>'...') - Формируется в субконтроллере сайта
+
+        При этом размещение этих элементов массива четко предопределено, чтоб при необходимости не выводить часть из них. смещая начало обработки массива к концу.
+         */        
+        if (!empty($item['obj']['use_other_storage'])) {
+            //Папка
+            SysLogs::addLog('parent=[' . $realFolder['parent']['id'] . '] <=> folder_start_id=[' . $item['obj']['folder_start_id'] . ']');
+            
+            if (!empty($realFolder['id']) && $realFolder['id']!=$item['obj']['folder_start_id']) {
+                if (!empty($realFolder['parent']['id']) && $realFolder['parent']['id']!=$item['obj']['folder_start_id']) {
+                    $item['obj']['up_folder_url'] = MNBVf::generateObjUrl($realFolder['parent'],array('altlang'=>!Lang::isDefLang()));
+                    $currName = MNBVf::getItemName($realFolder['parent'],!Lang::isDefLang());
+                    $item['obj']['nav_arr'][4] = array('name'=>$currName,'url'=>$item['obj']['up_folder_url']); //Текущая папка
+                }
+                //Текущий объект
+                $currName = MNBVf::getItemName($realFolder,!Lang::isDefLang());
+                $item['obj']['nav_arr'][5] = array('name'=>$currName,'url'=>$item['page_url']);
+            }
+        }
+        //Конец обработки хлебных крошек ---------------------------------------
+
+        if (!empty($viewOnlyListSize)) {
+            $tpl_mode = 'json';
+            $item = $item['list_size'];
+        }
 
         //View------------------------
         MNBVf::render(Glob::$vars['mnbv_tpl_file'],$item,$tpl_mode);
@@ -385,9 +457,15 @@ class ProductsController extends AbstractMnbvsiteController {
         if (!empty($item['obj']['use_other_storage'])) {
             //Папка
             if (!empty($item['obj']['folderid']) && $item['obj']['folderid']!=$item['obj']['folder_start_id']) {
-                $item['obj']['up_folder_url'] = MNBVf::generateObjUrl($realObject['parent'],array('altlang'=>!Lang::isDefLang()));
+                $params = array();
+                if (!Lang::isDefLang()) $params['altlang'] = array('altlang'=>true);
+                if (!empty(Glob::$vars['mnbv_listfilterstr'])) $params['filters'] = Glob::$vars['mnbv_listfilterstr'];
+                if (!empty(Glob::$vars['mnbv_listsort'])) $params['sort'] = Glob::$vars['mnbv_listsort'];
+                if (!empty(Glob::$vars['mnbv_listpg'])) $params['pg'] = Glob::$vars['mnbv_listpg'];
+                $item['obj']['up_folder_url'] = MNBVf::generateObjUrl($realObject['parent'],$params);
                 $currName = MNBVf::getItemName($realObject['parent'],!Lang::isDefLang());
                 $item['obj']['nav_arr'][4] = array('name'=>$currName,'url'=>$item['obj']['up_folder_url']); //Текущая папка
+                SysLogs::addLog('Back folder URL: [' . $item['obj']['up_folder_url'] . ']');
             }
             //Текущий объект
             $currName = MNBVf::getItemName($realObject,!Lang::isDefLang());

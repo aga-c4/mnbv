@@ -77,6 +77,9 @@ class MNBVStorage{
      *      В случае выхода за допустимые уровни вложений должна выдаваться ошибка.
      *      'key' - название поля может задаваться как 'алиас.key' для указания поля из конкретного хранилища из запроса.
      *      Если нужно отключить экранирование значения, то ставим перед ним "field::"
+     * Примеры подзапросов для in или not in: 
+     * array("select","objid","from",SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'],"where",array("attrid","=","$key","and","vint","in",$value["vals"]))
+     * array("select","objid","from",SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'],"where",array("attrid","=","$key","and","vint",">=",$value["vals"][0],"and","vint","<=",$value["vals"][1]))  
      * @param array $conf - массив управляющих настроек
      *      $conf = array(
      *                  "group" => "поле", //поле для группировки
