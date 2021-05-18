@@ -23,6 +23,7 @@ require_once MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'head.php');
 </head>
 
 <body>
+    <?=(!empty(Glob::$vars['counter_block']))?Glob::$vars['counter_block']:'';?>
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-xl navbar-dark bg-dark">
