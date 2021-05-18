@@ -235,7 +235,7 @@ MNBVf::startVidget('pg',$item,array(
 ?>
                     
                     Сopyright © 2006-<?=date("Y");?>, AGA-C4  <?=SysBF::getFrArr($item,'site_name');?>
-                    [Page generation <?=sprintf ("%01.4f",(SysBF::getmicrotime() - Glob::$vars['time_start']));?>s]
+                    [PgGen <?=sprintf ("%01.4f",(SysBF::getmicrotime() - Glob::$vars['time_start']));?>s][MaxMem <?=intval(memory_get_peak_usage()/1024).'kB';?>]
                 </div>
             </div>
         </div>
