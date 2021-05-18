@@ -4,4 +4,6 @@
  * Данные передаются массиве $item
  */
 
-echo SysBF::getFrArr($item['sub_obj'],'text','');
+if (Lang::isAltLang() && !empty($item['sub_obj']['textlang'])) echo SysBF::getFrArr($item['sub_obj'],'textlang','');
+elseif (!Lang::isAltLang() && !empty($item['sub_obj']['text'])) echo SysBF::getFrArr($item['sub_obj'],'text','');
+

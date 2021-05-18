@@ -4,7 +4,7 @@
  */
 ?>
 <ul class="navbar-nav mr-auto">
-    <li class="nav-item"><a class="nav-link my-nav-link" href="/<?=(Lang::isAltLang()?Lang::getLang():'');?>catalog"><?=(Lang::isAltLang()?'Catalog':'Каталог');?></a></li>
+    <li class="nav-item"><a class="nav-link my-nav-link" href="/<?=(Lang::isAltLang())?(Lang::getLang().'/'):'';?>catalog"><?=(Lang::isAltLang()?'Catalog':'Каталог');?></a></li>
 <? 
 $itemCounter = 0;
 foreach ($item['list'] as $key=>$menuItem) if ($key>0) {

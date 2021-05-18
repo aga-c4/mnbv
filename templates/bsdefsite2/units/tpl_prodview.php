@@ -13,12 +13,12 @@
     <p>
     <?=Lang::get("Code");?>: <?=SysBF::getFrArr($item['sub_obj'],'id','');?><br>    
 <? if (!empty($item['sub_obj']['price']) && $item['sub_obj']['price']>0){
-    ?><?=Lang::get("Price");?>: <span style="font-weight:bold;"><?=SysBF::getFrArr($item['sub_obj'],'price','');?>р.</span>
+    ?><?=Lang::get("Price");?>: <span style="font-weight:bold;"><?=SysBF::getFrArr($item['sub_obj'],'price','').Glob::$vars['prod_currency_suf'];?></span>
 <? if (!empty($item['sub_obj']['oldprice']) && $item['sub_obj']['oldprice']>$item['sub_obj']['price']){ ?> 
-            <span class="text-decoration-line-through"><?=$item['sub_obj']['oldprice'];?>р.</span>
+            <span class="text-decoration-line-through"><?=$item['sub_obj']['oldprice'].Glob::$vars['prod_currency_suf'];?></span>
 <?}?>
     <br>
-<? if (!empty($item['sub_obj']['discount_price']) && $item['sub_obj']['discount_price']>0 && $item['sub_obj']['discount_price']<$item['sub_obj']['price']){?><?=Lang::get("Discount price");?>: <span style="font-weight:bold;color:green;"><?=SysBF::getFrArr($item['sub_obj'],'discount_price','');?>р.</span><br>
+<? if (!empty($item['sub_obj']['discount_price']) && $item['sub_obj']['discount_price']>0 && $item['sub_obj']['discount_price']<$item['sub_obj']['price']){?><?=Lang::get("Discount price");?>: <span style="font-weight:bold;color:green;"><?=SysBF::getFrArr($item['sub_obj'],'discount_price','').Glob::$vars['prod_currency_suf'];;?></span><br>
 <?}?>
 <?}?>
 <? if (empty($item['sub_obj']['type']) || $item['sub_obj']['type']!=1 && !empty($item['sub_obj']['price']) && $item['sub_obj']['price']>0){?>

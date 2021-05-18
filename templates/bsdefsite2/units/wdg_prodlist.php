@@ -45,12 +45,12 @@ if (isset($value['files']["img"]["1"]) && $tecObjTxtCode = MNBVf::getObjCodeByUR
             <h5 class="card-title"><a href="<?=SysBF::getFrArr($value,'url','');?>"><?=SysBF::getFrArr($value,'name','');?></a></h5>
     <? /*=(!empty($value['about']))?('<p class="card-text">'.$value['about'].'</p>'):'';*/?>
 <? if (!empty($value['price']) && $value['price']>0){
-    ?>Цена: <span style="font-weight:bold;"><?=SysBF::getFrArr($value,'price','');?>р.</span>
+    ?><?=Lang::get("Price");?>: <span style="font-weight:bold;"><?=SysBF::getFrArr($value,'price','').Glob::$vars['prod_currency_suf'];?></span>
 <? if (!empty($value['oldprice']) && $value['oldprice']>$value['price']){ ?> 
-            <span class="text-decoration-line-through"><?=$value['oldprice'];?>р.</span>
+            <span class="text-decoration-line-through"><?=$value['oldprice'].Glob::$vars['prod_currency_suf'];?></span>
 <?}?>
     <br>
-<? if (!empty($value['discount_price']) && $value['discount_price']>0 && $value['discount_price']<$value['price']){?><?=Lang::get("Discount price");?>: <span style="font-weight:bold;color:green;"><?=SysBF::getFrArr($value,'discount_price','');?>р.</span><br>
+<? if (!empty($value['discount_price']) && $value['discount_price']>0 && $value['discount_price']<$value['price']){?><?=Lang::get("Discount price");?>: <span style="font-weight:bold;color:green;"><?=SysBF::getFrArr($value,'discount_price','').Glob::$vars['prod_currency_suf'];?></span><br>
 <?}?>
     <br>
 <?}?>

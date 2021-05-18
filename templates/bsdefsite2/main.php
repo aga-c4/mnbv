@@ -27,7 +27,7 @@ require_once MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'head.php');
     <!-- Navbar -->
     <nav class="navbar navbar-expand-xl navbar-dark bg-dark">
         <div class="container">
-            <a href="/" class="navbar-brand">DemoWebShop</a>
+            <a href="<?=MNBVf::requestUrl(Lang::isAltLang()?'altlang':'','/');?>" class="navbar-brand">DemoWebShop</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false">
                 <span class="navbar-toggler-icon"></span></button>
         
@@ -56,6 +56,22 @@ echo MNBVf::startVidget('pglist',$item,array(
                     <input type="search" placeholder="Search" class="form-control mr-2">
                     <button class="btn btn-outline-success bg-transparent text-light">Search</button>
                 </form>
+                
+                <ul class="navbar-nav navbar-right">
+                <?
+            if (Lang::isDefLang()){ //Это основной язык
+                ?>
+                    <li><a class="nav-link my-nav-link disabled" href="<?=((!empty($item['page_url_swlang']))?$item['page_url_swlang']:'');?>"><?=Lang::getDefLang();?></a></li>
+                    <li><a class="nav-link my-nav-link active" href="<?=((!empty($item['page_url_swlang']))?$item['page_url_swlang']:'');?>"><?=Lang::getAltLangName();?></a></li>
+                <?
+            }else{ //Это альтернативный язык disabled
+                ?>
+                    <li><a class="nav-link my-nav-link active" href="<?=((!empty($item['page_url_swlang']))?$item['page_url_swlang']:'');?>"><?=Lang::getDefLang();?></a></li>
+                    <li><a class="nav-link my-nav-link disabled" href="<?=((!empty($item['page_url_swlang']))?$item['page_url_swlang']:'');?>"><?=Lang::getAltLangName();?></a></li>
+                <?
+            }
+                ?>
+                </ul>
             </div>
         </div>       
     </nav>
@@ -70,9 +86,9 @@ echo MNBVf::startVidget('pglist',$item,array(
          
 <?
 echo (!empty($item['page_h1'])) ? ('<div class="w-100"><h1>'.$item['page_h1']."</h1></div>\n") : '';
-echo (!empty($item['page_content'])) ? ('<div class="row"><div class="w-100">'.$item['page_content']."</div></div>\n") : '';
+echo (!empty($item['page_content'])) ? ('<div class="row mt-3"><div class="w-100">'.$item['page_content']."</div></div>\n") : '';
 if (!empty($item['page_sctpl'])) {require(MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'units/'.$item['page_sctpl']));}
-echo (!empty($item['page_content2'])) ? ('<div class="row"><div class="w-100">'.$item['page_content2']."</div></div>\n") : '';
+echo (!empty($item['page_content2'])) ? ('<div class="row mt-3"><div class="w-100">'.$item['page_content2']."</div></div>\n") : '';
 ?>
         </div>
     </main>
@@ -81,11 +97,11 @@ echo (!empty($item['page_content2'])) ? ('<div class="row"><div class="w-100">'.
         <div class="container">
             <div class="row">
                 <div class="pt-3 col-md-3 col-sm-6 col-xs-12">
-                    <b>О Компании:</b><br>
+                    <b><?=Lang::get('Company');?>:</b><br>
 <?=MNBVf::startVidget('menu',$item,3,'wdg_footermenu.php');?>
                 </div>
                 <div class="pt-3 col-md-3 col-sm-6 col-xs-12">
-                    <b>Контент:</b><br>
+                    <b><?=Lang::get('Content');?>:</b><br>
 <?=MNBVf::startVidget('menu',$item,4,'wdg_footermenu.php');?>
                 </div>
                 <div class="pt-3 col-md-6 col-sm-12">

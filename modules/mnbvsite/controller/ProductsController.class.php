@@ -69,6 +69,16 @@ class ProductsController extends AbstractMnbvsiteController {
                 $item['obj']['folder_name'] = $realFolder['name'];
                 $item['obj']['folder_alias'] = (!empty($realFolder['alias']))?$realFolder['alias']:'';
                 
+                if (!Lang::isDefLang()){
+                    if (!empty($realFolder['namelang'])) $realFolder['name'] = $realFolder['namelang'];
+                    if (!empty($realFolder['aboutlang'])) $realFolder['about'] = $realFolder['aboutlang'];
+                    if (!empty($realFolder['textlang'])) $realFolder['text'] = $realFolder['textlang'];
+                }
+                
+                $item['obj']['name'] = $realFolder['name'];
+                $item['obj']['about'] = $realFolder['about'];
+                $item['obj']['text'] = $realFolder['text'];
+                
                 //Метатеги----------------------------------------------------------------------
                 Glob::$vars['page_title'] = (!empty($realFolder['vars']['title']))?$realFolder['vars']['title']:((!empty($realFolder['name']))?$realFolder['name']:'');
                 Glob::$vars['page_keywords'] = (!empty($realFolder['vars']['keywords']))?$realFolder['vars']['keywords']:'';
@@ -263,7 +273,7 @@ class ProductsController extends AbstractMnbvsiteController {
         //----------------------------------------------------------------------
         
         //Базовые URL для шаблона
-        $item['page_list_url'] = MNBVf::generateObjUrl($realFolder,array('altlang'=>false,)); //Чистый URL
+        $item['page_list_url'] = MNBVf::generateObjUrl($realFolder,array('altlang'=>Lang::isAltLang(),)); //Чистый URL
         SysLogs::addLog('page_list_url: [' . $item['page_list_url'] . ']');
         
         $params = array();

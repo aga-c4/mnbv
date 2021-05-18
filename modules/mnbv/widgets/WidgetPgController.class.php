@@ -77,7 +77,8 @@ class WidgetPgController extends AbstractWidgetControllerController {
         
         //Сведения о папке, которую выводим
         if ($item['sub_obj'] = MNBVf::getStorageObject($this->storage,$this->id,array('altlang'=>$item['mnbv_altlang'],'visible'=>false,'access'=>true,'site'=>true))){//Объект для редактирования найден
-            if (!empty($item['sub_obj']['text'])) require $tplFile;
+            if (Lang::isAltLang() && !empty($item['sub_obj']['textlang'])) require $tplFile;
+            elseif (!Lang::isAltLang() && !empty($item['sub_obj']['text'])) require $tplFile;
         }
         
         return;

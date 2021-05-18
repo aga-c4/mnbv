@@ -227,4 +227,5 @@ Glob::$vars['prod_storage_rootid'] = 1; //Корневая папка катал
 Glob::$vars['prod_country_storage'] = 'countries'; //Хранилище списка стран
 Glob::$vars['prod_country_folderid'] = 1; //Идентификатор папки со странами в хранилище
 Glob::$vars['prod_filters_cache_ttl'] = 5*60; //Время жизни кеша фильтра в каталоге товара
+Glob::$vars['prod_currency_suf'] = 'р'; //Суфикс валюты после цены (если надо с пробелом).
 Glob::$vars['gormenu_cache_ttl'] = 5*60; //Время жизни кеша фильтра в каталоге товара

@@ -32,6 +32,11 @@ $langTmpArr = array(
     "Night" => "Ночь",
     
     "Code" => "Код",
+    
+    "Company" => "Компания",
+    "About company" => "О компании",
+    "About us" => "О нас",
+    "Content" => "Контент",
 
     "objgroup" => "Группа",
     
