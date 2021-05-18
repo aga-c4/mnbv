@@ -954,7 +954,7 @@ SysStorage::$storage['sysusers']['stru']['vars']['list'] = array(
     "addr" => array("name"=>"addr", "type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"),
     "phone" => array("name"=>"phone", "type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"),
     "position" => array("name"=>"position", "type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"),
-    "iflang" => array("name"=>"iflang", "type"=>"string", "size"=>20, "creatval"=>"lang", "dbtype"=>"varchar", "linkstorage" => array("ru" =>"Russian", "eng"=>"English")),
+    "iflang" => array("name"=>"iflang", "type"=>"string", "size"=>20, "creatval"=>"lang", "dbtype"=>"varchar", "linkstorage" => array("ru" =>"Russian", "en"=>"English")),
     "permissions" => array("name"=>"permissions", "type"=>"text", "creatval"=>"", "dbtype"=>"varchar", "linkstorage" => "usersgr"),
     "tablerows" => array("name"=>"tablerows", "type"=>"int", "size"=>3, "creatval"=>"21", "dbtype"=>"int"),
     "tplwidth" => array("name"=>"tplwidth", "type"=>"int", "size"=>4, "creatval"=>"", "dbtype"=>"int"),
@@ -1038,7 +1038,7 @@ SysStorage::$storage['users']['stru']['vars']['list'] = array(
     "addr" => array("name"=>"addr", "type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"),
     "phone" => array("name"=>"phone", "type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"),
     "position" => array("name"=>"position", "type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"),
-    "iflang" => array("name"=>"iflang", "type"=>"string", "size"=>20, "creatval"=>"lang", "dbtype"=>"varchar", "linkstorage" => array("ru" =>"Russian", "eng"=>"English")),
+    "iflang" => array("name"=>"iflang", "type"=>"string", "size"=>20, "creatval"=>"lang", "dbtype"=>"varchar", "linkstorage" => array("ru" =>"Russian", "en"=>"English")),
     "permissions" => array("name"=>"permissions", "type"=>"text", "creatval"=>"", "dbtype"=>"varchar", "linkstorage" => "usersgr"),
     "tablerows" => array("name"=>"tablerows", "type"=>"int", "size"=>3, "creatval"=>"21", "dbtype"=>"int"),
     "tplwidth" => array("name"=>"tplwidth", "type"=>"int", "size"=>4, "creatval"=>"", "dbtype"=>"int"),
@@ -1102,7 +1102,7 @@ SysStorage::$storage['menu'] = array(
     'filter' => $storageDefFilterArr, //Формат фильтра
     'attruse' => false, //Есть ли у данного хранилища атрибуты, если не требуются, то для быстродействия лучше отключать.
 );
-SysStorage::$storage['menu']['stru']['lang'] = array("name"=>"lang", "type"=>"string", "size"=>20, "creatval"=>"all", "dbtype"=>"varchar", "linkstorage" => array("all"=>"all", "ru" =>"Russian", "eng"=>"English"));
+SysStorage::$storage['menu']['stru']['lang'] = array("name"=>"lang", "type"=>"string", "size"=>20, "creatval"=>"all", "dbtype"=>"varchar", "linkstorage" => array("all"=>"all", "ru" =>"Russian", "en"=>"English"));
 SysStorage::$storage['menu']['stru']['nologin'] = array("name"=>"nologin", "type"=>"int", "size"=>1, "creatval"=>"0", "dbtype"=>"int");
 
 SysStorage::$storage['menu']['stru']['vars']['list'] = array(

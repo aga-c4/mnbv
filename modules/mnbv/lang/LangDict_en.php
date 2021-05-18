@@ -560,7 +560,7 @@ $langTmpArr = array(
     
     "Create storage" => "Create storage",
     "mLang" => "ru", //Основной язык
-    "mAltLang" => "eng", //Альтернативный язык
+    "mAltLang" => "en", //Альтернативный язык
     
     "instock" => "In stock",
     "limited" => "Limited",
@@ -762,6 +762,6 @@ $langTmpArr = array(
     
 );
 
-Lang::addToDict($langTmpArr,'eng');
+Lang::addToDict($langTmpArr,'en');
 unset($langTmpArr);
 

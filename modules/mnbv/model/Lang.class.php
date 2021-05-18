@@ -12,7 +12,7 @@ class Lang {
     /**
      * @var array Массив, содержащий список алиасов допустимых адресов
      */
-    public static $langsList = array('ru','eng');
+    public static $langsList = array('ru','en');
     
     /**
      * @var string текущий язык интерфейса
@@ -22,7 +22,7 @@ class Lang {
     /**
      * @var string текущий язык интерфейса
      */
-    private static $altlangName = "eng";
+    private static $altlangName = "en";
 
     /**
      * @var bool Статус альтернативного языка в списках для текущего языка

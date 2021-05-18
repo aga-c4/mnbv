@@ -19,9 +19,9 @@ $langTmpArr = array(
     "storage" => array(
         "Create storage" => "Create storage",
         "mLang" => "ru", //Основной язык
-        "mAltLang" => "eng", //Альтернативный язык
+        "mAltLang" => "en", //Альтернативный язык
     ),
 );
 
-Lang::addToDict($langTmpArr,'eng');
+Lang::addToDict($langTmpArr,'en');
 unset($langTmpArr);

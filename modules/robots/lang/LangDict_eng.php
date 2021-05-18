@@ -670,6 +670,6 @@ $langTmpArr = array(
     ),
 );
 
-Lang::addToDict($langTmpArr,'eng');
+Lang::addToDict($langTmpArr,'en');
 unset($langTmpArr);
 
