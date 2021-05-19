@@ -128,6 +128,7 @@ if (isset($item['list_max_items'])&&isset($item['list_size'])&&$item['list_max_i
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title" id="filterpanelLabel"><?=Lang::get("Filters");?></h4>
+        <button class="btn btn-primary ml-3 my-0" type="button" onclick='attrFilterGo();'><?=Lang::get("Use filters");?> <span class="badge rounded-pill bg-light text-dark" id="flt-goqty2">12</span></button>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -430,6 +431,7 @@ if (isset($item['list_max_items'])&&isset($item['list_size'])&&$item['list_max_i
                         url: '<?=$item['page_list_sort_url'];?>' + result + '&viewonlylistsize=true',
                         success: function(html){
                             $("#flt-goqty").text(html);
+                            $("#flt-goqty2").text(html);
                         }
                     });
                 }else{
