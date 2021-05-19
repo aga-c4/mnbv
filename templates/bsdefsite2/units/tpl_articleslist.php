@@ -53,7 +53,7 @@ if (isset($value['files']["img"]["1"]) && $tecObjTxtCode = MNBVf::getObjCodeByUR
         if ($imgWStr=='' && isset($item['img_max_size']['img_max_w'])) $imgWStr = ' width="'. $item['img_max_size']['img_max_w'] .'"';
         $imgHStr = (isset($value['files']["img"]["1"]['size']['h']))?(' height="'.$value['files']["img"]["1"]['size']['h'].'"'):'';
     }else{
-        if ($value['type']==ST_FOLDER) $imgURL = '/src/mnbv/img/ico/folder1.png';
+        if ($value['type']==ST_FOLDER) $imgURL = '/src/mnbv/img/ico/folder2.png';
         else $imgURL = '/src/mnbv/img/ico/nophoto2.jpg';
     }
 ?>
