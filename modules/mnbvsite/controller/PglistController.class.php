@@ -64,6 +64,17 @@ class PglistController extends AbstractMnbvsiteController {
                 $item['obj']['folderid'] = $realFolder['id'];
                 $item['obj']['folder_name'] = $realFolder['name'];
                 $item['obj']['folder_alias'] = (!empty($realFolder['alias']))?$realFolder['alias']:'';
+                
+                $item['obj']['name'] = $realFolder['name'];
+                $item['obj']['about'] = $realFolder['about'];
+                $item['obj']['text'] = $realFolder['text'];
+                
+                //Метатеги----------------------------------------------------------------------
+                Glob::$vars['page_title'] = (!empty($realFolder['vars']['title']))?$realFolder['vars']['title']:((!empty($realFolder['name']))?$realFolder['name']:'');
+                Glob::$vars['page_keywords'] = (!empty($realFolder['vars']['keywords']))?$realFolder['vars']['keywords']:'';
+                Glob::$vars['page_description'] = (!empty($realFolder['vars']['description']))?$realFolder['vars']['description']:'';
+                $item['page_h1'] = (!empty($realFolder['name']))?$realFolder['name']:'';
+                //------------------------------------------------------------------------------
             }
         }
         $item['page_list_url'] = MNBVf::generateObjUrl($realFolder,array('altlang'=>Lang::isAltLang())); //Язык базовый, потом при преобразовании будет доработан
