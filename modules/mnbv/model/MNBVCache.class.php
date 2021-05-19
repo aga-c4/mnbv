@@ -90,7 +90,8 @@ class MNBVCache {
             array("limit" => array(0,1)));
         if (!empty($storageRes[0])){
             SysLogs::addLog("Cache GET key[$id] lag[$lag]");
-            return json_decode($storageRes[1]["val"],$assoc);
+            $result=json_decode($storageRes[1]["val"],$assoc);
+            return ($result!==false)?$result:null;
         }else{
             SysLogs::addLog("Cache GET key[$id] lag[$lag] nof found!");
             return null;

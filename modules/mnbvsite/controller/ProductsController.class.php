@@ -121,7 +121,7 @@ class ProductsController extends AbstractMnbvsiteController {
             $cache = new MNBVCache();
             $attr_filters = $cache->get("prodfilters:$folderId",true);
             //echo "(prodfilters:$folderId=>[$attrFiltersCacheStr])";
-            if (!is_array($attr_filters) || !empty(Glob::$vars['no_cache'])){ //Необходимо перегенерить кеш
+            if ($attr_filters===null || !empty(Glob::$vars['no_cache'])){ //Необходимо перегенерить кеш
                 $attr_filters = MNBVf::objFilterGenerator('attributes',$realFolder,array('folderid'=>(!empty($folderId))?$folderId:Glob::$vars['prod_storage_rootid'])); //Специально без выделения пунктов, чтоб можно было закешировать.
                 $cache->set("prodfilters:$folderId",$attr_filters,Glob::$vars['prod_filters_cache_ttl']);
             }
