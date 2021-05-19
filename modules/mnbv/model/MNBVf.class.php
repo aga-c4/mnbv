@@ -2627,7 +2627,7 @@ class MNBVf {
                                         }
                                     }
                                     
-                                    if ($useAttrArr["attr".$value["id"]]["minval"]==$useAttrArr["attr".$value["id"]]["maxval"]) unset($useAttrArr["attr".$value["id"]]); 
+                                    if (empty($useAttrArr["attr".$value["id"]]["minval"]) || empty($useAttrArr["attr".$value["id"]]["maxval"]) || $useAttrArr["attr".$value["id"]]["minval"]==$useAttrArr["attr".$value["id"]]["maxval"]) unset($useAttrArr["attr".$value["id"]]); 
                                     
                                 }elseif ($useAttrArr["attr".$value["id"]]["view"]["dbtype"]=='int'
                                         && in_array($useAttrArr["attr".$value["id"]]["view"]["type"],array("select","radio","checkbox","list"))){
