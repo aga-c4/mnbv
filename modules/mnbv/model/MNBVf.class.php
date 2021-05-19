@@ -2569,7 +2569,7 @@ class MNBVf {
             if (!empty(SysStorage::$storage[Glob::$vars['prod_storage']])
                 && isset(SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'])
                 && isset(SysStorage::$storage[SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse']])){
-                $fList = MNBVStorage::getObjAcc(SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'],
+                $fList = MNBVStorage::getObj(SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'],
                         array("attrid","vint",array("count(*)","qty")),
                         array("vint",">",0),
                         array("group" => "attrid,vint"));
@@ -2612,7 +2612,7 @@ class MNBVf {
                                         
                                         $quFilterArr = array("attrid","=",$value["id"]);
                                         if ($catFolderid!=Glob::$vars['prod_storage_rootid']) array_push($quFilterArr,"and","objparentid","=",$catFolderid);
-                                        $res = MNBVStorage::getObjAcc(SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'],
+                                        $res = MNBVStorage::getObj(SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'],
                                                 array(array("min(vint)","min"),array("max(vint)","max")),
                                                 $quFilterArr);
                                         if (!empty($res[0])) {
