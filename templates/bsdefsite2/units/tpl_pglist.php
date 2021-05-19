@@ -45,13 +45,17 @@ if (isset($value['files']["img"]["1"]) && $tecObjTxtCode = MNBVf::getObjCodeByUR
 } else {//Никакого специфического объекта не нашли, выводим изображения по стандартной схеме
     if (isset($value['files']['img']["1"])){ 
         //Подготовим размеры изображений
+        $imgURL = SysBF::getFrArr($value['files']["img"]["1"],'src','');
         $imgWStr = (isset($value['files']["img"]["1"]['size']['w']))?(' width="'.$value['files']["img"]["1"]['size']['w'].'"'):'';
         if ($imgWStr=='' && isset($item['img_max_size']['img_max_w'])) $imgWStr = ' width="'. $item['img_max_size']['img_max_w'] .'"';
         $imgHStr = (isset($value['files']["img"]["1"]['size']['h']))?(' height="'.$value['files']["img"]["1"]['size']['h'].'"'):'';
-?>
-        <a href="<?=SysBF::getFrArr($value,'url','');?>" class="prodlist-img-a w-100 d-flex justify-content-center bg-white"><img class="card-img-top prodlist-img h-100" src='<?=SysBF::getFrArr($value['files']["img"]["1"],'src','');?>' alt="<?=SysBF::getFrArr($value,'name','');?>"></a>
-<? 
+    }else{
+        if ($value['type']==ST_FOLDER) $imgURL = '/src/mnbv/img/ico/folder1.png';
+        else $imgURL = '/src/mnbv/img/ico/nophoto2.jpg';
     }
+?>
+        <a href="<?=SysBF::getFrArr($value,'url','');?>" class="prodlist-img-a w-100 d-flex justify-content-center bg-white"><img class="card-img-top prodlist-img h-100" src='<?=$imgURL;?>' alt="<?=SysBF::getFrArr($value,'name','');?>"></a>
+<? 
 } 
 ?>
         <div class="card-body">
