@@ -184,7 +184,7 @@ if (isset($item['list_max_items'])&&isset($item['list_size'])&&$item['list_max_i
                     } );
                     </script>
 
-                    <h5><?=SysBF::getFrArr($attrValue,'name','');?></h5>
+                    <h5><?=MNBVf::getItemName($attrValue,Lang::isAltLang());?></h5>
                     <div id="<?=$attrAlias;?>-slider-range" onmouseup="attrFilterGo('viewonlylistsize');"></div>
                     <input type="text" id="f<?=$attrAlias;?>" readonly style="border:0; color:#f6931f; font-weight:bold;">
                 </div>
@@ -199,7 +199,7 @@ if (isset($item['list_max_items'])&&isset($item['list_size'])&&$item['list_max_i
                             ?>
                 
                 <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
-                    <h5><?=SysBF::getFrArr($attrValue,'name','');?></h5>
+                    <h5><?=MNBVf::getItemName($attrValue,Lang::isAltLang());?></h5>
                     <div>
                         <? 
                         if (isset($attrValue["vals"]) && is_array($attrValue["vals"]) && count($attrValue["vals"])) {
@@ -210,7 +210,7 @@ if (isset($item['list_max_items'])&&isset($item['list_size'])&&$item['list_max_i
                                 $itemsCnt++;
                                 
                         ?>     
-                        <div class="checkbox"><label><input type="checkbox"<?=(!empty($attrItemVal["selected"]))?' checked':'';?> name="f<?=$attrAlias;?>[]" class="cb-<?=$attrAlias;?> flt-chkbx" value="<?=$attrItemAlias;?>"> <?=$attrItemVal["name"];?><?=(!empty($attrItemVal["qty"]))?" ({$attrItemVal["qty"]})":'';?></label></div>
+                        <div class="checkbox"><label><input type="checkbox"<?=(!empty($attrItemVal["selected"]))?' checked':'';?> name="f<?=$attrAlias;?>[]" class="cb-<?=$attrAlias;?> flt-chkbx" value="<?=$attrItemAlias;?>"> <?=MNBVf::getItemName($attrItemVal,Lang::isAltLang());?><?=(!empty($attrItemVal["qty"]))?" ({$attrItemVal["qty"]})":'';?></label></div>
                         <? 
                             } 
                             
@@ -230,11 +230,11 @@ if (isset($item['list_max_items'])&&isset($item['list_size'])&&$item['list_max_i
                                         $moreHref = true;
                                     }
                         ?>
-                        <div class="checkbox <?=$attrAlias;?>-hide d-none"><label><input type="checkbox"<?=(!empty($attrItemVal["selected"]))?' checked':'';?> name="f<?=$attrAlias;?>[]" class="cb-<?=$attrAlias;?> flt-chkbx" value="<?=$attrItemAlias;?>"> <?=$attrItemVal["name"];?><?=(!empty($attrItemVal["qty"]))?" ({$attrItemVal["qty"]})":'';?></label></div>
+                        <div class="checkbox <?=$attrAlias;?>-hide d-none"><label><input type="checkbox"<?=(!empty($attrItemVal["selected"]))?' checked':'';?> name="f<?=$attrAlias;?>[]" class="cb-<?=$attrAlias;?> flt-chkbx" value="<?=$attrItemAlias;?>"> <?=MNBVf::getItemName($attrItemVal,Lang::isAltLang());?><?=(!empty($attrItemVal["qty"]))?" ({$attrItemVal["qty"]})":'';?></label></div>
                         <?
                                 } else {
                         ?>      
-                        <div class="checkbox"><label><input type="checkbox"<?=(!empty($attrItemVal["selected"]))?' checked':'';?> name="f<?=$attrAlias;?>[]" class="cb-<?=$attrAlias;?> flt-chkbx" value="<?=$attrItemAlias;?>"> <?=$attrItemVal["name"];?><?=(!empty($attrItemVal["qty"]))?" ({$attrItemVal["qty"]})":'';?></label></div>
+                        <div class="checkbox"><label><input type="checkbox"<?=(!empty($attrItemVal["selected"]))?' checked':'';?> name="f<?=$attrAlias;?>[]" class="cb-<?=$attrAlias;?> flt-chkbx" value="<?=$attrItemAlias;?>"> <?=MNBVf::getItemName($attrItemVal,Lang::isAltLang());?><?=(!empty($attrItemVal["qty"]))?" ({$attrItemVal["qty"]})":'';?></label></div>
                         <? }}} 
                         
                         if ($moreHref) ?>
@@ -303,7 +303,7 @@ if (isset($item['list_max_items'])&&isset($item['list_size'])&&$item['list_max_i
                     } );
                     </script>
 
-                    <h5><?=SysBF::getFrArr($attrValue,'name','');?></h5>
+                    <h5><?=MNBVf::getItemName($attrValue,Lang::isAltLang());?></h5>
                     <div id="<?=$attrAlias;?>-slider-range" onmouseup="attrFilterGo('viewonlylistsize');"></div>
                     <input type="text" id="f<?=$attrAlias;?>" readonly style="border:0; color:#f6931f; font-weight:bold;">
                 </div>
@@ -318,7 +318,7 @@ if (isset($item['list_max_items'])&&isset($item['list_size'])&&$item['list_max_i
                             ?>
                 
                 <div class="col-sm-12 col-md-6 col-lg-4 mt-2 attrbl-hide d-none">
-                    <h5><?=SysBF::getFrArr($attrValue,'name','');?></h5>
+                    <h5><?=MNBVf::getItemName($attrValue,Lang::isAltLang());?></h5>
                     <div>
                         <? 
                         if (isset($attrValue["vals"]) && is_array($attrValue["vals"]) && count($attrValue["vals"])) {
@@ -329,7 +329,7 @@ if (isset($item['list_max_items'])&&isset($item['list_size'])&&$item['list_max_i
                                 $itemsCnt++;
                                 
                         ?>     
-                        <div class="checkbox"><label><input type="checkbox"<?=(!empty($attrItemVal["selected"]))?' checked':'';?> name="f<?=$attrAlias;?>[]" class="cb-<?=$attrAlias;?> flt-chkbx" value="<?=$attrItemAlias;?>"> <?=$attrItemVal["name"];?><?=(!empty($attrItemVal["qty"]))?" ({$attrItemVal["qty"]})":'';?></label></div>
+                        <div class="checkbox"><label><input type="checkbox"<?=(!empty($attrItemVal["selected"]))?' checked':'';?> name="f<?=$attrAlias;?>[]" class="cb-<?=$attrAlias;?> flt-chkbx" value="<?=$attrItemAlias;?>"> <?=MNBVf::getItemName($attrItemVal,Lang::isAltLang());?><?=(!empty($attrItemVal["qty"]))?" ({$attrItemVal["qty"]})":'';?></label></div>
                         <? 
                             } 
                             
@@ -349,11 +349,11 @@ if (isset($item['list_max_items'])&&isset($item['list_size'])&&$item['list_max_i
                                         $moreHref = true;
                                     }
                         ?>
-                        <div class="checkbox <?=$attrAlias;?>-hide d-none"><label><input type="checkbox"<?=(!empty($attrItemVal["selected"]))?' checked':'';?> name="f<?=$attrAlias;?>[]" class="cb-<?=$attrAlias;?> flt-chkbx" value="<?=$attrItemAlias;?>"> <?=$attrItemVal["name"];?><?=(!empty($attrItemVal["qty"]))?" ({$attrItemVal["qty"]})":'';?></label></div>
+                        <div class="checkbox <?=$attrAlias;?>-hide d-none"><label><input type="checkbox"<?=(!empty($attrItemVal["selected"]))?' checked':'';?> name="f<?=$attrAlias;?>[]" class="cb-<?=$attrAlias;?> flt-chkbx" value="<?=$attrItemAlias;?>"> <?=MNBVf::getItemName($attrItemVal,Lang::isAltLang());?><?=(!empty($attrItemVal["qty"]))?" ({$attrItemVal["qty"]})":'';?></label></div>
                         <?
                                 } else {
                         ?>      
-                        <div class="checkbox"><label><input type="checkbox"<?=(!empty($attrItemVal["selected"]))?' checked':'';?> name="f<?=$attrAlias;?>[]" class="cb-<?=$attrAlias;?> flt-chkbx" value="<?=$attrItemAlias;?>"> <?=$attrItemVal["name"];?><?=(!empty($attrItemVal["qty"]))?" ({$attrItemVal["qty"]})":'';?></label></div>
+                        <div class="checkbox"><label><input type="checkbox"<?=(!empty($attrItemVal["selected"]))?' checked':'';?> name="f<?=$attrAlias;?>[]" class="cb-<?=$attrAlias;?> flt-chkbx" value="<?=$attrItemAlias;?>"> <?=MNBVf::getItemName($attrItemVal,Lang::isAltLang());?><?=(!empty($attrItemVal["qty"]))?" ({$attrItemVal["qty"]})":'';?></label></div>
                         <? }}} 
                         
                         if ($moreHref) ?>
