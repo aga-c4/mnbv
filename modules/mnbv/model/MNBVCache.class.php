@@ -54,10 +54,10 @@ class MNBVCache {
             array("id","=","$id"));
         if (empty($storageRes[0])){
             $updateArr['id'] = $id;
-            MNBVStorage::addObj($this->storage, $updateArr);
+            MNBVStorage::addObj($this->storage, $updateArr,'',false);
             SysLogs::addLog("Cache ADD key[$id] ttl[$ttl]");
         }else{
-            MNBVStorage::setObj($this->storage, $updateArr, array("id",'=',$id));
+            MNBVStorage::setObj($this->storage, $updateArr, array("id",'=',$id),false);
             SysLogs::addLog("Cache UPDATE key[$id] ttl[$ttl]");
         }
 
