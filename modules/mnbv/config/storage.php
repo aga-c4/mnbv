@@ -641,17 +641,16 @@ SysStorage::$storage['actions']['view']['info'] = array(
     "date1" => array("name"=>"date1", "type"=>"datetime","table" =>"thline","checktype" => "datetime"),
     "date2" => array("name"=>"date2", "type"=>"datetime","table" =>"thline","checktype" => "datetime"),
     
-    "clear1" => array("name"=>"clear1", "type"=>"lineblock", "table" =>"thline", "string"=>"Discount limits"),
+    "clear2" => array("name"=>"clear2", "type"=>"lineblock", "table" =>"thline", "string"=>"Discount limits"),
     "discpr" => array("name"=>"discpr", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"),
     "discval" => array("name"=>"discval", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"),
 
-    /*
     "discmaxpr" => array("name"=>"discmaxpr", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"),     //Максимальное значение скидки, %
     "discmaxval" => array("name"=>"discmaxval", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"),    //Максимальное значение скидки, вал
     "discminmargpr" => array("name"=>"discminmargpr", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"), //Минимальное значение маржинальности для применнеия скидки, %
     "discminmargval" => array("name"=>"discminmargval", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"),//Минимальное значение маржинальности для применнеия скидки, вал
-    */
     
+    "clear3" => array("name"=>"clear3", "type"=>"lineblock", "table" =>"thline", "string"=>"Filters"),
     "products" => array("name"=>"products", "type"=>"textarea","editor"=>false,"rows"=>15,"width"=>"100%","table" =>"thline","checktype" => "text"), //Основной язык
     "folders" => array("name"=>"folders", "type"=>"textarea","editor"=>false,"rows"=>15,"width"=>"100%","table" =>"thline","checktype" => "text"), //Основной язык
     "vendor" => array("name"=>"vendor", "type"=>"textarea","editor"=>false,"rows"=>15,"width"=>"100%","table" =>"thline","checktype" => "text"), //Основной язык
