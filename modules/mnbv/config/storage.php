@@ -637,9 +637,14 @@ SysStorage::$storage['actions']['view']['info'] = array(
     "name" => array("name"=>"name", "type"=>"text","size"=>255,"width"=>"100%","langlink"=>"namelang","checktype" => "text","lang" => "lang"), //Основной язык
     "namelang" => array("name"=>"namelang", "type"=>"text","size"=>255,"width"=>"100%","langlink"=>"name","checktype" => "text","lang" => "altlang"), //Альтернативный язык
     
+    "clear1" => array("name"=>"clear1", "type"=>"lineblock", "table" =>"thline", "string"=>"Date"),
+    "date1" => array("name"=>"date1", "type"=>"datetime","table" =>"thline","checktype" => "datetime"),
+    "date2" => array("name"=>"date2", "type"=>"datetime","table" =>"thline","checktype" => "datetime"),
+    
     "clear1" => array("name"=>"clear1", "type"=>"lineblock", "table" =>"thline", "string"=>"Discount limits"),
     "discpr" => array("name"=>"discpr", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"),
     "discval" => array("name"=>"discval", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"),
+
     /*
     "discmaxpr" => array("name"=>"discmaxpr", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"),     //Максимальное значение скидки, %
     "discmaxval" => array("name"=>"discmaxval", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"),    //Максимальное значение скидки, вал
