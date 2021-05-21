@@ -129,7 +129,7 @@ $storageDefViewArr = array(
         "clear1" => array("name"=>"clear1", "type"=>"lineblock", "table" =>"thline", "string"=>"Parameters"),
         "attrvals" => array("name"=>"attrvalsmini", "type"=>"attrvalsmini"), //Значения атрибутов для папки укороченный вариант
         "clear2" => array("name"=>"clear2", "type"=>"lineblock", "table" =>"tdline", "colspan"=>"", "string"=>""),
-        "about" => array("name"=>"about", "type"=>"textarea","editor"=>false,"rows"=>2,"width"=>"100%","langlink"=>"aboutlang","table" =>"thline","checktype" => "text","lang" => "lang"), //Основной язык
+        "about" => array("name"=>"about", "type"=>"textarea","editor"=>false,"rows"=>4,"width"=>"100%","langlink"=>"aboutlang","table" =>"thline","checktype" => "text","lang" => "lang"), //Основной язык
         "aboutlang" => array("name"=>"aboutlang", "type"=>"textarea","editor"=>false,"rows"=>4,"width"=>"100%","langlink"=>"about","table" =>"thline","checktype" => "text","lang" => "altlang"), //Альтернативный язык
         "clear3" => array("name"=>"clear1", "type"=>"lineblock", "table" =>"tdline", "string"=>""),
         "text" => array("name"=>"text", "type"=>"textarea","editor"=>true,"rows"=>20,"width"=>"100%","langlink"=>"textlang","table" =>"thline","checktype" => "text","lang" => "lang"), //Основной язык

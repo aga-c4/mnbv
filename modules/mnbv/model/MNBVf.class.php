@@ -149,6 +149,21 @@ class MNBVf {
     }
     
     /**
+     * Возвращает описание объекта, которое выбирается из входящего массива в зависимости от текущего, 
+     * дефолтового языков
+     * @param type $value - массив, содержащий в том числе имена объекта на разных языках
+     * @param bool $altlang - маркер использования альтернативного языка
+     * @param string $defval - значение, если ничего не найдено
+     * @return string название хранилища на приемлемом языке
+     */
+    public static function getItemAbout($value,$altlang=false,$defval=''){
+        $result = (!empty($defval))?$defval:'';
+        if (!empty($value['about'])) $result = $value['about'];
+        if ($altlang && !empty($value['aboutlang'])) $result = $value['aboutlang'];
+        return $result;
+    }
+    
+    /**
      * Формирует строку с номерами страниц списка
      * @param int $list_size - полный размер списка
      * @param int $list_max_items - максимальное количество элементов на странице

@@ -40,14 +40,11 @@ echo MNBVf::startVidget('pglist',$item,array(
     'storage' => 'products',//хранилище из которого будут забираться объекты, если не задано, то виджет не выводит ничего
     'vidget_alias' => 'gormenucatalog',//Алиас текущего виджета для идентификации (иногда важно знать в каком конкретно месте вызывается виджет)
     'folderid' => 1,//папка из которой будут выбираться объекты. Если не задано, то без учета папки
-    'list_main_alias' => '/catalog',//основная часть URL на базе которой будет формироваться URL элемента списка хранилища добавляя туда язык, идентификатор и алиас
     'folder_start_id' => 1,//идентификатор корневой папки списка в хранилище (нужно чтоб корректно URL формировать)
     'list_max_items' => 0,//количество выводимых элементов
     'list_sort' => 'posid', //сортировка списка
     //'only_first' =>true, //выводить только объекты, выделенные свойством First (Гл)
     'filter_type' => 'folders',//('objects'|'folders'|'all') - типы объектов связей (по-умолчанию objects), если не задано, то без фильтра ('all')
-    'list_link' => '/catalog',//ссылка на полный список объектов, если требуется
-    'list_link_name' => Lang::get('Products catalog'),//анкор ссылки на полный список объектов, если требуется
     'altlang' => Lang::isAltLang(),//вывод на альтернативном языке
     //'obj_prop_conf' => array( //Массив конфигурации вывода параметров объекта. По-умолчанию строка 'no_conf' - параметры не выводятся
     //    "price" => array("name"=>"price", "type"=>"text", "active" => "print")
@@ -81,49 +78,30 @@ echo MNBVf::startVidget('pglist',$item,array(
 
     <main>
         
-        <div class="container">
-            <div class="row">   
-<!-- Карусель -->         
-<div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
-  <ol class="carousel-indicators">
-    <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
-    <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
-    <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
-    <li data-target="#carouselExampleCaptions" data-slide-to="3"></li>
-  </ol>
-  <div class="carousel-inner">
-    <div class="carousel-item active">
-      <img src="/src/bsdefsite2/img/p1_2.jpg" class="d-block w-100" alt="Баннер1">
-    </div>
-    <div class="carousel-item">
-        <img src="/src/bsdefsite2/img/p1_3.jpg" class="d-block w-100" alt="Баннер2">
-        <div class="carousel-caption d-sm-block">
-            <h5>Second slide label</h5>
-            <div class="d-none d-md-block">
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.<br> consectetur adipiscing elit, consectetur</p>
+    <div class="container">
+        <div class="row">   
+            <!-- Карусель -->         
+            <div id="carouselCaptions" class="carousel slide" data-ride="carousel">    
+<? //Виджет акций
+//echo '<b>'.Lang::get('Special offers').':</b><br>';
+MNBVf::startVidget('pglist',$item,array(
+    'storage' => 'actions',//хранилище из которого будут забираться объекты, если не задано, то виджет не выводит ничего
+    'folderid' => 0,//папка из которой будут выбираться объекты. Если не задано, то 1
+    'list_main_alias' => (Lang::isAltLang()?('/'.Lang::getAltLangName()):'').'/actions',//основная часть URL на базе которой будет формироваться URL элемента списка хранилища добавляя туда язык, идентификатор и алиас
+    'folder_start_id' => 1,//идентификатор корневой папки списка в хранилище (нужно чтоб корректно URL формировать)
+    'list_max_items' => 5,//количество выводимых элементов
+    'list_sort' => 'posid', //сортировка списка
+    'only_first' =>true, //выводить только объекты, выделенные свойством First (Гл)
+    'filter_type' => 'objects', //('objects'|'folders'|'all') - типы объектов связей (по-умолчанию objects), если не задано, то без фильтра ('all')
+    'list_link' => (Lang::isAltLang()?('/'.Lang::getAltLangName()):'').'/actions',//ссылка на полный список объектов, если требуется
+    'list_link_name' => Lang::get('Actions'),//анкор ссылки на полный список объектов, если требуется
+    'altlang' => Lang::isAltLang(),//вывод на альтернативном языке
+),
+'wdg_actionslist.php');
+?>
             </div>
         </div>
-    </div>
-    <div class="carousel-item">
-      <img src="/src/bsdefsite2/img/p1_4.jpg" class="d-block w-100" alt="Баннер3">
-    </div>
-    <div class="carousel-item">
-      <img src="/src/bsdefsite2/img/p1_5.jpg" class="d-block w-100" alt="Баннер4">
-      <div class="carousel-caption d-none d-md-block">
-        <h5>Third slide label</h5>
-        <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-      </div>
-    </div>
-  </div>
-  <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
-    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-  </a>
-  <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
-    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-  </a>
-</div>
-         </div>
-<!-- /Карусель -->        
+                <!-- /Карусель -->        
     
 <div class="w-100"></div>
 
@@ -134,41 +112,18 @@ if (!empty($item['page_sctpl'])) {require(MNBVf::getRealTplName(Glob::$vars['mnb
 echo (!empty($item['page_content2'])) ? ($item['page_content2']."\n") : '';
 ?>
 
-<? //Виджет баннеров акций (если надо не в карусели)
-/*
-echo Lang::get('Special offers') . ':<br>';
-MNBVf::startVidget('pglist',$item,array(
-    'storage' => 'actions',//хранилище из которого будут забираться объекты, если не задано, то виджет не выводит ничего
-    'folderid' => 0,//папка из которой будут выбираться объекты. Если не задано, то 1
-    'list_main_alias' => '/actions',//основная часть URL на базе которой будет формироваться URL элемента списка хранилища добавляя туда язык, идентификатор и алиас
-    'folder_start_id' => 1,//идентификатор корневой папки списка в хранилище (нужно чтоб корректно URL формировать)
-    'list_max_items' => 2,//количество выводимых элементов
-    'list_sort' => 'id', //сортировка списка
-    'only_first' =>true, //выводить только объекты, выделенные свойством First (Гл)
-    'filter_type' => 'objects',//('objects'|'folders'|'all') - типы объектов связей (по-умолчанию objects), если не задано, то без фильтра ('all')
-    'list_link' => '/actions',//ссылка на полный список объектов, если требуется
-    'list_link_name' => Lang::get('All actions'),//анкор ссылки на полный список объектов, если требуется
-    'altlang' => Lang::isAltLang(),//вывод на альтернативном языке
-    'obj_prop_conf' => array( //Массив конфигурации вывода параметров объекта. По-умолчанию строка 'no_conf' - параметры не выводятся
-        "price" => array("name"=>"price", "type"=>"text", "active" => "print")
-    )
-),
-'wdg_prodlist.php');
- */
-?>
-
 <? //Виджет товаров
 //echo '<b>'.Lang::get('Special offers').':</b><br>';
 MNBVf::startVidget('pglist',$item,array(
     'storage' => 'products',//хранилище из которого будут забираться объекты, если не задано, то виджет не выводит ничего
     'folderid' => 0,//папка из которой будут выбираться объекты. Если не задано, то 1
-    'list_main_alias' => '/catalog',//основная часть URL на базе которой будет формироваться URL элемента списка хранилища добавляя туда язык, идентификатор и алиас
+    'list_main_alias' => (Lang::isAltLang()?('/'.Lang::getAltLangName()):'').'/catalog',//основная часть URL на базе которой будет формироваться URL элемента списка хранилища добавляя туда язык, идентификатор и алиас
     'folder_start_id' => 1,//идентификатор корневой папки списка в хранилище (нужно чтоб корректно URL формировать)
     'list_max_items' => 4,//количество выводимых элементов
     'list_sort' => 'id', //сортировка списка
     'only_first' =>true, //выводить только объекты, выделенные свойством First (Гл)
     'filter_type' => 'objects',//('objects'|'folders'|'all') - типы объектов связей (по-умолчанию objects), если не задано, то без фильтра ('all')
-    'list_link' => '/catalog',//ссылка на полный список объектов, если требуется
+    'list_link' => (Lang::isAltLang()?('/'.Lang::getAltLangName()):'').'/catalog',//ссылка на полный список объектов, если требуется
     'list_link_name' => Lang::get('Products catalog'),//анкор ссылки на полный список объектов, если требуется
     'altlang' => Lang::isAltLang(),//вывод на альтернативном языке
     'obj_prop_conf' => array( //Массив конфигурации вывода параметров объекта. По-умолчанию строка 'no_conf' - параметры не выводятся
@@ -177,34 +132,34 @@ MNBVf::startVidget('pglist',$item,array(
 ),
 'wdg_prodlist.php');
 ?>
-<div class="w-100 mt-3 pl-1"><a href="/news" class="h5 text-dark font-weight-bold text-decoration-none"><?=Lang::get('News');?></a></div>
+<div class="w-100 mt-3 pl-1"><a href="<?=(Lang::isAltLang()?('/'.Lang::getAltLangName()):'');?>/news" class="h5 text-dark font-weight-bold text-decoration-none"><?=Lang::get('News');?></a></div>
 <? //Виджет новостей
 MNBVf::startVidget('pglist',$item,array(
     'storage' => 'news',//хранилище из которого будут забираться объекты, если не задано, то виджет не выводит ничего
     'folderid' => 1,//папка из которой будут выбираться объекты. Если не задано, то 1
-    'list_main_alias' => '/news',//основная часть URL на базе которой будет формироваться URL элемента списка хранилища добавляя туда язык, идентификатор и алиас
+    'list_main_alias' => (Lang::isAltLang()?('/'.Lang::getAltLangName()):'').'/news',//основная часть URL на базе которой будет формироваться URL элемента списка хранилища добавляя туда язык, идентификатор и алиас
     'folder_start_id' => 1,//идентификатор корневой папки списка в хранилище (нужно чтоб корректно URL формировать)
     'list_max_items' => 3,//количество выводимых элементов
     'list_sort' => 'date_desc', //сортировка списка
     'filter_type' => 'objects',//('objects'|'folders'|'all') - типы объектов связей (по-умолчанию objects), если не задано, то без фильтра ('all')
-    'list_link' => '/news',//ссылка на полный список объектов, если требуется
+    'list_link' => (Lang::isAltLang()?('/'.Lang::getAltLangName()):'').'/news',//ссылка на полный список объектов, если требуется
     'list_link_name' => Lang::get('News archive'),//анкор ссылки на полный список объектов, если требуется
     'altlang' => Lang::isAltLang(),//вывод на альтернативном языке
     ),
 'wdg_newslist.php');
 ?>
-<div class="w-100 mt-3 p-1"><a href="/articles" class="h5 text-dark font-weight-bold text-decoration-none"><?=Lang::get('Articles');?></a></div>
+<div class="w-100 mt-3 p-1"><a href="<?=(Lang::isAltLang()?('/'.Lang::getAltLangName()):'');?>/articles" class="h5 text-dark font-weight-bold text-decoration-none"><?=Lang::get('Articles');?></a></div>
 <? //Виджет статей
 MNBVf::startVidget('pglist',$item,array(
     'storage' => 'articles',//хранилище из которого будут забираться объекты, если не задано, то виджет не выводит ничего
     'folderid' => 0,//папка из которой будут выбираться объекты. Если не задано, то 1
-    'list_main_alias' => '/articles',//основная часть URL на базе которой будет формироваться URL элемента списка хранилища добавляя туда язык, идентификатор и алиас
+    'list_main_alias' => (Lang::isAltLang()?('/'.Lang::getAltLangName()):'').'/articles',//основная часть URL на базе которой будет формироваться URL элемента списка хранилища добавляя туда язык, идентификатор и алиас
     'folder_start_id' => 1,//идентификатор корневой папки списка в хранилище (нужно чтоб корректно URL формировать)
     'list_max_items' => 2,//количество выводимых элементов
     'list_sort' => 'date_desc', //сортировка списка
     'only_first' =>true, //выводить только объекты, выделенные свойством First (Гл)
     'filter_type' => 'objects',//('objects'|'folders'|'all') - типы объектов связей (по-умолчанию objects), если не задано, то без фильтра ('all')
-    'list_link' => '/articles',//ссылка на полный список объектов, если требуется
+    'list_link' => (Lang::isAltLang()?('/'.Lang::getAltLangName()):'').'/articles',//ссылка на полный список объектов, если требуется
     'list_link_name' => Lang::get('Articles archive'),//анкор ссылки на полный список объектов, если требуется
     'altlang' => Lang::isAltLang(),//вывод на альтернативном языке
 ),

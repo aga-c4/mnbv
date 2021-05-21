@@ -26,7 +26,7 @@ if (isset($item['sub_obj']['files']["img"]["1"]) && $tecObjTxtCode = MNBVf::getO
             $imgWStr = $imgHStr = '';
         }
         ?>
-            <img src='<?=SysBF::getFrArr($item['sub_obj']['files']["img"]["1"],'src','');?>'<?=$imgWStr;?><?=$imgWStr;?> style="max-width: 98%;">
+            <img src='<?=SysBF::getFrArr($item['sub_obj']['files']["img"]["1"],'src','');?>'<?=$imgWStr;?><?=$imgWStr;?> style="max-width: 100%;">
     <?
     }
 }
