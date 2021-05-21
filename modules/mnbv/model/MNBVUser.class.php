@@ -190,22 +190,26 @@ class MNBVUser {
             $this->set('permstr',implode(',',$this->container['permarr']));
             
             //Заполним поля скидки в проценте и валюте
-            $DiscArr = null;
+            $discArr = null;
             if ($this->get("discount")) {
                 $storageRes = MNBVStorage::getObj('discounts',
                 array("id","name","namelang","discpr","discval"),
                 array("id",'=',$this->get("discount")));
-                $DiscArr = ($storageRes[0]>0)?$storageRes[1]:null;
+                $discArr = ($storageRes[0]>0)?$storageRes[1]:null;
             }
                 
-            if ($DiscArr!==null){
-                $this->set("discname",(Lang::isDefLang()||empty($DiscArr['namelang']))?$DiscArr['name']:''); 
-                $this->set("discvalstr",(!empty($DiscArr['discpr']))?($DiscArr['discpr'].'%'):((!empty($DiscArr['discval']))?($DiscArr['discval'].'р.'):'')); 
-                $this->set("discpr",(!empty($DiscArr['discpr']))?$DiscArr['discpr']:0);
-                $this->set("discval",(!empty($DiscArr['discval']))?$DiscArr['discval']:0);
+            if ($discArr!==null){
+                $this->set("discarr", $discArr);
+                $this->set("discname", $discArr['name']); 
+                $this->set("discnamelang", $discArr['namelang']); 
+                $this->set("discvalstr",(!empty($discArr['discpr']))?($discArr['discpr'].'%'):((!empty($discArr['discval']))?($discArr['discval'].Glob::$vars['prod_currency_suf']):'')); 
+                $this->set("discpr",(!empty($discArr['discpr']))?$discArr['discpr']:0);
+                $this->set("discval",(!empty($discArr['discval']))?$discArr['discval']:0);
             }else{
+                $this->set("discarr", array());
                 $this->set("discount",0);
                 $this->set("discname",''); 
+                $this->set("discnamelang",''); 
                 $this->set("discpr",0);
                 $this->set("discval",0);
             }

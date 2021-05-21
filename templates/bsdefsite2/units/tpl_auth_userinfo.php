@@ -10,8 +10,8 @@
 <div class="row justify-content-md-center">
     <div class="my-5 align-middle col-lg-4 col-md-6 col-sm-8 col-xs-12">
         <FORM action='' method=post name=authform>
-        <b><?=Lang::get("User");?>:</b> <?=SysBF::getFrArr($item['user'],'fio','');?><br>
-        <b><?=Lang::get("Discount");?>:</b> <?=SysBF::getFrArr($item['user'],'discname','');?> <b><?=SysBF::getFrArr($item['user'],'discvalstr','');?></b>
+        <b><?=Lang::get("User");?>:</b> <?=MNBVf::getItemName($item['user'],Lang::isAltLang());?><br>
+        <b><?=Lang::get("Discount");?>:</b> <?=MNBVf::getItemName($item['user']['discarr'],Lang::isAltLang());?> (<b><?=SysBF::getFrArr($item['user'],'discvalstr','');?></b>)
         <input type=hidden name=ul value=''>
         <input type=hidden name=up value=''>
         <input type=hidden name=fu value=''>
