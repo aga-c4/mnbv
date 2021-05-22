@@ -35,6 +35,7 @@ class MNBVURL {
         "news" => array('id'=>2,'mod_pref'=>'news','cat_alias_view'=>true,'item_pref'=>'nv_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''),        //Параметры новости
         "articles" => array('id'=>3,'mod_pref'=>'articles','cat_alias_view'=>true,'item_pref'=>'art_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''),//Параметры статьи
         "actions" => array('id'=>4,'mod_pref'=>'actions','cat_alias_view'=>true,'item_pref'=>'act_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''), //Параметры отзывов
+        "vendors" => array('id'=>5,'mod_pref'=>'vendors','cat_alias_view'=>true,'item_pref'=>'','alias_delim'=>'','alias_view'=>true,'item_postf'=>''),  //Вендоры
     );
     
     /*
@@ -184,17 +185,23 @@ class MNBVURL {
         );
         if ($catalias!=='notset') $updateArr['catalias'] = $catalias;
 
-        $stRes = MNBVStorage::getObj(
-            'urlaliases',
-            array('id'),
-            array("siteid","=",$siteId,"and","urltype","=",$urltypeInt,"and","idref","=",$id),
-            array('limit'=>array(0,1)));
-        $aliasId = (!empty($stRes[0])&&isset($stRes[1])&&isset($stRes[1]['id']))?$stRes[1]['id']:'';
+        if (empty($alias)){ //Если нет алиаса, надо удалить эту запись
+            MNBVStorage::delObj('urlaliases', array("siteid","=",$siteId,"and","urltype","=",$urltypeInt,"and","idref","=",$id), false);
+        }else{
+            $stRes = MNBVStorage::getObj(
+                'urlaliases',
+                array('id'),
+                array("siteid","=",$siteId,"and","urltype","=",$urltypeInt,"and","idref","=",$id),
+                array('limit'=>array(0,1)));
+            $aliasId = (!empty($stRes[0])&&isset($stRes[1])&&isset($stRes[1]['id']))?$stRes[1]['id']:'';
 
-        if (empty($aliasId)) {
-            MNBVStorage::addObj('urlaliases', $updateArr, array(), false);
-        } else {
-            MNBVStorage::setObj('urlaliases', $updateArr, array("id","=",$aliasId), false);
+            if (empty($aliasId)) {
+                MNBVStorage::addObj('urlaliases', $updateArr, array(), false);
+                //SysLogs::addLog("Insert URL: idref=[".$id."]");
+            } else {
+                MNBVStorage::setObj('urlaliases', $updateArr, array("id","=",$aliasId), false);
+                //SysLogs::addLog("Update URL: idref=[".$id."]");
+            }
         }
 
         return true;

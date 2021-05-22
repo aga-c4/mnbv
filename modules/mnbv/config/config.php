@@ -210,6 +210,7 @@ Glob::$vars['url_types'] = array(
     "news" => array('id'=>2,'mod_pref'=>'news','cat_alias_view'=>true,'item_pref'=>'nv_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''),        //Параметры новости
     "articles" => array('id'=>3,'mod_pref'=>'articles','cat_alias_view'=>true,'item_pref'=>'art_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''),//Параметры статьи
     "actions" => array('id'=>4,'mod_pref'=>'actions','cat_alias_view'=>true,'item_pref'=>'act_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''), //Параметры отзывов
+    "vendors" => array('id'=>5,'mod_pref'=>'vendors','cat_alias_view'=>true,'item_pref'=>'','alias_delim'=>'','alias_view'=>true,'item_postf'=>''),  //Вендоры
 );
 
 /**
@@ -222,10 +223,12 @@ Glob::$vars['url_types'] = array(
  */
 Glob::$vars['prod_name_tpl'] = '{{prefix}} {{vendor}} {{vendor}}';
 
+Glob::$vars['vend_storage'] = 'vendors'; //Хранилище списка товаров
+Glob::$vars['vend_storage_rootid'] = 1; //Корневая папка каталога товаров
 Glob::$vars['prod_storage'] = 'products'; //Хранилище списка товаров
 Glob::$vars['prod_storage_rootid'] = 1; //Корневая папка каталога товаров
 Glob::$vars['prod_country_storage'] = 'countries'; //Хранилище списка стран
-Glob::$vars['prod_country_folderid'] = 1; //Идентификатор папки со странами в хранилище
+Glob::$vars['prod_country_rootid'] = 1; //Идентификатор папки со странами в хранилище
 Glob::$vars['prod_filters_cache_ttl'] = 5*60; //Время жизни кеша фильтра в каталоге товара
 Glob::$vars['prod_currency_suf'] = 'р'; //Суфикс валюты после цены (если надо с пробелом).
 Glob::$vars['gormenu_cache_ttl'] = 5*60; //Время жизни кеша фильтра в каталоге товара

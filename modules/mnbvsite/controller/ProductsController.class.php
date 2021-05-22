@@ -125,13 +125,20 @@ class ProductsController extends AbstractMnbvsiteController {
                 $attr_filters = MNBVf::objFilterGenerator('attributes',$realFolder,array('folderid'=>(!empty($folderId))?$folderId:Glob::$vars['prod_storage_rootid'])); //Специально без выделения пунктов, чтоб можно было закешировать.
                 $cache->set("prodfilters:$folderId",$attr_filters,Glob::$vars['prod_filters_cache_ttl']);
             }
-
+  
             //Если фильтры найдены, подготовим элементы для их вывода в шаблоне
             if (is_array($attr_filters) && isset($attr_filters['list'])) {
                 $attr_filters = MNBVf::selectFilterItems($attr_filters,$filterValsArr);
                 $item['attr_filters'] = $attr_filters['list'];
                 $item['attr_filters_selected_nums'] = $attr_filters['selected'];
-                if (isset($attr_filters['selected_items']) && is_array($attr_filters['selected_items'])) $finFilterValsArr = $attr_filters['selected_items'];
+                if (isset($attr_filters['selected_items']) && is_array($attr_filters['selected_items'])) {
+                    $finFilterValsArr = $attr_filters['selected_items'];
+                }elseif (!empty(Glob::$vars['mnbv_site']['sub_vendid'])){
+                    $finFilterValsArr = array('vendor'=>array(
+                        "id"=>"vendor",
+                        "type"=>"list",
+                        "vals"=>Array(Glob::$vars['mnbv_site']['sub_vendid'])));
+                }
             }
         }
         
@@ -273,24 +280,27 @@ class ProductsController extends AbstractMnbvsiteController {
         //----------------------------------------------------------------------
         
         //Базовые URL для шаблона
-        $item['page_list_url'] = MNBVf::generateObjUrl($realFolder,array('altlang'=>Lang::isAltLang(),)); //Чистый URL
+        $item['page_list_url'] = MNBVf::generateObjUrl($realFolder,array('altlang'=>Lang::isAltLang(),'vendor'=>true)); //Чистый URL
         SysLogs::addLog('page_list_url: [' . $item['page_list_url'] . ']');
         
-        $params = array();
+        $item['page_list_url_novend'] = MNBVf::generateObjUrl($realFolder,array('altlang'=>Lang::isAltLang())); //Чистый URL
+        SysLogs::addLog('page_list_url_novend: [' . $item['page_list_url_novend'] . ']');
+        
+        $params = array('vendor'=>true);
         if (!Lang::isDefLang()) $params['altlang'] = array('altlang'=>true);
         if (!empty(Glob::$vars['mnbv_listfilterstr'])) $params['filters'] = Glob::$vars['mnbv_listfilterstr'];
         if (!empty(Glob::$vars['mnbv_listsort'])) $params['sort'] = Glob::$vars['mnbv_listsort'];
         $item['page_list_paginationurl'] = MNBVf::generateObjUrl($realFolder,$params); //URL для пагинации
         SysLogs::addLog('page_list_paginationurl: [' . $item['page_list_paginationurl'] . ']');
         
-        $params = array();
+        $params = array('vendor'=>true);
         if (!Lang::isDefLang()) $params['altlang'] = array('altlang'=>true);
         if (!empty(Glob::$vars['mnbv_listfilterstr'])) $params['filters'] = Glob::$vars['mnbv_listfilterstr'];
         $params['fingetpref'] = true; //В конце URL добавить префикс Get параметра
         $item['page_list_filters_url'] = MNBVf::generateObjUrl($realFolder,$params); //URL для формы сортировки с сохранением фильтров
         SysLogs::addLog('page_list_filters_url: [' . $item['page_list_filters_url'] . ']');
         
-        $params = array();
+        $params = array('vendor'=>true);
         if (!Lang::isDefLang()) $params['altlang'] = array('altlang'=>true);
         if (!empty(Glob::$vars['mnbv_listsort'])) $params['sort'] = Glob::$vars['mnbv_listsort'];
         $params['fingetpref'] = true; //В конце URL добавить префикс Get параметра
@@ -307,7 +317,13 @@ class ProductsController extends AbstractMnbvsiteController {
             'centre_bl' => 5);
         //----------------------------------------------------------------------
         
-        
+        //Уберем фильтр по вендору, если он идет как папка в урле
+        if (!empty(Glob::$vars['mnbv_site']['sub_vendid']) && is_array($attr_filters) && isset($attr_filters['list']) && isset($attr_filters['list']['vendor'])){
+            if (isset($attr_filters['list']['vendor'])) unset($attr_filters['list']['vendor']); //Если вендор задан жестко, то фильтр по нему не требуется
+            $item['attr_filters'] = $attr_filters['list'];
+            //print_r($attr_filters);
+        }
+              
         //Хлебные крошки--------------------------------------------------------
         /*
         Хлебные крошки. Идея такова - есть массив на текущем языке где поля:
@@ -330,9 +346,13 @@ class ProductsController extends AbstractMnbvsiteController {
                     $currName = MNBVf::getItemName($realFolder['parent'],!Lang::isDefLang());
                     $item['obj']['nav_arr'][4] = array('name'=>$currName,'url'=>$item['obj']['up_folder_url']); //Текущая папка
                 }
+                if (!empty(Glob::$vars['mnbv_site']['sub_vendid'])){
+                    $currName = MNBVf::getItemName($item['obj'],!Lang::isDefLang());
+                    $item['obj']['nav_arr'][4] = array('name'=>$currName,'url'=>$item['page_list_url_novend']);
+                }
                 //Текущий объект
                 $currName = MNBVf::getItemName($realFolder,!Lang::isDefLang());
-                $item['obj']['nav_arr'][5] = array('name'=>$currName,'url'=>$item['page_url']);
+                $item['obj']['nav_arr'][5] = array('name'=>$currName,'url'=>$item['page_list_url']);
             }
         }
         //Конец обработки хлебных крошек ---------------------------------------
@@ -476,6 +496,26 @@ class ProductsController extends AbstractMnbvsiteController {
                 $currName = MNBVf::getItemName($realObject['parent'],!Lang::isDefLang());
                 $item['obj']['nav_arr'][4] = array('name'=>$currName,'url'=>$item['obj']['up_folder_url']); //Текущая папка
                 SysLogs::addLog('Back folder URL: [' . $item['obj']['up_folder_url'] . ']');
+                
+                if (!empty($realObject['vendor'])){
+                    Glob::$vars['mnbv_site']['sub_vendid'] = $realObject['vendor'];
+                    //Получим из базы название и алиас вендора
+                    $res = MNBVStorage::getObjAcc(Glob::$vars['vend_storage'],
+                        array('id','alias','name','namelang'),
+                        array('id','=',Glob::$vars['mnbv_site']['sub_vendid']));
+                    $resval = ($res[0]>0)?$res[1]:null;
+                    if ($resval!==null && is_array($resval) && !empty($resval['alias'])){
+                        Glob::$vars['mnbv_site']['sub_vend'] = $resval['alias'];
+                        $item['obj']['nav_arr'][2] = $item['obj']['nav_arr'][3];
+                        $item['obj']['nav_arr'][3] = $item['obj']['nav_arr'][4];
+                        $params['vendor'] = true;
+                        $item['obj']['folder_url_vendor'] = MNBVf::generateObjUrl($realObject['parent'],$params);
+                        $currName = ' '.MNBVf::getItemName($resval,Lang::isAltLang());
+                        $item['obj']['nav_arr'][4] = array('name'=>$currName,'url'=>$item['obj']['folder_url_vendor']);
+                        SysLogs::addLog('Back folder vend URL: [' . $item['obj']['folder_url_vendor'] . ']');
+                        ksort($item['obj']['nav_arr']);
+                    }
+                }
             }
             //Текущий объект
             $currName = MNBVf::getItemName($realObject,!Lang::isDefLang());

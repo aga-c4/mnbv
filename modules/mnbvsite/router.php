@@ -102,11 +102,25 @@ if ($kol_mnbv_route_arr>0 && preg_match("/^sort_([^\/]+)$/ui", Glob::$vars['mnbv
 if (SysBF::getFrArr(Glob::$vars['request'],'sort')) Glob::$vars['mnbv_listsort'] = SysBF::getFrArr(Glob::$vars['request'],'sort'); //Прямое указание имеет преимущество
 if (!empty(Glob::$vars['mnbv_listsort'])) SysLogs::addLog("Site router: list sort = [".Glob::$vars['mnbv_listsort']."]");
 
-//Обработаем ЧПУ URL
-$currMasterUri = '/' . implode('/',Glob::$vars['mnbv_route_arr']); //Неразобранный остаток строки
 Glob::$vars['mnbv_urlmaster'] = new MNBVURL(2,Glob::$vars['url_types']); 
 
-//разбор каталога товаров
+//Получим вендора
+if ($kol_mnbv_route_arr>0 && preg_match("/([^\/]+)$/ui", Glob::$vars['mnbv_route_arr'][$kol_mnbv_route_arr-1],$matches)){//Есть сортировка
+    Glob::$vars['mnbv_site']['sub_vend'] = strtolower($matches[1]);
+    if (!empty(Glob::$vars['mnbv_site']['sub_vend']))  $urlArr = Glob::$vars['mnbv_urlmaster']->getIdByURL(Glob::$vars['vend_storage'],Glob::$vars['mnbv_site']['sub_vend'],Glob::$vars['mnbv_site']['id']);
+    if (isset($urlArr) && is_array($urlArr)){
+        if (!empty($urlArr['list_id'])) { //Ищем на уровне чистого алиаса без префиксов всяких
+            Glob::$vars['mnbv_site']['sub_vendid'] = $urlArr['list_id'];
+            unset(Glob::$vars['mnbv_route_arr'][$kol_mnbv_route_arr-1]);$kol_mnbv_route_arr--;
+            SysLogs::addLog("Site router: sub_vend = [".Glob::$vars['mnbv_site']['sub_vend'].'] sub_vendid = ['.Glob::$vars['mnbv_site']['sub_vendid'].']');
+        }
+    }
+}
+
+//Обработаем ЧПУ URL
+$currMasterUri = '/' . implode('/',Glob::$vars['mnbv_route_arr']); //Неразобранный остаток строки
+
+//Получим категорию и товар для каталога товаров
 SysLogs::addLog("Site router: currMasterUri = [".$currMasterUri."] curPageScriptStorage=[$curPageScriptStorage]");
 if (!empty($curPageScriptStorage))  $urlArr = Glob::$vars['mnbv_urlmaster']->getIdByURL($curPageScriptStorage,$currMasterUri,Glob::$vars['mnbv_site']['id']);
 if (isset($urlArr) && is_array($urlArr)){

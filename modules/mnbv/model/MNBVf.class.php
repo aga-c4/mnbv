@@ -711,12 +711,12 @@ class MNBVf {
     /**
      * Возвращает URL текущего объекта $obj. //URL состоит из Протокол + домен + [алиас если есть] + сортировка + [страница если есть] + ? [id=Номер, если есть] [&filters=Фильтры по атрибутам] [&sort=Сортирока, если задана (приоритет)] [&pg=Номер страницы списка, если задан  (приоритет)]
      * @param $obj массив свойств текущего объекта
-     * @param $param параметры формирования: array('altlang'='true/false', 'filters'=>'', 'sort'='', 'pg'='', 'page_main_alias'='', 'getonly'=>false, 'fingetpref'=>false, 'type'='list', 'page_list_url'='notset'); 
+     * @param $params параметры формирования: array('altlang'='true/false', 'filters'=>'', 'sort'='', 'pg'='', 'page_main_alias'='', 'getonly'=>false, 'vendor'=>false, 'fingetpref'=>false, 'type'='list', 'page_list_url'='notset'); 
      * Если какой то элемент не задан, он не выводится. Если pg <2, то не выводится. Если sort=дефолтовый для данного раздела ($obj['list_sort']), тоже не выводится.
      * 'type'='list' - работать с родительской папкой, иначе работаем с текущим объектом (устаревший параметр, стараемся не использовать).
      * @return string текущий URL
      */
-    public static function generateObjUrl(array $obj, $param=array())
+    public static function generateObjUrl(array $obj, $params=array())
     {
         $result = ''; // Пока результат пуст
         $default_port = 80; // Порт по-умолчанию 
@@ -738,16 +738,16 @@ class MNBVf {
         }
         
         //Формирование папок
-        if (!empty($param['altlang']) && (!isset($param['page_list_url']) || $param['page_list_url']==='notset')) $result .= '/'.Lang::getAltLangName();
+        if (!empty($params['altlang']) && (!isset($params['page_list_url']) || $params['page_list_url']==='notset')) $result .= '/'.Lang::getAltLangName();
         
         //Основной алиас
         if ($obj['type']==2){ //Если это URL, то впишем его
             $result .= (!empty($obj['typeval']))?$obj['typeval']:'';
         }else{
                             
-            if (isset($param['page_list_url']) && $param['page_list_url']!=='notset') {
-                $result .= $param['page_list_url'];
-                //SysLogs::addLog("TEST: page_list_url=[" . $param['page_list_url'] . "]");
+            if (isset($params['page_list_url']) && $params['page_list_url']!=='notset') {
+                $result .= $params['page_list_url'];
+                //SysLogs::addLog("TEST: page_list_url=[" . $params['page_list_url'] . "]");
             }else{
                 /*
                 SysLogs::addLog("TEST: "
@@ -766,7 +766,7 @@ class MNBVf {
                 }else{
                     if (!empty($obj['use_other_storage']) && isset($obj['page_main_alias'])) { //Вариант с внешним хранилищем
                         $result .= $obj['page_main_alias']; //Сначала добавим корневой алиас
-                        if (!empty($param['type']) && $param['type']=='list') { //Формируем ссылку на список
+                        if (!empty($params['type']) && $params['type']=='list') { //Формируем ссылку на список
                             $result .= (!empty($obj['folder_alias']))?('/'.$obj['folder_alias']):''; //Алиас объекта
                             if ((empty($obj['folder_alias'])) && $obj['folderid']!==$obj['folder_start_id']) $result .= '/il' . $obj['folderid']; //Идентификатор объекта
                         }else{ //Формируем ссылку на объект
@@ -783,6 +783,10 @@ class MNBVf {
                 }
             }
             
+            if (!empty($params['vendor']) && !empty(Glob::$vars['mnbv_site']['sub_vendid'])) {
+                $result .= '/' . Glob::$vars['mnbv_site']['sub_vend'];
+            }
+
             if (false!==strpos($result,'?')) $getStart = true;
             
             $pgView = false;
@@ -790,34 +794,34 @@ class MNBVf {
             if (!$getStart && !empty($params['getonly'])) {
                 //Сортировка
                 if (!empty(Glob::$vars['mnbv_site']['sorturl']) 
-                        && !empty($param['sort']) && (empty($obj['vars']['list_sort'])||$param['sort']!=$obj['vars']['list_sort'])) {
-                    $result .= '/sort_' . $param['sort']; //Если сортировка в папках
+                        && !empty($params['sort']) && (empty($obj['vars']['list_sort'])||$params['sort']!=$obj['vars']['list_sort'])) {
+                    $result .= '/sort_' . $params['sort']; //Если сортировка в папках
                     $sortView = true;
                 }
                 
                 //Номера страниц как папки
-                if (!empty(Glob::$vars['mnbv_site']['pginurl']) && !empty($param['pg']) && $param['pg']>1) {
+                if (!empty(Glob::$vars['mnbv_site']['pginurl']) && !empty($params['pg']) && $params['pg']>1) {
                     $result = preg_replace("/\/$/",'',$result);
-                    $result .= '/pg' . $param['pg']; //Если страницы в папках
+                    $result .= '/pg' . $params['pg']; //Если страницы в папках
                     $pgView = true;
                 }
             }
 
             //if (empty($obj['alias'])) $urlParams .= (($urlParams=='')?'?':'&').'id='.$obj['id'];
-            if (!empty($param['filters'])) {
-                $result .= (($getStart)?'&':'?').$param['filters'];
+            if (!empty($params['filters'])) {
+                $result .= (($getStart)?'&':'?').$params['filters'];
                 $getStart = true;
             }
-            if (!$sortView && !empty($param['sort']) && (empty($obj['vars']['list_sort'])||$param['sort']!=$obj['vars']['list_sort'])) {
-                $result .= (($getStart)?'&':'?').'sort='.$param['sort'];
+            if (!$sortView && !empty($params['sort']) && (empty($obj['vars']['list_sort'])||$params['sort']!=$obj['vars']['list_sort'])) {
+                $result .= (($getStart)?'&':'?').'sort='.$params['sort'];
                 $getStart = true;
             }
-            if (!$pgView && !empty($param['pg']) && $param['pg']>1) {
-                $result .= (($getStart)?'&':'?').'pg='.$param['pg'];
+            if (!$pgView && !empty($params['pg']) && $params['pg']>1) {
+                $result .= (($getStart)?'&':'?').'pg='.$params['pg'];
                 $getStart = true;
             }
             
-            if (!empty($param["fingetpref"])) $result .= ($getStart)?'&':'?';
+            if (!empty($params["fingetpref"])) $result .= ($getStart)?'&':'?';
 
         }
         
@@ -2431,11 +2435,11 @@ class MNBVf {
         }
         if ($useAttrArr["price"]["minval"]==$useAttrArr["price"]["maxval"]) unset($useAttrArr["price"]); 
         
-        $useAttrArr["country"] = Array(
-            "attrid" => "country",
+        $useAttrArr["vendor"] = Array(
+            "attrid" => "vendor",
             "pozid" => 2,
-            "name" => 'Страна',
-            "namelang" => 'Country',
+            "name" => 'Производитель',
+            "namelang" => 'Vendor',
             "dnuse" => 1,
             "inshort" => 1,
             "infilter" => 1,
@@ -2460,29 +2464,30 @@ class MNBVf {
         if ($catFolderid!=Glob::$vars['prod_storage_rootid']) array_push($quFilterArr, "parentid","=",$catFolderid,"and");
         array_push($quFilterArr, "type","!=",ST_FOLDER);
         $res = MNBVStorage::getObjAcc(Glob::$vars['prod_storage'],
-                array("country",array("count(*)","qty")),
+                array("vendor",array("count(*)","qty")),
                 $quFilterArr,
-                array("group" => "country"));
+                array("group" => "vendor"));
         if (!empty($res[0])) {
             unset($res[0]);
             foreach($res as $value) {
-                if (!empty($value["country"])){
-                    $curFltFndItm[strval($value["country"])] = $value["qty"];
+                if (!empty($value["vendor"])){
+                    $curFltFndItm[strval($value["vendor"])] = $value["qty"];
                 }
             }
         }
         if (count($curFltFndItm)) {      
-            $fList = MNBVStorage::getObjAcc(Glob::$vars['prod_country_storage'],
-                    array("id","parentid","name","namelang","pozid"),
-                    array("parentid","=",Glob::$vars['prod_country_folderid']),
+            $fList = MNBVStorage::getObjAcc(Glob::$vars['vend_storage'],
+                    array("id","parentid","name","namelang","pozid","alias"),
+                    array("parentid","=",Glob::$vars['vend_storage_rootid']),
                     array("sort"=>array("pozid"=>"inc","name"=>"inc")));
             if (((int)$fList[0])>0) {
                 unset($fList[0]); //Вынесем размер списка из массива 
                 foreach ($fList as $key=>$value) {
                     if (!isset($curFltFndItm[strval($value["id"])])) continue;
-                    if (!isset($useAttrArr["country"]["vals"]) || !is_array($useAttrArr["country"]["vals"])) $useAttrArr["country"]["vals"] = array();
-                    $useAttrArr["country"]["vals"][strval($value["id"])] = array(
+                    if (!isset($useAttrArr["vendor"]["vals"]) || !is_array($useAttrArr["vendor"]["vals"])) $useAttrArr["vendor"]["vals"] = array();
+                    $useAttrArr["vendor"]["vals"][strval($value["id"])] = array(
                         "id" => $value["id"],
+                        "alias" => $value["alias"],
                         "name" => $value["name"],
                         "namelang" => $value["namelang"],
                         "qty" => $curFltFndItm[strval($value["id"])],
@@ -2490,7 +2495,7 @@ class MNBVf {
                 }
             }
         }
-        if (!isset($useAttrArr["country"]["vals"]) || count($useAttrArr["country"]["vals"])==0) unset($useAttrArr["country"]); 
+        if (!isset($useAttrArr["vendor"]["vals"]) || count($useAttrArr["vendor"]["vals"])==0) unset($useAttrArr["vendor"]); 
  
         $useAttrArr["instock"] = Array(
             "attrid" => "instock",
@@ -2559,6 +2564,68 @@ class MNBVf {
         }
         if (!isset($useAttrArr["instock"]["vals"]) || count($useAttrArr["instock"]["vals"])==0) unset($useAttrArr["instock"]); 
         
+        $useAttrArr["country"] = Array(
+            "attrid" => "country",
+            "pozid" => 2,
+            "name" => 'Страна',
+            "namelang" => 'Country',
+            "dnuse" => 1,
+            "inshort" => 0,
+            "infilter" => 1,
+            "filter_type" => 'checkbox_gr',
+            "view" => Array (
+                "active" => 'update',
+                "table" => 'td',
+                "type" => 'select',
+                "viewindex" => 0,
+                "linkstorage" => 'attributes',
+                "filter_folder" => 4,
+                "filter_type" => 'objects',
+                "checktype" => 'int',
+                "lang" => 'all',
+                "dbtype" => 'int',
+                "notset" => 1,
+            ),
+        );
+
+        $curFltFndItm = array();
+        $quFilterArr = array();
+        if ($catFolderid!=Glob::$vars['prod_storage_rootid']) array_push($quFilterArr, "parentid","=",$catFolderid,"and");
+        array_push($quFilterArr, "type","!=",ST_FOLDER);
+        $res = MNBVStorage::getObjAcc(Glob::$vars['prod_storage'],
+                array("country",array("count(*)","qty")),
+                $quFilterArr,
+                array("group" => "country"));
+        if (!empty($res[0])) {
+            unset($res[0]);
+            foreach($res as $value) {
+                if (!empty($value["country"])){
+                    $curFltFndItm[strval($value["country"])] = $value["qty"];
+                }
+            }
+        }
+        if (count($curFltFndItm)) {      
+            $fList = MNBVStorage::getObjAcc(Glob::$vars['prod_country_storage'],
+                    array("id","parentid","name","namelang","pozid","alias"),
+                    array("parentid","=",Glob::$vars['prod_country_rootid']),
+                    array("sort"=>array("pozid"=>"inc","name"=>"inc")));
+            if (((int)$fList[0])>0) {
+                unset($fList[0]); //Вынесем размер списка из массива 
+                foreach ($fList as $key=>$value) {
+                    if (!isset($curFltFndItm[strval($value["id"])])) continue;
+                    if (!isset($useAttrArr["country"]["vals"]) || !is_array($useAttrArr["country"]["vals"])) $useAttrArr["country"]["vals"] = array();
+                    $useAttrArr["country"]["vals"][strval($value["id"])] = array(
+                        "id" => $value["id"],
+                        "alias" => $value["alias"],
+                        "name" => $value["name"],
+                        "namelang" => $value["namelang"],
+                        "qty" => $curFltFndItm[strval($value["id"])],
+                    );   
+                }
+            }
+        }
+        if (!isset($useAttrArr["country"]["vals"]) || count($useAttrArr["country"]["vals"])==0) unset($useAttrArr["country"]); 
+        
         $ids = array();
         if (is_array($obj["attrup"]) && count($obj["attrup"])){
             foreach($obj["attrup"] as $attrItem) {
@@ -2599,7 +2666,7 @@ class MNBVf {
         
             //Список объектов
             $fList = MNBVStorage::getObjAcc($usestorage,
-                    array("id","parentid","name","namelang","pozid","type","vars"),
+                    array("id","parentid","name","namelang","pozid","type","vars","alias"),
                     array(array("id","in",$ids),"or",array("parentid","in",$ids)),
                     array("sort"=>array("pozid"=>"inc","name"=>"inc")));
             if (((int)$fList[0])>0) {
@@ -2663,6 +2730,7 @@ class MNBVf {
                         if (!isset($useAttrArr["attr".$value["parentid"]]["vals"]) || !is_array($useAttrArr["attr".$value["parentid"]]["vals"])) $useAttrArr["attr".$value["parentid"]]["vals"] = array();
                         $useAttrArr["attr".$value["parentid"]]["vals"][strval($value["id"])] = array(
                             "id" => $value["id"],
+                            "alias" => $value["alias"],
                             "name" => $value["name"],
                             "namelang" => $value["namelang"],
                             "qty" => $curFltFndItm[strval($value["parentid"])][strval($value["id"])]

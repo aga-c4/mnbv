@@ -5,6 +5,23 @@
  */
 ?>
 
+<? 
+if (isset($item['attr_filters']) && is_array($item['attr_filters'])
+        && isset($item['attr_filters']['vendor']) && is_array($item['attr_filters']['vendor']) 
+        && isset($item['attr_filters']['vendor']["vals"]) && is_array($item['attr_filters']['vendor']["vals"]) && count($item['attr_filters']['vendor']["vals"])){
+
+    $itemCounter = 0;
+    $resVend = '';
+    foreach($item['attr_filters']['vendor']["vals"] as $attrItemAlias=>$attrItemVal) {
+        if (!is_array($attrItemVal)) continue; 
+        if (empty($itemCounter)) $resVend .= '<div class="w-100">';
+        $resVend .= '<a class="btn btn-outline-secondary" href="'.$item['page_list_url'].'/'.$attrItemVal['alias'].'" role="button">'.MNBVf::getItemName($attrItemVal,Lang::isAltLang()).'</a>'."\n";
+        $itemCounter++;
+    }
+    if (!empty($itemCounter) && $itemCounter>1) echo $resVend . '</div>';
+} 
+?>
+
 <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 my-2">
     
 <? if (isset($item['attr_filters']) && is_array($item['attr_filters']) && count($item['attr_filters'])){ ?>
@@ -140,7 +157,7 @@ if (isset($item['list_max_items'])&&isset($item['list_size'])&&$item['list_max_i
       <div class="modal-body">
         <form method="post" action="" id="filterform">  
             <div class="row">
-                <?
+                <?                
                 //Формирование фильтров
                 $sliderDefArr = array();
                 $cbGroupDefArr = array();
