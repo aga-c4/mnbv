@@ -223,6 +223,7 @@ Glob::$vars['url_types'] = array(
  */
 Glob::$vars['prod_name_tpl'] = '{{prefix}} {{vendor}} {{vendor}}';
 
+Glob::$vars['prod_code_type'] = 'id'; //Тип отображаемого кода и кода поиска id - по идентификаторам товаров, outid - по внешним идентификаторам (поле ) 
 Glob::$vars['vend_storage'] = 'vendors'; //Хранилище списка товаров
 Glob::$vars['vend_storage_rootid'] = 1; //Корневая папка каталога товаров
 Glob::$vars['prod_storage'] = 'products'; //Хранилище списка товаров

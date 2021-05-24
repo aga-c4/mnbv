@@ -683,7 +683,9 @@ SysStorage::$storage['products'] = array( //Корневая таблица са
     'img_max_size' => 'products', //Настройка для закачки изображений по-умолчанию default, если не заданы какие-нибудь элементы, то берутся из defailt
     'custom_url' => true, //Если true, то на базе алиасов будут добавляться данные в хранилище для разбора URL
 );
+SysStorage::$storage['products']['stru']['outid'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"); //Внешний идентификатор товара (может быть не уникальным - когда несколько товаров в каталоге соответствуют 1-му из 1с, но это не нормально!)
 SysStorage::$storage['products']['stru']['prefix'] =  array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"); // Краткий комментарий
+SysStorage::$storage['products']['stru']['prefixlang'] =  array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"); // Краткий комментарий альтернативный язык
 SysStorage::$storage['products']['stru']['vendor'] = array("type"=>"int", "size"=>11, "creatval"=>0, "dbtype"=>"int", "linkstorage"=>"vendors");
 SysStorage::$storage['products']['stru']['model'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"); // Краткий комментарий
 SysStorage::$storage['products']['stru']['partnumber'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"); // Артикул
@@ -701,10 +703,14 @@ SysStorage::$storage['products']['stru']['discmaxpr'] = array("type"=>"decimal",
 SysStorage::$storage['products']['stru']['discmaxval'] = array("type"=>"decimal", "size"=>11, "creatval"=>"0.00", "dbtype"=>"decimal");
 SysStorage::$storage['products']['stru']['discminmargpr'] = array("type"=>"decimal", "size"=>11, "creatval"=>"0.00", "dbtype"=>"decimal");
 SysStorage::$storage['products']['stru']['discminmargval'] = array("type"=>"decimal", "size"=>11, "creatval"=>"0.00", "dbtype"=>"decimal");
+//Поисковые строки
+SysStorage::$storage['products']['stru']['norm_search'] = array("type"=>"string", "size"=>512, "creatval"=>"", "dbtype"=>"varchar"); // Артикул
+SysStorage::$storage['products']['stru']['norm_partnumber'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"); // Артикул
 
 SysStorage::$storage['products']['view']["main"] = array(
     //"visfirstline" => array("name"=>"visfirstline", "type"=>"visfirstline", "table" =>"thline", "checktype" => "datetime"),
     "date" => array("name"=>"date", "type"=>"datetime","table" =>"thline","checktype" => "datetime"),
+    "outid" => array("name"=>"outid", "type"=>"text","size"=>255,"width"=>"100%","langlink"=>"namelang","checktype" => "text", "active" => "print"),
     "name" => array("name"=>"name", "type"=>"text","size"=>255,"width"=>"100%","langlink"=>"namelang","checktype" => "text","lang" => "lang"), //Основной язык
     "namelang" => array("name"=>"namelang", "type"=>"text","size"=>255,"width"=>"100%","langlink"=>"name","checktype" => "text","lang" => "altlang"), //Альтернативный язык
     "comm" => array("name"=>"comm", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text"),
@@ -743,6 +749,8 @@ SysStorage::$storage['products']['view']["main"] = array(
     "siteid" => array("name"=>"siteid", "type"=>"select", "viewindex" =>true, "notset" =>true, "filter_type"=>"objects", "filter_folder"=>1, "checktype" => "id"),
     "author" => array("name"=>"author", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text","active" => "print"),
     "editdate" => array("name"=>"editdate", "type"=>"datetime","size"=>19, "active" => "print"),   
+    "norm_partnumber" => array("name"=>"norm_partnumber", "type"=>"text","size"=>255,"width"=>"100%","langlink"=>"namelang","checktype" => "text", "active" => "print"),
+    "norm_search" => array("name"=>"norm_search", "type"=>"text","size"=>255,"width"=>"100%","langlink"=>"namelang","checktype" => "text", "active" => "print"),
 );
 
 

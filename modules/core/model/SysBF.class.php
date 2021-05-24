@@ -312,13 +312,31 @@ class SysBF {
     /**
      * Преобразование строки транслита - очистка лишних символов (нормализация)
      * @param $str
+     * @param string если $nozpt='zpt_ok' зяпятая остается, если 'space_ok' - пробелы остаются
      * @return mixed|string
      */
-    public static function updTranslitStr($str) {
+    public static function updTranslitStr($str, $nozpt='') {
         $str = self::rus2translit($str);
         $str = strtolower($str);
-        $str = preg_replace('~[^-a-z0-9_]+~u', '_', $str);
+        $str = preg_replace('~[^-a-z0-9_, ]+~u', '_', $str);
+        $str=preg_replace("/ ( )+/","",$str);
+        if ($nozpt!=='zpt_ok') $result = preg_replace("/,/",'',$str);
+        if ($nozpt!=='space_ok') $result = preg_replace('/ /','',$str);
         return  trim($str, "_");
+    }
+    
+    /**
+    * Проводит нормализацию строки
+    * @param string $str
+    * @param string если $nozpt='zpt_ok' зяпятая остается, если 'space_ok' - пробелы остаются
+    * @return int
+    */
+    public static function strNormalize($str, $nozpt=''){
+        $result = $str;
+        $result = SysBf::updTranslitStr($result, $nozpt);
+        $result = preg_replace('/_/','',$result);
+        $result = preg_replace('/-/','',$result);
+        return $result;
     }
     
     /**

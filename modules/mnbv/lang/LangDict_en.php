@@ -38,7 +38,7 @@ $langTmpArr = array(
     "About us" => "About us",
     "Content" => "Content",
 
-    "objgroup" => "Группа",
+    "objgroup" => "Obj group",
     
     "NavMainpage" => "Main",
     "NavRobots" => "Robots",
@@ -51,6 +51,7 @@ $langTmpArr = array(
     "Catalog" => "Catalog",
     "Discount" => "Discount",
     "Discount price" => "Discount price",
+    "Discount limits" => "Discount limits",
     "Exit" => "Exit",
     "In the cart" => "In the cart",
     "Item" => "Item",
@@ -607,6 +608,7 @@ $langTmpArr = array(
         "author" => "Author",
         "price" => "Price",
         "oldprice" => "Old Price",
+        "outid" => "OutID",
         "Prices" => "Prices",
         "siteid" => "Site",
         "storage" => "Storage",

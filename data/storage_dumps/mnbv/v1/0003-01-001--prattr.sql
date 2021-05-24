@@ -57,14 +57,17 @@ ALTER TABLE `mnbv_attrvals`
 
 
 
-ALTER TABLE `mnbv_products` ADD `prefix` VARCHAR(255) NOT NULL DEFAULT '' AFTER `vendor`, 
+ALTER TABLE `mnbv_products` 
+ADD `outid` VARCHAR(255) NOT NULL DEFAULT '' AFTER `id`,
+ADD `prefix` VARCHAR(255) NOT NULL DEFAULT '' AFTER `vendor`, 
 ADD `prefixlang` VARCHAR(255) NOT NULL DEFAULT '' AFTER `prefix`, 
 ADD `model` VARCHAR(255) NOT NULL DEFAULT '' AFTER `prefixlang`,
 ADD `partnumber` VARCHAR(255) NOT NULL DEFAULT '' AFTER `model`,
 ADD `barcode` VARCHAR(255) NOT NULL DEFAULT '' AFTER `partnumber`,
 ADD `ndspr` DECIMAL(10,2) NOT NULL DEFAULT '0' AFTER `cost`,
 ADD `quantity` INT(10) NOT NULL DEFAULT '0' AFTER `ndspr`,
-ADD `searchstr` VARCHAR(512) NOT NULL DEFAULT '' AFTER `country`;
+ADD `norm_search` VARCHAR(512) NOT NULL DEFAULT '' AFTER `country`,
+ADD `norm_partnumber` VARCHAR(255) NOT NULL DEFAULT '' AFTER `norm_search`;
 
 COMMIT;
 

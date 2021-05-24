@@ -53,9 +53,18 @@ echo MNBVf::startVidget('pglist',$item,array(
     //)
 ),'wdg_catmenu.php');?>               
        
-                <form action="/searsh" class="d-flex" method="GET">
-                    <input type="search" placeholder="Search" class="form-control mr-2">
-                    <button class="btn btn-outline-success bg-transparent text-light">Search</button>
+                <script>
+                    function checkHeadSearchForm() {
+                        if (document.getElementById('hdsearch').value == '') {
+                             document.getElementById('hdsearch').focus();
+                             return false;
+                        }
+                        document.headSearchForm.submit();
+                    }
+                </script>
+                <form name="headSearchForm" action="<?=MNBVf::requestUrl(Lang::isAltLang()?'altlang':'','/search');?>" class="d-flex" method="GET" onsubmit="return checkHeadSearchForm();">
+                    <input type="search" class="form-control mr-2" name="search" id="hdsearch" placeholder="<?=Lang::get('Search string');?>" onclick="document.getElementById('hdsearch').value='';">
+                    <button class="btn btn-outline-success bg-transparent text-light" onclick="checkHeadSearchForm();">Search</button>
                 </form>
                 
                 <ul class="navbar-nav navbar-right">

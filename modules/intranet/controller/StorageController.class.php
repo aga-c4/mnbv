@@ -924,11 +924,39 @@ class StorageController {
                         $updateArr["edituser"] = Glob::$vars['user']->get('userid');
                         $updateArr["editdate"] = $thisTime;
                         $updateArr["editip"] = GetEnv('REMOTE_ADDR');
+                        
+                        //Если поменялись:папка, название(р/л), префикс(р/л), модель, то перегенерим поисковые поля
+                        if ($this->getStorage()===Glob::$vars['prod_storage'] 
+                                && (isset($updateArr["name"])||isset($updateArr["namelang"])
+                                ||isset($updateArr["prefix"])||isset($updateArr["prefixlang"])
+                                ||isset($updateArr["partnumber"])||isset($updateArr["model"]))){
+                                    
+                            $sr_type = (isset($updateArr["type"]))?$updateArr["type"]:$item['obj']["type"];    
+                            $sr_name = (isset($updateArr["name"]))?$updateArr["name"]:$item['obj']["name"];    
+                            $sr_namelang = (isset($updateArr["namelang"]))?$updateArr["namelang"]:$item['obj']["namelang"]; 
+                            $sr_prefix = (isset($updateArr["prefix"]))?$updateArr["prefix"]:$item['obj']["prefix"]; 
+                            $sr_prefixlang = (isset($updateArr["prefixlang"]))?$updateArr["prefixlang"]:$item['obj']["prefixlang"]; 
+                            $sr_partnumber = (isset($updateArr["partnumber"]))?$updateArr["partnumber"]:$item['obj']["partnumber"]; 
+                            $sr_model = (isset($updateArr["model"]))?$updateArr["model"]:$item['obj']["model"]; 
+        
+                            $updateArr["norm_partnumber"] = '';
+                            $updateArr["norm_search"] = $item['obj']["id"];
+                            if ($sr_type!==ST_FOLDER) {
+                                $updateArr["norm_partnumber"] .= SysBF::strNormalize($sr_partnumber,'zpt_ok');
+                                $updateArr["norm_search"] .= $updateArr["norm_partnumber"];
+                                $updateArr["norm_search"] .= ',' . SysBF::strNormalize($sr_model);
+                            }
+                            $updateArr["norm_search"] .= ',' . SysBF::strNormalize($sr_name);
+                            $updateArr["norm_search"] .= ',' . SysBF::strNormalize($sr_namelang);
+                            $updateArr["norm_search"] .= ',' . SysBF::strNormalize($sr_prefix);
+                            $updateArr["norm_search"] .= ',' . SysBF::strNormalize($sr_prefixlang); 
+                            
+                            SysLogs::addLog("Update norm_partnumber=[{$updateArr["norm_partnumber"]}]");
+                            SysLogs::addLog("Update norm_search=[{$updateArr["norm_search"]}]");
+                        }
+                        
                         $res = MNBVStorage::setObj($this->getStorage(), $updateArr, array("id",'=',$item["id"]));
                         SysLogs::addLog("Update object /".$this->getStorage()."/".$item["id"]."/ ".(($res)?'successful!':'error!'));
-                        
-                        //При необходимости удалим из индекса удаленные поля
-                        
                         
                         //Доработаем индекс
                         if (count($attrDBAddArr)

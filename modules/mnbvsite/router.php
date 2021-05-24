@@ -118,7 +118,7 @@ if ($kol_mnbv_route_arr>0 && preg_match("/([^\/]+)$/ui", Glob::$vars['mnbv_route
 }
 
 //Обработаем ЧПУ URL
-$currMasterUri = '/' . implode('/',Glob::$vars['mnbv_route_arr']); //Неразобранный остаток строки
+Glob::$vars['mnbv_cur_master_uri'] = $currMasterUri = '/' . implode('/',Glob::$vars['mnbv_route_arr']); //Неразобранный остаток строки
 
 //Получим категорию и товар для каталога товаров
 SysLogs::addLog("Site router: currMasterUri = [".$currMasterUri."] curPageScriptStorage=[$curPageScriptStorage]");
