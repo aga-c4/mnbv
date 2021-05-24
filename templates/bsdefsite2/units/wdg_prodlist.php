@@ -9,7 +9,10 @@
 //Список объектов
 $itemCounter = 0;
 foreach ($item['list'] as $key=>$value) if ($key>0) {
-    $dopItemClassStr = ($itemCounter>2)?' d-md-block d-lg-none d-xl-block':'';
+    $dopItemClassStr = '';
+    if ($itemCounter==1) $dopItemClassStr = ' d-none d-md-block';  //d-sm-none d-xl-block
+    elseif ($itemCounter==2) $dopItemClassStr = ' d-none d-lg-block';
+    elseif ($itemCounter>2) $dopItemClassStr = ' d-none d-xl-block';
     $itemCounter++;
 ?>
 <?
