@@ -10,7 +10,8 @@
 //Список объектов
 $itemCounter = 0;
 foreach ($item['list'] as $key=>$value) if ($key>0) {
-    $dopItemClassStr = ($itemCounter>1)?' d-sm-none d-xl-block':'';
+    $dopItemClassStr = '';
+    if ($itemCounter>1) $dopItemClassStr = ' d-none d-xl-block';
     $itemCounter++;
 ?>
     <div class="col mb-2<?=$dopItemClassStr;?>">

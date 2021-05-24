@@ -10,7 +10,7 @@
 $itemCounter = 0;
 foreach ($item['list'] as $key=>$value) if ($key>0) {
     $dopItemClassStr = '';
-    if ($itemCounter==1) $dopItemClassStr = ' d-none d-md-block';  //d-sm-none d-xl-block
+    if ($itemCounter==1) $dopItemClassStr = ''; // Если на минимуме 1 товар. то так: ' d-none d-md-block';  //d-sm-none d-xl-block
     elseif ($itemCounter==2) $dopItemClassStr = ' d-none d-lg-block';
     elseif ($itemCounter>2) $dopItemClassStr = ' d-none d-xl-block';
     $itemCounter++;
@@ -46,7 +46,7 @@ if (isset($value['files']["img"]["1"]) && $tecObjTxtCode = MNBVf::getObjCodeByUR
 ?>
         <div class="card-body">
             <h5 class="card-title"><a href="<?=SysBF::getFrArr($value,'url','');?>"><?=SysBF::getFrArr($value,'name','');?></a></h5>
-    <? /*=(!empty($value['about']))?('<p class="card-text">'.$value['about'].'</p>'):'';*/?>
+    <?=($value['type']==1 && !empty($value['about']))?('<p class="card-text">'.$value['about'].'</p>'):'';?>
 <? if (!empty($value['price']) && $value['price']>0){
     ?><?=Lang::get("Price");?>: <span style="font-weight:bold;"><?=SysBF::getFrArr($value,'price','').Glob::$vars['prod_currency_suf'];?></span>
 <? if (!empty($value['oldprice']) && $value['oldprice']>$value['price']){ ?> 

@@ -10,7 +10,7 @@
 $itemCounter = 0;
 foreach ($item['list'] as $key=>$value) if ($key>0) {
     $dopItemClassStr = '';
-    if ($itemCounter>0) $dopItemClassStr = ' d-none d-sm-block';
+    if ($itemCounter>0) $dopItemClassStr = ' d-none d-md-block';
     $itemCounter++;
 ?>
     <div class="col mb-2<?=$dopItemClassStr;?>">

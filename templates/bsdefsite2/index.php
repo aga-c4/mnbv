@@ -122,7 +122,7 @@ MNBVf::startVidget('pglist',$item,array(
     'list_max_items' => 4,//количество выводимых элементов
     'list_sort' => 'id', //сортировка списка
     'only_first' =>true, //выводить только объекты, выделенные свойством First (Гл)
-    'filter_type' => 'objects',//('objects'|'folders'|'all') - типы объектов связей (по-умолчанию objects), если не задано, то без фильтра ('all')
+    'filter_type' => 'all',//('objects'|'folders'|'all') - типы объектов связей (по-умолчанию objects), если не задано, то без фильтра ('all')
     'list_link' => (Lang::isAltLang()?('/'.Lang::getAltLangName()):'').'/catalog',//ссылка на полный список объектов, если требуется
     'list_link_name' => Lang::get('Products catalog'),//анкор ссылки на полный список объектов, если требуется
     'altlang' => Lang::isAltLang(),//вывод на альтернативном языке
