@@ -7,9 +7,13 @@
 <div class="row row-cols-1 row-cols-md-1 row-cols-lg-2 row-cols-xl-2 g-1">
 <?
 //Список объектов
+$itemCounter = 0;
 foreach ($item['list'] as $key=>$value) if ($key>0) {
+    $dopItemClassStr = '';
+    if ($itemCounter>0) $dopItemClassStr = ' d-none d-sm-block';
+    $itemCounter++;
 ?>
-    <div class="col mb-2">
+    <div class="col mb-2<?=$dopItemClassStr;?>">
         <div class="card mb-0 mr-2 bg-white h-100">
             
             <div class="row g-0">
