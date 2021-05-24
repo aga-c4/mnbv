@@ -23,7 +23,7 @@
 </div>
 
 <div class="row">
-    
+<? if (!empty($item['cat_list_size'])) { ?>    
 <div class="col col-12  col-md-4 col-lg-3 mt-3">
 <?
 //Список категорий
@@ -38,10 +38,15 @@ foreach ($item['cat_list'] as $key=>$value) if ($key>0) {
     </div>
 <? } ?>
 </div>
+<? } ?>
 
+<? if (!empty($item['cat_list_size'])) { ?>
 <div class="col col-12  col-md-8 col-lg-9 my-2">
-
 <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3">
+<? }else{ ?>
+<div class="col col-12 my-2">
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4">    
+<? } ?>    
     
 <? if (isset($item['attr_filters']) && is_array($item['attr_filters']) && count($item['attr_filters'])){ ?>
 <div class="col my-2">
@@ -83,7 +88,12 @@ function CheckListSort(){
 <? } ?>
 </div>
 
+<? if (!empty($item['cat_list_size'])) { ?>
 <div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3 g-1">
+<? }else{ ?>
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-1">    
+<? } ?>  
+
 <?
 //Список объектов
 $folderCounter = 0;
