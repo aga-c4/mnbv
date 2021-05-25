@@ -28,7 +28,7 @@ require_once MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'head.php');
     <!-- Navbar -->
     <nav class="navbar navbar-expand-xl navbar-dark bg-dark">
         <div class="container">
-            <a href="<?=MNBVf::requestUrl(Lang::isAltLang()?'altlang':'','/');?>" class="navbar-brand">DemoWebShop</a>
+            <a href="<?=MNBVf::requestUrl(Lang::isAltLang()?'altlang':'','/');?>" class="navbar-brand">Demo</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false">
                 <span class="navbar-toggler-icon"></span></button>
         
