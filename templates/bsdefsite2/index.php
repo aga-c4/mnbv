@@ -29,9 +29,8 @@ require_once MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'head.php');
     <!-- Navbar -->
     <nav class="navbar navbar-expand-xl navbar-dark bg-dark">
         <div class="container">
-            <a href="<?=MNBVf::requestUrl(Lang::isAltLang()?'altlang':'','/');?>" class="navbar-brand">Demo</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false">
-                <span class="navbar-toggler-icon"></span></button>
+            <button class="navbar-toggler mr-2" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false"><span class="navbar-toggler-icon"></span></button>
+            <a href="<?=MNBVf::requestUrl(Lang::isAltLang()?'altlang':'','/');?>" class="navbar-brand">DEMO</a>
         
             <div class="collapse navbar-collapse" id="navbarContent">
 <?
@@ -51,37 +50,37 @@ echo MNBVf::startVidget('pglist',$item,array(
     //)
 ),'wdg_catmenu.php');?>                
        
-                <script>
-                    function checkHeadSearchForm() {
-                        if (document.getElementById('hdsearch').value == '') {
-                             document.getElementById('hdsearch').focus();
-                             return false;
-                        }
-                        document.headSearchForm.submit();
-                    }
-                </script>
-                <form name="headSearchForm" action="<?=MNBVf::requestUrl(Lang::isAltLang()?'altlang':'','/search');?>" class="d-flex" method="GET" onsubmit="return checkHeadSearchForm();">
-                    <input type="search" class="form-control mr-2" name="search" id="hdsearch" placeholder="<?=Lang::get('Search string');?>" onclick="document.getElementById('hdsearch').value='';">
-                    <button class="btn btn-outline-success bg-transparent text-light" onclick="checkHeadSearchForm();">Search</button>
-                </form>
-                
                 <ul class="navbar-nav navbar-right">
                 <?
             if (Lang::isDefLang()){ //Это основной язык
+                /*<li><a class="nav-link my-nav-link disabled" href="<?=((!empty($item['page_url_swlang']))?$item['page_url_swlang']:'');?>"><?=Lang::getDefLang();?></a></li>*/
                 ?>
-                    <li><a class="nav-link my-nav-link disabled" href="<?=((!empty($item['page_url_swlang']))?$item['page_url_swlang']:'');?>"><?=Lang::getDefLang();?></a></li>
                     <li><a class="nav-link my-nav-link active" href="<?=((!empty($item['page_url_swlang']))?$item['page_url_swlang']:'');?>"><?=Lang::getAltLangName();?></a></li>
                 <?
             }else{ //Это альтернативный язык disabled
                 ?>
                     <li><a class="nav-link my-nav-link active" href="<?=((!empty($item['page_url_swlang']))?$item['page_url_swlang']:'');?>"><?=Lang::getDefLang();?></a></li>
-                    <li><a class="nav-link my-nav-link disabled" href="<?=((!empty($item['page_url_swlang']))?$item['page_url_swlang']:'');?>"><?=Lang::getAltLangName();?></a></li>
                 <?
+                /*<li><a class="nav-link my-nav-link disabled" href="<?=((!empty($item['page_url_swlang']))?$item['page_url_swlang']:'');?>"><?=Lang::getAltLangName();?></a></li>*/
             }
                 ?>
                 </ul>
+                
             </div>
-        </div>
+            
+            <script>
+                function checkHeadSearchForm() {
+                    if (document.getElementById('hdsearch').value == '') {
+                         document.getElementById('hdsearch').focus();
+                         return false;
+                    }
+                    document.headSearchForm.submit();
+                }
+            </script>
+            <form name="headSearchForm" action="<?=MNBVf::requestUrl(Lang::isAltLang()?'altlang':'','/search');?>" class="d-flex ml-auto" method="GET" onsubmit="return checkHeadSearchForm();">
+                <input type="search" class="form-control mr-2" name="search" id="hdsearch" placeholder="<?=Lang::get('Search string');?>" onclick="document.getElementById('hdsearch').value='';">
+                <button class="btn btn-outline-success bg-transparent text-light mr-2" onclick="checkHeadSearchForm();"><?=Lang::get('Find');?></button>
+            </form>
         </div>       
     </nav>
 
