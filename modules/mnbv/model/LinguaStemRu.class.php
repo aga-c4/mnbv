@@ -12,8 +12,6 @@
  * Источник https://github.com/ladamalina/php-lingua-stem-ru
  * Используемая версия была размещена под MIT License 
  */
-namespace Stem;
-
 class LinguaStemRu
 {
     var $VERSION = "0.02";
