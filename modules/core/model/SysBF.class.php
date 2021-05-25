@@ -339,6 +339,18 @@ class SysBF {
         return $result;
     }
     
+    public static function prepareSearchSth($str){
+        $res = $str;
+        $res=preg_replace('/<[^>]*>/'," ",$res);        
+        $res=preg_replace("/</"," ",$res);
+        $res=preg_replace("/>/"," ",$res);
+        $res=preg_replace("/%/"," ",$res);
+        $res=preg_replace("/&/"," ",$res);
+        $res=preg_replace("/(\s)+/"," ",$res);
+        $search=trim($str, " \t.");
+        return $res;
+    }
+    
     /**
      * Переводит из Win1251 в UTF8
      */

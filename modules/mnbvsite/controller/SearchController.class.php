@@ -110,9 +110,10 @@ class SearchController extends AbstractMnbvsiteController {
         }
         
         //Обработка строки поиска
-        //$stemmer = new MNBVSearch();
-        $search = SysBF::getFrArr(Glob::$vars['request'],'search','');        
-        $search = $item['search_str'] = MNBVSearch::prepareSearchSth($search);
+        $search = SysBF::getFrArr(Glob::$vars['request'],'search','');      
+        $stemmer = new LinguaStemRu();
+        $stemmer->stem_text($search);       
+        $search = $item['search_str'] = SysBF::prepareSearchSth($search);
         SysLogs::addLog('Search str: [' . $item['search_str'] . ']'); 
         
         $searchArr0 = preg_split("/ /",$search);
