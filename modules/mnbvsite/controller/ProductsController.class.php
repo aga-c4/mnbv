@@ -319,8 +319,19 @@ class ProductsController extends AbstractMnbvsiteController {
         
         //Уберем фильтр по вендору, если он идет как папка в урле
         if (!empty(Glob::$vars['mnbv_site']['sub_vendid']) && is_array($attr_filters) && isset($attr_filters['list']) && isset($attr_filters['list']['vendor'])){
-            if (isset($attr_filters['list']['vendor'])) unset($attr_filters['list']['vendor']); //Если вендор задан жестко, то фильтр по нему не требуется
-            $item['attr_filters'] = $attr_filters['list'];
+            if (isset($attr_filters['list']['vendor'])) { //Если вендор задан жестко, то фильтр по нему не требуется
+                //Подправим метатеги
+                if (isset($attr_filters['list']['vendor']['vals']) && isset($attr_filters['list']['vendor']['vals'][Glob::$vars['mnbv_site']['sub_vendid']])){
+                    $curVendNAme = $attr_filters['list']['vendor']['vals'][Glob::$vars['mnbv_site']['sub_vendid']]['name'];
+                    if (Lang::isAltLang() && !empty($attr_filters['list']['vendor']['vals'][Glob::$vars['mnbv_site']['sub_vendid']]['namelang'])){
+                        $curVendNAme = $attr_filters['list']['vendor']['vals'][Glob::$vars['mnbv_site']['sub_vendid']]['namelang'];
+                    }
+                    Glob::$vars['page_title'] .= ' ' . $curVendNAme;
+                    $item['page_h1'] .= ' ' . $curVendNAme;
+                }
+                unset($attr_filters['list']['vendor']);
+                $item['attr_filters'] = $attr_filters['list'];
+            }
             //print_r($attr_filters);
         }
               
