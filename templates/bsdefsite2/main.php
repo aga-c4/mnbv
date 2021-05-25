@@ -33,8 +33,8 @@ require_once MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'head.php');
         
             <div class="collapse navbar-collapse" id="navbarContent">
                 
-                <ul class="navbar-nav navbar-right">
-                    <li><a class="nav-link my-nav-link active" href="<?=MNBVf::requestUrl(Lang::isAltLang()?'altlang':'','/');?>"><?=Lang::get('Main page');?></a></li>
+                <ul class="d-xl-none navbar-nav navbar-right">
+                    <li class="nav-item"><a class="nav-link my-nav-link" href="<?=MNBVf::requestUrl(Lang::isAltLang()?'altlang':'','/');?>"><?=Lang::get('Main page');?></a></li>
                 </ul>
 <?
 //MNBVf::startVidget('gormenu',$item,3);
@@ -61,11 +61,11 @@ echo MNBVf::startVidget('pglist',$item,array(
             if (Lang::isDefLang()){ //Это основной язык
                 /*<li><a class="nav-link my-nav-link disabled" href="<?=((!empty($item['page_url_swlang']))?$item['page_url_swlang']:'');?>"><?=Lang::getDefLang();?></a></li>*/
                 ?>
-                    <li><a class="nav-link my-nav-link active" href="<?=((!empty($item['page_url_swlang']))?$item['page_url_swlang']:'');?>"><?=Lang::getAltLangName();?></a></li>
+                    <li><a class="nav-link my-nav-link" href="<?=((!empty($item['page_url_swlang']))?$item['page_url_swlang']:'');?>"><?=Lang::getAltLangName();?></a></li>
                 <?
             }else{ //Это альтернативный язык disabled
                 ?>
-                    <li><a class="nav-link my-nav-link active" href="<?=((!empty($item['page_url_swlang']))?$item['page_url_swlang']:'');?>"><?=Lang::getDefLang();?></a></li>
+                    <li><a class="nav-link my-nav-link" href="<?=((!empty($item['page_url_swlang']))?$item['page_url_swlang']:'');?>"><?=Lang::getDefLang();?></a></li>
                 <?
                 /*<li><a class="nav-link my-nav-link disabled" href="<?=((!empty($item['page_url_swlang']))?$item['page_url_swlang']:'');?>"><?=Lang::getAltLangName();?></a></li>*/
             }
