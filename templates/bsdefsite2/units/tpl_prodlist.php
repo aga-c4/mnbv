@@ -22,10 +22,10 @@ if (isset($item['attr_filters']) && is_array($item['attr_filters'])
 } 
 ?>
 
-<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 my-2">
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 mb-2">
     
 <? if (isset($item['attr_filters']) && is_array($item['attr_filters']) && count($item['attr_filters'])){ ?>
-<div class="col">
+<div class="col mt-2">
     <?/*
     <button class="btn btn-primary w-100" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
     <?=Lang::get("Filters");?> <span class="badge rounded-pill bg-secondary">2</span>
@@ -49,7 +49,7 @@ function CheckListSort(){
     }
 }
 </SCRIPT>  
-<div class="col use-prods d-none">
+<div class="col use-prods d-none mt-2">
 <form action="" name="listsort" method="post" ENCTYPE="multipart/form-data">
     <?
     echo '<select name="list_sort_select" onChange="CheckListSort()" class="form-select">'."\n";
