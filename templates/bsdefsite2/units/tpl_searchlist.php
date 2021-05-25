@@ -34,7 +34,7 @@ foreach ($item['cat_list'] as $key=>$value) if ($key>0) {
     $folderCounter++;
 ?>
     <div class="m-1 bg-light border-0 w-100 p-1">
-        <a target=_blank href="<?=SysBF::getFrArr($value,'url','');?>"><?=SysBF::getFrArr($value,'name','');?></a>
+        <a href="<?=SysBF::getFrArr($value,'url','');?>"><?=SysBF::getFrArr($value,'name','');?></a>
     </div>
 <? } ?>
 </div>
@@ -113,7 +113,7 @@ if (isset($value['files']["img"]["1"]) && $tecObjTxtCode = MNBVf::getObjCodeByUR
     //$imgHStr = ' height=""';
     if (empty($imgWStr) && isset($item['img_max_size']['img_max_w'])) $imgWStr = ' width="'. $item['img_max_size']['img_max_w'] .'"';
 ?>
-        <a target=_blank href="<?=SysBF::getFrArr($value,'url','');?>" class="prodlist-img-a w-100 d-flex justify-content-center bg-white"><img class="card-img-top prodlist-img h-100" src='<?=SysBF::getFrArr($yuScrArr,'default','');?>' alt="<?=SysBF::getFrArr($value,'name','');?>"></a>
+        <a href="<?=SysBF::getFrArr($value,'url','');?>" class="prodlist-img-a w-100 d-flex justify-content-center bg-white"><img class="card-img-top prodlist-img h-100" src='<?=SysBF::getFrArr($yuScrArr,'default','');?>' alt="<?=SysBF::getFrArr($value,'name','');?>"></a>
 <?
 } else {//Никакого специфического объекта не нашли, выводим изображения по стандартной схеме
     if (isset($value['files']['img']["1"])){ 
@@ -127,12 +127,12 @@ if (isset($value['files']["img"]["1"]) && $tecObjTxtCode = MNBVf::getObjCodeByUR
         else $imgURL = '/src/mnbv/img/ico/nophoto2.jpg';
     }
 ?>
-        <a target=_blank href="<?=SysBF::getFrArr($value,'url','');?>" class="prodlist-img-a w-100 d-flex justify-content-center bg-white"><img class="card-img-top prodlist-img h-100" src='<?=$imgURL;?>' alt="<?=SysBF::getFrArr($value,'name','');?>"></a>
+        <a href="<?=SysBF::getFrArr($value,'url','');?>" class="prodlist-img-a w-100 d-flex justify-content-center bg-white"><img class="card-img-top prodlist-img h-100" src='<?=$imgURL;?>' alt="<?=SysBF::getFrArr($value,'name','');?>"></a>
 <? 
 } 
 ?>
         <div class="card-body">
-            <h5 class="card-title"><a target=_blank href="<?=SysBF::getFrArr($value,'url','');?>"><?=SysBF::getFrArr($value,'name','');?></a></h5>
+            <h5 class="card-title"><a href="<?=SysBF::getFrArr($value,'url','');?>"><?=SysBF::getFrArr($value,'name','');?></a></h5>
             <? if ($value["type"]!=1) echo Lang::get("Code") .': '. SysBF::getFrArr($value,'id','')."<br>\n";?>
     <? /*=(!empty($value['about']))?('<p class="card-text">'.$value['about'].'</p>'):'';*/?>
 <? if (!empty($value['price']) && $value['price']>0){
@@ -146,7 +146,7 @@ if (isset($value['files']["img"]["1"]) && $tecObjTxtCode = MNBVf::getObjCodeByUR
 
 <?}?>
 <? if (empty($value['type']) || $value['type']!=1 && !empty($item['sub_obj']['price']) && $item['sub_obj']['price']>0){?>
-            <a target=_blank href="<?=MNBVf::requestUrl((!Lang::isDefLang())?'altlang':'',SysBF::getFrArr(Glob::$vars,'cart_url',''));?>?product_id=<?=$value['id'];?>" class="btn btn-primary"><?=Lang::get('Buy');?></a>
+            <a href="<?=MNBVf::requestUrl((!Lang::isDefLang())?'altlang':'',SysBF::getFrArr(Glob::$vars,'cart_url',''));?>?product_id=<?=$value['id'];?>" class="btn btn-primary"><?=Lang::get('Buy');?></a>
 <? } ?>
             </div>
         </div>
