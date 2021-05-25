@@ -110,9 +110,8 @@ class SearchController extends AbstractMnbvsiteController {
         }
         
         //Обработка строки поиска
+        $stemmer = new StemmerRu();
         $search = SysBF::getFrArr(Glob::$vars['request'],'search','');      
-        $stemmer = new LinguaStemRu();
-        $stemmer->stem_text($search);       
         $search = $item['search_str'] = SysBF::prepareSearchSth($search);
         SysLogs::addLog('Search str: [' . $item['search_str'] . ']'); 
         
@@ -120,9 +119,8 @@ class SearchController extends AbstractMnbvsiteController {
         $searchNormStr = '';
         $searchArr = array();
         foreach($searchArr0 as $key=>$value){
-            $searchArr[$key] = SysBF::strNormalize($value); //$stemmer->stem_word($value)
+            $searchArr[$key] = SysBF::strNormalize($stemmer->getWordBase($value));
             $searchNormStr .= ((!empty($searchNormStr))?' ':'') . $searchArr[$key];
-            SysLogs::addLog('---------------->Search norm ['.$value.']=>[' . $searchArr[$key] . ']');
         }
 
         $slov_v_stroke=count($searchArr);
