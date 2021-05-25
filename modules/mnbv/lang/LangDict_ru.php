@@ -31,6 +31,8 @@ $langTmpArr = array(
     "Day" => "День",
     "Night" => "Ночь",
     
+    "Main page" => "Главная",
+    
     "Code" => "Код",
     
     "Company" => "Компания",

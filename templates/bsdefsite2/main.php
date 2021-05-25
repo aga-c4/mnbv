@@ -32,6 +32,10 @@ require_once MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'head.php');
             <a href="<?=MNBVf::requestUrl(Lang::isAltLang()?'altlang':'','/');?>" class="navbar-brand">DEMO</a>
         
             <div class="collapse navbar-collapse" id="navbarContent">
+                
+                <ul class="navbar-nav navbar-right">
+                    <li><a class="nav-link my-nav-link active" href="<?=MNBVf::requestUrl(Lang::isAltLang()?'altlang':'','/');?>"><?=Lang::get('Main page');?></a></li>
+                </ul>
 <?
 //MNBVf::startVidget('gormenu',$item,3);
 echo MNBVf::startVidget('pglist',$item,array(
