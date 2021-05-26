@@ -2698,8 +2698,8 @@ class MNBVf {
                                         && isset(SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'])
                                         && isset(SysStorage::$storage[SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse']])){
                                         
-                                        $quFilterArr = array("attrid","=",$value["id"]);
-                                        if ($catFolderid!=Glob::$vars['prod_storage_rootid']) array_push($quFilterArr,"and","objparentid","=",$catFolderid,"and","vint",">",0);
+                                        $quFilterArr = array("attrid","=",$value["id"],"and","vint",">",0);
+                                        if ($catFolderid!=Glob::$vars['prod_storage_rootid']) array_push($quFilterArr,"and","objparentid","=",$catFolderid);
                                         $res = MNBVStorage::getObj(SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'],
                                                 array(array("min(vint)","min"),array("max(vint)","max")),
                                                 $quFilterArr);
