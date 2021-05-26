@@ -11,7 +11,7 @@
 //Формирование массива ссылок возврата и други связанных с ними системных переменных
 MNBVf::updateBackUrl(MNBVf::requestUrl());
 
-Glob::$vars['no_cache'] = SysBF::checkStr(SysBF::getFrArr(Glob::$vars['request'],'nocache',''),'on');
+Glob::$vars['no_cache'] = SysBF::checkStr(SysBF::getFrArr(Glob::$vars['request'],'no_cache',''),'on');
 
 //Дефолтовые значения-----------------------------------------------------------
 Glob::$vars['mnbv_controller'] = Glob::$vars['mnbv_def_controller'] = SysBF::trueName(Glob::$vars['mnbv_module'],'title'); //Контроллер MNBV по-умолчанию

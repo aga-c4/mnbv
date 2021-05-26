@@ -2685,9 +2685,7 @@ class MNBVf {
                         if (!empty($value['vars'])){
                             $curItemAttr = SysBF::json_decode($value['vars']);
                             if (is_array($curItemAttr)) {
-                                
                                 $useAttrArr["attr".$value["id"]]["view"] = $curItemAttr;
-                                
                                 $useAttrArr["attr".$value["id"]]["filter_type"] = "";
                                 if (($useAttrArr["attr".$value["id"]]["view"]["dbtype"]=='int' || $useAttrArr["attr".$value["id"]]["view"]["dbtype"]=='decimal')
                                         && $useAttrArr["attr".$value["id"]]["view"]["type"]=='text'){
@@ -2701,7 +2699,7 @@ class MNBVf {
                                         && isset(SysStorage::$storage[SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse']])){
                                         
                                         $quFilterArr = array("attrid","=",$value["id"]);
-                                        if ($catFolderid!=Glob::$vars['prod_storage_rootid']) array_push($quFilterArr,"and","objparentid","=",$catFolderid);
+                                        if ($catFolderid!=Glob::$vars['prod_storage_rootid']) array_push($quFilterArr,"and","objparentid","=",$catFolderid,"and","vint",">",0);
                                         $res = MNBVStorage::getObj(SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'],
                                                 array(array("min(vint)","min"),array("max(vint)","max")),
                                                 $quFilterArr);
@@ -2716,9 +2714,10 @@ class MNBVf {
                                             $useAttrArr["attr".$value["id"]]["maxRval"] = $useAttrArr["attr".$value["id"]]["maxval"];
                                         }
                                     }
-                                    
-                                    if (empty($useAttrArr["attr".$value["id"]]["minval"]) || empty($useAttrArr["attr".$value["id"]]["maxval"]) || $useAttrArr["attr".$value["id"]]["minval"]==$useAttrArr["attr".$value["id"]]["maxval"]) unset($useAttrArr["attr".$value["id"]]); 
-                                    
+                                    if (empty($useAttrArr["attr".$value["id"]]["maxval"]) 
+                                            || $useAttrArr["attr".$value["id"]]["minval"]==$useAttrArr["attr".$value["id"]]["maxval"]) {
+                                        unset($useAttrArr["attr".$value["id"]]); 
+                                    }
                                 }elseif ($useAttrArr["attr".$value["id"]]["view"]["dbtype"]=='int'
                                         && in_array($useAttrArr["attr".$value["id"]]["view"]["type"],array("select","radio","checkbox","list"))){
                                     //Можно отфильтровать группой чекбоксов
@@ -2752,15 +2751,25 @@ class MNBVf {
         }//if (!$limitparams) 
         
         //Удалим неиспользуемые фильтры
+        $findex = array();
         foreach($useAttrArr as $attrid => $value){
             if ($value["filter_type"] == 'checkbox_gr' && (!isset($value["vals"])||count($value["vals"])==0)) { 
                 unset ($useAttrArr[$attrid]);
+            }else{
+                $findex[$attrid] = $value['pozid'];
+            }
+        }
+        $result = array();
+        if (count($findex)) {
+            asort($findex);
+            foreach ($findex as $key=>$value) {
+                $result[$key] = $useAttrArr[$key];
             }
         }
         
         return array(
             "selected" => 0,
-            "list" => $useAttrArr
+            "list" => $result
             );
         
     }

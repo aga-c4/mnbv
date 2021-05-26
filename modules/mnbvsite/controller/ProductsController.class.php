@@ -159,7 +159,7 @@ class ProductsController extends AbstractMnbvsiteController {
                         }
                     }if ($value["type"]==='range'){
                         if (is_array($value["vals"]) && count($value["vals"])) {
-                            array_push($quFilterArr, "and","id","in",array("select","objid","from",SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'],"where",array("attrid","=","$key","and","vint",">=",$value["vals"][0],"and","vint","<=",$value["vals"][1])));
+                            array_push($quFilterArr, "and","id","in",array("select","objid","from",SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'],"where",array("attrid","=",$value["id"],"and","vint",">=",$value["vals"][0],"and","vint","<=",$value["vals"][1])));
                         }
                     }
                 }else{//Это поля таблицы товаров

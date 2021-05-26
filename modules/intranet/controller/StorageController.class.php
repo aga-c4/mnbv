@@ -376,7 +376,8 @@ class StorageController {
             
             case 'update': //Редактирование элемента списка      
                 $gid = SysBF::checkStr(SysBF::getFrArr(Glob::$vars['request'],'gid',0),'id');
-                if ($gid>0){
+                if ($gid>0 && $upd_obj = MNBVf::getStorageObject($this->getStorage(),$gid,array('altlang'=>Glob::$vars['mnbv_altlang']))){
+                        
                     //Получим новые значения полей
                     $gpozid = SysBF::checkStr(SysBF::getFrArr(Glob::$vars['request'],'gpozid',0),'int');
                     $gvisible = SysBF::checkStr(SysBF::getFrArr(Glob::$vars['request'],'gvisible',0),'on');
@@ -412,6 +413,39 @@ class StorageController {
                         $updateArr["edituser"] = Glob::$vars['user']->get('userid');
                         $updateArr["editdate"] = $thisTime;
                         $updateArr["editip"] = GetEnv('REMOTE_ADDR');
+                        
+                        //Если поменялись:папка, название(р/л), префикс(р/л), модель, то перегенерим поисковые поля
+                        if ($this->getStorage()===Glob::$vars['prod_storage'] 
+                                && (isset($updateArr["name"])||isset($updateArr["namelang"])
+                                ||isset($updateArr["prefix"])||isset($updateArr["prefixlang"])
+                                ||isset($updateArr["partnumber"])||isset($updateArr["model"]))){
+                                    
+                            $sr_type = (isset($updateArr["type"]))?$updateArr["type"]:$upd_obj["type"];    
+                            $sr_name = (isset($updateArr["name"]))?$updateArr["name"]:$upd_obj["name"];    
+                            $sr_namelang = (isset($updateArr["namelang"]))?$updateArr["namelang"]:$upd_obj["namelang"]; 
+                            $sr_prefix = (isset($updateArr["prefix"]))?$updateArr["prefix"]:$upd_obj["prefix"]; 
+                            $sr_prefixlang = (isset($updateArr["prefixlang"]))?$updateArr["prefixlang"]:$upd_obj["prefixlang"]; 
+                            $sr_partnumber = (isset($updateArr["partnumber"]))?$updateArr["partnumber"]:$upd_obj["partnumber"]; 
+                            $sr_model = (isset($updateArr["model"]))?$updateArr["model"]:$upd_obj["model"]; 
+                            $sr_barcode = (isset($updateArr["barcode"]))?$updateArr["barcode"]:$upd_obj["barcode"];
+        
+                            $updateArr["norm_partnumber"] = '';
+                            $updateArr["norm_search"] = '';
+                            if ($sr_type!==ST_FOLDER) {
+                                $updateArr["norm_search"] .= ',' . $upd_obj["id"];
+                                $updateArr["norm_search"] .= ',' . SysBF::strNormalize($sr_barcode,'zpt_ok');
+                                $updateArr["norm_partnumber"] .= SysBF::strNormalize($sr_partnumber,'zpt_ok');
+                                $updateArr["norm_search"] .= ',' . $updateArr["norm_partnumber"];
+                                $updateArr["norm_search"] .= ',' . SysBF::strNormalize($sr_model);
+                            }
+                            $updateArr["norm_search"] .= ',' . SysBF::strNormalize($sr_name);
+                            $updateArr["norm_search"] .= ',' . SysBF::strNormalize($sr_namelang);
+                            $updateArr["norm_search"] .= ',' . SysBF::strNormalize($sr_prefix);
+                            $updateArr["norm_search"] .= ',' . SysBF::strNormalize($sr_prefixlang); 
+                            
+                            SysLogs::addLog("Update norm_partnumber=[{$updateArr["norm_partnumber"]}]");
+                            SysLogs::addLog("Update norm_search=[{$updateArr["norm_search"]}]");
+                        }
 
                         $res = MNBVStorage::setObj($this->getStorage(), $updateArr, array("id",'=',$gid));
                         SysLogs::addLog("Update object /".$this->getStorage()."/".$gid."/ ".(($res)?'successful!':'error!'));
@@ -938,12 +972,15 @@ class StorageController {
                             $sr_prefixlang = (isset($updateArr["prefixlang"]))?$updateArr["prefixlang"]:$item['obj']["prefixlang"]; 
                             $sr_partnumber = (isset($updateArr["partnumber"]))?$updateArr["partnumber"]:$item['obj']["partnumber"]; 
                             $sr_model = (isset($updateArr["model"]))?$updateArr["model"]:$item['obj']["model"]; 
+                            $sr_barcode = (isset($updateArr["barcode"]))?$updateArr["barcode"]:$item['obj']["barcode"];
         
                             $updateArr["norm_partnumber"] = '';
-                            $updateArr["norm_search"] = $item['obj']["id"];
+                            $updateArr["norm_search"] = '';
                             if ($sr_type!==ST_FOLDER) {
+                                $updateArr["norm_search"] .= ',' . $item['obj']["id"];
+                                $updateArr["norm_search"] .= ',' . SysBF::strNormalize($sr_barcode,'zpt_ok');
                                 $updateArr["norm_partnumber"] .= SysBF::strNormalize($sr_partnumber,'zpt_ok');
-                                $updateArr["norm_search"] .= $updateArr["norm_partnumber"];
+                                $updateArr["norm_search"] .= ',' . $updateArr["norm_partnumber"];
                                 $updateArr["norm_search"] .= ',' . SysBF::strNormalize($sr_model);
                             }
                             $updateArr["norm_search"] .= ',' . SysBF::strNormalize($sr_name);

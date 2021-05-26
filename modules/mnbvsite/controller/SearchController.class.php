@@ -38,6 +38,7 @@ class SearchController extends AbstractMnbvsiteController {
         
         //Хранилище и папка по-умолчанию
         $storage = (MNBVStorage::isStorage(Glob::$vars['prod_storage']))?Glob::$vars['prod_storage']:'';
+        $rootFolder = MNBVf::getStorageObject($storage,Glob::$vars['prod_storage_rootid'],array('altlang'=>$item['mnbv_altlang'],'visible'=>true,'access'=>true,'site'=>true));
 
         SysLogs::addLog('Select mnbv script storage: [' . $storage . ']');
         $item['img_max_size'] = MNBVf::getImgMaxSize($storage,Glob::$vars['img_max_size']);
@@ -61,7 +62,7 @@ class SearchController extends AbstractMnbvsiteController {
         $attr_filters = $cache->get("prodfilters:search",true);
         
         if ($attr_filters===null || !is_array($attr_filters) || !empty(Glob::$vars['no_cache'])){ //Необходимо перегенерить кеш
-            $attr_filters = MNBVf::objFilterGenerator('attributes',0,array('limitparams'=>true)); //Специально без выделения пунктов, чтоб можно было закешировать.
+            $attr_filters = MNBVf::objFilterGenerator('attributes',$rootFolder,array('folderid'=>Glob::$vars['prod_storage_rootid'])); //Специально без выделения пунктов, чтоб можно было закешировать.
             $cache->set("prodfilters:search",$attr_filters,Glob::$vars['prod_filters_cache_ttl']);
         }
 
@@ -92,7 +93,7 @@ class SearchController extends AbstractMnbvsiteController {
                         }
                     }if ($value["type"]==='range'){
                         if (is_array($value["vals"]) && count($value["vals"])) {
-                            array_push($quFilterArr, "and","id","in",array("select","objid","from",SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'],"where",array("attrid","=","$key","and","vint",">=",$value["vals"][0],"and","vint","<=",$value["vals"][1])));
+                            array_push($quFilterArr, "and","id","in",array("select","objid","from",SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'],"where",array("attrid","=",$value["id"],"and","vint",">=",$value["vals"][0],"and","vint","<=",$value["vals"][1])));
                         }
                     }
                 }else{//Это поля таблицы товаров
