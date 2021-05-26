@@ -437,6 +437,14 @@ class StorageController {
                                 $updateArr["norm_partnumber"] .= SysBF::strNormalize($sr_partnumber,'zpt_ok');
                                 $updateArr["norm_search"] .= ',' . $updateArr["norm_partnumber"];
                                 $updateArr["norm_search"] .= ',' . SysBF::strNormalize($sr_model);
+                                //Подтянем имя вендора
+                                $res = MNBVStorage::getObj(Glob::$vars['vend_storage'],
+                                        array("name","namelang"),
+                                        array("id","=",$value["vendor"]));
+                                if (!empty($res[0])) {
+                                    $updateArr["norm_search"] .= ',' . SysBF::strNormalize($res[1]['name']);
+                                    $updateArr["norm_search"] .= ',' . SysBF::strNormalize($res[1]['namelang']);
+                                }
                             }
                             $updateArr["norm_search"] .= ',' . SysBF::strNormalize($sr_name);
                             $updateArr["norm_search"] .= ',' . SysBF::strNormalize($sr_namelang);
@@ -982,6 +990,15 @@ class StorageController {
                                 $updateArr["norm_partnumber"] .= SysBF::strNormalize($sr_partnumber,'zpt_ok');
                                 $updateArr["norm_search"] .= ',' . $updateArr["norm_partnumber"];
                                 $updateArr["norm_search"] .= ',' . SysBF::strNormalize($sr_model);
+                                
+                                //Подтянем имя вендора
+                                $res = MNBVStorage::getObj(Glob::$vars['vend_storage'],
+                                        array("name","namelang"),
+                                        array("id","=",$item['obj']["vendor"]));
+                                if (!empty($res[0])) {
+                                    $updateArr["norm_search"] .= ',' . SysBF::strNormalize($res[1]['name']);
+                                    $updateArr["norm_search"] .= ',' . SysBF::strNormalize($res[1]['namelang']);
+                                }
                             }
                             $updateArr["norm_search"] .= ',' . SysBF::strNormalize($sr_name);
                             $updateArr["norm_search"] .= ',' . SysBF::strNormalize($sr_namelang);
