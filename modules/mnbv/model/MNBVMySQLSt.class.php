@@ -17,16 +17,27 @@ class MNBVMySQLSt implements MNBVdefSt{
      /**
      * Преобразует строку, экранируя кавычки и др. символы, мешающие рабое с бд.
      * @param string $str - исходная строка
+     * @param string $type - тип значения обычный '' (по-умолчанию) или 'like' для фильтрации поиска типа like 
+     * @param mixed $dbLink - линк к базе данных для mysqli_real_escape_string, если не задан, то фильтруем addslashes
      * @return string результат операции
      */
-    public static function codeStr($str,$type=''){
+    public static function codeStr($str,$type='',$dbLink=''){
         if (!is_string($str)) return $str;
         $res = $str;
-        //$res=preg_replace("/`/","&#96;",$res);
-        //$res=preg_replace("/’/","&#39;",$res);
-        //$res=preg_replace("/'/","&#39;",$res);
-        $res = addslashes($res);
-        if ($type=='like') $res = addCslashes($res, '\%_'); //преобразование для условия типа like
+        //$res=preg_replace("/`/u","&#96;",$res);
+        //$res=preg_replace("/’/u","&#39;",$res);
+        //$res=preg_replace("/'/u","&#39;",$res);
+        
+        if ($dbLink==='') {
+            $res = addslashes($res);
+        } else {
+            $res = $dbLink->mysql_real_escape_string($res);
+        }
+        
+        if ($type=='like') {
+            $res = addCslashes($res, '\%_'); //преобразование для условия типа like
+        }
+        
         return $res;
     }
     
@@ -38,8 +49,8 @@ class MNBVMySQLSt implements MNBVdefSt{
     public static function decodeStr($str){
         $res = $str;
         //stripslashes($str);
-        //$res=preg_replace('/&#96;/',"`",$res);
-        //$res=preg_replace('/&#39;/',"'",$res);
+        //$res=preg_replace('/&#96;/u',"`",$res);
+        //$res=preg_replace('/&#39;/u',"'",$res);
         die (var_dump($res));
         return $res;
     }
@@ -55,9 +66,10 @@ class MNBVMySQLSt implements MNBVdefSt{
      * Примеры подзапросов для in или not in: 
      * array("select","objid","from",SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'],"where",array("attrid","=","$key","and","vint","in",$value["vals"]))
      * array("select","objid","from",SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'],"where",array("attrid","=","$key","and","vint",">=",$value["vals"][0],"and","vint","<=",$value["vals"][1]))  
+     * @param mixed $dbLink - линк к базе данных для mysqli_real_escape_string, если не задан, то фильтруем addslashes
      * @return boolean|string
      */
-    public static function createWhereStr($filter){
+    public static function createWhereStr($filter,$dbLink=''){
 
         if (!is_array($filter)) return $filter; //Можно напрямую строку мускула задать (вдальнейшем надо сделать парсер строки для работы в  других типах БД
 
@@ -90,7 +102,7 @@ class MNBVMySQLSt implements MNBVdefSt{
 
             //проверим на массив
             if (is_array($filter[$key])){
-                $res = self::createWhereStr($filter[$key]);
+                $res = self::createWhereStr($filter[$key],$dbLink);
                 if ($res===false){
                     $numIterations--;
                     return false;
@@ -141,7 +153,7 @@ class MNBVMySQLSt implements MNBVdefSt{
                             $inStr .= 'select '.$filter[$key][1].' from '.SysStorage::$storage[strtolower($filter[$key][3])]['table'].' where ';
                             
                             //проверим на массив
-                            $res = self::createWhereStr($filter[$key][5]);
+                            $res = self::createWhereStr($filter[$key][5],$dbLink);
                             if ($res!==false){
                                 $inStr .= $res;
                             }
@@ -149,7 +161,7 @@ class MNBVMySQLSt implements MNBVdefSt{
                             $wStr = ' 1=0';
                         }
                     }else{ //Обычное перечисление
-                        foreach($filter[$key] as $inArr) $inStr .= (($inStr!='')?', ':'')."'".self::codeStr($inArr)."'";
+                        foreach($filter[$key] as $inArr) $inStr .= (($inStr!='')?', ':'')."'".self::codeStr($inArr,'',$dbLink)."'";
                     }
                     $wStr .= $inStr . ")";
                 }
@@ -158,7 +170,7 @@ class MNBVMySQLSt implements MNBVdefSt{
                     $curVal = substr($filter[$key],7);
                     $wStr .= " " . $curVal;
                 }else{ //Вариант с экранированием
-                    $wStr .= " '".self::codeStr($filter[$key])."'";
+                    $wStr .= " '".self::codeStr($filter[$key],'',$dbLink)."'";
                 }
             }
             
@@ -200,6 +212,12 @@ class MNBVMySQLSt implements MNBVdefSt{
         if (!is_array($storage)) $storage = array(array('name'=> strval($storage))); //Приведем к универсальному виду
 
         $main_storage = ''; //Базовое хранилище к которому могут джойниться остальные, эта схема отработает с ошибкой, если остальные находятся в другой БД.
+        $myDb = '';
+
+        //Надо ли считать количество строк
+        $sqlFlags = '';$connectStatus = "nocheck";
+        if (!empty($conf["countFoundRows"])) $sqlFlags .= ' SQL_CALC_FOUND_ROWS';
+        if (!empty($conf["connect"])) $connectStatus = $conf["connect"];
 
         $fromStr = ' FROM';
         foreach ($storage as $value) {
@@ -209,7 +227,11 @@ class MNBVMySQLSt implements MNBVdefSt{
 
             if (!empty(SysStorage::$storage[$value['name']]["table"])) $mysqlTable = SysStorage::$storage[$value['name']]["table"]; else return array(0); //Таблица
 
-            if ($fromStr == ' FROM') $main_storage = $value['name'];
+            if ($fromStr == ' FROM') {
+                $main_storage = $value['name'];
+                $myDb = SysStorage::getLink($main_storage,$connectStatus);
+                if ($myDb===null) return array(0); //Если линка нет, то возвращаем пустой ответ
+            }
 
             if (!empty($value['join'])) {
                 if ($value['join']=='base') $fromStr .= ' JOIN';
@@ -219,14 +241,11 @@ class MNBVMySQLSt implements MNBVdefSt{
             
             $fromStr .= ' ' . $mysqlTable;
             if (!empty($value['alias'])) $fromStr .= ' ' . $value['alias'];
-            if (isset($value['on'])&& is_array($value['on'])) $fromStr .= ' ON (' .  self::createWhereStr($value['on']) . ')';
+            
+            if (isset($value['on'])&& is_array($value['on'])) $fromStr .= ' ON (' .  self::createWhereStr($value['on'],$myDb) . ')';
             
         }
-        
-        //Надо ли считать количество строк
-        $sqlFlags = '';$connectStatus = "nocheck";
-        if (!empty($conf["countFoundRows"])) $sqlFlags .= ' SQL_CALC_FOUND_ROWS';
-        if (!empty($conf["connect"])) $connectStatus = $conf["connect"];
+        if (empty($main_storage)) return array(0); //Если линка нет, то возвращаем пустой ответ
         
         //Построим строку полей
         $fieldsStr = ''; $allFields = false;
@@ -239,9 +258,9 @@ class MNBVMySQLSt implements MNBVdefSt{
                     else $fieldsStr .= (($fieldsStr=='')?' ':', ')."$value";
             }
         }   
-        
+                
         //Построим строку фильтров
-        $whereStr = (is_array($filter))?(self::createWhereStr($filter)):'';
+        $whereStr = (is_array($filter))?(self::createWhereStr($filter,$myDb)):'';
         if (false === $whereStr) return array(0); //Если ошибочное завершение, вернем пустой результат
         else $whereStr = ' WHERE' . $whereStr;
         if (trim($whereStr) == 'WHERE') $whereStr = '';
@@ -262,9 +281,6 @@ class MNBVMySQLSt implements MNBVdefSt{
         $LimitStr = '';
         if (isset($conf["limit"][0])&&!empty($conf["limit"][1])) $LimitStr = ' LIMIT ' . intval($conf["limit"][0]) . ',' . intval($conf["limit"][1]);
         
-        $myDb = SysStorage::getLink($main_storage,$connectStatus);
-        if ($myDb===null) return array(0); //Если линка нет, то возвращаем пустой ответ
-
         $query = "SELECT$sqlFlags$fieldsStr$fromStr$whereStr$groupStr$orderStr$LimitStr;";
         $mysqlres = $myDb->query($query);
         while ($res=DBMysql::mysql_fetch_array($mysqlres)){
@@ -303,12 +319,15 @@ class MNBVMySQLSt implements MNBVdefSt{
         if (!empty(SysStorage::$storage["$storage"]["table"])) $mysqlTable = SysStorage::$storage["$storage"]["table"]; else return false; //Таблица
         if (!empty(SysStorage::$storage["$storage"]["stru"])) $mysqlStru = SysStorage::$storage["$storage"]["stru"]; else return false; //Структура
         
+        $myDb = SysStorage::getLink($storage);
+        if ($myDb===null) return false; //Если линка нет, то возвращаем пустой ответ
+        
         //Построим строку полей
         $fieldsStr = '';$valStr = '';
         if (is_array($fields)){
             foreach ($fields as $key=>$value) {
                 $fieldsStr .= (($fieldsStr=='')?' ':', ')."$key";
-                $valStr .= (($valStr=='')?' ':', ')."'".self::codeStr($value)."'";
+                $valStr .= (($valStr=='')?' ':', ')."'".self::codeStr($value,'',$myDb)."'";
             }
         }   
         
@@ -317,13 +336,11 @@ class MNBVMySQLSt implements MNBVdefSt{
         if (is_array($params) && !empty($params['type']) && $params['type']=='replace') $fromStr = 'REPLACE ' . $mysqlTable; 
 
         //Построим строку фильтров
-        $whereStr = (is_array($filter))?(self::createWhereStr($filter)):'';
+        $whereStr = (is_array($filter))?(self::createWhereStr($filter,$myDb)):'';
         if (false === $whereStr) return array(0); //Если ошибочное завершение, вернем пустой результат
         else $whereStr = ' WHERE ' . $whereStr;
         if (trim($whereStr) == 'WHERE') $whereStr = '';
         
-        $myDb = SysStorage::getLink($storage);
-        if ($myDb===null) return false; //Если линка нет, то возвращаем пустой ответ
         $mysqlres = $myDb->query("$fromStr ($fieldsStr) VALUES ($valStr) $whereStr;");
         if ($mysqlres) return $myDb->mysql_insert_id();        
         return $mysqlres;
@@ -346,23 +363,24 @@ class MNBVMySQLSt implements MNBVdefSt{
         if (!empty(SysStorage::$storage["$storage"]["table"])) $mysqlTable = SysStorage::$storage["$storage"]["table"]; else return false; //Таблица
         if (!empty(SysStorage::$storage["$storage"]["stru"])) $mysqlStru = SysStorage::$storage["$storage"]["stru"]; else return false; //Структура
         
+        $myDb = SysStorage::getLink($storage);
+        if ($myDb===null) return false; //Если линка нет, то возвращаем пустой ответ
+        
         //Построим строку полей
         $fieldsStr = '';
         if (is_array($fields)){
-            foreach ($fields as $key=>$value) $fieldsStr .= (($fieldsStr=='')?' ':', ')."$key='".self::codeStr($value)."'";
+            foreach ($fields as $key=>$value) $fieldsStr .= (($fieldsStr=='')?' ':', ')."$key='".self::codeStr($value,'',$myDb)."'";
         }   
         
         //Построим строку таблиц
         $fromStr = ' ' . $mysqlTable . ' SET ';
 
         //Построим строку фильтров
-        $whereStr = (is_array($filter))?(self::createWhereStr($filter)):'';
+        $whereStr = (is_array($filter))?(self::createWhereStr($filter,$myDb)):'';
         if (false === $whereStr) return array(0); //Если ошибочное завершение, вернем пустой результат
         else $whereStr = ' WHERE ' . $whereStr;
         if (trim($whereStr) == 'WHERE') $whereStr = '';
         
-        $myDb = SysStorage::getLink($storage);
-        if ($myDb===null) return false; //Если линка нет, то возвращаем пустой ответ
         $mysqlres = $myDb->query("UPDATE$fromStr$fieldsStr $whereStr;");        
         
         return $mysqlres;
@@ -384,17 +402,18 @@ class MNBVMySQLSt implements MNBVdefSt{
         if (!empty(SysStorage::$storage["$storage"]["table"])) $mysqlTable = SysStorage::$storage["$storage"]["table"]; else return false; //Таблица
         if (!empty(SysStorage::$storage["$storage"]["stru"])) $mysqlStru = SysStorage::$storage["$storage"]["stru"]; else return false; //Структура
         
+        $myDb = SysStorage::getLink($storage);
+        if ($myDb===null) return false; //Если линка нет, то возвращаем пустой ответ
+        
         //Построим строку таблиц
         $fromStr = 'FROM ' . $mysqlTable;
 
         //Построим строку фильтров
-        $whereStr = (is_array($filter))?(self::createWhereStr($filter)):'';
+        $whereStr = (is_array($filter))?(self::createWhereStr($filter,$myDb)):'';
         if (false === $whereStr) return array(0); //Если ошибочное завершение, вернем пустой результат
         else $whereStr = ' WHERE ' . $whereStr;
         if (trim($whereStr) == 'WHERE') $whereStr = '';
         
-        $myDb = SysStorage::getLink($storage);
-        if ($myDb===null) return false; //Если линка нет, то возвращаем пустой ответ
         $mysqlres = $myDb->query("DELETE $fromStr $whereStr;");        
         
         return $mysqlres;

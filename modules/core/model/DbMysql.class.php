@@ -353,6 +353,31 @@ class DbMysql {
             return false;
         }
     }
+    
+    /**
+     * Возвращает экратированную строку
+     * @return string
+     */
+    public function mysql_real_escape_string($str) {
+        if (!is_string($str)) return $str;
+        $res = $str;
+        try{
+            if ($this->linkDb) return @$this->linkDb->real_escape_string($str);
+            return false;
+        }catch (Exception $e) {
+            SysLogs::addError('Mysql:Error - ' . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Возвращает экратированную строку алиас mysql_real_escape_string
+     * @return string
+     */
+    public function real_escape_string($str) {
+        return mysql_real_escape_string($str);
+    }
+
 
     /**
      * Проверяет соединение с сервером. Если оно утеряно, автоматически предпринимается попытка пересоединения.

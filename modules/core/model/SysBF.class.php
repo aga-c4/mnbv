@@ -319,9 +319,9 @@ class SysBF {
         $str = self::rus2translit($str);
         $str = strtolower($str);
         $str = preg_replace('~[^-a-z0-9_, ]+~u', '_', $str);
-        $str=preg_replace("/ ( )+/","",$str);
-        if ($nozpt!=='zpt_ok') $result = preg_replace("/,/",'',$str);
-        if ($nozpt!=='space_ok') $result = preg_replace('/ /','',$str);
+        $str=preg_replace("/ ( )+/u"," ",$str);
+        if ($nozpt!=='zpt_ok') $str = preg_replace("/,/u",'',$str);
+        if ($nozpt!=='space_ok') $str = preg_replace('/ /u','',$str);
         return  trim($str, "_");
     }
     

@@ -569,6 +569,7 @@ SysStorage::$storage['countries']['stru']['discmaxpr'] = array("type"=>"decimal"
 SysStorage::$storage['countries']['stru']['discmaxval'] = array("type"=>"decimal", "size"=>11, "creatval"=>"0.00", "dbtype"=>"decimal");
 SysStorage::$storage['countries']['stru']['discminmargpr'] = array("type"=>"decimal", "size"=>11, "creatval"=>"0.00", "dbtype"=>"decimal");
 SysStorage::$storage['countries']['stru']['discminmargval'] = array("type"=>"decimal", "size"=>11, "creatval"=>"0.00", "dbtype"=>"decimal");
+SysStorage::$storage['countries']['stru']['searchstr'] = array("type"=>"string", "size"=>512, "creatval"=>"", "dbtype"=>"varchar");
 
 SysStorage::$storage['countries']['view']["main"] = array(
     //"visfirstline" => array("name"=>"visfirstline", "type"=>"visfirstline", "table" =>"thline", "checktype" => "datetime"),
@@ -595,6 +596,7 @@ SysStorage::$storage['countries']['view']["main"] = array(
     "type" => array("name"=>"type", "type"=>"select", "viewindex" =>false,  "delim"=>" | ", "checktype" => "int"),
     "parentid" => array("name"=>"parentid", "type"=>"select", "viewindex" =>true, "notset" =>true, "filter_type"=>"folders", "checktype" => "id"),
     "siteid" => array("name"=>"siteid", "type"=>"select", "viewindex" =>true, "notset" =>true, "filter_type"=>"objects", "filter_folder"=>1, "checktype" => "id"),
+    "searchstr" => array("name"=>"searchstr", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text"),
     "author" => array("name"=>"author", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text","active" => "print"),
     "editdate" => array("name"=>"editdate", "type"=>"datetime","size"=>19, "active" => "print"),   
 );
@@ -693,6 +695,10 @@ SysStorage::$storage['products']['stru']['barcode'] = array("type"=>"string", "s
 SysStorage::$storage['products']['stru']['country'] = array("type"=>"int", "size"=>11, "creatval"=>0, "dbtype"=>"int", "linkstorage"=>"countries");
 SysStorage::$storage['products']['stru']['quantity'] = array("type"=>"int", "size"=>11, "creatval"=>0, "dbtype"=>"int");
 SysStorage::$storage['products']['stru']['instock'] = array("type"=>"int", "size"=>1, "creatval"=>0, "dbtype"=>"int", "linkstorage"=>array("1" =>"instock", "2"=>"limited","3" =>"underorder", "4"=>"notinstock"));
+SysStorage::$storage['products']['stru']['searchstr'] = array("type"=>"string", "size"=>512, "creatval"=>"", "dbtype"=>"varchar");
+//Инфо по донору
+SysStorage::$storage['products']['stru']['donorurl'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar");
+SysStorage::$storage['products']['stru']['donorimg'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar");
 //Цена и себестоимость
 SysStorage::$storage['products']['stru']['price'] = array("type"=>"decimal", "size"=>11, "creatval"=>"0.00", "dbtype"=>"decimal");
 SysStorage::$storage['products']['stru']['oldprice'] = array("type"=>"decimal", "size"=>11, "creatval"=>"0.00", "dbtype"=>"decimal");
@@ -710,11 +716,13 @@ SysStorage::$storage['products']['stru']['norm_partnumber'] = array("type"=>"str
 SysStorage::$storage['products']['view']["main"] = array(
     //"visfirstline" => array("name"=>"visfirstline", "type"=>"visfirstline", "table" =>"thline", "checktype" => "datetime"),
     "date" => array("name"=>"date", "type"=>"datetime","table" =>"thline","checktype" => "datetime"),
-    "outid" => array("name"=>"outid", "type"=>"text","size"=>255,"width"=>"100%","langlink"=>"namelang","checktype" => "text", "active" => "print"),
     "name" => array("name"=>"name", "type"=>"text","size"=>255,"width"=>"100%","langlink"=>"namelang","checktype" => "text","lang" => "lang"), //Основной язык
     "namelang" => array("name"=>"namelang", "type"=>"text","size"=>255,"width"=>"100%","langlink"=>"name","checktype" => "text","lang" => "altlang"), //Альтернативный язык
     "comm" => array("name"=>"comm", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text"),
     "alias" => array("name"=>"alias", "type"=>"text","size"=>255,"width"=>"60%","checktype" => "text"),
+    "outid" => array("name"=>"outid", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text", "active" => "print"),
+    "donorurl" => array("name"=>"donorurl", "type"=>"text","size"=>255,"width"=>"100%","langlink"=>"namelang","checktype" => "text", "active" => "print"),
+    "donorimg" => array("name"=>"donorimg", "type"=>"text","size"=>255,"width"=>"100%","langlink"=>"namelang","checktype" => "text", "active" => "print"),
     "tags" => array("name"=>"tags", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text"),
     "clear1" => array("name"=>"clear1", "type"=>"lineblock", "table" =>"thline", "string"=>"Prices"),
     "quantity" => array("name"=>"quantity", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "int"),
@@ -733,7 +741,7 @@ SysStorage::$storage['products']['view']["main"] = array(
     "country" => array("name"=>"country", "type"=>"select", "viewindex" =>true, "notset" =>true, "filter_type"=>"objects", "filter_folder"=>1, "checktype" => "id"),
     "attrvals" => array("name"=>"attrvalsmini", "type"=>"attrvalsmini"), //Значения атрибутов для папки укороченный вариант
     //"attrvals" => array("name"=>"attrvals", "type"=>"attrvals"),
-    "about" => array("name"=>"about", "type"=>"textarea","editor"=>false,"rows"=>2,"width"=>"100%","langlink"=>"aboutlang","table" =>"thline","checktype" => "text","lang" => "lang"), //Основной язык
+    "about" => array("name"=>"about", "type"=>"textarea","editor"=>false,"rows"=>4,"width"=>"100%","langlink"=>"aboutlang","table" =>"thline","checktype" => "text","lang" => "lang"), //Основной язык
     "aboutlang" => array("name"=>"aboutlang", "type"=>"textarea","editor"=>false,"rows"=>4,"width"=>"100%","langlink"=>"about","table" =>"thline","checktype" => "text","lang" => "altlang"), //Альтернативный язык
     "clear3" => array("name"=>"clear1", "type"=>"lineblock", "table" =>"tdline", "string"=>""),
     "text" => array("name"=>"text", "type"=>"textarea","editor"=>true,"rows"=>20,"width"=>"100%","langlink"=>"textlang","table" =>"thline","checktype" => "text","lang" => "lang"), //Основной язык
@@ -747,6 +755,7 @@ SysStorage::$storage['products']['view']["main"] = array(
     "type" => array("name"=>"type", "type"=>"select", "viewindex" =>false,  "delim"=>" | ", "checktype" => "int"),
     "parentid" => array("name"=>"parentid", "type"=>"select", "viewindex" =>true, "notset" =>true, "filter_type"=>"folders", "checktype" => "id"),
     "siteid" => array("name"=>"siteid", "type"=>"select", "viewindex" =>true, "notset" =>true, "filter_type"=>"objects", "filter_folder"=>1, "checktype" => "id"),
+    "searchstr" => array("name"=>"searchstr", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text"),
     "author" => array("name"=>"author", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text","active" => "print"),
     "editdate" => array("name"=>"editdate", "type"=>"datetime","size"=>19, "active" => "print"),   
     "norm_partnumber" => array("name"=>"norm_partnumber", "type"=>"text","size"=>255,"width"=>"100%","langlink"=>"namelang","checktype" => "text", "active" => "print"),
@@ -1505,8 +1514,8 @@ SysStorage::$storage['urlaliases'] = array( //Архив котировок и �
         "id" => array("type"=>"int", "size"=>11, "creatval"=>0, "autoinc"=>true, "dbtype"=>"int"), // Идентификатор записи
         "siteid" => array("type"=>"int", "size"=>11, "creatval"=>0, "dbtype"=>"int"), // Идентификатор сайта
         "urltype" => array("type"=>"int", "size"=>2, "creatval"=>0, "dbtype"=>"int"), // Идентификатор типа URL
-        "alias" => array("type"=>"string", "size"=>100, "creatval"=>"", "dbtype"=>"varchar"), //алиас объекта
-        "catalias" => array("type"=>"string", "size"=>100, "creatval"=>"", "dbtype"=>"varchar"), //алиас вышестоящей
+        "alias" => array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"), //алиас объекта
+        "catalias" => array("type"=>"string", "size"=>512, "creatval"=>"", "dbtype"=>"varchar"), //алиас вышестоящей
         "idref" => array("type"=>"int", "size"=>11, "creatval"=>0, "dbtype"=>"int"), // Идентификатор объекта
         "objtype" => array("type"=>"int", "size"=>1, "creatval"=>0, "dbtype"=>"int"), // Идентификатор типа объекта
     ), //Структура данного хранилища

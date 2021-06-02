@@ -70,7 +70,7 @@ class MNBVURL {
             'urlaliases',
             array('alias','catalias','objtype'),
             array("urltype","=",$urltypeInt,"and","idref","=",$id,"and",array("siteid","=",$siteId,"or","siteid","=",0)),
-            array('limit'=>array(0,1)));
+            array("sort"=>array("id"=>"desc"),'limit'=>array(0,1)));
         if (empty($stRes[0])) {//Если ничего не нашли, сгенерим читаемый URL для объекта или корень.
             if ($objtype!=='notset' && $objtype!==''){
                 $objtype = intval($objtype);
@@ -145,7 +145,7 @@ class MNBVURL {
             'urlaliases',
             array('idref'),
             array("urltype","=",$urltypeInt,"and","alias","=",$url,"and","alias","!=","","and",array("siteid","=",$siteId,"or","siteid","=",0)),
-            array('limit'=>array(0,1)));
+            array("sort"=>array("id"=>"desc"),"limit"=>array(0,1)));
         $refid = (!empty($stRes[0])&&isset($stRes[1])&&isset($stRes[1]['idref']))?$stRes[1]['idref']:'';
         if (!empty($refid)) return array('list_id'=>$refid);
 
@@ -192,7 +192,7 @@ class MNBVURL {
                 'urlaliases',
                 array('id'),
                 array("siteid","=",$siteId,"and","urltype","=",$urltypeInt,"and","idref","=",$id),
-                array('limit'=>array(0,1)));
+                array("sort"=>array("id"=>"desc"),'limit'=>array(0,1)));
             $aliasId = (!empty($stRes[0])&&isset($stRes[1])&&isset($stRes[1]['id']))?$stRes[1]['id']:'';
 
             if (empty($aliasId)) {

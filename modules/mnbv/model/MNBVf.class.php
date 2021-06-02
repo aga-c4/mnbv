@@ -582,9 +582,10 @@ class MNBVf {
     /**
      * Возвращает подготовленный алиас на базе входящей строки
      * @param string $string исходная строка
+     * @param string $delim то, на что будут поменяны невалидные символы и пробелы
      * @return string алиас в транслите
      */
-    public static function str2alias($str) {
+    public static function str2alias($str,$delim='-') {
         // переводим в транслит
         $str = SysBF::rus2translit($str);
 
@@ -592,10 +593,10 @@ class MNBVf {
         $str = strtolower($str);
 
         // заменям все ненужное нам на "-"
-        $str = preg_replace('~[^-a-z0-9_]+~u', '-', $str);
+        $str = preg_replace('~[^-a-z0-9_]+~u', $delim, $str);
 
         // удаляем начальные и конечные '-'
-        $str = trim($str, "-");
+        $str = trim($str, $delim);
 
         return $str;
     }
@@ -1564,6 +1565,7 @@ class MNBVf {
             $formImgNum = (isset($img_max_size["form_img_num"]))?intval($img_max_size["form_img_num"]):5; //количество изображений в панели редактирования
             $formAttNum = (isset($img_max_size["form_att_num"]))?intval($img_max_size["form_att_num"]):5; //количество приложенных файлов в панели редактирования
 
+            $imgTitle = '';
             for ($i=1;$i<=$formImgNum;$i++){ 
 
                 if (isset($files["img"]["$i"]) && $tecObjTxtCode = MNBVf::getObjCodeByURL(SysBF::getFrArr($files["img"]["$i"],'src',''))){//Нашли специфический объект (видео, ютуб.....), выводим его 
@@ -2635,7 +2637,7 @@ class MNBVf {
         if (!isset($useAttrArr["country"]["vals"]) || count($useAttrArr["country"]["vals"])==0) unset($useAttrArr["country"]); 
         
         $ids = array();
-        if (is_array($obj["attrup"]) && count($obj["attrup"])){
+        if (isset($obj["attrup"]) && is_array($obj["attrup"]) && count($obj["attrup"])){
             foreach($obj["attrup"] as $attrItem) {
                 if (empty($attrItem["infilter"])) continue; //Возможно сделать вдальнейшем регулировку этого условия по входному параметру
                 $useAttrArr["attr".$attrItem["attrid"]] = $attrItem;
@@ -2643,7 +2645,7 @@ class MNBVf {
             }
         }
         
-        if (is_array($obj["attr"]) && count($obj["attr"])){
+        if (isset($obj["attr"]) && is_array($obj["attr"]) && count($obj["attr"])){
             foreach($obj["attr"] as $attrItem) {
                 if (empty($attrItem["infilter"])) continue; //Возможно сделать вдальнейшем регулировку этого условия по входному параметру
                 $useAttrArr["attr".$attrItem["attrid"]] = $attrItem;

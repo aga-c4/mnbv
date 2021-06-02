@@ -15,7 +15,7 @@ if (isset($item['attr_filters']) && is_array($item['attr_filters'])
     foreach($item['attr_filters']['vendor']["vals"] as $attrItemAlias=>$attrItemVal) {
         if (!is_array($attrItemVal)) continue; 
         if (empty($itemCounter)) $resVend .= '<div class="w-100">';
-        $resVend .= '<a class="btn btn-outline-secondary" href="'.$item['page_list_url'].'/'.$attrItemVal['alias'].'" role="button">'.MNBVf::getItemName($attrItemVal,Lang::isAltLang()).'</a>'."\n";
+        $resVend .= '<a class="btn btn-outline-secondary mt-1" href="'.$item['page_list_url'].'/'.$attrItemVal['alias'].'" role="button">'.MNBVf::getItemName($attrItemVal,Lang::isAltLang()).'</a>'."\n";
         $itemCounter++;
     }
     if (!empty($itemCounter) && $itemCounter>1) echo $resVend . '</div>';

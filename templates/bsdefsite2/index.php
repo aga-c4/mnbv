@@ -45,7 +45,7 @@ echo MNBVf::startVidget('pglist',$item,array(
     'folderid' => 1,//папка из которой будут выбираться объекты. Если не задано, то без учета папки
     'folder_start_id' => 1,//идентификатор корневой папки списка в хранилище (нужно чтоб корректно URL формировать)
     'list_max_items' => 0,//количество выводимых элементов
-    'list_sort' => 'posid', //сортировка списка
+    'list_sort' => 'pozid', //сортировка списка
     //'only_first' =>true, //выводить только объекты, выделенные свойством First (Гл)
     'filter_type' => 'folders',//('objects'|'folders'|'all') - типы объектов связей (по-умолчанию objects), если не задано, то без фильтра ('all')
     'altlang' => Lang::isAltLang(),//вывод на альтернативном языке
@@ -102,7 +102,7 @@ MNBVf::startVidget('pglist',$item,array(
     'list_main_alias' => (Lang::isAltLang()?('/'.Lang::getAltLangName()):'').'/actions',//основная часть URL на базе которой будет формироваться URL элемента списка хранилища добавляя туда язык, идентификатор и алиас
     'folder_start_id' => 1,//идентификатор корневой папки списка в хранилище (нужно чтоб корректно URL формировать)
     'list_max_items' => 5,//количество выводимых элементов
-    'list_sort' => 'posid', //сортировка списка
+    'list_sort' => 'pozid', //сортировка списка
     'only_first' =>true, //выводить только объекты, выделенные свойством First (Гл)
     'filter_type' => 'objects', //('objects'|'folders'|'all') - типы объектов связей (по-умолчанию objects), если не задано, то без фильтра ('all')
     'list_link' => (Lang::isAltLang()?('/'.Lang::getAltLangName()):'').'/actions',//ссылка на полный список объектов, если требуется
@@ -132,7 +132,7 @@ MNBVf::startVidget('pglist',$item,array(
     'list_main_alias' => (Lang::isAltLang()?('/'.Lang::getAltLangName()):'').'/catalog',//основная часть URL на базе которой будет формироваться URL элемента списка хранилища добавляя туда язык, идентификатор и алиас
     'folder_start_id' => 1,//идентификатор корневой папки списка в хранилище (нужно чтоб корректно URL формировать)
     'list_max_items' => 4,//количество выводимых элементов
-    'list_sort' => 'id', //сортировка списка
+    'list_sort' => 'pozid', //сортировка списка
     'only_first' =>true, //выводить только объекты, выделенные свойством First (Гл)
     'filter_type' => 'all',//('objects'|'folders'|'all') - типы объектов связей (по-умолчанию objects), если не задано, то без фильтра ('all')
     'list_link' => (Lang::isAltLang()?('/'.Lang::getAltLangName()):'').'/catalog',//ссылка на полный список объектов, если требуется

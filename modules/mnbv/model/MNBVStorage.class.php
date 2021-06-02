@@ -539,7 +539,7 @@ class MNBVStorage{
             if ($typeinp==='string') $upfolders = json_decode($objArr['upfolders'],true);
             else $upfolders = $objArr['upfolders'];
         }
-        if (empty($upfolders)) $upfolders = array();
+        if (empty($upfolders)||!is_array($upfolders)) $upfolders = array();
         $upfolders[] = $objArr["id"];
         if ($typeout==='string') $result["upfolders"] = json_encode($upfolders);
         else $result["upfolders"] = $upfolders;

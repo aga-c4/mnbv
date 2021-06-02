@@ -45,7 +45,7 @@ class ProductsController extends AbstractMnbvsiteController {
         $item['obj']['folder_name'] = $item['obj']['parent_name'];
         $item['obj']['folder_alias'] = $item['obj']['alias'];
         $realFolder = $item['obj'];
-
+        
         //Выбор хранилища и при необходимости перечитаем сведения о папке, которую выводим
         if (!empty($item['obj']['vars']['script_storage']) and (MNBVStorage::isStorage($item['obj']['vars']['script_storage']))) {
             //Привязанное хранилище существует
@@ -86,6 +86,11 @@ class ProductsController extends AbstractMnbvsiteController {
                 $item['page_h1'] = (!empty($realFolder['name']))?$realFolder['name']:'';
                 //------------------------------------------------------------------------------
                 
+            }else{
+                //Объект не найден, отдадим 404 ошибку
+                SysLogs::addError('Error: subObject not found ['.$storage2.':'.$folderId2.'] not found');
+                MNBVf::render(MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], '404.php'),$item,$tpl_mode);
+                return false;
             }
         }
         

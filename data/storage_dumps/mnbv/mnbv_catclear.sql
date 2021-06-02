@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Май 26 2021 г., 18:34
+-- Время создания: Июн 02 2021 г., 13:50
 -- Версия сервера: 10.3.13-MariaDB-log
 -- Версия PHP: 7.3.9
 
@@ -98,6 +98,67 @@ CREATE TABLE `mnbv_attrvals` (
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `mnbv_countries`
+--
+
+DROP TABLE IF EXISTS `mnbv_countries`;
+CREATE TABLE `mnbv_countries` (
+  `id` int(11) NOT NULL COMMENT 'Id',
+  `datestr` varchar(19) NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `parentid` int(11) NOT NULL DEFAULT 0,
+  `pozid` int(11) NOT NULL DEFAULT 100,
+  `type` int(1) NOT NULL DEFAULT 0,
+  `typeval` varchar(255) NOT NULL DEFAULT '',
+  `visible` int(1) NOT NULL DEFAULT 1,
+  `access` int(11) NOT NULL DEFAULT 0,
+  `access2` int(11) NOT NULL DEFAULT 0,
+  `first` int(1) NOT NULL DEFAULT 0,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `namelang` varchar(255) NOT NULL DEFAULT '',
+  `alias` varchar(255) NOT NULL DEFAULT '',
+  `comm` varchar(255) NOT NULL DEFAULT '',
+  `preview` int(1) NOT NULL DEFAULT 0,
+  `about` text NOT NULL DEFAULT '',
+  `aboutlang` text NOT NULL DEFAULT '',
+  `text` text NOT NULL DEFAULT '',
+  `textlang` text NOT NULL DEFAULT '',
+  `date` int(10) NOT NULL DEFAULT 0,
+  `date1` int(10) NOT NULL DEFAULT 0,
+  `date2` int(10) NOT NULL DEFAULT 0,
+  `createuser` int(11) NOT NULL DEFAULT 0,
+  `createdate` int(10) NOT NULL DEFAULT 0,
+  `edituser` int(11) NOT NULL DEFAULT 0,
+  `editdate` int(10) NOT NULL DEFAULT 0,
+  `editip` varchar(255) NOT NULL DEFAULT '',
+  `author` varchar(255) NOT NULL DEFAULT '',
+  `vars` text NOT NULL DEFAULT '',
+  `attrup` text NOT NULL DEFAULT '',
+  `attr` text NOT NULL DEFAULT '',
+  `attrvals` text NOT NULL DEFAULT '',
+  `upfolders` text NOT NULL DEFAULT '',
+  `files` text NOT NULL DEFAULT '',
+  `siteid` int(11) NOT NULL DEFAULT 0,
+  `tags` varchar(255) NOT NULL DEFAULT '',
+  `discmaxpr` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `discmaxval` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `discminmargpr` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `discminmargval` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `searchstr` varchar(255) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `mnbv_countries`
+--
+
+INSERT INTO `mnbv_countries` (`id`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `preview`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `files`, `siteid`, `tags`, `discmaxpr`, `discmaxval`, `discminmargpr`, `discminmargval`, `searchstr`) VALUES
+(1, '2017-09-15 18:19:07', 0, 100, 1, '', 1, 0, 210, 0, 'Страны', 'Countries', '', '', 0, '', '', '', '', 1505485140, 0, 0, 2, 1505485147, 2, 1505485196, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', ''),
+(2, '2017-09-15 18:19:24', 1, 100, 0, '', 1, 0, 210, 0, 'Россия', 'Russia', '', '', 0, '', '', '', '', 1505485164, 0, 0, 2, 1505485164, 2, 1505485204, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', ''),
+(3, '2017-09-15 18:19:29', 1, 100, 0, '', 1, 0, 210, 0, 'Китай', 'China', '', '', 0, '', '', '', '', 1505485169, 0, 0, 2, 1505485169, 2, 1505485209, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', ''),
+(4, '2017-09-15 18:19:32', 1, 100, 0, '', 1, 0, 210, 0, 'США', 'USA', '', '', 0, '', '', '', '', 1505485172, 0, 0, 2, 1505485172, 2, 1505485216, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', '');
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `mnbv_products`
 --
 
@@ -158,15 +219,18 @@ CREATE TABLE `mnbv_products` (
   `barcode` varchar(255) NOT NULL DEFAULT '',
   `country` int(11) NOT NULL DEFAULT 0,
   `norm_search` varchar(512) NOT NULL DEFAULT '',
-  `norm_partnumber` varchar(255) NOT NULL DEFAULT ''
+  `norm_partnumber` varchar(255) NOT NULL DEFAULT '',
+  `donorurl` varchar(255) NOT NULL DEFAULT '',
+  `donorimg` varchar(255) NOT NULL DEFAULT '',
+  `searchstr` varchar(255) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Дамп данных таблицы `mnbv_products`
 --
 
-INSERT INTO `mnbv_products` (`id`, `outid`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `preview`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `files`, `siteid`, `tags`, `price`, `oldprice`, `cost`, `ndspr`, `quantity`, `instock`, `discmaxpr`, `discmaxval`, `discminmargpr`, `discminmargval`, `vendor`, `prefix`, `prefixlang`, `model`, `partnumber`, `barcode`, `country`, `norm_search`, `norm_partnumber`) VALUES
-(1, '', '1970-01-01 03:00:00', 0, 100, 1, '', 1, 0, 210, 0, 'Товары', 'Products', 'catalog', '', 0, '', '', '', '', 0, 0, 0, 2, 1469005900, 2, 1622024047, '127.0.0.1', 'Администратор', '', '', '{\"1\":{\"objid\":1,\"attrid\":\"3\",\"pozid\":10000,\"namelang\":\"Weight, g\",\"dnuse\":1,\"namedlang\":\"\\u0412\\u0435\\u0441\",\"infilter\":1,\"name\":\"\\u0412\\u0435\\u0441, \\u0433\"},\"2\":{\"objid\":1,\"attrid\":\"7\",\"pozid\":10001,\"namedlang\":\"\\u041a\\u043e\\u043c\\u043c\\u0435\\u043d\\u0442\",\"namelang\":\"Height, sm\",\"name\":\"\\u0412\\u044b\\u0441\\u043e\\u0442\\u0430, \\u0441\\u043c\",\"dnuse\":1,\"infilter\":1},\"3\":{\"objid\":1,\"attrid\":\"6\",\"name\":\"\\u0428\\u0438\\u0440\\u0438\\u043d\\u0430, \\u0441\\u043c\",\"namelang\":\"Width, sm\",\"dnuse\":1,\"infilter\":1,\"pozid\":10002},\"4\":{\"objid\":1,\"attrid\":\"5\",\"pozid\":10003,\"name\":\"\\u0414\\u043b\\u0438\\u043d\\u0430, \\u0441\\u043c\",\"namelang\":\"Length, sm\",\"dnuse\":1,\"infilter\":1}}', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', 0, 0, '0.00', '0.00', '0.00', '0.00', 0, '', '', '', '', '', 0, ',1,,,,tovary,products,,', '');
+INSERT INTO `mnbv_products` (`id`, `outid`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `preview`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `files`, `siteid`, `tags`, `price`, `oldprice`, `cost`, `ndspr`, `quantity`, `instock`, `discmaxpr`, `discmaxval`, `discminmargpr`, `discminmargval`, `vendor`, `prefix`, `prefixlang`, `model`, `partnumber`, `barcode`, `country`, `norm_search`, `norm_partnumber`, `donorurl`, `donorimg`, `searchstr`) VALUES
+(1, '', '1970-01-01 03:00:00', 0, 100, 1, '', 1, 0, 210, 0, 'Товары', 'Products', '', '', 0, '', '', '', '', 0, 0, 0, 2, 1469005900, 2, 1622024047, '127.0.0.1', 'Администратор', '', '', '{\"1\":{\"objid\":1,\"attrid\":\"3\",\"pozid\":10000,\"namelang\":\"Weight, g\",\"dnuse\":1,\"namedlang\":\"\\u0412\\u0435\\u0441\",\"infilter\":1,\"name\":\"\\u0412\\u0435\\u0441, \\u0433\"},\"2\":{\"objid\":1,\"attrid\":\"7\",\"pozid\":10001,\"namedlang\":\"\\u041a\\u043e\\u043c\\u043c\\u0435\\u043d\\u0442\",\"namelang\":\"Height, sm\",\"name\":\"\\u0412\\u044b\\u0441\\u043e\\u0442\\u0430, \\u0441\\u043c\",\"dnuse\":1,\"infilter\":1},\"3\":{\"objid\":1,\"attrid\":\"6\",\"name\":\"\\u0428\\u0438\\u0440\\u0438\\u043d\\u0430, \\u0441\\u043c\",\"namelang\":\"Width, sm\",\"dnuse\":1,\"infilter\":1,\"pozid\":10002},\"4\":{\"objid\":1,\"attrid\":\"5\",\"pozid\":10003,\"name\":\"\\u0414\\u043b\\u0438\\u043d\\u0430, \\u0441\\u043c\",\"namelang\":\"Length, sm\",\"dnuse\":1,\"infilter\":1}}', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', 0, 0, '0.00', '0.00', '0.00', '0.00', 0, '', '', '', '', '', 0, ',1,,,,tovary,products,,', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -179,7 +243,7 @@ CREATE TABLE `mnbv_tmp` (
   `id` varchar(100) NOT NULL DEFAULT '',
   `ts` int(11) NOT NULL DEFAULT 0,
   `tsto` int(11) NOT NULL DEFAULT 0,
-  `val` varchar(20000) NOT NULL DEFAULT ''
+  `val` varchar(21000) NOT NULL DEFAULT ''
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -193,10 +257,10 @@ CREATE TABLE `mnbv_urlaliases` (
   `id` int(11) NOT NULL COMMENT 'Id',
   `siteid` int(11) NOT NULL DEFAULT 0,
   `urltype` int(2) NOT NULL DEFAULT 0,
-  `alias` varchar(100) NOT NULL DEFAULT '',
+  `alias` varchar(255) NOT NULL DEFAULT '',
   `idref` int(11) NOT NULL DEFAULT 0,
   `objtype` int(1) NOT NULL DEFAULT 0,
-  `catalias` varchar(100) NOT NULL DEFAULT ''
+  `catalias` varchar(512) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -264,15 +328,16 @@ CREATE TABLE `mnbv_vendors` (
   `discmaxpr` decimal(10,2) NOT NULL DEFAULT 0.00,
   `discmaxval` decimal(10,2) NOT NULL DEFAULT 0.00,
   `discminmargpr` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `discminmargval` decimal(10,2) NOT NULL DEFAULT 0.00
+  `discminmargval` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `searchstr` varchar(255) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Дамп данных таблицы `mnbv_vendors`
 --
 
-INSERT INTO `mnbv_vendors` (`id`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `preview`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `files`, `siteid`, `tags`, `discmaxpr`, `discmaxval`, `discminmargpr`, `discminmargval`) VALUES
-(1, '2017-09-15 18:20:38', 0, 100, 1, '', 1, 0, 210, 0, 'Производители', 'Vendors', '', '', 0, '', '', '', '', 1505485238, 0, 0, 2, 1505485238, 2, 1505485246, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00');
+INSERT INTO `mnbv_vendors` (`id`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `preview`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `files`, `siteid`, `tags`, `discmaxpr`, `discmaxval`, `discminmargpr`, `discminmargval`, `searchstr`) VALUES
+(1, '2017-09-15 18:20:38', 0, 100, 1, '', 1, 0, 210, 0, 'Производители', 'Vendors', '', '', 0, '', '', '', '', 1505485238, 0, 0, 2, 1505485238, 2, 1505485246, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', '');
 
 --
 -- Индексы сохранённых таблиц
@@ -293,10 +358,20 @@ ALTER TABLE `mnbv_attrvals`
   ADD KEY `attrfolder` (`attrid`,`objparentid`);
 
 --
+-- Индексы таблицы `mnbv_countries`
+--
+ALTER TABLE `mnbv_countries`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Индексы таблицы `mnbv_products`
 --
 ALTER TABLE `mnbv_products`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `parentid` (`parentid`),
+  ADD KEY `price_inc` (`price`),
+  ADD KEY `pozid_name` (`pozid`,`name`),
+  ADD KEY `vendor` (`vendor`);
 
 --
 -- Индексы таблицы `mnbv_tmp`
@@ -308,7 +383,9 @@ ALTER TABLE `mnbv_tmp`
 -- Индексы таблицы `mnbv_urlaliases`
 --
 ALTER TABLE `mnbv_urlaliases`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `urltype_idref` (`idref`,`urltype`) USING BTREE,
+  ADD KEY `alias` (`alias`);
 
 --
 -- Индексы таблицы `mnbv_vendors`
@@ -324,7 +401,7 @@ ALTER TABLE `mnbv_vendors`
 -- AUTO_INCREMENT для таблицы `mnbv_attributes`
 --
 ALTER TABLE `mnbv_attributes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT для таблицы `mnbv_attrvals`
@@ -333,22 +410,28 @@ ALTER TABLE `mnbv_attrvals`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT для таблицы `mnbv_countries`
+--
+ALTER TABLE `mnbv_countries`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=1;
+
+--
 -- AUTO_INCREMENT для таблицы `mnbv_products`
 --
 ALTER TABLE `mnbv_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT для таблицы `mnbv_urlaliases`
 --
 ALTER TABLE `mnbv_urlaliases`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=44;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT для таблицы `mnbv_vendors`
 --
 ALTER TABLE `mnbv_vendors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=1;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
