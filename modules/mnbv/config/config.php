@@ -184,6 +184,7 @@ Glob::$vars['sort_types'] = array(
     'name_desc' => array("name"=>"desc"), //сортировка по полю name не важно включен альтернативный язык или нет
     'namelang' => array("namelang"=>"inc"), //сортировка по полю name не важно включен альтернативный язык или нет
     'namelang_desc' => array("namelang"=>"desc"), //сортировка по полю name не важно включен альтернативный язык или нет
+    'search' => array("wsum"=>"desc"), //сортировка для поиска по частоте использования ключевых слов
 
     'price' => array("price"=>"inc"), //сортировка по цене
     'price_desc' => array("price"=>"desc"), //сортировка по цене по убыванию
@@ -230,6 +231,7 @@ Glob::$vars['prod_storage'] = 'products'; //Хранилище списка то
 Glob::$vars['prod_storage_rootid'] = 1; //Корневая папка каталога товаров
 Glob::$vars['prod_country_storage'] = 'countries'; //Хранилище списка стран
 Glob::$vars['prod_country_rootid'] = 1; //Идентификатор папки со странами в хранилище
+Glob::$vars['attr_storage'] = 'attributes'; //Хранилище списка товаров
 Glob::$vars['prod_filters_cache_ttl'] = 15*60; //Время жизни кеша фильтра в каталоге товаров (15 минут)
 Glob::$vars['prod_currency_suf'] = 'р'; //Суфикс валюты после цены (если надо с пробелом).
 Glob::$vars['gormenu_cache_ttl'] = 24*60*60; //Время жизни кеша меню из каталога товаров (сутки)

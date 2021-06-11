@@ -25,6 +25,44 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `mnbv_searchindex`
+--
+
+DROP TABLE IF EXISTS `mnbv_searchindex`;
+CREATE TABLE `mnbv_searchindex` (
+  `id` int(10) NOT NULL,
+  `siteid` int(3) NOT NULL DEFAULT 0,
+  `type` int(3) NOT NULL DEFAULT 0,
+  `objid` int(10) NOT NULL DEFAULT 0,
+  `objtype` int(1) NOT NULL DEFAULT 0,
+  `normstr` varchar(255) NOT NULL DEFAULT '',
+  `weight` int(3) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Поисковый индекс';
+
+--
+-- Индексы сохранённых таблиц
+--
+
+--
+-- Индексы таблицы `mnbv_searchindex`
+--
+ALTER TABLE `mnbv_searchindex`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `normstr` (`normstr`),
+  ADD KEY `objid` (`objid`) USING BTREE;
+
+--
+-- AUTO_INCREMENT для сохранённых таблиц
+--
+
+--
+-- AUTO_INCREMENT для таблицы `mnbv_searchindex`
+--
+ALTER TABLE `mnbv_searchindex`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  
+
+--
 -- Структура таблицы `mnbv_actions`
 --
 

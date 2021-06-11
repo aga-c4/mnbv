@@ -234,6 +234,33 @@ SysStorage::$storage['attrvals'] = array(
 );
 //------------------------------------------ 
 
+//Поисковый индекс  -------------  
+SysStorage::$storage['searchindex'] = array(
+    'group' => 'noview', //Группа хранилищ
+    'name' => 'Поисковый индекс', //Название на русском
+    'eng_name' => 'Search index', //Название на английском
+    'db' => 'mysql1', //База данных
+    'table' => 'mnbv_searchindex', //Таблица
+    'access' => 0, // Доступ на чтение
+    'access2' => 203, // Доступ на редактирование
+    'stru' => array( //Структура данного хранилища определяется вручную
+        "id" => array("type"=>"int", "size"=>10, "creatval"=>0, "autoinc"=>true, "dbtype"=>"int"), // идентификатор
+        "siteid" => array("type"=>"int", "size"=>3, "creatval"=>0, "autoinc"=>true, "dbtype"=>"int"), // идентификатор сайта
+        "type" => array("type"=>"int", "size"=>1, "creatval"=>0, "autoinc"=>true, "dbtype"=>"int"), // тип объекта int (товар, страница, новость...)
+        "objid" => array("type"=>"int", "size"=>10, "creatval"=>0, "autoinc"=>true, "dbtype"=>"int"), // идентификатор объекта
+        "objtype" => array("type"=>"int", "size"=>1, "creatval"=>0, "autoinc"=>true, "dbtype"=>"int"), // тип объекта
+        "normstr" => array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"), // нормализованная строка поиска
+        "weight" => array("type"=>"int", "size"=>3, "creatval"=>0, "autoinc"=>true, "dbtype"=>"int"), // вес элемента
+    ),
+    'view' => false, //Формат вывода - редактирования
+    'list' => false, //Формат списка
+    'filter' => false, //Формат фильтра
+    'varuse' => false, //разрешено ли использование элементов данного хранилища как значение поля
+    'attruse' => false, //Есть ли у данного хранилища атрибуты, если не требуются, то для быстродействия лучше отключать.
+    'custom_url' => false, //Если true, то на базе алиасов будут добавляться данные в хранилище для разбора URL
+);
+//------------------------------------------ 
+
 //Корневое хранилище сайта ------------------
 SysStorage::$storage['site'] = array( //Корневая таблица сайта
     'group' => 'site', //Группа хранилищ

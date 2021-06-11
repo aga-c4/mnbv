@@ -51,7 +51,7 @@ class SearchController extends AbstractMnbvsiteController {
 
         //Формирование настроек списка: фильтров, сортировки, номеров страниц
         $quFilterArr = array('visible','=',1); //Фильтры
-        $quConfArr = array("countFoundRows"=>true, "sort"=>array(), "limit"=>array($item['list_start_item'],$item['list_max_items'])); //Сортировка
+        $quConfArr = array("countFoundRows"=>true, "sort"=>array(), "limit"=>array($item['list_start_item'],$item['list_max_items']),"group"=>"strindex.objid"); //Сортировка
         
         //Фильтрация по атрибутам-----------------------------------------------
         //Формирование массива выбранных элементов фильтров и диапазонов
@@ -119,18 +119,28 @@ class SearchController extends AbstractMnbvsiteController {
         $searchArr0 = preg_split("/ /",$search);
         $searchNormStr = '';
         $searchArr = array();
+        $wcnt = 0;
         foreach($searchArr0 as $key=>$value){
-            $searchArr[$key] = SysBF::strNormalize($stemmer->getWordBase($value));
-            $searchNormStr .= ((!empty($searchNormStr))?' ':'') . $searchArr[$key];
+            $normstr = SysBF::strNormalize($stemmer->getWordBase($value));
+            $normstr = SysBF::normUpdate($normstr);
+            if (mb_strlen($normstr,'utf-8')>=2 || preg_match("/[0-9]/", $normstr)) {
+                $searchArr[$key] = $normstr;
+                $searchNormStr .= ((!empty($searchNormStr))?' ':'') . $searchArr[$key];
+                $wcnt++;
+            }
+            if ($wcnt>=3) break;
         }
+    
+        SysLogs::addLog('Search norm str: [' . $searchNormStr . '] slov_v_stroke=['.$wcnt.']');
 
-        $slov_v_stroke=count($searchArr);
-        if ($slov_v_stroke>4){$slov_v_stroke=3;}//Ограничение на количество слов     
-        SysLogs::addLog('Search norm str: [' . $searchNormStr . '] slov_v_stroke=['.$slov_v_stroke.']');
-
+        $wcnt = 0;
+        $searchQuArr = array();
         foreach($searchArr as $value){
-            array_push($quFilterArr, "and","norm_search","like",'%'.$value.'%');
+            if ($wcnt>0) array_push($searchQuArr, "or");
+            array_push($searchQuArr, "strindex.normstr","like", $value.'%');
+            $wcnt++;
         }
+        if (count($searchQuArr)) array_push($quFilterArr, "and",$searchQuArr,"and","strindex.weight",">",0);
         //----------------------------------------------------------------------
 
         
@@ -138,8 +148,7 @@ class SearchController extends AbstractMnbvsiteController {
         $quConfArr["sort"] = array();
         $item['list_sort'] = '';
         if (empty($viewOnlyListSize)) {
-            $item['real_list_sort'] = (!empty($item['obj']['vars']['list_sort']))?$item['obj']['vars']['list_sort']:''; //Если задано на странице, берем от туда или ''
-            if (!empty($realFolder['vars']['list_sort'])) $item['real_list_sort'] = $realFolder['vars']['list_sort']; //Приоритет у сортировки конечной папки
+            $item['real_list_sort'] = 'search'; //Если задано на странице, берем от туда или ''
             if (!empty(Glob::$vars['mnbv_listsort'])) {//Самый высокий приоритет у ручной установке через маршрутизатор
                 $item['list_sort'] = $item['real_list_sort'] = (MNBVf::validateSortType(Glob::$vars['mnbv_listsort']))?Glob::$vars['mnbv_listsort']:'';
             }
@@ -152,13 +161,15 @@ class SearchController extends AbstractMnbvsiteController {
             $quConfArr["sort"] = MNBVf::getSortArr($item['real_list_sort']); //Сформируем массив для сортировки
             SysLogs::addLog('Select mnbv script real_list_sort: [' . $item['real_list_sort'] . ']');
         }
-        //------------------------------------------------------------------------------       
+        //------------------------------------------------------------------------------
         
         //Список объектов
         $quFilterArr2 = $quFilterArr;
-        array_push($quFilterArr2, 'and','type','!=',ST_FOLDER);
-        $item['list'] = MNBVStorage::getObjAcc($storage,
-                array("id","parentid","pozid","type","typeval","visible","access","access2","first","name","namelang","about","aboutlang","vars","files","siteid","date","alias",'oldprice','price','cost','discmaxpr','discmaxval','discminmargpr','discminmargval'),
+        array_push($quFilterArr2, 'and','strindex.type','=',0);
+        $item['list'] = MNBVStorage::getObjAcc(array(
+            array('name'=>'searchindex','alias'=>'strindex'),
+            array('join'=>'left','name'=>$storage, 'alias'=>'prd','on'=>array("prd.id","=","field::strindex.objid"))),
+                array(array("prd.id","id"),array("sum(strindex.weight)","wsum"),"parentid","pozid",array("prd.type","type"),"typeval","visible","access","access2","first","name","namelang","about","aboutlang","vars","files",array("prd.siteid","siteid"),"date","alias",'oldprice','price','cost','discmaxpr','discmaxval','discminmargpr','discminmargval'),
                 $quFilterArr2,$quConfArr);
         $item['list_size'] = (int)$item['list'][0]; unset($item['list'][0]); //Вынесем размер списка из массива 
         foreach ($item['list'] as $key=>$value) if ($key>0) {
@@ -201,9 +212,11 @@ class SearchController extends AbstractMnbvsiteController {
         //Список категорий
         $quConfArr["sort"] = array("pozid"=>"inc","name"=>"inc");
         $quConfArr["limit"] = array(0,5);
-        array_push($quFilterArr, 'and','type','=',ST_FOLDER,"and","id","!=",Glob::$vars['prod_storage_rootid']);
-        $item['cat_list'] = MNBVStorage::getObjAcc($storage,
-                array("id","parentid","pozid","type","typeval","visible","access","access2","first","name","namelang","about","aboutlang","vars","files","siteid","date","alias",'oldprice','price','cost','discmaxpr','discmaxval','discminmargpr','discminmargval'),
+        array_push($quFilterArr, 'and','strindex.type','=',1,"and","prd.id","!=",Glob::$vars['prod_storage_rootid']);
+        $item['cat_list'] = MNBVStorage::getObjAcc(array(
+            array('name'=>'searchindex','alias'=>'strindex'),
+            array('join'=>'left','name'=>$storage, 'alias'=>'prd','on'=>array("prd.id","=","field::strindex.objid"))),
+                array(array("prd.id","id"),"parentid","pozid",array("prd.type","type"),"typeval","visible","access","access2","first","name","namelang","about","aboutlang","vars","files",array("prd.siteid","siteid"),"date","alias",'oldprice','price','cost','discmaxpr','discmaxval','discminmargpr','discminmargval'),
                 $quFilterArr,$quConfArr);
         $item['cat_list_size'] = (int)$item['cat_list'][0]; unset($item['cat_list'][0]); //Вынесем размер списка из массива 
         foreach ($item['cat_list'] as $key=>$value) if ($key>0) {

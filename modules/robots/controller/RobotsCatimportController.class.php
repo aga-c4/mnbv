@@ -34,6 +34,11 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
     public $countryArr = array();
     
     /**
+     * @var type массив параметров и их значений
+     */
+    public $paramArr = array();
+    
+    /**
      * @var array массив запрещенных к загрузке категорий с учетом вложенных
      */
     public $cat_deny = array();
@@ -52,7 +57,308 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
      * @var array массив, содержащий стурктуру категорий импорта ('root' - самый высокий уровень) 
      */
     public $cats_stru = array();
+    
+    /**
+     * Рассчитывае количество знаков после запятой исходника, если это не число, то вернет null
+     * @param mixed $source - значение параметра
+     * @return array количество знаков до и после запятой array('size'=>0,'dmsize'=>0), если число, null - это не число
+     */
+    public function valDmSize($source){
+        $result = null;
+        
+        $source2 = trim(strval($source));
+        
+        //Проверка что это число
+        if (preg_match("/[^0-9\.,]+/", $source2)) return $result;
+        
+        $source2 = str_replace('.', ',', $source2);
+        $srcArr = preg_split("/,/", $source2);
+        if (!is_array($srcArr)) return $result; 
+        if (count($srcArr)>2) return $result;
+        if (!count($srcArr)) return $result; 
+        
+        $size = $dmsize = 0;
+        if (isset($srcArr[0])) $size = strlen(strval(intval($srcArr[0])));
+        if (!empty($srcArr[0]) && isset($srcArr[1])) $dmsize = strlen(strval(intval($srcArr[1])));
+        
+        return array('size'=>$size,'dmsize'=>$dmsize);
+    }
+    
+    
+    /**
+     * Преобразует ВШГ с разделителями (/ или x) в массив целых значений
+     * @param type $strVal
+     * @return type
+     */
+    public function getProdSize($strVal){
+        $strVal = preg_replace("~[^0-9\.,x/]~", "", $strVal);
+        $strVal = str_replace(',', '.', $strVal);
+        $strVal = preg_replace("/х/", 'x', $strVal); //Русская Х
+        $strVal = str_replace('/', 'x', $strVal);
+        $srcArr = preg_split("/x/", $strVal);
+        $result = array();
+        if (isset($srcArr[0]) && ceil($srcArr[0])>0) $result['h'] = ceil($srcArr[0]);
+        if (isset($srcArr[1]) && ceil($srcArr[1])>0) $result['w'] = ceil($srcArr[1]);
+        if (isset($srcArr[2]) && ceil($srcArr[2])>0) $result['l'] = ceil($srcArr[2]);
+        return $result;
+    }
+    
+    /**
+     * Возвращает вес в кг из строки с весом в кг или г с ед. изм в конце
+     * @param type $strVal
+     * @return type
+     */
+    public function getProdWeight($strVal){
+        $k = 1;
+        if (preg_match("/кг/", $strVal)) $k = 1;
+        if (preg_match("/ г/", $strVal)) $k = 0.001;
+        $strVal = preg_replace("~[^0-9\.,]+~", "", $strVal);
+        $strVal = floatval(str_replace(',', '.', $strVal));
+        return round($strVal*$k,3);
+    }
+    
+    /**
+     * Возвращает true, если $strVal не должно создавать нового атрибута
+     * @param type $strVal
+     */
+    public function checkAttrExeptions($strVal){
+        $result = false;
+        if ('Вес' === $strVal) $result = true;
+        if ('Габариты (ВxШxГ) (см)' === $strVal) $result = true;
+        if ('Брутто размер (ВхШхГ) (см)' === $strVal) $result = true;
+        if ('Страна-производитель' === $strVal) $result = true;
+        return $result;
+    }
 
+    /**
+     * Загузка предустановленных параметров
+     * @param type $strVal
+     */
+    public function startParamArr(){
+        $this->paramArr = array(
+            "Цвет" => Array(
+                "name" => "Цвет",
+                "dbid" => 12,
+                "vals" => Array(),
+                "size" => null, 
+                "vars" => Array(
+                    "dbtype" => "int",
+                    "active" => "update",
+                    "table" => "td",
+                    "type" => "select",
+                    "size" => 1,
+                    "linkstorage" => "attributes",
+                    "filter_folder" => 12,
+                    "filter_type" => "all",
+                    "checktype" => "int",
+                    "lang" => "all",
+                    "notset" => 1,
+                ),
+                "infilter" => 1,
+            ),
+            
+            "Брутто вес (кг)" => Array(
+                "name" => "Брутто вес (кг)",
+                "dbid" => 8,
+                "vals" => Array(),
+                "size" => Array("size"=>7,"dmsize"=>3),
+                "vars" => Array(
+                    "dbtype" => "decimal",
+                    "active" => "update",
+                    "table" => "td",
+                    "type" => "text",
+                    "filter_type" => "all",
+                    "checktype" => "decimal",
+                    "lang" => "all",
+                    "size" => 7,
+                    "dmsize" => 3,
+                ),
+                "infilter" => 1,
+            ),
+            
+            "Вес (кг)" => Array(
+                "name" => "Вес (кг)",
+                "dbid" => 3,
+                "vals" => Array(),
+                "size" => Array("size"=>7,"dmsize"=>3),
+                "vars" => Array(
+                    "dbtype" => "decimal",
+                    "active" => "update",
+                    "table" => "td",
+                    "type" => "text",
+                    "filter_type" => "all",
+                    "checktype" => "decimal",
+                    "lang" => "all",
+                    "size" => 7,
+                    "dmsize" => 3,
+                ),
+                "infilter" => 1,
+            ),
+            
+            "Высота (cм)" => Array(
+                "name" => "Высота (cм)",
+                "dbid" => 5,
+                "vals" => Array(),
+
+                "size" => Array(
+                    "size" => 1,
+                    "dmsize" => 0,
+                ),
+                "vars" => Array(
+                    "active" => "update",
+                    "table" => "td",
+                    "type" => "text",
+                    "size" => 10,
+                    "dmsize" => 0,
+                    "linkstorage" => "attributes",
+                    "filter_folder" => 20,
+                    "filter_type" => "objects",
+                    "checktype" => "int",
+                    "lang" => "all",
+                    "viewindex" => 0,
+                    "dbtype" => "int",
+                    "notset" => 1,
+                ),
+                "infilter" => 1,
+            ),
+            
+            "Ширина (cм)" => Array(
+                "name" => "Ширина (cм)",
+                "dbid" => 6,
+                "vals" => Array(),
+
+                "size" => Array(
+                    "size" => 1,
+                    "dmsize" => 0,
+                ),
+                "vars" => Array(
+                    "active" => "update",
+                    "table" => "td",
+                    "type" => "text",
+                    "size" => 10,
+                    "dmsize" => 0,
+                    "linkstorage" => "attributes",
+                    "filter_folder" => 20,
+                    "filter_type" => "objects",
+                    "checktype" => "int",
+                    "lang" => "all",
+                    "viewindex" => 0,
+                    "dbtype" => "int",
+                    "notset" => 1,
+                ),
+                "infilter" => 1,
+            ),
+            
+            "Длина (cм)" => Array(
+                "name" => "Длина (cм)",
+                "dbid" => 7,
+                "vals" => Array(),
+
+                "size" => Array(
+                    "size" => 1,
+                    "dmsize" => 0,
+                ),
+                "vars" => Array(
+                    "active" => "update",
+                    "table" => "td",
+                    "type" => "text",
+                    "size" => 10,
+                    "dmsize" => 0,
+                    "linkstorage" => "attributes",
+                    "filter_folder" => 20,
+                    "filter_type" => "objects",
+                    "checktype" => "int",
+                    "lang" => "all",
+                    "viewindex" => 0,
+                    "dbtype" => "int",
+                    "notset" => 1,
+                ),
+                "infilter" => 1,
+            ),
+            
+            "Брутто высота (см)" => Array(
+                "name" => "Брутто высота (см)",
+                "dbid" => 9,
+                "vals" => Array(),
+
+                "size" => Array(
+                    "size" => 1,
+                    "dmsize" => 0,
+                ),
+                "vars" => Array(
+                    "active" => "update",
+                    "table" => "td",
+                    "type" => "text",
+                    "size" => 10,
+                    "dmsize" => 0,
+                    "linkstorage" => "attributes",
+                    "filter_folder" => 20,
+                    "filter_type" => "objects",
+                    "checktype" => "int",
+                    "lang" => "all",
+                    "viewindex" => 0,
+                    "dbtype" => "int",
+                    "notset" => 1,
+                ),
+                "infilter" => 1,
+            ),
+            
+            "Брутто ширина (см)" => Array(
+                "name" => "Брутто ширина (см)",
+                "dbid" => 10,
+                "vals" => Array(),
+
+                "size" => Array(
+                    "size" => 1,
+                    "dmsize" => 0,
+                ),
+                "vars" => Array(
+                    "active" => "update",
+                    "table" => "td",
+                    "type" => "text",
+                    "size" => 10,
+                    "dmsize" => 0,
+                    "linkstorage" => "attributes",
+                    "filter_folder" => 20,
+                    "filter_type" => "objects",
+                    "checktype" => "int",
+                    "lang" => "all",
+                    "viewindex" => 0,
+                    "dbtype" => "int",
+                    "notset" => 1,
+                ),
+                "infilter" => 1,
+            ),
+            
+            "Брутто длина (см)" => Array(
+                "name" => "Брутто длина (см)",
+                "dbid" => 11,
+                "vals" => Array(),
+
+                "size" => Array(
+                    "size" => 1,
+                    "dmsize" => 0,
+                ),
+                "vars" => Array(
+                    "active" => "update",
+                    "table" => "td",
+                    "type" => "text",
+                    "size" => 10,
+                    "dmsize" => 0,
+                    "linkstorage" => "attributes",
+                    "filter_folder" => 20,
+                    "filter_type" => "objects",
+                    "checktype" => "int",
+                    "lang" => "all",
+                    "viewindex" => 0,
+                    "dbtype" => "int",
+                    "notset" => 1,
+                ),
+                "infilter" => 1,
+            ),
+        );
+    }
+    
     /**
      * Метод по-умолчанию
      * @param string $tpl_mode - формат вывода
@@ -162,11 +468,13 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                 //$arraySource = json_decode($jsonSource,TRUE); //JSON в массив
 
                 //составим массив структуры категорий с маркерами активности, в т.ч. проверим товар на блокировку по категории, включая вложенные
+                $prod_no_check = SysBF::getFrArr($scriptvarsArr, 'prod_no_check',0,'intval');
                 $this->siteid = SysBF::getFrArr($scriptvarsArr, 'siteid',0);
                 $this->cat_deny = SysBF::getFrArr($scriptvarsArr, 'cat_deny',array());
                 $this->cat_allow = SysBF::getFrArr($scriptvarsArr, 'cat_allow','all');
                 $this->vendArr = array();
                 $this->countryArr = array();
+                $this->startParamArr(); //Установка дефолтовых стартовых параметров каталога
                 $this->catArr = array('root' => array(
                     "id" => 0,
                     "parentid" => 0,
@@ -174,7 +482,8 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                     "alias" => '',
                     "searchstr" => '',
                     "allow" => true,
-                    "dbid" => $this->cat_point
+                    "dbid" => $this->cat_point,
+                    "attrnames" => array(),
                 ));
                 $this->cats_stru['root'] = array();
                 foreach ($objSource->shop->categories->children() as $node){
@@ -192,6 +501,7 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                         "alias" => MNBVf::str2alias($node),
                         "full_alias" => MNBVf::str2alias($node),
                         "searchstr"=>"", //Строка для синонимов, если есть возможность их получить.
+                        "attrnames" => array(), //Массив названий атрибутов категорий
                     );
                     echo "cat id=[$id] parentid=[$parentid] [".$itemName."] alias=[".$this->catArr[$key]["alias"]."]\n";
                 }
@@ -230,16 +540,60 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                     $country = $this->checkCountry($countryStr,$country_search);
                     if (empty($country)) continue;
                     
+                    //Параметры
+                    foreach ($node->param as $curParam){
+                        //print_r($curParam);                        
+                        $paramAttr = $curParam->attributes();
+                        if (empty($paramAttr['name'])) continue;
+                        $paramName = trim(strval($paramAttr['name']));
+                        $curParamItemName = trim(strval($curParam));
                         
+                        if ($this->checkAttrExeptions($paramName)) continue;
+                        //echo "param=[$paramName][$curParamItemName]\n";
+                        
+                        if (!in_array($paramName,$this->catArr["$categoryId"]["attrnames"])) {
+                            $this->catArr["$categoryId"]["attrnames"][] = $paramName;
+                            echo "Add attr [$paramName] to cat[$categoryId]\n";
+                        }
+                        
+                        if (!isset($this->paramArr[$paramName])) $this->paramArr[$paramName] = array('name'=>$paramName, 'dbid'=>0,'vals'=>array(),'size'=>null); 
+                        
+                        if (in_array($curParamItemName,$this->paramArr["$paramName"]['vals'])) continue;
+                        $this->paramArr[$paramName]['vals'][] = $curParamItemName; 
+                        
+                        $sizeArr = $this->paramArr[$paramName]["size"];
+                        $curSizeArr = $this->valDmSize($curParamItemName);
+                        if ($curSizeArr===null) {
+                            $this->paramArr[$paramName]["size"] = null;
+                        } else {
+                            if ($this->paramArr[$paramName]["size"]===null) $this->paramArr[$paramName]["size"] = $curSizeArr;
+                            else {
+                                if (empty($this->paramArr[$paramName]["size"]["size"]) || $curSizeArr["size"] > $this->paramArr[$paramName]["size"]["size"]) {
+                                    $this->paramArr[$paramName]["size"]["size"] = $curSizeArr["size"];
+                                }
+                                if (empty($this->paramArr[$paramName]["size"]["dmsize"]) || $curSizeArr["dmsize"] > $this->paramArr[$paramName]["size"]["dmsize"]){
+                                    $this->paramArr[$paramName]["size"]["dmsize"] = $curSizeArr["dmsize"];
+                                }
+                            }
+                        }
+                        
+                    }
+                    
                     $prodCounter++;
                     //echo "$prodCounter id=[$id] catid=[$categoryId]  vend=[$vendorStr][$vendor] ".$this->getMem()."\n";
                     
-                    //Разбор параметров - надо доработать
                 }
                 
-                echo "Products - circle2 ".$this->getMem()."\n";
+                echo "createParamss ".$this->getMem()."\n";
+                $this->createProdParams();
                 
+                echo "createFolders ".$this->getMem()."\n";
                 $this->createFolders();
+                
+                //print_r($this->paramArr);
+                //print_r($this->catArr);
+                
+                echo "Products - circle2 ".$this->getMem()."\n";
                 
                 //Второй проход по товарам, параллельно сверяясь и дополняя массив категорий
                 $prodCounter = 0;
@@ -291,7 +645,12 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                         if (!empty($this->countryArr[$countryStr]["searchstr"])) $updateArr["searchstr"] .= ',' . $this->countryArr[$countryStr]["searchstr"];
                     }else{
                         continue;
-                    }      
+                    } 
+                    
+                    //Цена и наличие
+                    $price = (!empty($node->price))?round(floatval($node->price),2):0;
+                    $quantity = (isset($attrArr['available'])&&$attrArr['available']=="true")?1:0;
+                    $instock = (!empty($quantity))?1:4;
                     
                     //Проверки пройдены
                     $prodCounter++;
@@ -300,20 +659,22 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                     if (empty($outid)) continue;
                     //Подгрузим данные о товаре, если они есть
                     $product = false;
-                    $res = MNBVStorage::getObj(Glob::$vars['prod_storage'],
-                            array("*"),
-                            array("outid","=",$outid,"and","type","!=",ST_FOLDER));
-                    if (!empty($res[0])) $product = $res[1];
+                    if (!$prod_no_check){
+                        $res = MNBVStorage::getObj(Glob::$vars['prod_storage'],
+                                array("id","name","price","quantity","instock"),
+                                array("outid","=",$outid,"and","type","!=",ST_FOLDER));
+                        if (!empty($res[0])) $product = $res[1];
+                    }
                     
+                    $searchObj = new MNBVSearch();
                     if ($product!==false){ //Найден подходящий внутренний товар, доработаем его
                         
+                        /* //Эти поля пока не правим
                         $updateArr["parentid"] = $parentid;
                         $updateArr["vendor"] = $vendorid;
                         $updateArr["country"] = $countryid;
                         $updateArr["partnumber"] = $partnumber;
-                        $updateArr["quantity"] = (isset($attrArr['available'])&&$attrArr['available']=="true")?1:0;
                         $updateArr["donorurl"] = (!empty($node->url))?SysBF::checkStr($node->typePrefix,'url'):'';
-                        $updateArr["price"] = (!empty($node->price))?round(floatval($node->price),2):0;
                         $updateArr["prefix"] = (!empty($node->typePrefix))?SysBF::checkStr($node->typePrefix,'stringkav'):'';
                         $updateArr["model"] = (!empty($node->model))?SysBF::checkStr($node->model,'stringkav'):'';
                         $updateArr["name"] = $updateArr["prefix"] . ' ' . $vendorStr . ' ' . $updateArr["model"];
@@ -368,13 +729,23 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                             $updateArr['files'] = json_encode($product['files']);
                             $updateArr['donorimg'] = $picture;
                         }
-                        $updateArr["datestr"] = $this->thisDateTime;
-                        $updateArr["date"] = $this->thisTime;
-                        $updateArr["edituser"] = Glob::$vars['user']->get('userid');
-                        $updateArr["editdate"] = $this->thisTime;
-                        $updateArr["editip"] = GetEnv('REMOTE_ADDR');            
-                        MNBVStorage::setObj(Glob::$vars['prod_storage'], $updateArr, array("id",'=',$product["id"]));
-                        echo "Update prod id=[{$product["id"]}] parentid=[$parentid] name=[{$product["name"]}]\n";
+                         */
+                        
+                        //Обязательно редактируемые поля
+                        $updateArr = array();
+                        if ($product["price"]!=$price) $updateArr["price"] = $price;
+                        if ($product["instock"]!=$instock) $updateArr["instock"] = $instock;
+                        if ($product["quantity"]!=$quantity) $updateArr["quantity"] = $quantity;
+                        
+                        if (count($updateArr)){
+                            $updateArr["datestr"] = $this->thisDateTime;
+                            $updateArr["date"] = $this->thisTime;
+                            $updateArr["edituser"] = Glob::$vars['user']->get('userid');
+                            $updateArr["editdate"] = $this->thisTime;
+                            $updateArr["editip"] = GetEnv('REMOTE_ADDR');            
+                            MNBVStorage::setObj(Glob::$vars['prod_storage'], $updateArr, array("id",'=',$product["id"]));
+                            echo "Update prod id=[{$product["id"]}] parentid=[$parentid] name=[{$product["name"]}]\n";
+                        }
                         
                     } else { //Добавим новый товар
                         
@@ -382,9 +753,7 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                         $updateArr["vendor"] = $vendorid;
                         $updateArr["country"] = $countryid;
                         $updateArr["partnumber"] = $partnumber;
-                        $updateArr["quantity"] = (isset($attrArr['available'])&&$attrArr['available']=="true")?1:0;
                         $updateArr["donorurl"] = (!empty($node->url))?SysBF::checkStr($node->typePrefix,'url'):'';
-                        $updateArr["price"] = (!empty($node->price))?round(floatval($node->price),2):0;
                         $updateArr["prefix"] = (!empty($node->typePrefix))?SysBF::checkStr($node->typePrefix,'stringkav'):'';
                         $updateArr["model"] = (!empty($node->model))?SysBF::checkStr($node->model,'stringkav'):'';
                         $updateArr["name"] = $updateArr["prefix"] . ' ' . $vendorStr . ' ' . $updateArr["model"];
@@ -393,8 +762,6 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                         $updateArr["barcode"] = (!empty($node->barcode))?SysBF::checkStr($node->barcode,'stringkav'):'';
                         $updateArr["outid"] = $outid;
                         
-                        
-                        //Сформируем поисковые строки
                         $updateArr["norm_partnumber"] = '';
                         $updateArr["norm_search"] = '';
                         $updateArr["norm_partnumber"] .= SysBF::strNormalize($updateArr["partnumber"],'zpt_ok');
@@ -412,7 +779,7 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                         }
                         $updateArr["norm_search"] .= ',' . SysBF::strNormalize($updateArr["name"]);
                         $updateArr["norm_search"] .= ',' . SysBF::strNormalize($updateArr["prefix"]);
-
+     
                         //Добавим картинки
                         $pictureSrc = (array) $node->picture;
                         $picture = '';
@@ -442,6 +809,10 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                             $updateArr['donorimg'] = $picture;
                         }
                         
+                        $updateArr["price"] = $price;
+                        $updateArr["instock"] = $instock;
+                        $updateArr["quantity"] = $quantity;
+                        
                         $updateArr["pozid"] = 100;
                         $updateArr["visible"] = 1;
                         $updateArr["first"] = 0;
@@ -458,9 +829,186 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                         $updateArr["editdate"] = $this->thisTime;
                         $updateArr["editip"] = GetEnv('REMOTE_ADDR');
                         
-                        //Разбор параметров - надо доработать
+                        
+                        //Параметры
+                        $attrValsArr = array();
+                        $attrDBAddArr = array();
+                        foreach ($node->param as $curParam){
+                            
+                            //print_r($curParam);                        
+                            $paramAttr = $curParam->attributes();
+                            if (empty($paramAttr['name'])) continue;
+                            $paramName = trim(strval($paramAttr['name']));
+                            $curParamItemName = trim(strval($curParam));
+                            //echo "param=[$paramName][$curParamItemName]\n";                     
+                            
+                            //Параметры - исключения
+                            $mainAttrOk = true;
+                            if ('Вес' === $paramName) {
+                                
+                                $mainAttrOk = false;
+                                $paramName = 'Вес (кг)';
+                                $curParamItemValue = $this->getProdWeight($curParamItemName);
+                                $attrValsArr["attr".$this->paramArr[$paramName]["dbid"]] = $curParamItemValue;                   
+
+                                $attrDBAddArr[] = array(
+                                    "attrid"=>$this->paramArr[$paramName]["dbid"],
+                                    "vint"=>MNBVf::decimal2int($curParamItemValue,3),
+                                );
+                                
+                            } elseif ('Габариты (ВxШxГ) (см)' === $paramName) {
+                                
+                                $mainAttrOk = false;
+                                $curParamItemArr = $this->getProdSize($curParamItemName);
+                                
+                                if (!empty($curParamItemArr["h"])){
+                                    $attrValsArr["attr".$this->paramArr["Высота (cм)"]["dbid"]] = intval($curParamItemArr["h"]);
+                                    $attrDBAddArr[] = array(
+                                        "attrid"=>$this->paramArr["Высота (cм)"]["dbid"],
+                                        "vint"=>intval($curParamItemArr["h"]),
+                                    );
+                                }
+                                
+                                if (!empty($curParamItemArr["w"])){
+                                    $attrValsArr["attr".$this->paramArr["Ширина (cм)"]["dbid"]] = intval($curParamItemArr["w"]);
+                                    $attrDBAddArr[] = array(
+                                        "attrid"=>$this->paramArr["Ширина (cм)"]["dbid"],
+                                        "vint"=>intval($curParamItemArr["w"]),
+                                    );
+                                }
+                                
+                                if (!empty($curParamItemArr["l"])){
+                                    $attrValsArr["attr".$this->paramArr["Длина (cм)"]["dbid"]] = intval($curParamItemArr["l"]);
+                                    $attrDBAddArr[] = array(
+                                        "attrid"=>$this->paramArr["Длина (cм)"]["dbid"],
+                                        "vint"=>intval($curParamItemArr["l"]),
+                                    );
+                                }
+                                
+                            } elseif ('Брутто размер (ВхШхГ) (см)' === $paramName) {
+                                
+                                $mainAttrOk = false;
+                                $curParamItemArr = $this->getProdSize($curParamItemName);
+                                
+                                if (!empty($curParamItemArr["h"])){
+                                    $attrValsArr["attr".$this->paramArr["Брутто высота (см)"]["dbid"]] = intval($curParamItemArr["h"]);
+                                    $attrDBAddArr[] = array(
+                                        "attrid"=>$this->paramArr["Брутто высота (см)"]["dbid"],
+                                        "vint"=>intval($curParamItemArr["h"]),
+                                    );
+                                }
+                                
+                                if (!empty($curParamItemArr["w"])){
+                                    $attrValsArr["attr".$this->paramArr["Брутто ширина (см)"]["dbid"]] = intval($curParamItemArr["w"]);
+                                    $attrDBAddArr[] = array(
+                                        "attrid"=>$this->paramArr["Брутто ширина (см)"]["dbid"],
+                                        "vint"=>intval($curParamItemArr["w"]),
+                                    );
+                                }
+                                
+                                if (!empty($curParamItemArr["l"])){
+                                    $attrValsArr["attr".$this->paramArr["Брутто длина (см)"]["dbid"]] = intval($curParamItemArr["l"]);
+                                    $attrDBAddArr[] = array(
+                                        "attrid"=>$this->paramArr["Брутто длина (см)"]["dbid"],
+                                        "vint"=>intval($curParamItemArr["l"]),
+                                    );
+                                }
+                                
+                            } 
+                            
+                            if ($mainAttrOk) { //Поток стандатрной обработки параметров
+                                
+                                if (!isset($this->paramArr["$paramName"])) continue;    
+                                if (!isset($this->paramArr[$paramName]["vars"])) {echo "----> NO Vars in [$paramName]";continue;}
+                                if (!isset($this->paramArr[$paramName]["vars"]["type"])) {
+                                    echo "----> NO Vars type in [$paramName]";
+                                    if (!isset($this->paramArr[$paramName]["vals"])) echo "----> NO Vals in [$paramName]";
+                                    elseif (!is_array($this->paramArr[$paramName]["vals"]) || !count($this->paramArr[$paramName]["vals"])) echo "----> NO items in Vals in [$paramName]";
+                                    print_r($this->paramArr[$paramName]["vars"]);
+                                    continue;
+                                }
+                                if (!isset($this->paramArr[$paramName]["vars"]["checktype"])) {
+                                    echo "----> NO Vars checktype in [$paramName]";
+                                    if (!isset($this->paramArr[$paramName]["vals"])) echo "----> NO Vals in [$paramName]";
+                                    elseif (!is_array($this->paramArr[$paramName]["vals"]) || !count($this->paramArr[$paramName]["vals"])) echo "----> NO items in Vals in [$paramName]";
+                                    print_r($this->paramArr[$paramName]["vars"]);
+                                    continue;
+                                }
+                                
+                                if ($this->paramArr[$paramName]["vars"]["type"] === 'select'){
+                                    $curParamItemDbId = (!empty($this->paramArr[$paramName]["vals"]["$curParamItemName"]))?$this->paramArr[$paramName]["vals"]["$curParamItemName"]:0; 
+                                    if (!empty($curParamItemDbId) && !empty($this->paramArr[$paramName]["dbid"])) {
+                                        $attrValsArr["attr".$this->paramArr[$paramName]["dbid"]] = $curParamItemDbId;   
+
+                                        $attrDBAddArr[] = array(
+                                            "attrid"=>$this->paramArr[$paramName]["dbid"],
+                                            "vint"=>$curParamItemDbId,
+                                        ); 
+                                    }
+                                }elseif($this->paramArr[$paramName]["vars"]["checktype"]==='decimal'){  
+                                    $curParamItemValue = floatval($curParamItemName);
+                                    $dmsize = (!empty($this->paramArr[$paramName]["vars"]["size"]["dmsize"]))?intval($this->paramArr[$paramName]["vars"]["size"]["dmsize"]):0;
+                                    if (!empty($dmsize)) $curParamItemValue = round($curParamItemValue,$dmsize);
+                                    if (!empty($this->paramArr[$paramName]["dbid"])) {
+                                        $attrValsArr["attr".$this->paramArr[$paramName]["dbid"]] = $curParamItemValue;                   
+
+                                        $attrDBAddArr[] = array(
+                                            "attrid"=>$this->paramArr[$paramName]["dbid"],
+                                            "vint"=>MNBVf::decimal2int($curParamItemValue,$dmsize),
+                                        );
+                                    }
+                                }elseif($this->paramArr[$paramName]["vars"]["checktype"]==='string'){
+                                    if (!empty($this->paramArr[$paramName]["dbid"])) {
+                                        $attrValsArr["attr".$this->paramArr[$paramName]["dbid"]] = $curParamItemName;
+
+                                        $attrDBAddArr[] = array(
+                                            "attrid"=>$this->paramArr[$paramName]["dbid"],
+                                            "vstr"=>$curParamItemName,
+                                        );
+                                    }
+                                }elseif($this->paramArr[$paramName]["vars"]["checktype"]==='int'){
+                                    if (!empty($this->paramArr[$paramName]["dbid"])) {
+                                        $attrValsArr["attr".$this->paramArr[$paramName]["dbid"]] = intval($curParamItemName);
+
+                                        $attrDBAddArr[] = array(
+                                            "attrid"=>$this->paramArr[$paramName]["dbid"],
+                                            "vint"=>intval($curParamItemName),
+                                        ); 
+                                    }
+                                }
+                                
+                                if ($paramName==='Цвет'){
+                                    $prodColorStrNorm = SysBF::strNormalize($curParamItemName);
+                                    if (false===strpos($updateArr["norm_search"],$prodColorStrNorm)){
+                                        $prodColorStr = $curParamItemName;
+                                        $updateArr["norm_search"] .= ',' . $prodColorStrNorm;
+                                    }
+                                }
+                                
+                            }
+
+                        }
+                        if (count($attrValsArr)) {
+                            $updateArr['attrvals'] = json_encode($attrValsArr);
+                            //echo "attrvals=[{$updateArr['attrvals']}]\n";
+                        }
 
                         $prodid = MNBVStorage::addObj(Glob::$vars['prod_storage'], $updateArr);
+                        
+                        //Сформируем поисковые строки
+                        $searchObj->del(Glob::$vars['prod_storage'],$prodid);
+                        $searchObj->set(Glob::$vars['prod_storage'],$prodid,"$prodid",0,6,$this->siteid);
+                        $searchObj->set(Glob::$vars['prod_storage'],$prodid,$updateArr["partnumber"],0,2,$this->siteid);
+                        $searchObj->set(Glob::$vars['prod_storage'],$prodid,preg_replace("/[^0-9]/","",$updateArr["partnumber"]),0,2,$this->siteid);
+                        $searchObj->set(Glob::$vars['prod_storage'],$prodid,$updateArr["barcode"],0,2,$this->siteid);
+                        $searchObj->set(Glob::$vars['prod_storage'],$prodid, str_replace(' ', '', $updateArr["model"]),0,2,$this->siteid);
+                        $searchObj->set(Glob::$vars['prod_storage'],$prodid,preg_replace("/[^0-9]/","",$updateArr["model"]),0,2,$this->siteid);
+                        //$searchObj->set(Glob::$vars['prod_storage'],$prodid,$updateArr["name"],0,2,$this->siteid);
+                        $searchObj->set(Glob::$vars['prod_storage'],$prodid,$updateArr["prefix"],0,2,$this->siteid);
+                        if (!empty($vendorid)) $searchObj->set(Glob::$vars['prod_storage'],$prodid,$this->vendArr[$vendorStr]["name"],0,2,$this->siteid);
+                        if (!empty($countryid)) $searchObj->set(Glob::$vars['prod_storage'],$prodid,$this->countryArr[$countryStr]["name"],0,2,$this->siteid);
+                        if (!empty($prodColorStr)) $searchObj->set(Glob::$vars['prod_storage'],$prodid,$prodColorStr,0,1,$this->siteid);
+                        
                         
                         if (false!==$prodid) {
                             $item = array('obj'=>$updateArr);
@@ -471,6 +1019,37 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                                 $urlmaster = new MNBVURL(2,Glob::$vars['url_types']); 
                                 $urlmaster->setItemAlias(Glob::$vars['prod_storage'],$item['obj']["id"],$item['obj']['alias'],$item['obj']['type'],$upFolderAlias,$item['obj']['siteid']);
                                 SysLogs::addLog("Update URL: urltype=[".Glob::$vars['prod_storage']."] id=[".$item['obj']["id"]."] alias=[".$item['obj']['alias']."] objtype=[".$item['obj']['type']."] siteId=[".$item['obj']['siteid']."]");
+                            }
+                            
+
+                            //Пополним индекс атрибутов  
+                            if (count($attrValsArr)
+                                    && !empty(SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'])
+                                    && isset(SysStorage::$storage[SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse']])
+                                    ){ //Есть что добавить в индекс атрибутов и индекс такой существует и используется
+                                foreach($attrDBAddArr as $addAtrItem){
+                                    if (!empty($addAtrItem["type"]) && $addAtrItem["type"]==='list0'){ //Если это список, то чистим индекс и заново заполняем
+                                        $res = MNBVStorage::delObj(SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'],
+                                                array("objid","=",$prodid,"and","attrid","=",$addAtrItem["attrid"]));
+                                        //echo "Delete Index Attr[{$addAtrItem['attrid']}] to object[{$addAtrItem['objid']}] " . (($res)?($res.' successful!'):' error!') ."\n";
+                                    }
+
+                                    $addAtrItem["objid"] = $prodid;
+                                    $addAtrItem["objparentid"] = $parentid;
+
+                                    $res = MNBVStorage::getObj(
+                                        SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'],
+                                        array("id"),
+                                        array("objid","=",$prodid,"and","attrid","=",$addAtrItem["attrid"])); 
+                                    if (!empty($res[0]) && !isset($addAtrItem["type"])) {
+                                        $res = MNBVStorage::setObj(SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'], $addAtrItem, array("id",'=',$res[1]["id"]));
+                                        //echo "Update Index Attr[{$addAtrItem['attrid']}] to object[$prodid] " . (($res)?($res.' successful!'):' error!') ."\n";
+                                    } else {    
+                                        if (isset($addAtrItem["type"])) unset($addAtrItem["type"]);
+                                        $res = MNBVStorage::addObj(SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'], $addAtrItem);
+                                        //echo "Create Index Attr[{$addAtrItem['attrid']}] to object[$prodid] " . (($res)?($res.' successful!'):' error!') ."\n";
+                                    }
+                                }
                             }
 
                             echo "Add prod id=[$prodid] parentid=[$parentid] name=[{$updateArr["name"]}]\n";
@@ -737,13 +1316,14 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
      */
     private function createFolders($parentid_out='root'){
         static $level = 0;
+        $searchObj = new MNBVSearch();
         $level++;
         if ($level>10) {
             $level--;
             return false;
         }
         $level--;
-        
+                
         $parentid_out = strval($parentid_out);
         
         $folder = false;
@@ -777,11 +1357,21 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                 $updateArr = array();
                 $outid = strval($this->catArr[$folderid]['id']);
                 $folder = false;
+                $attrupArr = array(); 
+                $attrArr = array();
+                $attrAllArr = array();
                 $res = MNBVStorage::getObj(Glob::$vars['prod_storage'],
-                        array("id","searchstr","name"),
+                        array("id","searchstr","name","namelang","attrup","attr"),
                         array("outid","=",$outid,"and","type","=",ST_FOLDER));
                 if (!empty($res[0])) {
                     $folder = $res[1];
+                    
+                    $dbfolderid = $res[1]["id"];
+                    $attrupArr = SysBF::json_decode($folder["attrup"]);
+                    $attrArr = SysBF::json_decode($folder["attr"]);
+                    foreach($attrupArr as $atval) $attrAllArr[] = $atval["name"];
+                    foreach($attrArr as $atval) $attrAllArr[] = $atval["name"];
+                    
                     //Если фидом не задана строка синонимов поиска, то заберем ее из базы
                     if (!empty($this->catArr[$folderid]["searchstr"])) $updateArr["searchstr"] = $this->catArr[$folderid]["searchstr"]; //Приоритет синонимов из фида 
                     if (empty($this->catArr[$folderid]["searchstr"]) && !empty($folder["searchstr"])) {
@@ -793,6 +1383,11 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                         $updateArr["editip"] = GetEnv('REMOTE_ADDR');
                         MNBVStorage::setObj(Glob::$vars['prod_storage'], $updateArr, array("id",'=',$folder["id"]));
                         echo "Update folder id=[{$folder["id"]}] parentid=[$parentid] [{$folder["name"]}]\n";
+                        
+                        //Сформируем поисковые строки
+                        $searchObj->del(Glob::$vars['prod_storage'],$dbfolderid);
+                        $searchObj->set(Glob::$vars['prod_storage'],$dbfolderid,$updateArr["name"].' '.$updateArr["searchstr"],1,2,$this->siteid);
+                        if (!empty($folder["namelang"]))$searchObj->set(Glob::$vars['prod_storage'],$dbfolderid,$folder["namelang"],1,2,$this->siteid);
                     }
                     $this->catArr[$folderid]["dbid"] = $folder["id"];
                 }else{
@@ -809,9 +1404,12 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
 
                     if (false!==$upFLD){
                         $updateArr["attrup"] = $upFLD["attrup"];
-                        $updateArr["upfolders"] = $upFLD["upfolders"];    
+                        $updateArr["upfolders"] = $upFLD["upfolders"]; 
+                        
+                        $attrupArr = SysBF::json_decode($updateArr["attrup"]);
+                        foreach($attrupArr as $atval) $attrAllArr[] = $atval["name"];
                     }
-
+                    
                     $updateArr["outid"] = $outid;
                     $updateArr["name"] = $this->catArr[$folderid]["name"];
                     $updateArr["parentid"] = $parentid;
@@ -848,18 +1446,248 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                             $urlmaster->setItemAlias(Glob::$vars['prod_storage'],$item['obj']["id"],$item['obj']['alias'],$item['obj']['type'],$upFolderAlias,$item['obj']['siteid']);
                             SysLogs::addLog("Update URL: urltype=[".Glob::$vars['prod_storage']."] id=[".$item['obj']["id"]."] alias=[".$item['obj']['alias']."] objtype=[".$item['obj']['type']."] upFolderAlias=[$upFolderAlias] siteId=[".$item['obj']['siteid']."]");
                         }
+                        
+                        //Сформируем поисковые строки
+                        $searchObj->del(Glob::$vars['prod_storage'],$dbfolderid);
+                        $searchObj->set(Glob::$vars['prod_storage'],$dbfolderid,$updateArr["name"],1,1,$this->siteid);
+                        if (!empty($updateArr["searchstr"])) $searchObj->set(Glob::$vars['prod_storage'],$dbfolderid,$updateArr["searchstr"],1,1,$this->siteid);
                     
                         echo "Add folder id=[{$dbfolderid}] parentid=[$parentid] [{$updateArr["name"]}]\n";
                     }else{
                         echo "Add folder error parentid=[$parentid] [{$updateArr["name"]}]\n";
                     }
                 }
-
+                
+                //Проверим на необходимость добавить атрибутов из фида
+                $addAttr = false;
+                foreach($this->catArr[$folderid]["attrnames"] as $attrname) {
+                    if (!in_array($attrname,$attrAllArr)) {
+                        $attrArr[] = array(
+                            "objid"=>$dbfolderid,
+                            "pozid"=>1000,
+                            "attrid"=>$this->paramArr[$attrname]["dbid"],
+                            "name"=>$attrname,
+                            //"namelang"=>"",
+                            "infilter"=>$this->paramArr[$attrname]["infilter"],
+                        );
+                        $addAttr = true;
+                    }
+                }
+                if ($addAttr) {
+                    MNBVStorage::setObj(Glob::$vars['prod_storage'], array("attr"=> json_encode($attrArr)), array("id",'=',$dbfolderid,"and","type","=",ST_FOLDER));
+                }
+                
                 //Обработаем вложенные категории
                 $this->createFolders($outid);
             }
         }
         
+    }
+    
+    /**
+     * Создает атрибуты товаров из массива $this->paramArr
+     */
+    private function createProdParams(){
+        
+        //$this->paramArr[$paramName] = array('name'=>$paramName, 'dbid'=>0, 'vals'=>array(), 'size'=>null);
+        if (!isset(SysStorage::$storage[Glob::$vars['attr_storage']])) return false;
+        
+        $attrStorage = Glob::$vars['attr_storage'];
+               
+        foreach ($this->paramArr as $key=>$value){
+        
+            $pozid = 1000;
+            $dnuse = false;
+            $infilter = false;
+            $inlist = false;
+            $inshort = false;
+            $index = false;
+            $name = $value["name"];
+            $attrType = 0;
+            
+            $dbtype = 'int';
+            $active = 'update';
+            $table = 'td';
+            $type = 'text';
+            $size = 0;
+            $dmsize = 0;
+            $notset = true;
+            $filter_type = 'objects';            
+            $checktype = 'int';
+            $lang = 'all';
+            
+            //Определим тип атрибута и его настройки
+            if($value['size']===null && count($value['vals'])>100) { //Строка
+                $dbtype = 'int';
+                $type = 'text';
+                $size = 255;
+                $dmsize = 0;
+                $checktype = 'string';
+            }
+            elseif ($value['size']===null) { //Перечисление
+                $infilter = true;
+                $attrType = 1;
+                $dbtype = 'int';
+                $type = 'select';
+                $size = 1;
+                $dmsize = 0;
+                $checktype = 'int';
+            }
+            elseif(!empty($value['size']['size']) && empty($value['size']['dmsize'])) { //INT
+                $infilter = true;
+                $dbtype = 'int';
+                $type = 'text';
+                $size = 10;
+                $dmsize = 0;
+                $checktype = 'int';
+            }elseif(!empty($value['size']['size']) && !empty($value['size']['dmsize'])) { //DECIMAL
+                $infilter = true;
+                $dbtype = 'decimal';
+                $type = 'text';
+                $size = $value['size']['size'];
+                $dmsize = $value['size']['dmsize'];
+                $checktype = 'decimal';
+                
+                //В сумме знаков должно быть до 10, без учета разделителя 
+                if ($dmsize>9) $dmsize = 9;
+                if ($size>10) $dmsize = 0;
+                elseif ($size+$dmsize>10) {
+                    $dmsize = 10 - $size;
+                }
+                
+                if ($size+$dmsize<10) $size = 10 - $dmsize;
+            }
+            
+            //Если слишком много знаков в числе или нет их количества, то это строка
+            if (empty($size) || ($dbtype!=='string' && $size>10)) {
+                $attrType = 0;
+                $pozid = 1000;
+                $dnuse = false;
+                $infilter = false;
+                $inlist = false;
+                $inshort = false;
+                $index = false;
+            
+                $dbtype = 'int';
+                $type = 'text';
+                $size = 255;
+                $dmsize = 0;
+                $checktype = 'string';
+            }
+            
+            
+            $attrNode = false;
+            $attrNodeId = 0;
+            $res = MNBVStorage::getObj($attrStorage,
+                    array("id","vars"),
+                    array("name","=",$name));
+            if (!empty($res[0])) {
+                
+                $attrNode = $res[1];
+                $attrNodeId = $attrNode["id"];
+                $varsStr = $attrNode['vars'];
+                $varArr = SysBF::json_decode($varsStr);
+                
+                echo "Found attrNode id=[".$attrNode["id"]."] [{$name}]\n";
+                
+            } else { 
+                
+                //Если атрибута не нашлось - создадим его
+                $updateArr = array();
+                $updateArr["name"] = $name;
+                $updateArr["alias"] = MNBVf::str2alias($name);
+                $updateArr["parentid"] = Glob::$vars['vend_storage_rootid'];
+                $updateArr["pozid"] = $pozid;
+                $updateArr["visible"] = 1;
+                $updateArr["first"] = 0;
+                $updateArr["access"] = 0;
+                $updateArr["access2"] = 210;
+                $updateArr["type"] = $attrType;
+                $updateArr["datestr"] = $this->thisDateTime;
+                $updateArr["date"] = $this->thisTime;
+                $updateArr["siteid"] = $this->siteid;
+                $updateArr["author"] = Glob::$vars['user']->get('name');
+                $updateArr["createuser"] = Glob::$vars['user']->get('userid');
+                $updateArr["createdate"] = $this->thisTime;
+                $updateArr["edituser"] = Glob::$vars['user']->get('userid');
+                $updateArr["editdate"] = $this->thisTime;
+                $updateArr["editip"] = GetEnv('REMOTE_ADDR');
+                $attrNodeId = MNBVStorage::addObj($attrStorage, $updateArr);
+
+                //Подправим параметры атрибута
+                $varArr = array(
+                    "active"=>$active,
+                    "table"=>$table,
+                    "type"=>$type,
+                    "size"=>$size,
+                    "dmsize"=>$dmsize,
+                    "linkstorage"=>$attrStorage,
+                    "filter_folder"=>$attrNodeId,
+                    "filter_type"=>$filter_type,
+                    "checktype"=>$checktype,
+                    "lang"=>$lang,
+                    "viewindex"=>0,
+                    "dbtype"=>$dbtype,
+                    "notset"=>$notset
+                );
+                $varsStr = json_encode($varArr);
+                MNBVStorage::setObj($attrStorage, array("vars"=>$varsStr), array("id",'=',$attrNodeId));
+                echo "Create attrNode id=[".$attrNodeId."] [{$updateArr["name"]}]\n"; 
+            }
+            $this->paramArr[$key]["dbid"] = $attrNodeId;
+            $this->paramArr[$key]["vars"] = $varArr;
+            
+            //Для перечисления проверим его элементы, при необходимости создадим новые
+            if ($type === 'select' && count($value["vals"])){
+                
+                $itemsFinArr = array();
+                //print_r($value);
+                foreach($value["vals"] as $itemName){
+                    $itemId = 0;
+                    $res = MNBVStorage::getObj($attrStorage,
+                            array("id"),
+                            array("parentid","=",$attrNodeId,"and","name","=",$itemName));
+                    if (!empty($res[0])) {
+                        $itemId = $res[1]["id"];
+                        $itemsFinArr["$itemName"] = $itemId;
+                        echo "Found attrVal id=[$itemId] [$itemName]\n";
+                    } else { 
+
+                        //Если атрибута не нашлось - создадим его
+                        $updateArr = array();
+                        $updateArr["name"] = $itemName;
+                        $updateArr["parentid"] = $attrNodeId;
+                        $updateArr["pozid"] = 100;
+                        $updateArr["visible"] = 1;
+                        $updateArr["first"] = 0;
+                        $updateArr["access"] = 0;
+                        $updateArr["access2"] = 210;
+                        $updateArr["type"] = 0;
+                        $updateArr["datestr"] = $this->thisDateTime;
+                        $updateArr["date"] = $this->thisTime;
+                        $updateArr["siteid"] = $this->siteid;
+                        $updateArr["author"] = Glob::$vars['user']->get('name');
+                        $updateArr["createuser"] = Glob::$vars['user']->get('userid');
+                        $updateArr["createdate"] = $this->thisTime;
+                        $updateArr["edituser"] = Glob::$vars['user']->get('userid');
+                        $updateArr["editdate"] = $this->thisTime;
+                        $updateArr["editip"] = GetEnv('REMOTE_ADDR');
+                        $itemId = MNBVStorage::addObj($attrStorage, $updateArr);
+                        $itemsFinArr["$itemName"] = $itemId;
+                        echo "Create attrVal id=[".$itemId."] [$itemName]\n"; 
+                        
+                    }
+                    
+                }
+                
+                $this->paramArr[$key]["vals"] = $itemsFinArr;
+                
+            }else{
+                $this->paramArr[$key]["vals"] = array();
+            }
+            $this->paramArr[$key]["infilter"] = $infilter;
+        
+        } 
     }
     
     /**

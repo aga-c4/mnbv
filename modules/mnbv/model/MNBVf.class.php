@@ -955,7 +955,7 @@ class MNBVf {
                 return 'delitem';
             }
         }elseif ($keyViewType=="text" && $keyType == "decimal"){
-           $value = (!empty($value))?sprintf ("%01.2f", $value):'0.00';
+           $value = (!empty($value))?sprintf ("%01.4f", $value):'0.00';
         }
         return $value;
     }
@@ -1640,6 +1640,7 @@ class MNBVf {
 
         $filter = $filterArr["filter"];
         $storage = $filterArr['storage'];
+        $objid = (!empty($filterArr['objid']))?$filterArr['objid']:0;
         $values = array();
         if (!empty($filterArr["values"]) && is_array($filterArr["values"])) $values = $filterArr["values"];
 
@@ -1679,8 +1680,9 @@ class MNBVf {
 
                     }else{
                         $storName = (!empty($viewArr["linkstorage"])&&$view["linkstorage"]!='this')?$view["linkstorage"]:"$storage";
+                        $parentId = (!empty($view["filter_folder"]))?$view["filter_folder"]:$objid;
                         $paramArr = array();
-                        if (isset($view["filter_folder"])) array_push($paramArr,'and','parentid','=',$view["filter_folder"]);
+                        if (isset($view["filter_folder"])) array_push($paramArr,'and','parentid','=',$parentId);
                         if (isset($view["filter_vis"])) array_push($paramArr,'and','visible','=',1);
                         if (isset($view["filter_type"])&&$view["filter_type"]!=='all') {
                             array_push($paramArr,'and','type','=',($view["filter_type"]==="folders")?1:0);
@@ -1892,7 +1894,9 @@ class MNBVf {
         if (!empty($viewArr["table"]) && ($viewArr["table"]=="tdline" || $viewArr["table"]=="thline")) $colspanStr = ' colspan="2"';
         if (!empty($viewArr["table"]) && ($viewArr["table"]=="th" || $viewArr["table"]=="thline")) {$tdStr = '<th class="line"'.$styleStr; $tdStr2 = '</th>';} else {$tdStr = '<td'.$styleStr; $tdStr2 = '</td>';}
         if (!empty($viewArr["width"])) $styleStr = ' style="width: '.$viewArr["width"].';"';
-        if (!empty($viewArr["size"])) $sizeStr = ' size="'.$viewArr["size"].'"';
+        $valSize = (!empty($viewArr["size"]))?$viewArr["size"]:0;
+        if ($viewArr["type"]=="text" && !empty($viewArr["dmsize"])) $valSize += 1 + $viewArr["dmsize"]; //Для чисел с плавающей точкой увеличиваем размер за счет дробной части и точки
+        if (!empty($valSize)) $sizeStr = ' size="'.$valSize.'"';
         if (!empty($viewArr["rows"])) $rowsStr = ' rows="'.((intval($viewArr["rows"]))?intval($viewArr["rows"]):5).'"';
         if (!empty($viewArr["active"]) && $viewArr["active"]=='noupdate') $disablStr = ' disabled';
         if (!empty($viewArr["delim"])) $delimStr = $viewArr["delim"];
@@ -2661,9 +2665,11 @@ class MNBVf {
             if (!empty(SysStorage::$storage[Glob::$vars['prod_storage']])
                 && isset(SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'])
                 && isset(SysStorage::$storage[SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse']])){
+                $quFilterArr = array("vint",">",0);
+                if ($catFolderid!=Glob::$vars['prod_storage_rootid']) array_push($quFilterArr,"and","objparentid","=",$catFolderid);
                 $fList = MNBVStorage::getObj(SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'],
                         array("attrid","vint",array("count(*)","qty")),
-                        array("vint",">",0),
+                        $quFilterArr,
                         array("group" => "attrid,vint"));
                 if (((int)$fList[0])>0) {
                     unset($fList[0]); //Вынесем размер списка из массива 
@@ -2755,7 +2761,8 @@ class MNBVf {
         //Удалим неиспользуемые фильтры
         $findex = array();
         foreach($useAttrArr as $attrid => $value){
-            if ($value["filter_type"] == 'checkbox_gr' && (!isset($value["vals"])||count($value["vals"])==0)) { 
+            if (empty($value["filter_type"]) 
+                    || ($value["filter_type"] == 'checkbox_gr' && (!isset($value["vals"])||count($value["vals"])==0))) { 
                 unset ($useAttrArr[$attrid]);
             }else{
                 $findex[$attrid] = $value['pozid'];

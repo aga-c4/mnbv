@@ -310,6 +310,67 @@ class SysBF {
     }
     
     /**
+     * Преобразует похожие по звукам буквы
+     * @param type $str
+     * @return type
+     */
+    public static function normUpdate($str){
+
+        $converter = array(
+            "dzh" => "j",
+            "cel" => "sel",
+            "cem" => "sem",
+            "csh" => "sh",
+            "sch" => "sh",
+            "ch" => "sh",
+            "zh" => "g",
+            "ck" => "k",
+            "ph" => "f",
+            "ee" => "i",
+            "ai" => "i",
+            "ie" => "i",
+            "ia" => "a",
+            "kh" => "h",
+            "kk" => "k",
+            "ie" => "i",
+            "yu" => "u",
+            "oo" => "u",
+            "ou" => "u",
+            "ll" => "l",
+            "pp" => "p",
+            "ss" => "s",
+            "ie" => "i",
+            "ss" => "s",
+            "gg" => "g",
+            "au" => "a",
+            "ts" => "s",
+            "ff" => "f",
+            "ee" => "e",
+            "nn" => "n",
+            "bb" => "b",
+            "eu" => "ev",
+            "ae" => "ai",
+            "je" => "i",
+            "tt" => "t",
+            "th" => "t",
+            "rr" => "r",
+            "wh" => "v",
+        );
+        $str = strtr($str, $converter);
+        
+        $converter = array(
+            "c" => "k",
+            "q" => "k",
+            "w" => "v",
+            "z" => "s",
+            "x" => "ks",
+            "e" => "i",
+            "y" => "i",
+        );
+        return strtr($str, $converter);
+    }
+    
+    /**
      * Преобразование строки транслита - очистка лишних символов (нормализация)
      * @param $str
      * @param string если $nozpt='zpt_ok' зяпятая остается, если 'space_ok' - пробелы остаются

@@ -9,6 +9,8 @@
  */
 class StorageController {
     
+    //TODO - сделать метод получения значения заданного номера атрибута для заданного товара и использовать его для добавление цвета в поисковый индекс
+    
     /**
      * @var string Имя модуля контроллера в нижнем регистре(Внимание, оно должно соответствовать свойству $thisModuleName фронт контроллера модуля (используется во View)
      */
@@ -329,6 +331,8 @@ class StorageController {
         $item['list_storage_alias'] = $this->getStorage();
         $item['list_not_edit'] = (!empty(SysStorage::$storage[$item['list_storage_alias']]['listnotedit']))?true:false;
         
+        $searchObj = new MNBVSearch();
+        
         //Страницы
         $item['list_page'] = (Glob::$vars['mnbv_listpg']>1)?Glob::$vars['mnbv_listpg']:1;
         $item['list_start_item'] = Glob::$vars['list_max_items'] * ($item['list_page'] - 1);
@@ -455,6 +459,20 @@ class StorageController {
                             
                             SysLogs::addLog("Update norm_partnumber=[{$updateArr["norm_partnumber"]}]");
                             SysLogs::addLog("Update norm_search=[{$updateArr["norm_search"]}]");
+                            
+                            /*
+                            $searchObj->set(Glob::$vars['prod_storage'],$gid,$gid,0,3,$upd_obj["siteid"]);
+                            $searchObj->set(Glob::$vars['prod_storage'],$gid,$sr_partnumber,0,1,$upd_obj["siteid"]);
+                            $searchObj->set(Glob::$vars['prod_storage'],$gid,preg_replace("/[^0-9]/","",$sr_partnumber),0,1,$upd_obj["siteid"]);
+                            $searchObj->set(Glob::$vars['prod_storage'],$gid,$sr_barcode,0,1,$upd_obj["siteid"]);
+                            $searchObj->set(Glob::$vars['prod_storage'],$gid,str_replace(' ', '', $sr_model),0,1,$upd_obj["siteid"]);
+                            $searchObj->set(Glob::$vars['prod_storage'],$gid,preg_replace("/[^0-9]/","",$sr_model),0,1,$upd_obj["siteid"]);
+                            $searchObj->set(Glob::$vars['prod_storage'],$gid,$sr_prefix,0,1,$upd_obj["siteid"]);
+                            $searchObj->set(Glob::$vars['prod_storage'],$gid,$sr_prefixlang,0,1,$upd_obj["siteid"]);
+                            //$searchObj->set(Glob::$vars['prod_storage'],$gid,$sr_name,0,1,$upd_obj["siteid"]);
+                            //$searchObj->set(Glob::$vars['prod_storage'],$gid,$sr_namelang,0,1,$upd_obj["siteid"]);
+   
+                             */
                         }
 
                         $res = MNBVStorage::setObj($this->getStorage(), $updateArr, array("id",'=',$gid));
@@ -833,6 +851,7 @@ class StorageController {
                                     "attrid"=>$realKeyId,
                                     "vint"=>MNBVf::decimal2int($attrValsArr["$realKey"],intval($realKeyView["dmsize"])),
                                 );
+                                $attrValsArr["$realKey"] = round($attrValsArr["$realKey"],intval($realKeyView["dmsize"]));
                             } elseif ($realKeyView["dbtype"]==="int" && $realKeyView["type"]==="list"){
                                 //В этом режиме можно выбрать несколько значений за раз, запишем просто их последовательно в базу
                                 $listItemValArr = json_decode($attrValsArr["$realKey"]);
@@ -986,7 +1005,20 @@ class StorageController {
         
                             $updateArr["norm_partnumber"] = '';
                             $updateArr["norm_search"] = '';
+                            $searchObj = new MNBVSearch();
+                            $searchObj->del(Glob::$vars['prod_storage'],$item['obj']["id"]);
                             if ($sr_type!==ST_FOLDER) {
+                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$item['obj']["id"],0,6,$item['obj']["siteid"]);
+                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_partnumber,0,2,$item['obj']["siteid"]);
+                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],preg_replace("/[^0-9]/","",$sr_partnumber),0,2,$item['obj']["siteid"]);
+                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_barcode,0,2,$item['obj']["siteid"]);
+                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],str_replace(' ', '', $sr_model),0,2,$item['obj']["siteid"]);
+                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],preg_replace("/[^0-9]/","",$sr_model),0,2,$item['obj']["siteid"]);
+                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_prefix,0,2,$item['obj']["siteid"]);
+                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_prefixlang,0,2,$item['obj']["siteid"]);
+                                //$searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_name,0,2,$item['obj']["siteid"]);
+                                //$searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_namelang,0,2,$item['obj']["siteid"]);
+                            
                                 $updateArr["norm_search"] .= ',' . $item['obj']["id"];
                                 $updateArr["norm_search"] .= ',' . SysBF::strNormalize($sr_barcode,'zpt_ok');
                                 $updateArr["norm_partnumber"] .= SysBF::strNormalize($sr_partnumber,'zpt_ok');
@@ -1000,6 +1032,8 @@ class StorageController {
                                 if (!empty($res[0])) {
                                     $updateArr["norm_search"] .= ',' . SysBF::strNormalize($res[1]['name']);
                                     $updateArr["norm_search"] .= ',' . SysBF::strNormalize($res[1]['namelang']);
+                                    $searchObj->set(Glob::$vars['prod_storage'],$prodid,$res[1]['name'],0,1,$item['obj']["siteid"]);
+                                    $searchObj->set(Glob::$vars['prod_storage'],$prodid,$res[1]['namelang'],0,1,$item['obj']["siteid"]);
                                 }
                                 
                                 //Подтянем Страну
@@ -1009,8 +1043,18 @@ class StorageController {
                                 if (!empty($res[0])) {
                                     $updateArr["norm_search"] .= ',' . SysBF::strNormalize($res[1]['name']);
                                     $updateArr["norm_search"] .= ',' . SysBF::strNormalize($res[1]['namelang']);
+                                    $searchObj->set(Glob::$vars['prod_storage'],$prodid,$res[1]['name'],0,1,$item['obj']["siteid"]);
+                                    $searchObj->set(Glob::$vars['prod_storage'],$prodid,$res[1]['namelang'],0,1,$item['obj']["siteid"]);
                                 }
+                                
+                                //TODO - позже подтянуть также цвет
+                            }else{
+                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_prefix,1,1,$item['obj']["siteid"]);
+                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_prefixlang,1,1,$item['obj']["siteid"]);
+                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_name,1,1,$item['obj']["siteid"]);
+                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_namelang,1,1,$item['obj']["siteid"]);
                             }
+                            
                             $updateArr["norm_search"] .= ',' . SysBF::strNormalize($sr_name);
                             $updateArr["norm_search"] .= ',' . SysBF::strNormalize($sr_namelang);
                             $updateArr["norm_search"] .= ',' . SysBF::strNormalize($sr_prefix);
@@ -1018,6 +1062,7 @@ class StorageController {
                             
                             SysLogs::addLog("Update norm_partnumber=[{$updateArr["norm_partnumber"]}]");
                             SysLogs::addLog("Update norm_search=[{$updateArr["norm_search"]}]");
+                            
                         }
                         
                         $res = MNBVStorage::setObj($this->getStorage(), $updateArr, array("id",'=',$item["id"]));

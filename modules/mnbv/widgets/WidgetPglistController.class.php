@@ -123,6 +123,8 @@ class WidgetPglistController extends AbstractWidgetControllerController {
         if (!empty($param['filter_type'])) $this->filter_type = $param['filter_type'];
         if (!empty($param['list_main_alias'])) $this->list_main_alias = $param['list_main_alias'];
         if (!empty($param['list_link'])) $this->list_link = $param['list_link'];
+        $data_mode_light = false;
+        if (!empty($param['data_mode']) && $param['data_mode']==='light') $data_mode_light = true;
         if (!empty($param['list_link_name'])) $this->list_link_name = $param['list_link_name'];
         if (isset($param['only_first'])) $this->only_first = (!empty($param['only_first']))?true:false;
         if (isset($param['obj_prop_conf']) && is_array($param['obj_prop_conf'])) $this->obj_prop_conf = $param['obj_prop_conf'];
@@ -178,12 +180,12 @@ class WidgetPglistController extends AbstractWidgetControllerController {
         //------------------------------------------------------------------------------
 
         //Список объектов
-        if ($vidget_alias==='gormenucatalog') {
+        if ($vidget_alias==='gormenucatalog' || $data_mode_light) {
             $cache = new MNBVCache();
             $item['list'] = $cache->get("gormenucatalog",true);
             if (!is_array($item['list']) || !empty(Glob::$vars['no_cache'])){ //Необходимо перегенерить кеш
                 $item['list'] = MNBVStorage::getObjAcc($this->storage,
-                    array("*"),
+                    array("id","name","namelang","alias","type"),
                     $quFilterArr,$quConfArr);
                 $item['list_size'] = (int)$item['list'][0]; unset($item['list'][0]); //Вынесем размер списка из массива
                 $cache->set("gormenucatalog",$item['list'],Glob::$vars['gormenu_cache_ttl']);
@@ -223,7 +225,7 @@ class WidgetPglistController extends AbstractWidgetControllerController {
                 }
                 $item['list'][strval($key)]['obj_prop_arr'] = MNBVf::objPropGenerator($this->storage, $value, $this->obj_prop_conf, Lang::isAltLang(),'array');
                 
-                if ($this->storage==='products'){ //Для хранилища товаров посчитаем скидку подробнее в ProductsController.php
+                if ($this->storage==='products' && $vidget_alias!=='gormenucatalog' && !$data_mode_light){ //Для хранилища товаров посчитаем скидку подробнее в ProductsController.php
                     $discountParamsArr = array('user' => 'current','discmaxpr'=>$value["discmaxpr"],'discmaxval'=>$value["discmaxval"],'discminmargpr'=>$value["discminmargpr"],'discminmargval'=>$value["discminmargval"]);
                     $item['list'][strval($key)]['discount_price'] = MNBVDiscount::getPrice($value["id"], $value["price"],$value["cost"],$discountParamsArr);
                 }

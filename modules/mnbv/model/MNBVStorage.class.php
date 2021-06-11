@@ -393,7 +393,7 @@ class MNBVStorage{
                 if (!empty($avarr['vars'])) $avarr['vars'] = SysBF::json_decode($avarr['vars']);
                 $avarr['vars'] = SysStorage::updateViewArr($avarr['vars']);
 
-                $avarr['vars']["pozid"] = $attrStru["pozid"]; //Заберем позицию сюда
+                $avarr['vars']["pozid"] = (!empty($attrStru["pozid"]))?$attrStru["pozid"]:1000000; //Заберем позицию сюда
                 $avarr['vars']["inshort"] = (!empty($attrStru["inshort"]))?true:false;
                 $avarr['vars']["name"] = "attr".$avarr["id"]; //Техническое название
                 $avarr['vars']["namedef"] = (!empty($avarr["name"]))?$avarr["name"]:$avarr['vars']["name"]; //Название на дефолтовом языке

@@ -74,10 +74,15 @@ CREATE TABLE `mnbv_attributes` (
 INSERT INTO `mnbv_attributes` (`id`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `files`, `siteid`, `tags`) VALUES
 (1, '0000-00-00 00:00:00', 0, 100, 1, '', 1, 0, 103, 0, 'Атрибуты хранилищ', 'Storage attributes', '', '', '', '1', '', '<p>1</p>', 0, 0, 0, 2, 1468929671, 2, 1481636094, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, ''),
 (2, '0000-00-00 00:00:00', 1, 100, 0, '', 1, 0, 103, 0, 'Страна', 'Country', '', '', 'Русское описание', 'Eng aboute', '<p>Русский текст</p>', '<p>Eng text</p>', 0, 0, 0, 2, 1468929743, 2, 1622042729, '127.0.0.1', 'Администратор', '{\"active\":\"update\",\"table\":\"td\",\"type\":\"select\",\"linkstorage\":\"attributes\",\"filter_folder\":\"2\",\"filter_type\":\"objects\",\"checktype\":\"int\",\"lang\":\"all\",\"viewindex\":1,\"dbtype\":\"int\",\"notset\":1}', '', '', '', '', '', 0, ''),
-(3, '0000-00-00 00:00:00', 1, 100, 0, '', 1, 0, 103, 0, 'Вес,г', 'Weight,g', '', '', '', '', '', '', 0, 0, 0, 2, 1469004674, 2, 1622021574, '127.0.0.1', 'Администратор', '{\"active\":\"update\",\"table\":\"td\",\"type\":\"text\",\"width\":\"100%\",\"filter_type\":\"all\",\"checktype\":\"int\",\"lang\":\"all\",\"dbtype\":\"int\"}', '', '', '', '', '', 0, ''),
-(5, '0000-00-00 00:00:00', 1, 100, 0, '', 1, 0, 103, 0, 'Длина,cм', 'Length,sm', '', '', '', '', '', '', 0, 0, 0, 2, 1469004857, 2, 1622013164, '127.0.0.1', 'Администратор', '{\"dbtype\":\"int\",\"active\":\"update\",\"table\":\"td\",\"type\":\"text\",\"filter_type\":\"all\",\"checktype\":\"int\",\"lang\":\"all\",\"width\":\"100%\"}', '', '', '', '', '', 0, ''),
-(6, '0000-00-00 00:00:00', 1, 100, 0, '', 1, 0, 103, 0, 'Ширина,cм', 'Width,sm', '', '', '', '', '', '', 0, 0, 0, 2, 1469004863, 2, 1622013187, '127.0.0.1', 'Администратор', '{\"dbtype\":\"int\",\"active\":\"update\",\"table\":\"td\",\"type\":\"text\",\"filter_type\":\"all\",\"checktype\":\"int\",\"lang\":\"all\",\"width\":\"100%\"}', '', '', '', '', '', 0, ''),
-(7, '0000-00-00 00:00:00', 1, 100, 0, '', 1, 0, 103, 0, 'Высота,cм', 'Height,sm', '', '', '', '', '', '', 0, 0, 0, 2, 1469004867, 2, 1622013247, '127.0.0.1', 'Администратор', '{\"dbtype\":\"int\",\"active\":\"update\",\"table\":\"td\",\"type\":\"text\",\"filter_type\":\"all\",\"checktype\":\"int\",\"lang\":\"all\",\"width\":\"100%\"}', '', '', '', '', '', 0, '');
+(3, '0000-00-00 00:00:00', 1, 100, 0, '', 1, 0, 103, 0, 'Вес (кг)', 'Weight (kg)', '', '', '', '', '', '', 0, 0, 0, 2, 1469004674, 2, 1623270601, '127.0.0.1', 'Администратор', '{\"active\":\"update\",\"table\":\"td\",\"type\":\"text\",\"width\":\"100%\",\"filter_type\":\"all\",\"checktype\":\"decimal\",\"lang\":\"all\",\"dbtype\":\"decimal\",\"size\":\"7\",\"dmsize\":\"3\"}', '', '', '', '', '', 0, ''),
+(5, '0000-00-00 00:00:00', 1, 100, 0, '', 1, 0, 103, 0, 'Высота (cм)', 'Height (sm)', '', '', '', '', '', '', 0, 0, 0, 2, 1469004857, 2, 1623270606, '127.0.0.1', 'Администратор', '{\"dbtype\":\"int\",\"active\":\"update\",\"table\":\"td\",\"type\":\"text\",\"filter_type\":\"all\",\"checktype\":\"int\",\"lang\":\"all\",\"width\":\"100%\",\"size\":\"10\"}', '', '', '', '', '', 0, ''),
+(6, '0000-00-00 00:00:00', 1, 100, 0, '', 1, 0, 103, 0, 'Ширина (cм)', 'Width (sm)', '', '', '', '', '', '', 0, 0, 0, 2, 1469004863, 2, 1623270611, '127.0.0.1', 'Администратор', '{\"dbtype\":\"int\",\"active\":\"update\",\"table\":\"td\",\"type\":\"text\",\"filter_type\":\"all\",\"checktype\":\"int\",\"lang\":\"all\",\"width\":\"100%\",\"size\":\"10\"}', '', '', '', '', '', 0, ''),
+(7, '0000-00-00 00:00:00', 1, 100, 0, '', 1, 0, 103, 0, 'Длина (cм)', 'Length (sm)', '', '', '', '', '', '', 0, 0, 0, 2, 1469004867, 2, 1623270616, '127.0.0.1', 'Администратор', '{\"dbtype\":\"int\",\"active\":\"update\",\"table\":\"td\",\"type\":\"text\",\"filter_type\":\"all\",\"checktype\":\"int\",\"lang\":\"all\",\"width\":\"100%\",\"size\":\"10\"}', '', '', '', '', '', 0, ''),
+(8, '2021-06-09 17:42:31', 1, 100, 0, '', 1, 0, 103, 0, 'Брутто вес (кг)', 'Gross weight (kg)', '', '', '', '', '', '', 1623249720, 0, 0, 2, 1623249751, 2, 1623270622, '127.0.0.1', 'Администратор', '{\"dbtype\":\"decimal\",\"active\":\"update\",\"table\":\"td\",\"type\":\"text\",\"filter_type\":\"all\",\"checktype\":\"decimal\",\"lang\":\"all\",\"size\":\"7\",\"dmsize\":\"3\"}', '', '', '', '', '', 0, ''),
+(9, '2021-06-09 17:42:38', 1, 100, 0, '', 1, 0, 103, 0, 'Брутто высота (см)', 'Gross height (sm)', '', '', '', '', '', '', 1623249758, 0, 0, 2, 1623249758, 2, 1623270628, '127.0.0.1', 'Администратор', '{\"dbtype\":\"int\",\"active\":\"update\",\"table\":\"td\",\"type\":\"text\",\"filter_type\":\"all\",\"checktype\":\"int\",\"lang\":\"all\",\"size\":\"10\"}', '', '', '', '', '', 0, ''),
+(10, '2021-06-09 17:42:46', 1, 100, 0, '', 1, 0, 103, 0, 'Брутто ширина (см)', 'Gross width (sm)', '', '', '', '', '', '', 1623249766, 0, 0, 2, 1623249766, 2, 1623270633, '127.0.0.1', 'Администратор', '{\"dbtype\":\"int\",\"active\":\"update\",\"table\":\"td\",\"type\":\"text\",\"size\":\"10\",\"filter_type\":\"all\",\"checktype\":\"int\",\"lang\":\"all\"}', '', '', '', '', '', 0, ''),
+(11, '2021-06-09 17:43:00', 1, 100, 0, '', 1, 0, 103, 0, 'Брутто длина (см)', 'Gross length (sm)', '', '', '', '', '', '', 1623249780, 0, 0, 2, 1623249780, 2, 1623270638, '127.0.0.1', 'Администратор', '{\"dbtype\":\"int\",\"active\":\"update\",\"table\":\"td\",\"type\":\"text\",\"size\":\"10\",\"filter_type\":\"all\",\"checktype\":\"int\",\"lang\":\"all\"}', '', '', '', '', '', 0, ''),
+(12, '2021-06-09 23:36:39', 1, 100, 1, '', 1, 0, 103, 0, 'Цвет', 'Color', '', '', '', '', '', '', 1623270999, 0, 0, 2, 1623270999, 2, 1623271090, '127.0.0.1', 'Администратор', '{\"dbtype\":\"int\",\"active\":\"update\",\"table\":\"td\",\"type\":\"select\",\"size\":\"1\",\"linkstorage\":\"attributes\",\"filter_folder\":\"12\",\"filter_type\":\"all\",\"checktype\":\"int\",\"lang\":\"all\",\"notset\":1}', '', '', '', '[\"1\"]', '', 0, '');
 
 -- --------------------------------------------------------
 
@@ -230,7 +235,7 @@ CREATE TABLE `mnbv_products` (
 --
 
 INSERT INTO `mnbv_products` (`id`, `outid`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `preview`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `files`, `siteid`, `tags`, `price`, `oldprice`, `cost`, `ndspr`, `quantity`, `instock`, `discmaxpr`, `discmaxval`, `discminmargpr`, `discminmargval`, `vendor`, `prefix`, `prefixlang`, `model`, `partnumber`, `barcode`, `country`, `norm_search`, `norm_partnumber`, `donorurl`, `donorimg`, `searchstr`) VALUES
-(1, '', '1970-01-01 03:00:00', 0, 100, 1, '', 1, 0, 210, 0, 'Товары', 'Products', '', '', 0, '', '', '', '', 0, 0, 0, 2, 1469005900, 2, 1622024047, '127.0.0.1', 'Администратор', '', '', '{\"1\":{\"objid\":1,\"attrid\":\"3\",\"pozid\":10000,\"namelang\":\"Weight, g\",\"dnuse\":1,\"namedlang\":\"\\u0412\\u0435\\u0441\",\"infilter\":1,\"name\":\"\\u0412\\u0435\\u0441, \\u0433\"},\"2\":{\"objid\":1,\"attrid\":\"7\",\"pozid\":10001,\"namedlang\":\"\\u041a\\u043e\\u043c\\u043c\\u0435\\u043d\\u0442\",\"namelang\":\"Height, sm\",\"name\":\"\\u0412\\u044b\\u0441\\u043e\\u0442\\u0430, \\u0441\\u043c\",\"dnuse\":1,\"infilter\":1},\"3\":{\"objid\":1,\"attrid\":\"6\",\"name\":\"\\u0428\\u0438\\u0440\\u0438\\u043d\\u0430, \\u0441\\u043c\",\"namelang\":\"Width, sm\",\"dnuse\":1,\"infilter\":1,\"pozid\":10002},\"4\":{\"objid\":1,\"attrid\":\"5\",\"pozid\":10003,\"name\":\"\\u0414\\u043b\\u0438\\u043d\\u0430, \\u0441\\u043c\",\"namelang\":\"Length, sm\",\"dnuse\":1,\"infilter\":1}}', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', 0, 0, '0.00', '0.00', '0.00', '0.00', 0, '', '', '', '', '', 0, ',1,,,,tovary,products,,', '', '', '', '');
+(1, '', '1970-01-01 03:00:00', 0, 100, 1, '', 1, 0, 210, 0, 'Товары', 'Products', '', '', 0, '', '', '', '', 0, 0, 0, 2, 1469005900, 2, 1623312194, '127.0.0.1', 'Администратор', '', '', '{\"1\":{\"objid\":1,\"attrid\":\"3\",\"pozid\":10000,\"namelang\":\"Weight (kg)\",\"dnuse\":1,\"namedlang\":\"\\u0412\\u0435\\u0441\",\"infilter\":1,\"name\":\"\\u0412\\u0435\\u0441 (\\u043a\\u0433)\"},\"2\":{\"objid\":1,\"attrid\":\"5\",\"pozid\":10001,\"namedlang\":\"\\u041a\\u043e\\u043c\\u043c\\u0435\\u043d\\u0442\",\"namelang\":\"Height (sm)\",\"name\":\"\\u0412\\u044b\\u0441\\u043e\\u0442\\u0430 (\\u0441\\u043c)\",\"dnuse\":1,\"infilter\":1},\"3\":{\"objid\":1,\"attrid\":\"6\",\"name\":\"\\u0428\\u0438\\u0440\\u0438\\u043d\\u0430 (\\u0441\\u043c)\",\"namelang\":\"Width (sm)\",\"dnuse\":1,\"infilter\":1,\"pozid\":10002},\"4\":{\"objid\":1,\"attrid\":\"7\",\"pozid\":10003,\"name\":\"\\u0414\\u043b\\u0438\\u043d\\u0430 (\\u0441\\u043c)\",\"namelang\":\"Length (sm)\",\"dnuse\":1,\"infilter\":1},\"5\":{\"objid\":1,\"attrid\":\"8\",\"pozid\":10010,\"name\":\"\\u0411\\u0440\\u0443\\u0442\\u0442\\u043e \\u0432\\u0435\\u0441 (\\u043a\\u0433)\",\"namelang\":\"Gross weight (kg)\",\"dnuse\":1},\"6\":{\"objid\":1,\"attrid\":\"9\",\"pozid\":10011,\"name\":\"\\u0411\\u0440\\u0443\\u0442\\u0442\\u043e \\u0432\\u044b\\u0441\\u043e\\u0442\\u0430 (\\u0441\\u043c)\",\"namelang\":\"Gross height (sm)\",\"dnuse\":1},\"7\":{\"objid\":1,\"attrid\":\"10\",\"pozid\":10012,\"name\":\"\\u0411\\u0440\\u0443\\u0442\\u0442\\u043e \\u0448\\u0438\\u0440\\u0438\\u043d\\u0430 (\\u0441\\u043c)\",\"namelang\":\"Gross width (sm)\",\"dnuse\":1},\"8\":{\"objid\":1,\"attrid\":\"11\",\"pozid\":10013,\"name\":\"\\u0411\\u0440\\u0443\\u0442\\u0442\\u043e \\u0434\\u043b\\u0438\\u043d\\u0430 (\\u0441\\u043c)\",\"namelang\":\"Gross length (sm)\",\"dnuse\":1}}', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', 0, 0, '0.00', '0.00', '0.00', '0.00', 0, '', '', '', '', '', 0, ',1,,,,tovary,products,,', '', '', '', '');
 
 -- --------------------------------------------------------
 
@@ -432,6 +437,45 @@ ALTER TABLE `mnbv_urlaliases`
 --
 ALTER TABLE `mnbv_vendors`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=1;
+  
+--
+-- Структура таблицы `mnbv_searchindex`
+--
+
+DROP TABLE IF EXISTS `mnbv_searchindex`;
+CREATE TABLE `mnbv_searchindex` (
+  `id` int(10) NOT NULL,
+  `siteid` int(3) NOT NULL DEFAULT 0,
+  `type` int(3) NOT NULL DEFAULT 0,
+  `objid` int(10) NOT NULL DEFAULT 0,
+  `objtype` int(1) NOT NULL DEFAULT 0,
+  `normstr` varchar(255) NOT NULL DEFAULT '',
+  `weight` int(3) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Поисковый индекс';
+
+--
+-- Индексы сохранённых таблиц
+--
+
+--
+-- Индексы таблицы `mnbv_searchindex`
+--
+ALTER TABLE `mnbv_searchindex`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `normstr` (`normstr`),
+  ADD KEY `objid` (`objid`) USING BTREE;
+
+--
+-- AUTO_INCREMENT для сохранённых таблиц
+--
+
+--
+-- AUTO_INCREMENT для таблицы `mnbv_searchindex`
+--
+ALTER TABLE `mnbv_searchindex`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  
+  
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
