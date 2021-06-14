@@ -1032,8 +1032,8 @@ class StorageController {
                                 if (!empty($res[0])) {
                                     $updateArr["norm_search"] .= ',' . SysBF::strNormalize($res[1]['name']);
                                     $updateArr["norm_search"] .= ',' . SysBF::strNormalize($res[1]['namelang']);
-                                    $searchObj->set(Glob::$vars['prod_storage'],$prodid,$res[1]['name'],0,1,$item['obj']["siteid"]);
-                                    $searchObj->set(Glob::$vars['prod_storage'],$prodid,$res[1]['namelang'],0,1,$item['obj']["siteid"]);
+                                    $searchObj->set(Glob::$vars['prod_storage'],$prodid,$res[1]['name'],0,2,$item['obj']["siteid"]);
+                                    $searchObj->set(Glob::$vars['prod_storage'],$prodid,$res[1]['namelang'],0,2,$item['obj']["siteid"]);
                                 }
                                 
                                 //Подтянем Страну
@@ -1049,10 +1049,10 @@ class StorageController {
                                 
                                 //TODO - позже подтянуть также цвет
                             }else{
-                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_prefix,1,1,$item['obj']["siteid"]);
-                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_prefixlang,1,1,$item['obj']["siteid"]);
-                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_name,1,1,$item['obj']["siteid"]);
-                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_namelang,1,1,$item['obj']["siteid"]);
+                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_prefix,1,2,$item['obj']["siteid"]);
+                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_prefixlang,1,2,$item['obj']["siteid"]);
+                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_name,1,2,$item['obj']["siteid"]);
+                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_namelang,1,2,$item['obj']["siteid"]);
                             }
                             
                             $updateArr["norm_search"] .= ',' . SysBF::strNormalize($sr_name);

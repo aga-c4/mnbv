@@ -357,7 +357,7 @@ SysStorage::$storage['tickets']['view']['text'] = array(
 SysStorage::$storage['discounts'] = array( //Корневая таблица сайта
     'group' => 'site', //Группа хранилищ
     'ru_name' => 'Скидки', //Название на русском
-    'eng_name' => 'Вiscounts', //Название на английском
+    'eng_name' => 'Discounts', //Название на английском
     'db' => 'mysql1', //База данных
     'table' => 'mnbv_discounts', //Таблица
     'access' => 0, // Доступ на чтение
@@ -385,6 +385,78 @@ SysStorage::$storage['discounts']['view']['main'] = array(
     "textlang" => array("name"=>"textlang", "type"=>"textarea","editor"=>true,"rows"=>20,"width"=>"100%","langlink"=>"text","table" =>"thline","checktype" => "text","lang" => "altlang"), //Альтернативный язык
 );
 //------------------------------------------
+
+//Хранилище регионов ------------------
+SysStorage::$storage['regions'] = array( //Корневая таблица сайта
+    'group' => 'site', //Группа хранилищ
+    'ru_name' => 'Регионы', //Название на русском
+    'eng_name' => 'Regions', //Название на английском
+    'db' => 'mysql1', //База данных
+    'table' => 'mnbv_regions', //Таблица
+    'access' => 0, // Доступ на чтение
+    'access2' => 210, // Доступ на редактирование
+    //'accessv' => array("view" => 202), //Доступы к различным вкладкам (если не задано, то также как и доступ к объекту)
+    //'access_stru' => array("view" => 2), //Доступы к редактированию структуры (папок со всеми их настройками
+    'stru' => $storageDefStruArr, //Структура данного хранилища
+    'view' => $storageDefViewArr, //Формат вывода - редактирования
+    'list' => $storageDefListArr, //Формат списка
+    'filter' => $storageDefFilterArr, //Формат фильтра
+    'varuse' => true, //разрешено ли использование элементов данного хранилища как значение поля
+    'attruse' => false, //Есть ли у данного хранилища атрибуты, если не требуются, то для быстродействия лучше отключать.
+    'files_security' => false, //будет ли ограничение доступа к приложенным файлам объектов хранилища
+);
+
+SysStorage::$storage['regions']['view']['main'] = array(
+    "name" => array("name"=>"name", "type"=>"text","size"=>255,"width"=>"100%","langlink"=>"namelang","checktype" => "text","lang" => "lang"), //Основной язык
+    "namelang" => array("name"=>"namelang", "type"=>"text","size"=>255,"width"=>"100%","langlink"=>"name","checktype" => "text","lang" => "altlang"), //Альтернативный язык
+    "alias" => array("name"=>"alias", "type"=>"text","size"=>255,"width"=>"60%","checktype" => "text"),
+    "text" => array("name"=>"text", "type"=>"textarea","editor"=>true,"rows"=>20,"width"=>"100%","langlink"=>"textlang","table" =>"thline","checktype" => "text","lang" => "lang"), //Основной язык
+    "textlang" => array("name"=>"textlang", "type"=>"textarea","editor"=>true,"rows"=>20,"width"=>"100%","langlink"=>"text","table" =>"thline","checktype" => "text","lang" => "altlang"), //Альтернативный язык
+    "type" => array("name"=>"type", "type"=>"select", "viewindex" =>false,  "delim"=>" | ", "checktype" => "int"),
+);
+//------------------------------------------
+
+
+//Доставка ------------------
+SysStorage::$storage['delivery'] = array( //Корневая таблица сайта
+    'group' => 'site', //Группа хранилищ
+    'ru_name' => 'Доставка', //Название на русском
+    'eng_name' => 'Delivery', //Название на английском
+    'db' => 'mysql1', //База данных
+    'table' => 'mnbv_delivery', //Таблица
+    'access' => 0, // Доступ на чтение
+    'access2' => 210, // Доступ на редактирование
+    //'accessv' => array("view" => 202), //Доступы к различным вкладкам (если не задано, то также как и доступ к объекту)
+    //'access_stru' => array("view" => 2), //Доступы к редактированию структуры (папок со всеми их настройками
+    'stru' => $storageDefStruArr, //Структура данного хранилища
+    'view' => $storageDefViewArr, //Формат вывода - редактирования
+    'list' => $storageDefListArr, //Формат списка
+    'filter' => $storageDefFilterArr, //Формат фильтра
+    'varuse' => true, //разрешено ли использование элементов данного хранилища как значение поля
+    'attruse' => false, //Есть ли у данного хранилища атрибуты, если не требуются, то для быстродействия лучше отключать.
+    'files_security' => false, //будет ли ограничение доступа к приложенным файлам объектов хранилища
+);
+
+SysStorage::$storage['delivery']['stru']['price'] = array("type"=>"decimal", "size"=>11, "creatval"=>"0.00", "dbtype"=>"decimal");
+SysStorage::$storage['delivery']['stru']['region'] = array("type"=>"int", "size"=>11, "creatval"=>0, "dbtype"=>"int", "linkstorage"=>"regions");
+SysStorage::$storage['delivery']['stru']['weightgr'] = array("type"=>"int", "size"=>4, "creatval"=>0, "dbtype"=>"int", "linkstorage"=>Glob::$vars['weightgr_types']);
+SysStorage::$storage['delivery']['stru']['sizegr'] = array("type"=>"int", "size"=>4, "creatval"=>0, "dbtype"=>"int", "linkstorage"=>Glob::$vars['sizegr_types']);
+SysStorage::$storage['delivery']['stru']['days'] = array("type"=>"int", "size"=>11, "creatval"=>100, "dbtype"=>"int"); // Pid процесса сессии робота
+
+SysStorage::$storage['delivery']['view']['main'] = array(
+    "name" => array("name"=>"name", "type"=>"text","size"=>255,"width"=>"100%","langlink"=>"namelang","checktype" => "text","lang" => "lang"), //Основной язык
+    "namelang" => array("name"=>"namelang", "type"=>"text","size"=>255,"width"=>"100%","langlink"=>"name","checktype" => "text","lang" => "altlang"), //Альтернативный язык
+    "price" => array("name"=>"price", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"),
+    "region" => array("name"=>"region", "type"=>"select", "viewindex" =>true, "notset" =>true, "filter_type"=>"objects", "filter_folder"=>1, "checktype" => "id"),
+    "weightgr" => array("name"=>"weightgr", "type"=>"select", "viewindex" =>false, "notset" =>true,  "delim"=>" | ", "checktype" => "int"),
+    "sizegr" => array("name"=>"sizegr", "type"=>"select", "viewindex" =>false, "notset" =>true,  "delim"=>" | ", "checktype" => "int"),
+    "days" => array("name"=>"days", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text"),
+    "text" => array("name"=>"text", "type"=>"textarea","editor"=>true,"rows"=>20,"width"=>"100%","langlink"=>"textlang","table" =>"thline","checktype" => "text","lang" => "lang"), //Основной язык
+    "textlang" => array("name"=>"textlang", "type"=>"textarea","editor"=>true,"rows"=>20,"width"=>"100%","langlink"=>"text","table" =>"thline","checktype" => "text","lang" => "altlang"), //Альтернативный язык
+    "type" => array("name"=>"type", "type"=>"select", "viewindex" =>false,  "delim"=>" | ", "checktype" => "int"),
+);
+//------------------------------------------
+
 
 //---Хранилище атрибутов--------------------------
 SysStorage::$storage['attributes'] = array( //Корневая таблица сайта

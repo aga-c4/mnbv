@@ -23,6 +23,7 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
      */
     public $catArr = array();
     
+    
     /**
      * @var array - массив вендоров с алиасами, синонимами и названиями. 
      */
@@ -57,6 +58,27 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
      * @var array массив, содержащий стурктуру категорий импорта ('root' - самый высокий уровень) 
      */
     public $cats_stru = array();
+    
+    /**
+     * @var type демо режим, когда текстовое описание и изображения генерятся не из фида (надо для исключения претензий правообладателей). 
+     */
+    public $demoMode = true;
+    
+    //Примеры демо картинок для тестовой загрузки каталога
+    private $demoImgArr = array(
+        "/src/mnbv/img/demo/p1.jpg",
+        "/src/mnbv/img/demo/p2.jpg",
+        "/src/mnbv/img/demo/p3.jpg",
+        "/src/mnbv/img/demo/p4.jpg"
+    );
+    
+    //Случайный выбор тестовой картинки из имеющихся
+    private function getDemoImgUrl(){
+        $imgKol = count($this->demoImgArr);
+        if (!$imgKol) return '';
+        $key = rand(0,$imgKol-1);
+        return $this->demoImgArr[$key];
+    }
     
     /**
      * Рассчитывае количество знаков после запятой исходника, если это не число, то вернет null
@@ -127,6 +149,7 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
         if ('Габариты (ВxШxГ) (см)' === $strVal) $result = true;
         if ('Брутто размер (ВхШхГ) (см)' === $strVal) $result = true;
         if ('Страна-производитель' === $strVal) $result = true;
+        if ('Габариты брутто (ВхШхГ) (см)' === $strVal) $result = true;
         return $result;
     }
 
@@ -472,6 +495,7 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                 $this->siteid = SysBF::getFrArr($scriptvarsArr, 'siteid',0);
                 $this->cat_deny = SysBF::getFrArr($scriptvarsArr, 'cat_deny',array());
                 $this->cat_allow = SysBF::getFrArr($scriptvarsArr, 'cat_allow','all');
+                $this->demoMode = (!empty($scriptvarsArr['demo_mode']))?true:false;
                 $this->vendArr = array();
                 $this->countryArr = array();
                 $this->startParamArr(); //Установка дефолтовых стартовых параметров каталога
@@ -758,7 +782,10 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                         $updateArr["model"] = (!empty($node->model))?SysBF::checkStr($node->model,'stringkav'):'';
                         $updateArr["name"] = $updateArr["prefix"] . ' ' . $vendorStr . ' ' . $updateArr["model"];
                         $updateArr["alias"] = MNBVf::str2alias($updateArr["model"]);
-                        $updateArr["text"] = (!empty($node->description))?str_replace("\n","<br>\n",SysBF::checkStr($node->description,'stringkav')):'';
+                        
+                        if ($this->demoMode) $updateArr["text"] = $updateArr["name"] . ', ' . $updateArr["name"] . ', ' . $updateArr["name"] . ', ' . $updateArr["name"] . ', ' . $updateArr["name"] . '.<br>Демонстрационный товар, предложение не является офертой. Демонстрационный товар, предложение не является офертой. Демонстрационный товар, предложение не является офертой.';
+                        else $updateArr["text"] = (!empty($node->description))?str_replace("\n","<br>\n",SysBF::checkStr($node->description,'stringkav')):'';
+                        
                         $updateArr["barcode"] = (!empty($node->barcode))?SysBF::checkStr($node->barcode,'stringkav'):'';
                         $updateArr["outid"] = $outid;
                         
@@ -795,6 +822,7 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                         }
                     
                         if (!empty($picture)){
+                            if ($this->demoMode) $picture = $this->getDemoImgUrl();
                             $product['files'] = array();
                             $product['files']['img'] = array();
                             $product['files']['img']['1'] = array(
@@ -979,7 +1007,7 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                                 
                                 if ($paramName==='Цвет'){
                                     $prodColorStrNorm = SysBF::strNormalize($curParamItemName);
-                                    if (false===strpos($updateArr["norm_search"],$prodColorStrNorm)){
+                                    if (false===strpos(SysBF::normUpdate($updateArr["norm_search"]),SysBF::normUpdate($prodColorStrNorm))){
                                         $prodColorStr = $curParamItemName;
                                         $updateArr["norm_search"] .= ',' . $prodColorStrNorm;
                                     }
@@ -1006,7 +1034,7 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                         //$searchObj->set(Glob::$vars['prod_storage'],$prodid,$updateArr["name"],0,2,$this->siteid);
                         $searchObj->set(Glob::$vars['prod_storage'],$prodid,$updateArr["prefix"],0,2,$this->siteid);
                         if (!empty($vendorid)) $searchObj->set(Glob::$vars['prod_storage'],$prodid,$this->vendArr[$vendorStr]["name"],0,2,$this->siteid);
-                        if (!empty($countryid)) $searchObj->set(Glob::$vars['prod_storage'],$prodid,$this->countryArr[$countryStr]["name"],0,2,$this->siteid);
+                        if (!empty($countryid)) $searchObj->set(Glob::$vars['prod_storage'],$prodid,$this->countryArr[$countryStr]["name"],0,1,$this->siteid);
                         if (!empty($prodColorStr)) $searchObj->set(Glob::$vars['prod_storage'],$prodid,$prodColorStr,0,1,$this->siteid);
                         
                         
@@ -1517,8 +1545,8 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
             $lang = 'all';
             
             //Определим тип атрибута и его настройки
-            if($value['size']===null && count($value['vals'])>100) { //Строка
-                $dbtype = 'int';
+            if($value['size']===null && count($value['vals'])>500 && $name!=='Цвет') { //Строка
+                $dbtype = 'string';
                 $type = 'text';
                 $size = 255;
                 $dmsize = 0;
@@ -1568,7 +1596,7 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                 $inshort = false;
                 $index = false;
             
-                $dbtype = 'int';
+                $dbtype = 'string';
                 $type = 'text';
                 $size = 255;
                 $dmsize = 0;
@@ -1580,7 +1608,7 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
             $attrNodeId = 0;
             $res = MNBVStorage::getObj($attrStorage,
                     array("id","vars"),
-                    array("name","=",$name));
+                    array("name","=",$name,"and","parentid","=",1));
             if (!empty($res[0])) {
                 
                 $attrNode = $res[1];
