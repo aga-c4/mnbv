@@ -1007,7 +1007,8 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                                 
                                 if ($paramName==='Цвет'){
                                     $prodColorStrNorm = SysBF::strNormalize($curParamItemName);
-                                    if (false===strpos(SysBF::normUpdate($updateArr["norm_search"]),SysBF::normUpdate($prodColorStrNorm))){
+                                    //if (false===strpos(SysBF::normUpdate($updateArr["norm_search"]),SysBF::normUpdate($prodColorStrNorm))){
+                                    if (!empty($prodColorStrNorm)) { //Так будет корректнее индекс
                                         $prodColorStr = $curParamItemName;
                                         $updateArr["norm_search"] .= ',' . $prodColorStrNorm;
                                     }
