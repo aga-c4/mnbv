@@ -494,7 +494,11 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                 $prod_no_check = SysBF::getFrArr($scriptvarsArr, 'prod_no_check',0,'intval');
                 $this->siteid = SysBF::getFrArr($scriptvarsArr, 'siteid',0);
                 $this->cat_deny = SysBF::getFrArr($scriptvarsArr, 'cat_deny',array());
-                $this->cat_allow = SysBF::getFrArr($scriptvarsArr, 'cat_allow','all');
+                $cat_allow = SysBF::getFrArr($scriptvarsArr, 'cat_allow','all');
+                if (is_array($cat_allow)){ //Элементы массива должны быть строковыми
+                    $this->cat_allow = array();
+                    foreach($cat_allow as $kval) $this->cat_allow[] = strval($kval);
+                }
                 $this->demoMode = (!empty($scriptvarsArr['demo_mode']))?true:false;
                 $this->vendArr = array();
                 $this->countryArr = array();
@@ -505,7 +509,7 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                     "name" => 'root',
                     "alias" => '',
                     "searchstr" => '',
-                    "allow" => true,
+                    //"allow" => true,
                     "dbid" => $this->cat_point,
                     "attrnames" => array(),
                 ));
@@ -637,14 +641,16 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                     $outid = $id;
                     //$outid = $xmlCode; //Вариант выбора базового id из источника
                     $partnumber = $xmlCode;
+                    if ($this->demoMode) $partnumber = '';
                     
                     //Проверка на категорию
                     $parentid = 0;
-                    $upFolderAlias = '';
+                    $upFolderName = $upFolderAlias = '';
                     $categoryId = (!empty($node->categoryId))?intval($node->categoryId):0;
-                    if (!empty($categoryId) && isset($this->catArr[strval($categoryId)]) && isset($this->catArr[strval($categoryId)]['dbid'])) {
+                    if (!empty($categoryId) && isset($this->catArr[strval($categoryId)]) && isset($this->catArr[strval($categoryId)]['dbid'])) { // && $this->checkFolder($categoryId)
                         $parentid = $this->catArr[strval($categoryId)]['dbid'];
                         $upFolderAlias = (!empty($this->catArr[strval($categoryId)]['full_alias']))?$this->catArr[strval($categoryId)]['full_alias']:'';
+                        $upFolderName = (!empty($this->catArr[strval($categoryId)]['name']))?$this->catArr[strval($categoryId)]['name']:'';
                         if (!empty($this->catArr[strval($categoryId)]['searchstr'])) $updateArr["searchstr"] .= ',' . $this->catArr[strval($categoryId)]['searchstr'];
                     }else{
                         continue;
@@ -777,13 +783,13 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                         $updateArr["vendor"] = $vendorid;
                         $updateArr["country"] = $countryid;
                         $updateArr["partnumber"] = $partnumber;
-                        $updateArr["donorurl"] = (!empty($node->url))?SysBF::checkStr($node->typePrefix,'url'):'';
+                        $updateArr["donorurl"] = (!empty($node->url))?SysBF::checkStr($node->url,'url'):'';
                         $updateArr["prefix"] = (!empty($node->typePrefix))?SysBF::checkStr($node->typePrefix,'stringkav'):'';
                         $updateArr["model"] = (!empty($node->model))?SysBF::checkStr($node->model,'stringkav'):'';
                         $updateArr["name"] = $updateArr["prefix"] . ' ' . $vendorStr . ' ' . $updateArr["model"];
                         $updateArr["alias"] = MNBVf::str2alias($updateArr["model"]);
                         
-                        if ($this->demoMode) $updateArr["text"] = $updateArr["name"] . ', ' . $updateArr["name"] . ', ' . $updateArr["name"] . ', ' . $updateArr["name"] . ', ' . $updateArr["name"] . '.<br>Демонстрационный товар, предложение не является офертой. Демонстрационный товар, предложение не является офертой. Демонстрационный товар, предложение не является офертой.';
+                        if ($this->demoMode) $updateArr["text"] = $updateArr["name"] . ', ' . $updateArr["name"] . ', ' . $updateArr["name"] . ', ' . $updateArr["name"] . ', ' . $updateArr["name"] . '.<br><br>Демонстрационный товар, предложение не является офертой. Демонстрационный товар, предложение не является офертой. Демонстрационный товар, предложение не является офертой.';
                         else $updateArr["text"] = (!empty($node->description))?str_replace("\n","<br>\n",SysBF::checkStr($node->description,'stringkav')):'';
                         
                         $updateArr["barcode"] = (!empty($node->barcode))?SysBF::checkStr($node->barcode,'stringkav'):'';
@@ -1025,18 +1031,20 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                         $prodid = MNBVStorage::addObj(Glob::$vars['prod_storage'], $updateArr);
                         
                         //Сформируем поисковые строки
+                        $sExeptArr = array();
                         $searchObj->del(Glob::$vars['prod_storage'],$prodid);
-                        $searchObj->set(Glob::$vars['prod_storage'],$prodid,"$prodid",0,6,$this->siteid);
-                        $searchObj->set(Glob::$vars['prod_storage'],$prodid,$updateArr["partnumber"],0,2,$this->siteid);
-                        $searchObj->set(Glob::$vars['prod_storage'],$prodid,preg_replace("/[^0-9]/","",$updateArr["partnumber"]),0,2,$this->siteid);
-                        $searchObj->set(Glob::$vars['prod_storage'],$prodid,$updateArr["barcode"],0,2,$this->siteid);
-                        $searchObj->set(Glob::$vars['prod_storage'],$prodid, str_replace(' ', '', $updateArr["model"]),0,2,$this->siteid);
-                        $searchObj->set(Glob::$vars['prod_storage'],$prodid,preg_replace("/[^0-9]/","",$updateArr["model"]),0,2,$this->siteid);
-                        //$searchObj->set(Glob::$vars['prod_storage'],$prodid,$updateArr["name"],0,2,$this->siteid);
-                        $searchObj->set(Glob::$vars['prod_storage'],$prodid,$updateArr["prefix"],0,2,$this->siteid);
-                        if (!empty($vendorid)) $searchObj->set(Glob::$vars['prod_storage'],$prodid,$this->vendArr[$vendorStr]["name"],0,2,$this->siteid);
-                        if (!empty($countryid)) $searchObj->set(Glob::$vars['prod_storage'],$prodid,$this->countryArr[$countryStr]["name"],0,1,$this->siteid);
-                        if (!empty($prodColorStr)) $searchObj->set(Glob::$vars['prod_storage'],$prodid,$prodColorStr,0,1,$this->siteid);
+                        $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,"$prodid",0,6,$this->siteid,$sExeptArr);
+                        $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$updateArr["partnumber"],0,2,$this->siteid,$sExeptArr);
+                        $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,preg_replace("/[^0-9]/","",$updateArr["partnumber"]),0,2,$this->siteid,$sExeptArr);
+                        $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$updateArr["barcode"],0,2,$this->siteid,$sExeptArr);
+                        $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid, str_replace(' ', '', $updateArr["model"]),0,2,$this->siteid,$sExeptArr);
+                        $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,preg_replace("/[^0-9]/","",$updateArr["model"]),0,2,$this->siteid,$sExeptArr);
+                        if (!empty($upFolderName) && $upFolderName!=='root') $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$upFolderName,0,2,$this->siteid,$sExeptArr);
+                        //$sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$updateArr["name"],0,2,$this->siteid,$sExeptArr);
+                        $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$updateArr["prefix"],0,2,$this->siteid,$sExeptArr);
+                        if (!empty($vendorid)) $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$this->vendArr[$vendorStr]["name"],0,2,$this->siteid,$sExeptArr);
+                        if (!empty($countryid)) $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$this->countryArr[$countryStr]["name"],0,1,$this->siteid,$sExeptArr);
+                        if (!empty($prodColorStr)) $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$prodColorStr,0,1,$this->siteid,$sExeptArr);
                         
                         
                         if (false!==$prodid) {
@@ -1282,7 +1290,7 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
 
         
     /**
-     * Проверка наличия и возможности использования категории, при необходимости - создание категорий
+     * Проверка наличия и возможности использования категории
      * @param mixed $categoryId 
      * @return boolean
      */
@@ -1296,7 +1304,6 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
         $level--;
                 
         $key = strval($categoryId);
-        $result = true;
         if (!isset($this->catArr[$key])) return false;
         if (isset($this->catArr[$key]["allow"]) && !$this->catArr[$key]["allow"]) return false;
         if (isset($this->catArr[$key]["allow"]) && $this->catArr[$key]["allow"]) return true;
@@ -1309,32 +1316,34 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
         }
         
         //Проверим текущую категорию на вхождение в допустимые выбранные
-        if (is_array($this->cat_allow) && in_array($key)) {
+        if (is_array($this->cat_allow) && in_array($key,$this->cat_allow)) {
             $this->catArr[$key]["allow"] = true;
             if (!in_array($key,$this->cats_stru['root'])) $this->cats_stru['root'][] = $key; 
             $result = true;
         }
         
         //Нет категории верхнего уровня
-        if (empty($this->catArr[$key]["parentid"])) { //Вышестоящей категории нет, 
-            if ($this->cat_allow === 'all') {
-                $this->catArr[$key]["allow"] = true;
-                if (!in_array($key,$this->cats_stru['root'])) $this->cats_stru['root'][] = $key;
-                $result = true;
-            }else{
-                $this->catArr[$key]["allow"] = false;
-                return false;
-            }
-        }else{ //Вышестоящая категория есть
-            $result = $this->checkFolder($this->catArr[$key]["parentid"]);
-            $this->catArr[$key]["allow"] = $result;
-            if ($result) {
-                $parentid = strval($this->catArr[$key]["parentid"]);
-                if (!isset($this->cats_stru[$parentid])) $this->cats_stru[$parentid] = array();
-                if (!in_array($key,$this->cats_stru[$parentid])) $this->cats_stru[$parentid][] = $key;
+        if (!$result){
+            if (empty($this->catArr[$key]["parentid"])) { //Вышестоящей категории нет, 
+                if ($this->cat_allow === 'all') {
+                    $this->catArr[$key]["allow"] = true;
+                    if (!in_array($key,$this->cats_stru['root'])) $this->cats_stru['root'][] = $key;
+                    $result = true;
+                }else{
+                    $this->catArr[$key]["allow"] = false;
+                    return false;
+                }
+            }else{ //Вышестоящая категория есть
+                $result = $this->checkFolder($this->catArr[$key]["parentid"]);
+                $this->catArr[$key]["allow"] = $result;
+                if ($result) {
+                    $parentid = strval($this->catArr[$key]["parentid"]);
+                    if (!isset($this->cats_stru[$parentid])) $this->cats_stru[$parentid] = array();
+                    if (!in_array($key,$this->cats_stru[$parentid])) $this->cats_stru[$parentid][] = $key;
+                }
             }
         }
-        
+        //echo "check cat[$key] res=[".(($result)?'TRUE':'FALSE')."]\n";
         return $result; 
     }
     
@@ -1346,6 +1355,7 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
     private function createFolders($parentid_out='root'){
         static $level = 0;
         $searchObj = new MNBVSearch();
+        $sExeptArr = array();
         $level++;
         if ($level>10) {
             $level--;
@@ -1415,8 +1425,8 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                         
                         //Сформируем поисковые строки
                         $searchObj->del(Glob::$vars['prod_storage'],$dbfolderid);
-                        $searchObj->set(Glob::$vars['prod_storage'],$dbfolderid,$updateArr["name"].' '.$updateArr["searchstr"],1,2,$this->siteid);
-                        if (!empty($folder["namelang"]))$searchObj->set(Glob::$vars['prod_storage'],$dbfolderid,$folder["namelang"],1,2,$this->siteid);
+                        $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$dbfolderid,$updateArr["name"].' '.$updateArr["searchstr"],1,2,$this->siteid,$sExeptArr);
+                        if (!empty($folder["namelang"])) $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$dbfolderid,$folder["namelang"],1,2,$this->siteid,$sExeptArr);
                     }
                     $this->catArr[$folderid]["dbid"] = $folder["id"];
                 }else{
@@ -1478,8 +1488,8 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                         
                         //Сформируем поисковые строки
                         $searchObj->del(Glob::$vars['prod_storage'],$dbfolderid);
-                        $searchObj->set(Glob::$vars['prod_storage'],$dbfolderid,$updateArr["name"],1,1,$this->siteid);
-                        if (!empty($updateArr["searchstr"])) $searchObj->set(Glob::$vars['prod_storage'],$dbfolderid,$updateArr["searchstr"],1,1,$this->siteid);
+                        $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$dbfolderid,$updateArr["name"],1,1,$this->siteid,$sExeptArr);
+                        if (!empty($updateArr["searchstr"])) $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$dbfolderid,$updateArr["searchstr"],1,1,$this->siteid,$sExeptArr);
                     
                         echo "Add folder id=[{$dbfolderid}] parentid=[$parentid] [{$updateArr["name"]}]\n";
                     }else{

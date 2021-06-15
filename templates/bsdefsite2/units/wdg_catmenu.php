@@ -12,7 +12,7 @@ foreach ($item['list'] as $key=>$menuItem) if ($key>0) {
     $itemCounter++;
     $menuName = SysBF::getFrArr($menuItem,'name','');
     $menuLenght += mb_strlen($menuName,'utf-8');
-    $dopItemClassStr = ($menuLenght>50 || $itemCounter>4)?' d-xl-none d-xxl-none':'';
+    $dopItemClassStr = ($menuLenght>60 || $itemCounter>4)?' d-xl-none d-xxl-none':'';
 ?>
 <li class="nav-item<?=$dopItemClassStr;?>"><a class="nav-link my-nav-link" href="<?=SysBF::getFrArr($menuItem,'url','');?>"><?=$menuName;?></a></li>
 

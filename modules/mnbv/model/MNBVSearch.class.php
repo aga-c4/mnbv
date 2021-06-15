@@ -55,16 +55,19 @@ class MNBVSearch {
      * @param int $objtype тип элемента (0 по-умолчанию)
      * @param int $weight вес элемента  (1 по-умолчанию)
      * @param int $siteid идентификатор сайта (0 по-умолчанию без ограничения)
-     * @return boolean
+     * @param array $exeptions массив нормализованных строк-исключений
+     * @return string строка индекса или false, если запись не была осуществлена
      */
-    public function set($storage, $objid, $search, $objtype=0, $weight=1, $siteid=0)
+    public function set($storage, $objid, $search, $objtype=0, $weight=1, $siteid=0, $exeptions=null)
     {
-        
+        $result = false;
         //TODO - сделать убирание запятых, точек с запятыми, и делить по пробелам и завоидть как разные слова
         $search = preg_replace("~[\.,;/()]~", " ", $search);
         $search=preg_replace("/ ( )+/u"," ",$search);
         $search=preg_replace("/э/u","е",$search);
         $searchArr = preg_split("/ /", $search);
+        
+        if (!is_array($exeptions)) $exeptions = array();
         
         foreach ($searchArr as $searchStr){
             $storageId = $this->getIdByStorage($storage);
@@ -76,7 +79,8 @@ class MNBVSearch {
             $normstr = SysBF::strNormalize($searchStr);
             if (mb_strlen($normstr,'utf-8')<2 && !preg_match("/[0-9]/", $normstr)) continue;
             $normstr = SysBF::normUpdate($normstr);
-
+            //Для исключения повторяющихся слов
+            if (in_array($normstr,$exeptions)) continue;
             $updateArr = array(
                 "siteid" => $siteid,
                 "type" => $objtype,
@@ -87,8 +91,10 @@ class MNBVSearch {
             );
 
             $addId = MNBVStorage::addObj($this->storage, $updateArr,'',false);
+            $exeptions[] = $normstr;
+            $result = $normstr;
         }
-        return true;
+        return $result;
 
     }
     

@@ -332,6 +332,7 @@ class StorageController {
         $item['list_not_edit'] = (!empty(SysStorage::$storage[$item['list_storage_alias']]['listnotedit']))?true:false;
         
         $searchObj = new MNBVSearch();
+        $sExeptArr = array();
         
         //Страницы
         $item['list_page'] = (Glob::$vars['mnbv_listpg']>1)?Glob::$vars['mnbv_listpg']:1;
@@ -460,19 +461,21 @@ class StorageController {
                             SysLogs::addLog("Update norm_partnumber=[{$updateArr["norm_partnumber"]}]");
                             SysLogs::addLog("Update norm_search=[{$updateArr["norm_search"]}]");
                             
-                            /*
-                            $searchObj->set(Glob::$vars['prod_storage'],$gid,$gid,0,3,$upd_obj["siteid"]);
-                            $searchObj->set(Glob::$vars['prod_storage'],$gid,$sr_partnumber,0,1,$upd_obj["siteid"]);
-                            $searchObj->set(Glob::$vars['prod_storage'],$gid,preg_replace("/[^0-9]/","",$sr_partnumber),0,1,$upd_obj["siteid"]);
-                            $searchObj->set(Glob::$vars['prod_storage'],$gid,$sr_barcode,0,1,$upd_obj["siteid"]);
-                            $searchObj->set(Glob::$vars['prod_storage'],$gid,str_replace(' ', '', $sr_model),0,1,$upd_obj["siteid"]);
-                            $searchObj->set(Glob::$vars['prod_storage'],$gid,preg_replace("/[^0-9]/","",$sr_model),0,1,$upd_obj["siteid"]);
-                            $searchObj->set(Glob::$vars['prod_storage'],$gid,$sr_prefix,0,1,$upd_obj["siteid"]);
-                            $searchObj->set(Glob::$vars['prod_storage'],$gid,$sr_prefixlang,0,1,$upd_obj["siteid"]);
-                            //$searchObj->set(Glob::$vars['prod_storage'],$gid,$sr_name,0,1,$upd_obj["siteid"]);
-                            //$searchObj->set(Glob::$vars['prod_storage'],$gid,$sr_namelang,0,1,$upd_obj["siteid"]);
-   
-                             */
+                            //TODO - важно! Надо добавить вендора и цвет
+                            $searchObj->del(Glob::$vars['prod_storage'],$gid);
+                            $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$gid,$gid,0,3,$upd_obj["siteid"],$sExeptArr);
+                            $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$gid,$sr_partnumber,0,1,$upd_obj["siteid"],$sExeptArr);
+                            $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$gid,preg_replace("/[^0-9]/","",$sr_partnumber),0,1,$upd_obj["siteid"],$sExeptArr);
+                            $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$gid,$sr_barcode,0,1,$upd_obj["siteid"],$sExeptArr);
+                            $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$gid,str_replace(' ', '', $sr_model),0,1,$upd_obj["siteid"],$sExeptArr);
+                            $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$gid,preg_replace("/[^0-9]/","",$sr_model),0,1,$upd_obj["siteid"],$sExeptArr);
+                            $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$gid,$sr_prefix,0,1,$upd_obj["siteid"],$sExeptArr);
+                            $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$gid,$sr_prefixlang,0,1,$upd_obj["siteid"],$sExeptArr);
+                            //$sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$gid,$sr_name,0,1,$upd_obj["siteid"],$sExeptArr);
+                            //$sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$gid,$sr_namelang,0,1,$upd_obj["siteid"],$sExeptArr)
+                            $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$item["parent"]['name'],$sr_namelang,0,2,$upd_obj["siteid"],$sExeptArr);
+                            if (!empty($item["parent"]['namelang'])) $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$item["parent"]['namelang'],$sr_namelang,0,2,$upd_obj["siteid"],$sExeptArr);
+
                         }
 
                         $res = MNBVStorage::setObj($this->getStorage(), $updateArr, array("id",'=',$gid));
@@ -1006,18 +1009,21 @@ class StorageController {
                             $updateArr["norm_partnumber"] = '';
                             $updateArr["norm_search"] = '';
                             $searchObj = new MNBVSearch();
+                            $sExeptArr = array();
                             $searchObj->del(Glob::$vars['prod_storage'],$item['obj']["id"]);
                             if ($sr_type!==ST_FOLDER) {
-                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$item['obj']["id"],0,6,$item['obj']["siteid"]);
-                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_partnumber,0,2,$item['obj']["siteid"]);
-                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],preg_replace("/[^0-9]/","",$sr_partnumber),0,2,$item['obj']["siteid"]);
-                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_barcode,0,2,$item['obj']["siteid"]);
-                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],str_replace(' ', '', $sr_model),0,2,$item['obj']["siteid"]);
-                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],preg_replace("/[^0-9]/","",$sr_model),0,2,$item['obj']["siteid"]);
-                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_prefix,0,2,$item['obj']["siteid"]);
-                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_prefixlang,0,2,$item['obj']["siteid"]);
-                                //$searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_name,0,2,$item['obj']["siteid"]);
-                                //$searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_namelang,0,2,$item['obj']["siteid"]);
+                                $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$item['obj']["id"],0,6,$item['obj']["siteid"],$sExeptArr);
+                                $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_partnumber,0,2,$item['obj']["siteid"],$sExeptArr);
+                                $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],preg_replace("/[^0-9]/","",$sr_partnumber),0,2,$item['obj']["siteid"],$sExeptArr);
+                                $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_barcode,0,2,$item['obj']["siteid"],$sExeptArr);
+                                $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],str_replace(' ', '', $sr_model),0,2,$item['obj']["siteid"],$sExeptArr);
+                                $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],preg_replace("/[^0-9]/","",$sr_model),0,2,$item['obj']["siteid"],$sExeptArr);
+                                $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_prefix,0,2,$item['obj']["siteid"],$sExeptArr);
+                                $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_prefixlang,0,2,$item['obj']["siteid"],$sExeptArr);
+                                //$sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_name,0,2,$item['obj']["siteid"],$sExeptArr);
+                                //$sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_namelang,0,2,$item['obj']["siteid"],$sExeptArr);
+                                $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$item['obj']['parent']['name'],$sr_name,0,2,$item['obj']["siteid"],$sExeptArr);
+                                if (!empty($item['obj']['parent']['namelang'])) $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$item['obj']['parent']['namelang'],$sr_namelang,0,2,$item['obj']["siteid"],$sExeptArr);
                             
                                 $updateArr["norm_search"] .= ',' . $item['obj']["id"];
                                 $updateArr["norm_search"] .= ',' . SysBF::strNormalize($sr_barcode,'zpt_ok');
@@ -1032,8 +1038,8 @@ class StorageController {
                                 if (!empty($res[0])) {
                                     $updateArr["norm_search"] .= ',' . SysBF::strNormalize($res[1]['name']);
                                     $updateArr["norm_search"] .= ',' . SysBF::strNormalize($res[1]['namelang']);
-                                    $searchObj->set(Glob::$vars['prod_storage'],$prodid,$res[1]['name'],0,2,$item['obj']["siteid"]);
-                                    $searchObj->set(Glob::$vars['prod_storage'],$prodid,$res[1]['namelang'],0,2,$item['obj']["siteid"]);
+                                    $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$res[1]['name'],0,2,$item['obj']["siteid"],$sExeptArr);
+                                    $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$res[1]['namelang'],0,2,$item['obj']["siteid"],$sExeptArr);
                                 }
                                 
                                 //Подтянем Страну
@@ -1043,16 +1049,16 @@ class StorageController {
                                 if (!empty($res[0])) {
                                     $updateArr["norm_search"] .= ',' . SysBF::strNormalize($res[1]['name']);
                                     $updateArr["norm_search"] .= ',' . SysBF::strNormalize($res[1]['namelang']);
-                                    $searchObj->set(Glob::$vars['prod_storage'],$prodid,$res[1]['name'],0,1,$item['obj']["siteid"]);
-                                    $searchObj->set(Glob::$vars['prod_storage'],$prodid,$res[1]['namelang'],0,1,$item['obj']["siteid"]);
+                                    $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$res[1]['name'],0,1,$item['obj']["siteid"],$sExeptArr);
+                                    $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$res[1]['namelang'],0,1,$item['obj']["siteid"],$sExeptArr);
                                 }
                                 
                                 //TODO - позже подтянуть также цвет
                             }else{
-                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_prefix,1,2,$item['obj']["siteid"]);
-                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_prefixlang,1,2,$item['obj']["siteid"]);
-                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_name,1,2,$item['obj']["siteid"]);
-                                $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_namelang,1,2,$item['obj']["siteid"]);
+                                $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_prefix,1,2,$item['obj']["siteid"],$sExeptArr);
+                                $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_prefixlang,1,2,$item['obj']["siteid"],$sExeptArr);
+                                $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_name,1,2,$item['obj']["siteid"],$sExeptArr);
+                                $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$sr_namelang,1,2,$item['obj']["siteid"],$sExeptArr);
                             }
                             
                             $updateArr["norm_search"] .= ',' . SysBF::strNormalize($sr_name);
