@@ -75,6 +75,11 @@ echo MNBVf::startVidget('pglist',$item,array(
                 
             </div>
             
+                        
+            <div class="text-right pl-2 pr-1" id="cartico" style="background: url(/src/mnbv/img/logo/cart-blue.png) no-repeat; background-position: left center; background-size: 32px 30px; min-width:40px; min-height: 32px;">
+                <a href='<?=MNBVf::requestUrl(Lang::isAltLang()?'altlang':'','/');?>cart'><span class="badge rounded-pill bg-light text-dark" id="carticoqty">2</span></a>
+            </div>
+            
             <script>
                 function checkHeadSearchForm() {
                     if (document.getElementById('hdsearch').value == '') {
