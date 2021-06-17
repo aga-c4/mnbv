@@ -7,7 +7,7 @@
  * Date: 24.08.17
  * Time: 00:00
  */
-class CartController extends AbstractMnbvsiteController {
+class OrderController extends AbstractMnbvsiteController {
 
     /**
      * @var string идентификатор текущего используемого хранилища
@@ -70,7 +70,11 @@ class CartController extends AbstractMnbvsiteController {
         }
         
         //Шаблон вывода списка объектов
-        $item['page_sctpl'] = 'tpl_orderedit.php'; //По-умолчанию
+        if (!empty($_GET["step"]) && $_GET["step"]==='send') {
+            $item['page_sctpl'] = 'tpl_ordersend.php'; //По-умолчанию
+        } else {
+            $item['page_sctpl'] = 'tpl_orderedit.php'; //По-умолчанию
+        }
         //$item['page_sctpl'] = 'tpl_ordersend.php'; //По-умолчанию
         if (!empty($item['obj']['vars']['script_tpl_file'])) $item['page_sctpl'] = $item['obj']['vars']['script_tpl_file']; //Если задан в Переменных скрипта в объекте
         SysLogs::addLog('Select mnbv script tpl file: [' . $item['page_sctpl'] . ']');

@@ -68,13 +68,13 @@ table, tr, td, th, tbody, thead{
 </div>
 
 <div class="form-check">
-  <input class="form-check-input" type="radio" name="deliv1" id="rdDeliv1" checked>
+  <input class="form-check-input" type="radio" name="deliv1" id="rdDeliv1">
   <label class="form-check-label" for="rdDeliv1">
     Самовывоз (бесплатно)
   </label>
 </div>
 <div class="form-check">
-  <input class="form-check-input" type="radio" name="deliv1" id="rdDeliv2">
+  <input class="form-check-input" type="radio" name="deliv1" id="rdDeliv2" checked>
   <label class="form-check-label" for="rdDeliv1">
     Курьер в пределах МКАД (600р.)
   </label>
@@ -92,4 +92,20 @@ table, tr, td, th, tbody, thead{
   </label>
 </div>
 
-<button type="button" class="btn btn-primary mt-3">Оформить заказ</button>
+<div class="mt-3">
+    <h5>Оплата:</h5>
+    <select id="paymode" name="paymode" onChange="" class="form-select" style="width: auto;">
+        <option value="1" selected>Наличными</option>
+        <option value="2">Картой банка</option>
+        <option value="3">Яндекс деньги (бонус 2%)</option>
+    </select>   
+</div>
+
+<div class="mt-3">
+    Стоимость товаров: 5600 р.<br>
+    Включая скидку: 800 р.<br>
+    Стоимость доставки: 600 р.<br>
+    <b>Всего к оплате: 6900 р.</b>
+</div>
+
+<a class="btn btn-primary mt-3" href="/order" role="button">Оформить заказ</a>

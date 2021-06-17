@@ -4,7 +4,70 @@
  * Данные передаются массиве $item
  */
 ?>
+<style>
+table, tr, td, th, tbody, thead{
+    display:block;
+    width:100%;
+    display:block;
+}
+@media (min-width:768px){
+    table{
+        display:table;
+        width:auto;
+    }
+    tbody, thead{
+        display:table-row-group;
+        width:auto;
+    }
+    tr{
+        display:table-row;
+        width:auto;
+    }
+    td, th{
+        display:table-cell;
+        width:auto;
+    }
+}
+</style>
+<!--
+<table class="table table-striped w-100">
+    <thead class="table-light">
+        <tr>
+            <th>
+            <th width="100%">Товар</th>
+            <th style="min-width:100px;">Цена, <?=Glob::$vars['prod_currency_suf'];?></th>
+            <th style="min-width:50px;">Кол.</th>
+            <th style="min-width:100px;">Сумма, <?=Glob::$vars['prod_currency_suf'];?></th>
+        </tr>
+    </thead>
 
+    <tbody>
+        <tr>
+            <th>1</th><td>Синхрофазотрон зеленый, суперкрутой и с супер длинным названием, которое никуда не лезет</td><td>28000</td><td>2</td><td>56000</td>
+        </tr>
+        <tr>
+            <th>2</th><td>Синхрофазотрон 327</td><td>28000</td><td>2</td><td>56000</td>
+        </tr>
+        <tr>
+            <th>3</th><td>Синхрофазотрон 327</td><td>28000</td><td>2</td><td>56000</td>
+        </tr>
+        <tr>
+            <th>4</th><td>Синхрофазотрон 327</td><td>28000</td><td>2</td><td>56000</td>
+        </tr>
+    </tbody>
+</table>
+-->
+<div class="mt-3">
+    <a class="btn btn-primary mb-3" href="/cart" role="button">Вернуться к редактированию заказа</a>
+    <h5>Данные по заказу:</h5>
+    Стоимость товаров: 5600 р.<br>
+    Включая скидку: 800 р.<br>
+    Стоимость доставки: 600 р.<br>
+    <b>Всего к оплате: 6900 р.</b>
+</div>
+
+<div class="mt-3">
+    <h5>Данные покупателя:</h5>
 <!-- TinyMCE -->
 <script type="text/javascript" src="<?=WWW_SRCPATH.MNBV_MAINMODULE;?>/tmce/js/tiny_mce.js"></script>
 <script type="text/javascript">
@@ -75,9 +138,12 @@
 <table class="base">
 <? MNBVf::objPropGenerator($item['sub_obj']['sub_obj_storage'], $item['sub_obj'], $item['sub_obj']['form_folder'], $item['mnbv_altlang'],'print'); ?>     
 </table>
-<input type=submit class="bigsubmit_vid" value="<?=Lang::get("Send order");?>">
+<? /*<input type=submit class="btn btn-primary" value="<?=Lang::get("Send order");?>">*/?>
+<a class="btn btn-primary mb-3" href="/order?step=send" role="button">Отправить заказ</a>    
 <input type=hidden name=act value="create">
 </form>
+
+</div>
 
 <link type="text/css" href="<?=WWW_SRCPATH.MNBV_MAINMODULE;?>/css/datepicker.css" rel="Stylesheet" />
 <script type="text/javascript" src="<?=WWW_SRCPATH.MNBV_MAINMODULE;?>/js/ui.datepicker.js"></script>
