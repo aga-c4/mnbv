@@ -62,6 +62,7 @@ table, tr, td, th, tbody, thead{
 </form>
 
 <button type="button" class="btn btn-primary mb-3">Пересчитать</button>
+<button type="button" class="btn btn-primary mb-3">Очистить корзину</button>
 
 <div style="">
     <h5>Доставка:</h5>
