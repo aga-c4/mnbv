@@ -66,13 +66,14 @@ table, tr, td, th, tbody, thead{
 <div style="">
     <h5>Доставка:</h5>
 </div>
-
+<!--
 <div class="form-check">
   <input class="form-check-input" type="radio" name="deliv1" id="rdDeliv1">
   <label class="form-check-label" for="rdDeliv1">
     Самовывоз (бесплатно)
   </label>
 </div>
+-->
 <div class="form-check">
   <input class="form-check-input" type="radio" name="deliv1" id="rdDeliv2" checked>
   <label class="form-check-label" for="rdDeliv1">
@@ -95,8 +96,8 @@ table, tr, td, th, tbody, thead{
 <div class="mt-3">
     <h5>Оплата:</h5>
     <select id="paymode" name="paymode" onChange="" class="form-select" style="width: auto;">
-        <option value="1" selected>Наличными</option>
-        <option value="2">Картой банка</option>
+        <option value="1">Наличными</option>
+        <option value="2" selected>Картой банка</option>
         <option value="3">Яндекс деньги (бонус 2%)</option>
     </select>   
 </div>
@@ -104,6 +105,11 @@ table, tr, td, th, tbody, thead{
 <div class="mt-3">
     Стоимость товаров: 5600 р.<br>
     Включая скидку: 800 р.<br>
+    Масса товара: 20 кг.<br>
+    Количество товара: 2 шт<br>
+    Объем товара: 2,3 м3<br>
+    Высота: 1,5м<br>
+    Минимальнное измерение: 20 см.<br>
     Стоимость доставки: 600 р.<br>
     <b>Всего к оплате: 6900 р.</b>
 </div>
