@@ -31,84 +31,72 @@ class MNBVCart{
     /**
      * @var string идентификатор текущего используемого хранилища
      */
-    private $storage = 'carts';
+    private $ordStorage = 'orders';
     
     /**
-     * Установка текущего хранилища для контроллера
-     * @param $storage - алиас хранилища
+     * @var string алиас хранилища товаров
      */
-    public function setStorage($storage){
-        $this->storage = $storage;
+    private $prStorage = 'products';
+    
+    /**
+     * @var array общие данные по корзине (доставка, оплата, адреса, ...) 
+     */
+    private $cartInfo = array();
+    
+    /**
+     * @var array элементы корзины 
+     */
+    private $cartItems = array();
+    
+    /**
+     * @var array добавленные или удаленные позиции корзины для счетчиков
+     */
+    private $addCartItems = null;
+    
+    /**
+     * @var array добавленные или удаленные позиции корзины для счетчиков
+     */
+    private $remCartItems = mull;
+    
+    public function __construct($prStorage='', $ordStorage='') {
+        if (!empty($prStorage)) $this->prStorage = $prStorage;
+        $this->ordStorage = $ordStorage;
+        
+        $this->cartItems = Glob::$vars['session']->get('cart_items');
+        if (!is_array($this->cartItems)) $this->cartItems = array();
+        
+        $this->cart_info = Glob::$vars['session']->get('cart_info');
+        if (!is_array($this->cart_info)) $this->cart_info = array();
     }
-
-    /**
-     * Получение текущего хранилища для контроллера
-     * @param $storage - алиас хранилища
-     */
-    public function getStorage(){
-        return $this->storage;
-    }
     
     /**
-     * @var string идентификатор текущего используемого хранилища
-     */
-    private $pr_storage = 'products';
-    
-    /**
-     * Установка хранилища каталога товаров
-     * @param $storage - алиас хранилища
-     */
-    public function setPrStorage($storage){
-        $this->$pr_storage = $storage;
-    }
-
-    /**
-     * Получение хранилища каталога товаров
-     * @param $storage - алиас хранилища
-     */
-    public function getPrStorage(){
-        return $this->$pr_storage;
-    }
-    
-    /**
-     * @var type array массив свойств корзины
-     */
-    private $container = array();
-    
-    /**
-     * Создание элемента в контейнере корзины
+     * Создание свойства корзины
      * @param $key Название элемента
      * @param $value Значение элемента
      */
     public function set($key, $value)
     {
-        $this->container["$key"] = $value;
+        $this->cart_info["$key"] = $value;
     }
 
     /**
-     * Получение элемента контейнера корзины
+     * Получение свойства корзины
      * @param $key Название элемента
      * @return mixed Результат операции
      */
     public function get($key)
     {
-        return (isset($this->container["$key"]))?$this->container["$key"]:NULL;
+        return (isset($this->cart_info["$key"]))?$this->cart_info["$key"]:NULL;
     }
 
     /**
-     * Уничтожает элемент контейнера корзины
+     * Уничтожает свойство корзины
      * @param $key Название элемента
      */
     public function del($key)
     {
-        if (isset($this->container["$key"])) unset($this->container["$key"]);
+        if (isset($this->cart_info["$key"])) unset($this->cart_info["$key"]);
     }
-    
-        
-    /**
-     * @var type array массив, содержащий сведения о товарах в корзине 
-     */
-    public $items = array();
     
     /**
      * Добавляет в корзину товар $productId или корректирует сведения по позиции с товаром.
@@ -139,12 +127,14 @@ class MNBVCart{
 
     /**
      * Удаляет позицию с заданным идентификатором из корзины.
-     * @param $key Название элемента
+     * @param $prodId Идентификатор товара
      * @return mixed Результат операции
      */
-    public function remItem($id)
+    public function remItem($prodId)
     {
-        if (isset($this->items[intval($id)])) unset($this->items[intval($id)]);
+        if ($this->remCartItems === mull) $this->remCartItems = array(); 
+        $this->remCartItems[] = array();
+        if (isset($this->cartItems[intval($id)])) unset($this->cartItems[intval($id)]);
     }
     
     /**
@@ -153,6 +143,15 @@ class MNBVCart{
     public function rcount()
     {
         ;
+    }
+    
+    /**
+     * Сохранение текущей корзины в сессию
+     */
+    public function save(){
+        Glob::$vars['session']->set('cart_items',$this->cartItems);
+        Glob::$vars['session']->set('cart_info',$this->cart_info);
+        Glob::$vars['session']->save(); //Сохраним данные сессии
     }
 
     

@@ -123,7 +123,7 @@ class ProductsController extends AbstractMnbvsiteController {
         $finFilterValsArr = false;
         
         if (empty($folderId) || $folderId!=Glob::$vars['prod_storage_rootid']){ //Фильтры только для заданной категории, кроме случая с указанием конкретных товаров, в таком случае делаем фильтры корневой категории каталога
-            $cache = new MNBVCache();
+            $cache = new MNBVCache('longtmp');
             $attr_filters = $cache->get("prodfilters:$folderId",true);
             //echo "(prodfilters:$folderId=>[$attrFiltersCacheStr])";
             if ($attr_filters===null || !is_array($attr_filters) || !empty(Glob::$vars['no_cache'])){ //Необходимо перегенерить кеш
