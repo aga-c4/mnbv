@@ -441,7 +441,7 @@ SysStorage::$storage['delivery']['stru']['price'] = array("type"=>"decimal", "si
 SysStorage::$storage['delivery']['stru']['region'] = array("type"=>"int", "size"=>11, "creatval"=>0, "dbtype"=>"int", "linkstorage"=>"regions");
 SysStorage::$storage['delivery']['stru']['weightgr'] = array("type"=>"int", "size"=>4, "creatval"=>0, "dbtype"=>"int", "linkstorage"=>Glob::$vars['weightgr_types']);
 SysStorage::$storage['delivery']['stru']['sizegr'] = array("type"=>"int", "size"=>4, "creatval"=>0, "dbtype"=>"int", "linkstorage"=>Glob::$vars['sizegr_types']);
-SysStorage::$storage['delivery']['stru']['days'] = array("type"=>"int", "size"=>11, "creatval"=>100, "dbtype"=>"int"); // Pid процесса сессии робота
+SysStorage::$storage['delivery']['stru']['days'] = array("type"=>"int", "size"=>11, "creatval"=>100, "dbtype"=>"int");
 
 SysStorage::$storage['delivery']['view']['main'] = array(
     "name" => array("name"=>"name", "type"=>"text","size"=>255,"width"=>"100%","langlink"=>"namelang","checktype" => "text","lang" => "lang"), //Основной язык
@@ -812,6 +812,18 @@ SysStorage::$storage['products']['stru']['discminmargval'] = array("type"=>"deci
 SysStorage::$storage['products']['stru']['norm_search'] = array("type"=>"string", "size"=>512, "creatval"=>"", "dbtype"=>"varchar"); // Артикул
 SysStorage::$storage['products']['stru']['norm_partnumber'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"); // Артикул
 
+SysStorage::$storage['products']['stru']["brweight"] = array("type"=>"int", "size"=>10, "creatval"=>0, "dbtype"=>"int");
+SysStorage::$storage['products']['stru']["brheight"] = array("type"=>"int", "size"=>10, "creatval"=>0, "dbtype"=>"int");
+SysStorage::$storage['products']['stru']["brwidth"] = array("type"=>"int", "size"=>10, "creatval"=>0, "dbtype"=>"int");
+SysStorage::$storage['products']['stru']["brlength"] = array("type"=>"int", "size"=>10, "creatval"=>0, "dbtype"=>"int");
+SysStorage::$storage['products']['stru']["brminw"] = array("type"=>"int", "size"=>10, "creatval"=>0, "dbtype"=>"int");
+SysStorage::$storage['products']['stru']["brmaxw"] = array("type"=>"int", "size"=>10, "creatval"=>0, "dbtype"=>"int");
+SysStorage::$storage['products']['stru']['weightgr'] = array("type"=>"int", "size"=>4, "creatval"=>0, "dbtype"=>"int", "linkstorage"=>Glob::$vars['weightgr_types']);
+SysStorage::$storage['products']['stru']['sizegr'] = array("type"=>"int", "size"=>4, "creatval"=>0, "dbtype"=>"int", "linkstorage"=>Glob::$vars['sizegr_types']);
+SysStorage::$storage['products']['stru']['onlyvert'] = array("type"=>"int", "size"=>1, "creatval"=>0, "dbtype"=>"int");
+
+SysStorage::$storage['products']['stru']['supplier'] = array("type"=>"int", "size"=>11, "creatval"=>0, "dbtype"=>"int", "linkstorage"=>"suppliers");
+
 SysStorage::$storage['products']['view']["main"] = array(
     //"visfirstline" => array("name"=>"visfirstline", "type"=>"visfirstline", "table" =>"thline", "checktype" => "datetime"),
     "date" => array("name"=>"date", "type"=>"datetime","table" =>"thline","checktype" => "datetime"),
@@ -839,6 +851,13 @@ SysStorage::$storage['products']['view']["main"] = array(
     "barcode" => array("name"=>"barcode", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text"), //Основной язык
     "country" => array("name"=>"country", "type"=>"select", "viewindex" =>true, "notset" =>true, "filter_type"=>"objects", "filter_folder"=>1, "checktype" => "id"),
     "attrvals" => array("name"=>"attrvalsmini", "type"=>"attrvalsmini"), //Значения атрибутов для папки укороченный вариант
+    "brweight" => array("name"=>"brweight", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "int"),
+    "brheight" => array("name"=>"brheight", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "int"),
+    "brwidth" => array("name"=>"brwidth", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "int"),
+    "brlength" => array("name"=>"brlength", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "int"),
+    "weightgr" => array("name"=>"weightgr", "type"=>"select", "viewindex" =>false, "notset" =>true,  "delim"=>" | ", "checktype" => "int"),
+    "sizegr" => array("name"=>"sizegr", "type"=>"select", "viewindex" =>false, "notset" =>true,  "delim"=>" | ", "checktype" => "int"),
+    "onlyvert" => array("name"=>"onlyvert", "type"=>"checkbox", "table" =>"td", "checktype" => "on"),
     //"attrvals" => array("name"=>"attrvals", "type"=>"attrvals"),
     "about" => array("name"=>"about", "type"=>"textarea","editor"=>false,"rows"=>4,"width"=>"100%","langlink"=>"aboutlang","table" =>"thline","checktype" => "text","lang" => "lang"), //Основной язык
     "aboutlang" => array("name"=>"aboutlang", "type"=>"textarea","editor"=>false,"rows"=>4,"width"=>"100%","langlink"=>"about","table" =>"thline","checktype" => "text","lang" => "altlang"), //Альтернативный язык
@@ -859,6 +878,7 @@ SysStorage::$storage['products']['view']["main"] = array(
     "editdate" => array("name"=>"editdate", "type"=>"datetime","size"=>19, "active" => "print"),   
     "norm_partnumber" => array("name"=>"norm_partnumber", "type"=>"text","size"=>255,"width"=>"100%","langlink"=>"namelang","checktype" => "text", "active" => "print"),
     "norm_search" => array("name"=>"norm_search", "type"=>"text","size"=>255,"width"=>"100%","langlink"=>"namelang","checktype" => "text", "active" => "print"),
+    "supplier" => array("name"=>"supplier", "type"=>"select", "viewindex" =>true, "notset" =>true, "filter_type"=>"objects", "filter_folder"=>1, "checktype" => "id", "active" => "print"),
 );
 
 
@@ -1641,7 +1661,7 @@ SysStorage::$storage['tmp'] = array( //Кеш
     //'access_stru' => array("view" => 2), //Доступы к редактированию структуры (папок со всеми их настройками
     'stru' => array(
         //Общие данные
-        "id" => array("type"=>"string", "size"=>100, "creatval"=>"", "dbtype"=>"varchar"), //алиас объекта
+        "id" => array("type"=>"string", "size"=>10, "creatval"=>"", "dbtype"=>"varchar"), //алиас объекта
         "ts" => array("type"=>"datetime", "size"=>10, "creatval"=>"0", "dbtype"=>"int"), // UNIX Дата-время создания объекта
         "tsto" => array("type"=>"datetime", "size"=>10, "creatval"=>"0", "dbtype"=>"int"), // UNIX Дата-время объекта актуальности
         "val" => array("type"=>"text", "creatval"=>"", "dbtype"=>"varchar"), //Значение универсальный формат text,
@@ -1666,10 +1686,60 @@ SysStorage::$storage['longtmp'] = array( //Кеш
     //'access_stru' => array("view" => 2), //Доступы к редактированию структуры (папок со всеми их настройками
     'stru' => array(
         //Общие данные
-        "id" => array("type"=>"string", "size"=>100, "creatval"=>"", "dbtype"=>"varchar"), //алиас объекта
+        "id" => array("type"=>"string", "size"=>10, "creatval"=>"", "dbtype"=>"varchar"), //алиас объекта
         "ts" => array("type"=>"datetime", "size"=>10, "creatval"=>"0", "dbtype"=>"int"), // UNIX Дата-время создания объекта
         "tsto" => array("type"=>"datetime", "size"=>10, "creatval"=>"0", "dbtype"=>"int"), // UNIX Дата-время объекта актуальности
         "val" => array("type"=>"text", "creatval"=>"", "dbtype"=>"varchar"), //Значение универсальный формат text,
+    ), //Структура данного хранилища
+    'view' => array(), //Формат вывода - редактирования
+    'list' => array(), //Формат списка
+    'filter' => array(), //Формат фильтра
+    'files_security' => false, //будет ли ограничение доступа к приложенным файлам объектов хранилища
+    'varuse' => false, //разрешено ли использование элементов данного хранилища как значение поля
+);
+
+
+//Хранилище поставщиков ------------------
+SysStorage::$storage['suppliers'] = array(
+    'group' => 'site', //Группа хранилищ
+    'ru_name' => 'Поставщики', //Название на русском
+    'eng_name' => 'Suppliers', //Название на английском
+    'db' => 'mysql1', //База данных
+    'table' => 'mnbv_suppliers', //Таблица
+    'access' => 0, // Доступ на чтение
+    'access2' => 200, // Доступ на редактирование
+    //'accessv' => array("view" => 202), //Доступы к различным вкладкам (если не задано, то также как и доступ к объекту)
+    //'access_stru' => array("view" => 2), //Доступы к редактированию структуры (папок со всеми их настройками
+    'stru' => $storageDefStruArr, //Структура данного хранилища
+    'view' => $storageDefViewArr, //Формат вывода - редактирования
+    'list' => $storageDefListArr, //Формат списка
+    'filter' => $storageDefFilterArr, //Формат фильтра
+    'varuse' => true, //разрешено ли использование элементов данного хранилища как значение поля
+    'attruse' => false, //Есть ли у данного хранилища атрибуты, если не требуются, то для быстродействия лучше отключать.
+    'files_security' => true, //будет ли ограничение доступа к приложенным файлам объектов хранилища
+);
+//------------------------------------------
+
+//Статусы наличия и цены по регионам ------------------
+SysStorage::$storage['prinstock'] = array( //Кеш
+    'group' => 'noview', //Группа хранилищ
+    'ru_name' => 'Цены и наличие', //Название на русском
+    'eng_name' => 'Price and instock', //Название на английском
+    'db' => 'mysql1', //База данных
+    'table' => 'mnbv_prinstock', //Таблица
+    'access' => 0, // Доступ на чтение
+    'access2' => 0, // Доступ на редактирование
+    //'accessv' => array("view" => 202), //Доступы к различным вкладкам (если не задано, то также как и доступ к объекту)
+    //'access_stru' => array("view" => 2), //Доступы к редактированию структуры (папок со всеми их настройками
+    'stru' => array(
+        //Общие данные
+        "id" => array("type"=>"int", "size"=>11, "creatval"=>0, "autoinc"=>true, "dbtype"=>"int"), // Идентификатор записи
+        "prodid" => array("type"=>"int", "size"=>10, "creatval"=>0, "dbtype"=>"int", "linkstorage"=>"products"),
+        "region" => array("type"=>"int", "size"=>10, "creatval"=>0, "dbtype"=>"int", "linkstorage"=>"regions"),
+        "price" => array("type"=>"decimal", "size"=>11, "creatval"=>"0.00", "dbtype"=>"decimal"),
+        "instock" => array("type"=>"int", "size"=>1, "creatval"=>0, "dbtype"=>"int", "linkstorage"=>array("1" =>"instock", "2"=>"limited","3" =>"underorder", "4"=>"notinstock")),
+        "qty" => array("type"=>"int", "size"=>10, "creatval"=>0, "dbtype"=>"int"),
+        "ts" => array("type"=>"datetime", "size"=>10, "creatval"=>"0", "dbtype"=>"int"),
     ), //Структура данного хранилища
     'view' => array(), //Формат вывода - редактирования
     'list' => array(), //Формат списка

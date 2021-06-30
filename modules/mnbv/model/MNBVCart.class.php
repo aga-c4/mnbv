@@ -99,29 +99,22 @@ class MNBVCart{
     }
     
     /**
-     * Добавляет в корзину товар $productId или корректирует сведения по позиции с товаром.
-     * @param type $productId идентификатор добавляемого товара
+     * Добавляет в корзину товар $prodId или корректирует сведения по позиции с товаром.
+     * @param type $prodId идентификатор добавляемого товара
      * @param type $qty количество единиц товара
-     * @param type $price цена товара по позиции
-     * @param type $params если массив, то это массив параметров, содержащий:
-     * 'id' - идентификатор позиции (на один товар можно завести несколько позиций в корзине при необходимости скажем дать разную скидку), если не задан, 
-     *        то работа ведется с последней позицией, привязанной к идентификатору товара, а если таковой нет, то создается новая позиция
-     * 'price' - цена,
-     * 'nds' - %НДС,
-     * 'discount_pr' - скидка, %
-     * 'discount_val' - скидка в валюте, если задана, то имеет приоритет перед %
-     * 'qty' - количество добавляемого товара
-     * 'real_qty' - установить количество по позиции в заданное, если 0, то удаляет позицию
-     * 'utm_source' - метки трафика
-     * 'utm_medium' - метки трафика
-     * 'utm_campaign' - метки трафика
-     * 'find_keys' - ключевое слово по которому искали и перешли, если возможно его получить
-     * 'partner_id' - идентификатор партнера в нашей системе
-     * 'partner_code' - хеши, которые партнер передает нам обычно для идентификации своих источников трафика.
      * @return boolean результат операции
      */
-    public function updateItem($productId=0,$params=array())
-    {
+    public function addItem($prodId=0,$qty=0){
+        return false;
+    }
+    
+    /**
+     * Редактирует позицию корзины
+     * @param type $prodId идентификатор товара
+     * @param type $qty количество единиц товара
+     * @return boolean результат операции
+     */
+    public function updateItem($prodId=0,$qty=0){
         return false;
     }
 
@@ -130,8 +123,7 @@ class MNBVCart{
      * @param $prodId Идентификатор товара
      * @return mixed Результат операции
      */
-    public function remItem($prodId)
-    {
+    public function remItem($prodId){
         if ($this->remCartItems === mull) $this->remCartItems = array(); 
         $this->remCartItems[] = array();
         if (isset($this->cartItems[intval($id)])) unset($this->cartItems[intval($id)]);
@@ -140,10 +132,77 @@ class MNBVCart{
     /**
      * Пересчитывает корзину и заполняет служебные переменные.
      */
-    public function rcount()
-    {
+    public function recount(){
         ;
     }
+    
+    /**
+     * Очищает корзину и дополнительные поля, если есть.
+     */
+    public function clearCart(){
+        $this->remCartItems = array();
+    }
+    
+    
+    /**
+     * Количество товаров в корзине по всем позициям
+     */
+    public function getQty(){
+        $result = 0;
+        if (is_array($this->remCartItems)) $result = count($this->remCartItems);
+        return $result;
+    }
+    
+    /**
+     * Установить тип доставки
+     * @param type $delivId
+     */
+    public function setDeliv($delivId){
+        ;
+    }
+    
+    /**
+     * Установить тип оплаты
+     * @param type $payId
+     */
+    public function setPay($payId){
+        ;
+    }
+    
+    public function getItemsList(){
+        ;
+    }
+    
+    public function getDeliveryList(){
+        ;
+    }
+    
+    public function getPayList(){
+        ;
+    }
+    
+    /*
+    Glob::$vars['sizegr_types'] = array("1" => "Small", "2"=>"Normal", "3"=>"Medium", "4"=>"Big", "5"=>"Biggest");
+    Glob::$vars['weightgr_types'] = array("1" =>"Light", "2"=>"Normal", "3"=>"Medium", "4"=>"Heavy", "5"=>"Very heavy");
+
+    Glob::$vars['sizegr_types_levels'] = array( //Максимальный объем в куб.см и макс. измерение в см.
+        "1" => array("v"=>200000, "h"=>200), //0,2 куба не более 1х1х0,2 курьер в руках или машине
+        "2" => array("v"=>200000, "h"=>200), //2 куба до 2 метров (ларгус)
+        "3" => array("v"=>1000000, "h"=>3000), //10 кубов до 3 метров (газель)
+        "4" => array("v"=>4000000, "h"=>5000), //40 кубов до 6 метров (газон НЕКСТ)
+        "5" => array("v"=>10000000, "h"=>12000), //Фура 100 кубов и 12 метров
+    );
+
+    Glob::$vars['weightgr_types_levels'] = array( //Максимальный вес, кг.
+        "1" => 10, //Курьер
+        "2" => 400, //Ларгус
+        "3" => 1500, //Газель
+        "4" => 6000, //Газон
+        "5" => 20000, //Фура
+    );
+
+    Glob::$vars['prod_qty_limit'] 
+    */
     
     /**
      * Сохранение текущей корзины в сессию
@@ -153,6 +212,5 @@ class MNBVCart{
         Glob::$vars['session']->set('cart_info',$this->cart_info);
         Glob::$vars['session']->save(); //Сохраним данные сессии
     }
-
     
 }

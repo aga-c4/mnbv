@@ -147,6 +147,7 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
         $result = false;
         if ('Вес' === $strVal) $result = true;
         if ('Габариты (ВxШxГ) (см)' === $strVal) $result = true;
+        if ('Брутто вес (кг)' === $strVal) $result = true;
         if ('Брутто размер (ВхШхГ) (см)' === $strVal) $result = true;
         if ('Страна-производитель' === $strVal) $result = true;
         if ('Габариты брутто (ВхШхГ) (см)' === $strVal) $result = true;
@@ -493,6 +494,7 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                 //составим массив структуры категорий с маркерами активности, в т.ч. проверим товар на блокировку по категории, включая вложенные
                 $prod_no_check = SysBF::getFrArr($scriptvarsArr, 'prod_no_check',0,'intval');
                 $this->siteid = SysBF::getFrArr($scriptvarsArr, 'siteid',0);
+                $supplier = SysBF::getFrArr($scriptvarsArr, 'supplier',0);
                 $this->cat_deny = SysBF::getFrArr($scriptvarsArr, 'cat_deny',array());
                 $cat_allow = SysBF::getFrArr($scriptvarsArr, 'cat_allow','all');
                 if (is_array($cat_allow)){ //Элементы массива должны быть строковыми
@@ -779,6 +781,8 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                         
                     } else { //Добавим новый товар
                         
+                        if (in_array($categoryId,array(182,233,201))) $updateArr["onlyvert"] = 1;
+                        
                         $updateArr["parentid"] = $parentid;
                         $updateArr["vendor"] = $vendorid;
                         $updateArr["country"] = $countryid;
@@ -788,6 +792,8 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                         $updateArr["model"] = (!empty($node->model))?SysBF::checkStr($node->model,'stringkav'):'';
                         $updateArr["name"] = $updateArr["prefix"] . ' ' . $vendorStr . ' ' . $updateArr["model"];
                         $updateArr["alias"] = MNBVf::str2alias($updateArr["model"]);
+                        
+                        $updateArr["supplier"] = $supplier;
                         
                         if ($this->demoMode) $updateArr["text"] = $updateArr["name"] . ', ' . $updateArr["name"] . ', ' . $updateArr["name"] . ', ' . $updateArr["name"] . ', ' . $updateArr["name"] . '.<br><br>Демонстрационный товар, предложение не является офертой. Демонстрационный товар, предложение не является офертой. Демонстрационный товар, предложение не является офертой.';
                         else $updateArr["text"] = (!empty($node->description))?str_replace("\n","<br>\n",SysBF::checkStr($node->description,'stringkav')):'';
@@ -919,35 +925,100 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                                     );
                                 }
                                 
+                            } elseif ('Брутто вес (кг)' === $paramName) {
+                                
+                                $mainAttrOk = false;
+                                $paramName = 'Брутто вес (кг)';
+                                $curParamItemValue = $this->getProdWeight($curParamItemName);
+                                /*
+                                $attrValsArr["attr".$this->paramArr[$paramName]["dbid"]] = $curParamItemValue;                  
+                                $attrDBAddArr[] = array(
+                                    "attrid"=>$this->paramArr[$paramName]["dbid"],
+                                    "vint"=>MNBVf::decimal2int($curParamItemValue,3),
+                                );
+                                 */
+                                
+                                $updateArr["brweight"] = $curParamItemValue;
+                                
+                                //Весовая категория
+                                $updateArr["weightgr"] = 0;
+                                if (!empty($updateArr["brweight"])){
+                                    foreach(Glob::$vars['one_weightgr_types_levels'] as $key=>$vval) {
+                                        if ($updateArr["brweight"]>$vval) continue;
+                                        $updateArr["weightgr"] = $key;
+                                        break;
+                                    }
+                                }
+                                
                             } elseif ('Брутто размер (ВхШхГ) (см)' === $paramName) {
                                 
                                 $mainAttrOk = false;
                                 $curParamItemArr = $this->getProdSize($curParamItemName);
                                 
                                 if (!empty($curParamItemArr["h"])){
+                                    /*
                                     $attrValsArr["attr".$this->paramArr["Брутто высота (см)"]["dbid"]] = intval($curParamItemArr["h"]);
                                     $attrDBAddArr[] = array(
                                         "attrid"=>$this->paramArr["Брутто высота (см)"]["dbid"],
                                         "vint"=>intval($curParamItemArr["h"]),
                                     );
+                                     */
+                                    $updateArr["brheight"] = intval($curParamItemArr["h"]);
                                 }
                                 
                                 if (!empty($curParamItemArr["w"])){
+                                    /*
                                     $attrValsArr["attr".$this->paramArr["Брутто ширина (см)"]["dbid"]] = intval($curParamItemArr["w"]);
                                     $attrDBAddArr[] = array(
                                         "attrid"=>$this->paramArr["Брутто ширина (см)"]["dbid"],
                                         "vint"=>intval($curParamItemArr["w"]),
                                     );
+                                     */
+                                    $updateArr["brwidth"] = intval($curParamItemArr["w"]);
                                 }
                                 
                                 if (!empty($curParamItemArr["l"])){
+                                    /*
                                     $attrValsArr["attr".$this->paramArr["Брутто длина (см)"]["dbid"]] = intval($curParamItemArr["l"]);
                                     $attrDBAddArr[] = array(
                                         "attrid"=>$this->paramArr["Брутто длина (см)"]["dbid"],
                                         "vint"=>intval($curParamItemArr["l"]),
                                     );
+                                     */
+                                    $updateArr["brlength"] = intval($curParamItemArr["l"]);
                                 }
                                 
+                                //Определим мин и макс размеры
+                                $updateArr["brminw"] = 0;
+                                $updateArr["brmaxw"] = 0;
+                                if (!empty($updateArr["onlyvert"])){ //Можно перевозить только вертикально. выбираем из длины и ширины
+                                    if (!empty($updateArr["brwidth"]) && $updateArr["brwidth"]>$updateArr["brmaxw"]) $updateArr["brmaxw"] = $updateArr["brwidth"];
+                                    if (!empty($updateArr["brlength"]) && $updateArr["brlength"]>$updateArr["brmaxw"]) $updateArr["brmaxw"] = $updateArr["brlength"];
+                                    
+                                    if (!empty($updateArr["brwidth"]) && $updateArr["brwidth"]<$updateArr["brminw"]) $updateArr["brminw"] = $updateArr["brwidth"];
+                                    if (!empty($updateArr["brlength"]) && $updateArr["brlength"]<$updateArr["brminw"]) $updateArr["brminw"] = $updateArr["brlength"];
+                                }else{ //Можно перевозить как угодно
+                                    if (!empty($updateArr["brheight"]) && $updateArr["brheight"]>$updateArr["brmaxw"]) $updateArr["brmaxw"] = $updateArr["brheight"];
+                                    if (!empty($updateArr["brwidth"]) && $updateArr["brwidth"]>$updateArr["brmaxw"]) $updateArr["brmaxw"] = $updateArr["brwidth"];
+                                    if (!empty($updateArr["brlength"]) && $updateArr["brlength"]>$updateArr["brmaxw"]) $updateArr["brmaxw"] = $updateArr["brlength"];
+                                    
+                                    if (!empty($updateArr["brheight"]) && $updateArr["brheight"]<$updateArr["brmaxw"]) $updateArr["brminw"] = $updateArr["brheight"];
+                                    if (!empty($updateArr["brwidth"]) && $updateArr["brwidth"]<$updateArr["brminw"]) $updateArr["brminw"] = $updateArr["brwidth"];
+                                    if (!empty($updateArr["brlength"]) && $updateArr["brlength"]<$updateArr["brminw"]) $updateArr["brminw"] = $updateArr["brlength"];
+                                }
+                                
+                                $v = $updateArr["brwidth"] * $updateArr["brheight"] * $updateArr["brlength"];
+                                
+                                //Размерная категория
+                                $updateArr["sizegr"] = 0;
+                                foreach(Glob::$vars['one_sizegr_types_levels'] as $key=>$vval) {
+                                    if ($v>$vval["v"]) continue;
+                                    if (!empty($updateArr["brheight"]) && $updateArr["brheight"]>$vval["h"]) continue;
+                                    if (!empty($updateArr["brmaxw"]) && $updateArr["brmaxw"]>$vval["l"]) continue;
+                                    $updateArr["sizegr"] = $key;
+                                    break;
+                                }
+
                             } 
                             
                             if ($mainAttrOk) { //Поток стандатрной обработки параметров

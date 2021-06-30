@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Июн 14 2021 г., 18:56
+-- Время создания: Июн 25 2021 г., 18:13
 -- Версия сервера: 10.3.13-MariaDB-log
 -- Версия PHP: 7.3.9
 
@@ -230,6 +230,26 @@ CREATE TABLE `mnbv_attrvals` (
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `mnbv_cartitems`
+--
+
+DROP TABLE IF EXISTS `mnbv_cartitems`;
+CREATE TABLE `mnbv_cartitems` (
+  `id` int(10) NOT NULL,
+  `sessid` varchar(64) NOT NULL DEFAULT '',
+  `userid` int(10) NOT NULL DEFAULT 0,
+  `prodid` int(10) NOT NULL DEFAULT 0,
+  `qty` int(5) NOT NULL DEFAULT 0,
+  `price` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `discval` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `discpr` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `promocode` varchar(64) NOT NULL DEFAULT '',
+  `ts` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `mnbv_carts`
 --
 
@@ -345,10 +365,7 @@ CREATE TABLE `mnbv_countries` (
 --
 
 INSERT INTO `mnbv_countries` (`id`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `preview`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `files`, `siteid`, `tags`, `discmaxpr`, `discmaxval`, `discminmargpr`, `discminmargval`, `searchstr`) VALUES
-(1, '2017-09-15 18:19:07', 0, 100, 1, '', 1, 0, 210, 0, 'Страны', 'Countries', '', '', 0, '', '', '', '', 1505485140, 0, 0, 2, 1505485147, 2, 1505485196, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', ''),
-(2, '2017-09-15 18:19:24', 1, 100, 0, '', 1, 0, 210, 0, 'Россия', 'Russia', '', '', 0, '', '', '', '', 1505485164, 0, 0, 2, 1505485164, 2, 1505485204, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', ''),
-(3, '2017-09-15 18:19:29', 1, 100, 0, '', 1, 0, 210, 0, 'Китай', 'China', '', '', 0, '', '', '', '', 1505485169, 0, 0, 2, 1505485169, 2, 1505485209, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', ''),
-(4, '2017-09-15 18:19:32', 1, 100, 0, '', 1, 0, 210, 0, 'США', 'USA', '', '', 0, '', '', '', '', 1505485172, 0, 0, 2, 1505485172, 2, 1505485216, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', '');
+(1, '2017-09-15 18:19:07', 0, 100, 1, '', 1, 0, 210, 0, 'Страны', 'Countries', '', '', 0, '', '', '', '', 1505485140, 0, 0, 2, 1505485147, 2, 1505485196, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', '');
 
 -- --------------------------------------------------------
 
@@ -481,6 +498,20 @@ INSERT INTO `mnbv_discounts` (`id`, `datestr`, `parentid`, `pozid`, `type`, `typ
 (2, '2017-09-15 14:03:52', 1, 10, 0, '', 1, 0, 210, 0, 'Первая скидка жесткая', 'Discount 1', '', '', 0, '', '', '', '', 1505469832, 0, 0, 2, 1505469832, 2, 1621585965, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '5.00', '1000.00'),
 (3, '2017-09-15 14:04:01', 1, 20, 0, '', 1, 0, 210, 0, 'Вторая скидка', 'Discount 2', '', '', 0, '', '', '', '', 1505469841, 0, 0, 2, 1505469841, 2, 1621585967, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '10.00', '2000.00'),
 (4, '2017-09-15 14:04:09', 1, 30, 0, '', 1, 0, 210, 0, 'Третья скидка', 'Discount 3', '', '', 0, '', '', '', '', 1505469849, 0, 0, 2, 1505469849, 2, 1621585975, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '20.00', '4000.00');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `mnbv_longtmp`
+--
+
+DROP TABLE IF EXISTS `mnbv_longtmp`;
+CREATE TABLE `mnbv_longtmp` (
+  `id` varchar(100) NOT NULL DEFAULT '',
+  `ts` int(11) NOT NULL DEFAULT 0,
+  `tsto` int(11) NOT NULL DEFAULT 0,
+  `val` longtext NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -745,6 +776,23 @@ INSERT INTO `mnbv_orders` (`id`, `datestr`, `parentid`, `pozid`, `type`, `typeva
 -- --------------------------------------------------------
 
 --
+-- Структура таблицы `mnbv_prinstock`
+--
+
+DROP TABLE IF EXISTS `mnbv_prinstock`;
+CREATE TABLE `mnbv_prinstock` (
+  `id` int(10) NOT NULL,
+  `region` int(10) NOT NULL DEFAULT 0,
+  `prodid` int(10) NOT NULL DEFAULT 0,
+  `price` decimal(10,2) NOT NULL,
+  `instock` int(1) NOT NULL DEFAULT 0,
+  `qty` int(10) NOT NULL DEFAULT 0,
+  `ts` timestamp NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Структура таблицы `mnbv_products`
 --
 
@@ -808,15 +856,25 @@ CREATE TABLE `mnbv_products` (
   `norm_partnumber` varchar(255) NOT NULL DEFAULT '',
   `donorurl` varchar(255) NOT NULL DEFAULT '',
   `donorimg` varchar(255) NOT NULL DEFAULT '',
-  `searchstr` varchar(255) NOT NULL DEFAULT ''
+  `searchstr` varchar(255) NOT NULL DEFAULT '',
+  `weightgr` int(4) NOT NULL DEFAULT 0,
+  `sizegr` int(4) NOT NULL DEFAULT 0,
+  `onlyvert` int(1) NOT NULL DEFAULT 0,
+  `brweight` int(10) NOT NULL DEFAULT 0,
+  `brheight` int(10) NOT NULL DEFAULT 0,
+  `brwidth` int(10) NOT NULL DEFAULT 0,
+  `brlength` int(10) NOT NULL DEFAULT 0,
+  `brminw` int(10) NOT NULL DEFAULT 0,
+  `brmaxw` int(10) NOT NULL DEFAULT 0,
+  `supplier` int(10) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Дамп данных таблицы `mnbv_products`
 --
 
-INSERT INTO `mnbv_products` (`id`, `outid`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `preview`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `files`, `siteid`, `tags`, `price`, `oldprice`, `cost`, `ndspr`, `quantity`, `instock`, `discmaxpr`, `discmaxval`, `discminmargpr`, `discminmargval`, `vendor`, `prefix`, `prefixlang`, `model`, `partnumber`, `barcode`, `country`, `norm_search`, `norm_partnumber`, `donorurl`, `donorimg`, `searchstr`) VALUES
-(1, '', '1970-01-01 03:00:00', 0, 100, 1, '', 1, 0, 210, 0, 'Товары', 'Products', '', '', 0, '', '', '', '', 0, 0, 0, 2, 1469005900, 2, 1623312194, '127.0.0.1', 'Администратор', '', '', '{\"1\":{\"objid\":1,\"attrid\":\"3\",\"pozid\":10000,\"namelang\":\"Weight (kg)\",\"dnuse\":1,\"namedlang\":\"\\u0412\\u0435\\u0441\",\"infilter\":1,\"name\":\"\\u0412\\u0435\\u0441 (\\u043a\\u0433)\"},\"2\":{\"objid\":1,\"attrid\":\"5\",\"pozid\":10001,\"namedlang\":\"\\u041a\\u043e\\u043c\\u043c\\u0435\\u043d\\u0442\",\"namelang\":\"Height (sm)\",\"name\":\"\\u0412\\u044b\\u0441\\u043e\\u0442\\u0430 (\\u0441\\u043c)\",\"dnuse\":1,\"infilter\":1},\"3\":{\"objid\":1,\"attrid\":\"6\",\"name\":\"\\u0428\\u0438\\u0440\\u0438\\u043d\\u0430 (\\u0441\\u043c)\",\"namelang\":\"Width (sm)\",\"dnuse\":1,\"infilter\":1,\"pozid\":10002},\"4\":{\"objid\":1,\"attrid\":\"7\",\"pozid\":10003,\"name\":\"\\u0414\\u043b\\u0438\\u043d\\u0430 (\\u0441\\u043c)\",\"namelang\":\"Length (sm)\",\"dnuse\":1,\"infilter\":1},\"5\":{\"objid\":1,\"attrid\":\"8\",\"pozid\":10010,\"name\":\"\\u0411\\u0440\\u0443\\u0442\\u0442\\u043e \\u0432\\u0435\\u0441 (\\u043a\\u0433)\",\"namelang\":\"Gross weight (kg)\",\"dnuse\":1},\"6\":{\"objid\":1,\"attrid\":\"9\",\"pozid\":10011,\"name\":\"\\u0411\\u0440\\u0443\\u0442\\u0442\\u043e \\u0432\\u044b\\u0441\\u043e\\u0442\\u0430 (\\u0441\\u043c)\",\"namelang\":\"Gross height (sm)\",\"dnuse\":1},\"7\":{\"objid\":1,\"attrid\":\"10\",\"pozid\":10012,\"name\":\"\\u0411\\u0440\\u0443\\u0442\\u0442\\u043e \\u0448\\u0438\\u0440\\u0438\\u043d\\u0430 (\\u0441\\u043c)\",\"namelang\":\"Gross width (sm)\",\"dnuse\":1},\"8\":{\"objid\":1,\"attrid\":\"11\",\"pozid\":10013,\"name\":\"\\u0411\\u0440\\u0443\\u0442\\u0442\\u043e \\u0434\\u043b\\u0438\\u043d\\u0430 (\\u0441\\u043c)\",\"namelang\":\"Gross length (sm)\",\"dnuse\":1}}', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', 0, 0, '0.00', '0.00', '0.00', '0.00', 0, '', '', '', '', '', 0, ',1,,,,tovary,products,,', '', '', '', '');
+INSERT INTO `mnbv_products` (`id`, `outid`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `preview`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `files`, `siteid`, `tags`, `price`, `oldprice`, `cost`, `ndspr`, `quantity`, `instock`, `discmaxpr`, `discmaxval`, `discminmargpr`, `discminmargval`, `vendor`, `prefix`, `prefixlang`, `model`, `partnumber`, `barcode`, `country`, `norm_search`, `norm_partnumber`, `donorurl`, `donorimg`, `searchstr`, `weightgr`, `sizegr`, `onlyvert`, `brweight`, `brheight`, `brwidth`, `brlength`, `brminw`, `brmaxw`, `supplier`) VALUES
+(1, '', '1970-01-01 03:00:00', 0, 100, 1, '', 1, 0, 210, 0, 'Товары', 'Products', '', '', 0, '', '', '', '', 0, 0, 0, 2, 1469005900, 2, 1624633998, '127.0.0.1', 'Администратор', '', '', '{\"1\":{\"objid\":1,\"attrid\":\"3\",\"pozid\":10000,\"namelang\":\"Weight (kg)\",\"dnuse\":1,\"namedlang\":\"\\u0412\\u0435\\u0441\",\"infilter\":1,\"name\":\"\\u0412\\u0435\\u0441 (\\u043a\\u0433)\"},\"2\":{\"objid\":1,\"attrid\":\"5\",\"pozid\":10001,\"namedlang\":\"\\u041a\\u043e\\u043c\\u043c\\u0435\\u043d\\u0442\",\"namelang\":\"Height (sm)\",\"name\":\"\\u0412\\u044b\\u0441\\u043e\\u0442\\u0430 (\\u0441\\u043c)\",\"dnuse\":1,\"infilter\":1},\"3\":{\"objid\":1,\"attrid\":\"6\",\"name\":\"\\u0428\\u0438\\u0440\\u0438\\u043d\\u0430 (\\u0441\\u043c)\",\"namelang\":\"Width (sm)\",\"dnuse\":1,\"infilter\":1,\"pozid\":10002},\"4\":{\"objid\":1,\"attrid\":\"7\",\"pozid\":10003,\"name\":\"\\u0414\\u043b\\u0438\\u043d\\u0430 (\\u0441\\u043c)\",\"namelang\":\"Length (sm)\",\"dnuse\":1,\"infilter\":1}}', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', 0, 0, '0.00', '0.00', '0.00', '0.00', 0, '', '', '', '', '', 0, ',1,,,,tovary,products,,', '', '', '', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -1004,7 +1062,7 @@ INSERT INTO `mnbv_robotsrun` (`id`, `datestr`, `parentid`, `pozid`, `type`, `typ
 (4, '2017-10-04 12:26:51', 1, 100, 0, '', 1, 301, 305, 0, 'Запуск кроновых скриптов', 'Start cron scripts', '', '', 0, 'Запускает кроновые скрипты', '', '', '', 1507105611, 0, 0, 2, 1507105611, 2, 1525000496, '127.0.0.1', 'Администратор', '{\"script\":\"php start_robot.php robot=startcron proc=7 rsid=60323eeefdbcbca15d1e5d77b1dbb313\",\"output\":\"data\\/storage_files\\/zbrobotsrun\\/att\\/p7_1.txt\"}', '', '', '', '', '{\"att\":{\"1\":{\"type\":\"txt\",\"fname\":\"\\u0421\\u0442\\u0430\\u0442\\u0438\\u0441\\u0442\\u0438\\u043a\\u0430 \\u043f\\u043e \\u0432\\u044b\\u0442\\u044f\\u0436\\u043a\\u0430\\u043c.txt\",\"size\":{\"kb\":3},\"edituser\":\"2\",\"editdate\":1507119057,\"upldate\":1507119057,\"editip\":\"127.0.0.1\",\"kb\":3}}}', 0, '', 4, '', 0, 0, 0, '', '', '', '', 0, 0, 'service', '', ''),
 (5, '2017-10-04 17:20:51', 1, 100, 0, '', 1, 301, 305, 0, 'Мониторинг активных роботов', 'Robots run monitor', '', '', 0, '', '', '', '', 1507123251, 0, 0, 2, 1507123251, 2, 1525000507, '127.0.0.1', 'Администратор', '{\"script\":\"php start_robot.php robot=robotsmonitor proc=8 rsid=4a100e66a2ec259303b3048c5515e331\",\"output\":\"\\/dev\\/null\"}', '', '', '', '', '{\"att\":{\"1\":{\"type\":\"txt\",\"fname\":\"output.txt\"}}}', 0, '', 5, '', 0, 0, 0, '', '', '', '', 0, 0, 'service', '', ''),
 (6, '2018-02-21 16:04:50', 1, 100, 0, '', 1, 301, 305, 0, 'Рестарт умерших скриптов', 'Died scripts restart', '', '', 0, 'Некромант, оживляющий демонов)))', '', '', '', 1519218290, 0, 0, 2, 1519218290, 2, 1525000517, '127.0.0.1', 'Администратор', '{\"crmin\":\"*\",\"crhour\":\"*\",\"crday\":\"*\",\"crmonth\":\"*\",\"crweek\":\"*\",\"script\":\"php start_robot.php robot=robotsrestart proc=42 rsid=bd188f270e27cbcbde6b22d4839c6f6b\",\"output\":\"data\\/storage_files\\/zbrobotsrun\\/att\\/p42_1.txt\",\"always\":1}', '', '', '', '', '{\"att\":{\"1\":{\"type\":\"txt\",\"fname\":\"output.txt\"},\"2\":{\"type\":\"txt\",\"fname\":\"log.txt\"}}}', 0, '', 6, '', 0, 0, 0, '', '', '', '', 0, 1, 'service', '', ''),
-(100, '2021-05-27 17:48:10', 1, 100, 0, '', 1, 301, 305, 0, 'Загрузка каталога из YML', 'Import catalog from YML', '', '', 0, 'Загрузка каталога из фида\r\n\r\nПеременные скрипта:\r\n\"feed_source\" - путь к фиду, пример: \"tmp/upl/minifeed.xml\",\r\n\"type\" - тип фида (yml/csv),\r\n\"action\" - варианты действий (add/rewrite)\r\n\"cat_deny\" - массив категорий в которых запрещена загрузка с учетом вложенных\r\n\"prod_no_check\" - если 1 или true, то не проверять наличие товаров. просто добавлять\r\n\"demo_mode\" - демо режим - автогенерация картинки и описания\r\n\r\nПример:\r\n{\"feed_source\":\"tmp/upl/minifeed.xml\",\"type\":\"yml\",\"action\":\"rewrite\",\"cat_deny\":[501],\"cat_allow\":\"all\",\"prod_no_check\":1}\r\n\r\n{\"feed_source\":\"tmp/upl/eldorado_msk_2021-05-19.xml\",\"type\":\"yml\",\"action\":\"rewrite\",\"cat_allow\":\"all\",\"prod_no_check\":1}\r\n', '', '', '', 1622126890, 0, 0, 2, 1622126890, 2, 1623655761, '127.0.0.1', 'Администратор', '{\"script\":\"php start_robot.php robot=catimport proc=100 rsid=c34cdc934d3f41f98aaa175bfacd0b93\",\"output\":\"data\\/storage_files\\/robotsrun\\/att\\/p100_1.txt\",\"scriptvars\":\"{\\\"feed_source\\\":\\\"tmp\\/upl\\/eldorado_msk_2021-05-19.xml\\\",\\\"type\\\":\\\"yml\\\",\\\"action\\\":\\\"rewrite\\\",\\\"cat_deny\\\":[501],\\\"cat_allow\\\":\\\"all\\\",\\\"prod_no_check\\\":1,\\\"demo_mode\\\":1}\"}', '', '', '', '', '{\"att\":{\"1\":{\"type\":\"txt\",\"fname\":\"output.txt\"}}}', 0, '', 100, '', 0, 0, 0, '', '', '', '', 0, 0, 'workers', '', '');
+(100, '2021-05-27 17:48:10', 1, 100, 0, '', 1, 301, 305, 0, 'Загрузка каталога из YML', 'Import catalog from YML', '', '', 0, 'Загрузка каталога из фида\r\n\r\nПеременные скрипта:\r\n\"feed_source\" - путь к фиду, пример: \"tmp/upl/minifeed.xml\",\r\n\"type\" - тип фида (yml/csv),\r\n\"action\" - варианты действий (add/rewrite)\r\n\"cat_deny\" - массив категорий в которых запрещена загрузка с учетом вложенных\r\n\"prod_no_check\" - если 1 или true, то не проверять наличие товаров. просто добавлять\r\n\"demo_mode\" - демо режим - автогенерация картинки и описания\r\n\"supplier\" - идентификатор поставщика из хранилища поставщиков\r\n\r\nПример:\r\n{\"feed_source\":\"tmp/upl/minifeed.xml\",\"type\":\"yml\",\"action\":\"rewrite\",\"cat_deny\":[501],\"cat_allow\":\"all\",\"prod_no_check\":1}\r\n{\"feed_source\":\"tmp/upl/maxprod.xml\",\"type\":\"yml\",\"action\":\"rewrite\",\"cat_allow\":[\"182\",\"233\",\"245\",\"337\",\"201\",\"434\"],\"prod_no_check\":1,\"demo_mode\":1}\r\n{\"feed_source\":\"tmp/upl/maxprod.xml\",\"type\":\"yml\",\"action\":\"rewrite\",\"cat_allow\":\"all\",\"prod_no_check\":1}\r\n', '', '', '', 1622126890, 0, 0, 2, 1622126890, 2, 1624454022, '127.0.0.1', 'Администратор', '{\"script\":\"php start_robot.php robot=catimport proc=100 rsid=eb7579a510eb8d638bb4bf902465bfb2\",\"output\":\"data\\/storage_files\\/robotsrun\\/att\\/p100_1.txt\",\"scriptvars\":\"{\\\"feed_source\\\":\\\"tmp\\/upl\\/maxprod.xml\\\",\\\"supplier\\\":2,\\\"type\\\":\\\"yml\\\",\\\"action\\\":\\\"rewrite\\\",\\\"cat_allow\\\":[\\\"182\\\",\\\"233\\\",\\\"245\\\",\\\"337\\\",\\\"201\\\",\\\"434\\\"],\\\"prod_no_check\\\":1,\\\"demo_mode\\\":1}\"}', '', '', '', '', '{\"att\":{\"1\":{\"type\":\"txt\",\"fname\":\"output.txt\"}}}', 0, '', 100, '', 0, 0, 0, '', '', '', '', 0, 0, 'workers', '', '');
 
 -- --------------------------------------------------------
 
@@ -1022,6 +1080,13 @@ CREATE TABLE `mnbv_searchindex` (
   `normstr` varchar(255) NOT NULL DEFAULT '',
   `weight` int(3) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Поисковый индекс';
+
+--
+-- Дамп данных таблицы `mnbv_searchindex`
+--
+
+INSERT INTO `mnbv_searchindex` (`id`, `siteid`, `type`, `objid`, `objtype`, `normstr`, `weight`) VALUES
+(1, 0, 0, 1, 0, '1', 6);
 
 -- --------------------------------------------------------
 
@@ -1075,7 +1140,7 @@ CREATE TABLE `mnbv_site` (
 
 INSERT INTO `mnbv_site` (`id`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `preview`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `files`, `siteid`, `tags`) VALUES
 (1, '2017-08-08 12:49:06', 0, 100, 1, '', 1, 0, 102, 0, 'Демо интернет-магазин MNBV', 'MNBV demo online store', '', '', 0, '', '', '', '', 1502182140, 0, 0, 2, 1502182146, 2, 1621327137, '127.0.0.1', 'Администратор', '{\"tpl_file\":\"index.php\"}', '', '', '', '', '{\"img\":{\"2\":{\"size\":{\"kb\":225,\"w\":1288,\"h\":300},\"type\":\"jpg\",\"fname\":\"60-\\u0440\\u043e\\u043c\\u0430\\u0448\\u043a\\u0438-\\u043a\\u0430\\u0440\\u0442\\u0438\\u043d\\u043a\\u0438-\\u043a\\u0440\\u0430\\u0441\\u0438\\u0432\\u044b\\u0435.jpg\",\"edituser\":\"2\",\"editdate\":1618778526,\"upldate\":1618778526,\"editip\":\"127.0.0.1\"},\"3\":{\"size\":{\"kb\":301,\"w\":1288,\"h\":300,\"min\":{\"kb\":13,\"w\":100,\"h\":80},\"big\":{\"kb\":922,\"w\":1280,\"h\":1024}},\"type\":\"jpg\",\"fname\":\"Many-strawberries-red-fruit-delicious_1280x1024.jpg\",\"edituser\":\"2\",\"editdate\":1618778538,\"upldate\":1618778538,\"editip\":\"127.0.0.1\"},\"4\":{\"size\":{\"kb\":351,\"w\":1288,\"h\":300},\"type\":\"jpg\",\"fname\":\"beach-sea-coast-water-nature-outdoor-sand-ocean-shore-wave-summer-paradise-holiday-lifestyle-material-body-of-water-sunny-waves-happy-habitat-beach-sand-summer-fun-mudflat-wind-wave-646583.jpg\",\"edituser\":\"2\",\"editdate\":1618778556,\"upldate\":1618778556,\"editip\":\"127.0.0.1\"},\"5\":{\"size\":{\"kb\":346,\"w\":1288,\"h\":300},\"type\":\"jpg\",\"fname\":\"wtkVBKz0M8-126.jpg\",\"edituser\":\"2\",\"editdate\":1618778572,\"upldate\":1618778572,\"editip\":\"127.0.0.1\"}}}', 0, ''),
-(2, '2017-08-08 12:49:42', 1, 100, 0, '', 1, 0, 102, 0, 'О компании', 'About', 'about', '', 0, 'Информация о компании.', 'Put the information about your company here.', '<p>{{img-right:1}}</p>\r\n<h4>План по доработкам Интернет-Магазина:</h4>\r\n<p>Добавить в товары:<br />sizegr<br />weightgr</p>\r\n<p>Сделать добавление товара в корзину</p>\r\n<p>Сделать оформление заказа с базовой скидкой для клиента.</p>\r\n<p>Сделать хранилище регионов<br />Сделать хранилище зон доставки с привязкой к регионам<br />Сделать хранилище способов доставки с разбиением по параметрам:<br />- регионы,<br />- зоны доставки,<br />- группа по размеру,<br />- группа по весу,<br />В хранилище установить:<br />- цену<br />- срок</p>\r\n<p>Сделать страницу на сайте про доставку с выводом тарифов и при наличии текстового описания элементов со ссылкой на них.</p>\r\n<p>Сделать рассчет доставки в заказе исходя из зоны, веса, размера,</p>\r\n<p>&nbsp;</p>\r\n<ol>\r\n<li>Сделать добавление в корзину, оформление заказа. Отдельным трейтом сделать метод рассчета доставки. Коды товара (внутренний и учетный).</li>\r\n<li>Доработать систему задач, интегрировать в нее прием заказов и входящие письма.</li>\r\n<li>Сделать механизм передачи заказов в учетную систему и механизм передачи пользователей со скидками из учетной системы на сайт.</li>\r\n<li>Сделать рейтинги полезности товаров по валовой прибыли, отклонению от центра. Сделать деление товаров на группы брендов от A- до C+, деление товаров по цене на 6 частей.</li>\r\n<li>Сделать рекомендательную систему: вы смотрели, похожие товары, сопутствующие товары, персональные рекомендации (на базе просмотренных товаров смотрим категории, которые смотрел пользователь, уровень бренда, квартиль цены и показываем ему пропорционально наиболее рейтинговые товары из этих категорий с коррекцией на уровень бренда +-1 и группы цены +-1. Сразу заложить аналитику CTR и влияние рекомендаций на продажи.</li>\r\n<li>Сделать баннерную систему.</li>\r\n<li>Сделать отображение товаров в акциях, учет акционных скидок при формировании корзины и заказа. Отображение категории и товары, сделать брендзоны.</li>\r\n<li>Аналитика, события, подключение счетчиков, в т.ч. отслеживание связи продаж товаров с переходами на соответствующие акции и баннеры в рамках сессии.</li>\r\n<li>Сделать онлайн оплату, интегрировать ее в систему задач, привязать к заказам.</li>\r\n<li>Доработать модуль SEO оптимизации (формирование метатегов по маскам для разных групп структурных элементов).</li>\r\n<li>Сделать систему регистрации новых пользователей, подписку на рассылки разного рода и пуш уведомления.</li>\r\n<li>Ввести деление на регионы, статусы наличия и цены по ним, доработать вывод фидов с учетом регионов.</li>\r\n<li>Внедрить автоматическое определение региона с автоустановкой (предварительно уточнив что правы).</li>\r\n<li>Внедрить КЛАДР и помощник ввода имен, валидацию имен и адресов.</li>\r\n</ol>\r\n<p>&nbsp;</p>', '<p>{{img-right:1}}Hello! We are glad to sea you in this Demo Site!</p>\r\n<p>It cotsists of:</p>\r\n<ul>\r\n<li>structure of static pages,</li>\r\n<li>structure of news and articles,</li>\r\n<li>product catalog,</li>\r\n<li>contacts whith feedback  form,</li>\r\n<li>banners system,</li>\r\n<li>user login and personal account, </li>\r\n<li>discount system,</li>\r\n<li>events system,</li>\r\n<li>feeds generator,</li>\r\n<li>CMS,</li>\r\n<li>storage uploader</li>\r\n<li>catalog autocomplite.</li>\r\n</ul>\r\n<p>Select template and connect it to system.</p>\r\n<p>You can work whith multiple sites.</p>', 1502182140, 0, 0, 2, 1502182182, 2, 1623500372, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"\\/src\\/mnbv\\/img\\/logo\\/smile.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1618779999,\"editip\":\"127.0.0.1\"}}}', 0, ''),
+(2, '2017-08-08 12:49:42', 1, 100, 0, '', 1, 0, 102, 0, 'О компании', 'About', 'about', '', 0, 'Информация о компании.', 'Put the information about your company here.', '<p>{{img-right:1}}</p>\r\n<h4>План по доработкам Интернет-Магазина:</h4>\r\n<ol>\r\n<li>Сделать добавление в корзину, оформление заказа. Отдельным трейтом сделать метод рассчета доставки. Коды товара (внутренний и учетный).</li>\r\n<li>Доработать систему задач, интегрировать в нее прием заказов и входящие письма.</li>\r\n<li>Сделать механизм передачи заказов в учетную систему и механизм передачи пользователей со скидками из учетной системы на сайт.</li>\r\n<li>Сделать рейтинги полезности товаров по валовой прибыли, отклонению от центра. Сделать деление товаров на группы брендов от A- до C+, деление товаров по цене на 6 частей.</li>\r\n<li>Сделать рекомендательную систему: вы смотрели, похожие товары, сопутствующие товары, персональные рекомендации (на базе просмотренных товаров смотрим категории, которые смотрел пользователь, уровень бренда, квартиль цены и показываем ему пропорционально наиболее рейтинговые товары из этих категорий с коррекцией на уровень бренда +-1 и группы цены +-1. Сразу заложить аналитику CTR и влияние рекомендаций на продажи.</li>\r\n<li>Сделать баннерную систему.</li>\r\n<li>Сделать отображение товаров в акциях, учет акционных скидок при формировании корзины и заказа. Отображение категории и товары, сделать брендзоны.</li>\r\n<li>Аналитика, события, подключение счетчиков, в т.ч. отслеживание связи продаж товаров с переходами на соответствующие акции и баннеры в рамках сессии.</li>\r\n<li>Сделать онлайн оплату, интегрировать ее в систему задач, привязать к заказам.</li>\r\n<li>Доработать модуль SEO оптимизации (формирование метатегов по маскам для разных групп структурных элементов).</li>\r\n<li>Сделать систему регистрации новых пользователей, подписку на рассылки разного рода и пуш уведомления.</li>\r\n<li>Ввести деление на регионы, статусы наличия и цены по ним, доработать вывод фидов с учетом регионов.</li>\r\n<li>Внедрить автоматическое определение региона с автоустановкой (предварительно уточнив что правы).</li>\r\n<li>Внедрить КЛАДР и помощник ввода имен, валидацию имен и адресов.</li>\r\n</ol>\r\n<p> </p>', '<p>{{img-right:1}}Hello! We are glad to sea you in this Demo Site!</p>\r\n<p>It cotsists of:</p>\r\n<ul>\r\n<li>structure of static pages,</li>\r\n<li>structure of news and articles,</li>\r\n<li>product catalog,</li>\r\n<li>contacts whith feedback  form,</li>\r\n<li>banners system,</li>\r\n<li>user login and personal account, </li>\r\n<li>discount system,</li>\r\n<li>events system,</li>\r\n<li>feeds generator,</li>\r\n<li>CMS,</li>\r\n<li>storage uploader</li>\r\n<li>catalog autocomplite.</li>\r\n</ul>\r\n<p>Select template and connect it to system.</p>\r\n<p>You can work whith multiple sites.</p>', 1502182140, 0, 0, 2, 1502182182, 2, 1623760724, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"\\/src\\/mnbv\\/img\\/logo\\/smile.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1618779999,\"editip\":\"127.0.0.1\"}}}', 0, ''),
 (3, '2017-08-08 12:49:51', 1, 100, 0, '', 1, 0, 102, 0, 'Статьи', 'Articles', 'articles', '', 0, '', 'The articles list of the company.', '', '', 1502182140, 0, 0, 2, 1502182191, 2, 1621326393, '127.0.0.1', 'Администратор', '{\"script\":\"pglist\",\"list_sort\":\"date_desc\",\"script_storage\":\"articles\",\"script_folder\":\"1\",\"list_max_items\":2,\"script_tpl_file\":\"tpl_articleslist.php\",\"script_tpl2_file\":\"tpl_newsview.php\"}', '', '', '', '', '', 0, ''),
 (4, '2017-08-08 12:50:05', 1, 100, 0, '', 1, 0, 102, 0, 'Новости', 'News', 'news', '', 0, 'Новинки компании - будте всегда в курсе!', 'The news list of the company. ', '<p>Новинки компании - будте всегда в курсе!</p>', '<p>The news list of the company.&nbsp;</p>', 1502182200, 0, 0, 2, 1502182205, 2, 1619479613, '127.0.0.1', 'Администратор', '{\"script\":\"pglist\",\"script_storage\":\"news\",\"script_folder\":\"1\",\"list_max_items\":6,\"list_sort\":\"date_desc\",\"script_tpl_file\":\"tpl_newslist.php\",\"script_tpl2_file\":\"tpl_newsview.php\"}', '', '', '', '', '', 0, ''),
 (5, '2017-08-08 12:50:13', 1, 100, 0, '', 1, 0, 102, 0, 'Каталог', 'Catalog', 'catalog', '', 0, 'Каталог товаров, реализуемых компанией - найдите что-то полезное для себя!', 'Product catalog page.', '<p>Каталог товаров, реализуемых компанией - найдите что-то полезное для себя!</p>', '<p>Product catalog here.</p>', 1502182200, 0, 0, 2, 1502182213, 2, 1621342852, '127.0.0.1', 'Администратор', '{\"script\":\"products\",\"script_storage\":\"products\",\"script_folder\":\"1\",\"list_max_items\":8,\"scriptvalign\":1}', '', '', '', '', '', 0, ''),
@@ -1091,7 +1156,8 @@ INSERT INTO `mnbv_site` (`id`, `datestr`, `parentid`, `pozid`, `type`, `typeval`
 (16, '2021-04-18 22:40:26', 1, 100, 0, '', 1, 0, 102, 0, 'Поиск', 'Search', 'search', '', 0, '', '', '', '', 1618774800, 0, 0, 2, 1618774826, 2, 1623412383, '127.0.0.1', 'Администратор', '{\"script\":\"search\",\"list_max_items\":15,\"scriptvalign\":1,\"script_folder\":\"1\"}', '', '', '', '', '', 0, ''),
 (17, '2021-04-18 22:55:13', 1, 100, 0, '', 1, 0, 102, 0, 'Доставка', 'Delivery', 'delivery', '', 0, '', '', '{{img-right:1}}<p>Условия доставки будут размещены тут. Условия доставки будут размещены тут.Условия доставки будут размещены тут.Условия доставки будут размещены тут.Условия доставки будут размещены тут.Условия доставки будут размещены тут.Условия доставки будут размещены тут.Условия доставки будут размещены тут.</p>\r\n<p>Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. </p>\r\n<p>Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. </p>', '', 1618775700, 0, 0, 2, 1618775713, 2, 1619788941, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"\\/src\\/mnbv\\/img\\/logo\\/smile.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1618926476,\"editip\":\"127.0.0.1\"}}}', 0, ''),
 (18, '2021-04-19 00:08:47', 0, 100, 1, '', 0, 0, 102, 0, 'Служебные объекты', 'Service objects', '', '', 0, '', '', '', '', 1618780127, 0, 0, 2, 1618780127, 2, 1621324613, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, ''),
-(19, '2021-04-19 00:09:05', 18, 100, 0, '', 0, 0, 102, 0, 'Описание компании для футора', 'Footer site text', '', '', 0, '', '', '<p>Добро пожаловать на демонстрационную версию сайта компании. Она включает основные элементы, которые необходимы полноценному информационному ресурсу, а именно:</p>\r\n<ul>\r\n<li>структуру статических страниц, удобное управление контентом,</li>\r\n<li>новости и статьи,</li>\r\n<li>каталог товаров, акции, корзина с формированием заказа,</li>\r\n<li>контакты с формой обратной связи,</li>\r\n<li>баннерная система,</li>\r\n<li>авторизация, контроль доступа к ресурсам, личный кабинет пользователя, </li>\r\n<li>система скидок для каталога товаров,</li>\r\n<li>система обработки событий (нужна для установки счетчиков и др. скриптов партнерских программ),</li>\r\n<li>систему выгрузки товарных фидов различных видов,</li>\r\n<li>система загрузки и синхронизации данных в хранилищах</li>\r\n<li>система автоматического формирования каталогов, свойств товара и при необходимости группировки их значений из XML фида с параметрами товара.</li>\r\n<li>система аналитики, позволяющая подключать счетчики основных систем, а также вести расширенный учет электронной торговли и влияния акций, баннеров и рекомендаций на продаж.</li>\r\n</ul>\r\n<p>Вы можете подключить любой выбранный вами шаблон дизайна и использовать несколько вариантов шаблонов дизайна одновременно, переключаясь между ними.</p>\r\n<p>Система поддерживает работу с несколькими сайтами, а также позволяет подключать разные варианты шаблонов отображения на разные доменные имена.</p>', '<p>Hello! We are glad to sea you in this Demo Site!</p>\r\n<p>It cotsists of:</p>\r\n<ul>\r\n<li>structure of static pages,</li>\r\n<li>structure of news and articles,</li>\r\n<li>product catalog,</li>\r\n<li>contacts whith feedback  form,</li>\r\n<li>banners system,</li>\r\n<li>user login and personal account, </li>\r\n<li>discount system,</li>\r\n<li>events system,</li>\r\n<li>feeds generator,</li>\r\n<li>CMS,</li>\r\n<li>storage uploader</li>\r\n<li>catalog autocomplite.</li>\r\n</ul>\r\n<p>Select template and connect it to system.</p>\r\n<p>You can work whith multiple sites.</p>', 1618780140, 0, 0, 2, 1618780145, 2, 1621340095, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '');
+(19, '2021-04-19 00:09:05', 18, 100, 0, '', 0, 0, 102, 0, 'Описание компании для футора', 'Footer site text', '', '', 0, '', '', '<p>Добро пожаловать на демонстрационную версию сайта компании. Она включает основные элементы, которые необходимы полноценному информационному ресурсу, а именно:</p>\r\n<ul>\r\n<li>структуру статических страниц, удобное управление контентом,</li>\r\n<li>новости и статьи,</li>\r\n<li>каталог товаров, акции, корзина с формированием заказа,</li>\r\n<li>контакты с формой обратной связи,</li>\r\n<li>баннерная система,</li>\r\n<li>авторизация, контроль доступа к ресурсам, личный кабинет пользователя, </li>\r\n<li>система скидок для каталога товаров,</li>\r\n<li>система обработки событий (нужна для установки счетчиков и др. скриптов партнерских программ),</li>\r\n<li>систему выгрузки товарных фидов различных видов,</li>\r\n<li>система загрузки и синхронизации данных в хранилищах</li>\r\n<li>система автоматического формирования каталогов, свойств товара и при необходимости группировки их значений из XML фида с параметрами товара.</li>\r\n<li>система аналитики, позволяющая подключать счетчики основных систем, а также вести расширенный учет электронной торговли и влияния акций, баннеров и рекомендаций на продаж.</li>\r\n</ul>\r\n<p>Вы можете подключить любой выбранный вами шаблон дизайна и использовать несколько вариантов шаблонов дизайна одновременно, переключаясь между ними.</p>\r\n<p>Система поддерживает работу с несколькими сайтами, а также позволяет подключать разные варианты шаблонов отображения на разные доменные имена.</p>', '<p>Hello! We are glad to sea you in this Demo Site!</p>\r\n<p>It cotsists of:</p>\r\n<ul>\r\n<li>structure of static pages,</li>\r\n<li>structure of news and articles,</li>\r\n<li>product catalog,</li>\r\n<li>contacts whith feedback  form,</li>\r\n<li>banners system,</li>\r\n<li>user login and personal account, </li>\r\n<li>discount system,</li>\r\n<li>events system,</li>\r\n<li>feeds generator,</li>\r\n<li>CMS,</li>\r\n<li>storage uploader</li>\r\n<li>catalog autocomplite.</li>\r\n</ul>\r\n<p>Select template and connect it to system.</p>\r\n<p>You can work whith multiple sites.</p>', 1618780140, 0, 0, 2, 1618780145, 2, 1621340095, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, ''),
+(20, '2021-06-17 14:46:53', 1, 100, 0, '', 1, 0, 102, 0, 'Заказ', 'Order', 'order', '', 0, '', '', '', '', 1623930360, 0, 0, 2, 1623930413, 2, 1623937749, '127.0.0.1', 'Администратор', '{\"script\":\"order\"}', '', '', '', '', '', 0, '');
 
 -- --------------------------------------------------------
 
@@ -1164,6 +1230,60 @@ INSERT INTO `mnbv_sites` (`id`, `datestr`, `parentid`, `pozid`, `type`, `typeval
 (1, '2017-08-02 14:05:23', 0, 100, 1, '', 1, 0, 2, 0, 'Сайты', 'Sites', '', '', 0, '', '', '', '', 1501668323, 0, 0, 2, 1501668323, 2, 1501669023, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', 0, '', '', '', '', '', '', '', 0, '', '', '', '', 0, 0, 0, ''),
 (2, '2017-08-02 14:05:38', 1, 100, 0, '', 1, 0, 2, 1, 'Сайт по-умолчанию', 'Default site', '', '', 0, '', '', '', '', 1501668300, 0, 0, 2, 1501668338, 2, 1622039827, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', 0, '', '', '', '0', 'bsdefsite2', '', 'site', 1, '', '', '', '', 0, 1, 0, ''),
 (3, '2017-08-03 18:04:46', 1, 100, 0, '2', 1, 0, 2, 0, 'Демо версия сайта', 'Demo site', '', '', 0, '', '', '', '', 1501769040, 0, 0, 2, 1501769086, 2, 1622039832, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', 0, 'www.mnbv.loc', 'mnbv.loc', 'mnbv.loc', '0', 'bsdefsite2', '', 'site', 1, '', '', '', '', 0, 0, 0, '');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `mnbv_suppliers`
+--
+
+DROP TABLE IF EXISTS `mnbv_suppliers`;
+CREATE TABLE `mnbv_suppliers` (
+  `id` int(10) NOT NULL COMMENT 'Id',
+  `datestr` varchar(19) NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `parentid` int(11) NOT NULL DEFAULT 0,
+  `pozid` int(11) NOT NULL DEFAULT 100,
+  `type` int(1) NOT NULL DEFAULT 0,
+  `typeval` varchar(255) NOT NULL DEFAULT '',
+  `visible` int(1) NOT NULL DEFAULT 1,
+  `access` int(11) NOT NULL DEFAULT 0,
+  `access2` int(11) NOT NULL DEFAULT 0,
+  `first` int(1) NOT NULL DEFAULT 0,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `namelang` varchar(255) NOT NULL DEFAULT '',
+  `alias` varchar(255) NOT NULL DEFAULT '',
+  `comm` varchar(255) NOT NULL DEFAULT '',
+  `preview` int(1) NOT NULL DEFAULT 0,
+  `about` text NOT NULL DEFAULT '',
+  `aboutlang` text NOT NULL DEFAULT '',
+  `text` text NOT NULL DEFAULT '',
+  `textlang` text NOT NULL DEFAULT '',
+  `date` int(10) NOT NULL DEFAULT 0,
+  `date1` int(10) NOT NULL DEFAULT 0,
+  `date2` int(10) NOT NULL DEFAULT 0,
+  `createuser` int(11) NOT NULL DEFAULT 0,
+  `createdate` int(10) NOT NULL DEFAULT 0,
+  `edituser` int(11) NOT NULL DEFAULT 0,
+  `editdate` int(10) NOT NULL DEFAULT 0,
+  `editip` varchar(255) NOT NULL DEFAULT '',
+  `author` varchar(255) NOT NULL DEFAULT '',
+  `vars` text NOT NULL DEFAULT '',
+  `attrup` text NOT NULL DEFAULT '',
+  `attr` text NOT NULL DEFAULT '',
+  `attrvals` text NOT NULL DEFAULT '',
+  `upfolders` text NOT NULL DEFAULT '',
+  `files` text NOT NULL DEFAULT '',
+  `siteid` int(11) NOT NULL DEFAULT 0,
+  `tags` varchar(255) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `mnbv_suppliers`
+--
+
+INSERT INTO `mnbv_suppliers` (`id`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `preview`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `files`, `siteid`, `tags`) VALUES
+(1, '0000-00-00 00:00:00', 0, 1, 1, '', 1, 0, 200, 0, 'Поставщики', 'Suppliers', '', '', 0, '', '', '', '', 0, 0, 0, 0, 0, 2, 1624442600, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, ''),
+(2, '2021-06-23 13:03:35', 1, 100, 0, '', 1, 0, 200, 0, 'Поставщик1', 'Supplier1', '', '', 0, '', '', '', '', 1624442615, 0, 0, 2, 1624442615, 2, 1624442626, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '');
 
 -- --------------------------------------------------------
 
@@ -1589,6 +1709,14 @@ ALTER TABLE `mnbv_attrvals`
   ADD KEY `attrfolder` (`attrid`,`objparentid`);
 
 --
+-- Индексы таблицы `mnbv_cartitems`
+--
+ALTER TABLE `mnbv_cartitems`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `userid` (`userid`),
+  ADD KEY `sessid` (`sessid`);
+
+--
 -- Индексы таблицы `mnbv_carts`
 --
 ALTER TABLE `mnbv_carts`
@@ -1610,6 +1738,12 @@ ALTER TABLE `mnbv_delivery`
 -- Индексы таблицы `mnbv_discounts`
 --
 ALTER TABLE `mnbv_discounts`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `mnbv_longtmp`
+--
+ALTER TABLE `mnbv_longtmp`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1635,6 +1769,13 @@ ALTER TABLE `mnbv_news`
 --
 ALTER TABLE `mnbv_orders`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `mnbv_prinstock`
+--
+ALTER TABLE `mnbv_prinstock`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `prodid` (`prodid`);
 
 --
 -- Индексы таблицы `mnbv_products`
@@ -1682,6 +1823,12 @@ ALTER TABLE `mnbv_site`
 -- Индексы таблицы `mnbv_sites`
 --
 ALTER TABLE `mnbv_sites`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `mnbv_suppliers`
+--
+ALTER TABLE `mnbv_suppliers`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1763,6 +1910,12 @@ ALTER TABLE `mnbv_attrvals`
   MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT для таблицы `mnbv_cartitems`
+--
+ALTER TABLE `mnbv_cartitems`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT для таблицы `mnbv_carts`
 --
 ALTER TABLE `mnbv_carts`
@@ -1772,7 +1925,7 @@ ALTER TABLE `mnbv_carts`
 -- AUTO_INCREMENT для таблицы `mnbv_countries`
 --
 ALTER TABLE `mnbv_countries`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `mnbv_delivery`
@@ -1811,6 +1964,12 @@ ALTER TABLE `mnbv_orders`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT для таблицы `mnbv_prinstock`
+--
+ALTER TABLE `mnbv_prinstock`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT для таблицы `mnbv_products`
 --
 ALTER TABLE `mnbv_products`
@@ -1838,19 +1997,25 @@ ALTER TABLE `mnbv_robotsrun`
 -- AUTO_INCREMENT для таблицы `mnbv_searchindex`
 --
 ALTER TABLE `mnbv_searchindex`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `mnbv_site`
 --
 ALTER TABLE `mnbv_site`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT для таблицы `mnbv_sites`
 --
 ALTER TABLE `mnbv_sites`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT для таблицы `mnbv_suppliers`
+--
+ALTER TABLE `mnbv_suppliers`
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `mnbv_sysusers`

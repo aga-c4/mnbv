@@ -17,37 +17,51 @@ class CartController extends AbstractMnbvsiteController {
      */
     public function action_index($item=array(),$tpl_mode='html', $console=false){
 
+        $cart = MNBVCart();
+        
+        if (SysBF::getFrArr(Glob::$vars['request'],'viewonlylistsize')) {
+            $viewOnlyListSize = true;
+        }
+        
         //Действия в рамках данного контроллера
         $act = SysBF::checkStr(SysBF::getFrArr(Glob::$vars['request'],'act',''),'strictstr');
-        switch ($act){
-            case 'auth': //Авторизация  
-                Glob::$vars['user'] = new MNBVUser();
-                $ul = SysBF::checkStr(SysBF::getFrArr(Glob::$vars['request'],'ul'),'login');
-                $fu = SysBF::checkStr(SysBF::getFrArr(Glob::$vars['request'],'fu'),'passwd');;
-                $res = Glob::$vars['user']->load(0,$ul,$fu,$sid); 
-                Glob::$vars['session']->set('userid',$res);
-                
-                //Сделаем первоначальную установку переменных персонализации
-                if (Glob::$vars['user']->get('userid')==0){//Если это пользоваетель 0
-                    MNBVf::logoutOperations(); //Первоначальные установки
-                }else{//Если установлен пользователь
-                    MNBVf::loginOperations(); //Установки с сессией и глобальными переменными
-                }
-                Glob::$vars['session']->save(); //Сохраним данные сессии
-                //MNBVf::redirect('/intranet/storage/'); //Редирект в корень сайта               
-                break;
-            
-            case 'logout': //Авторизация
-                Glob::$vars['session']->set('userid',0);
-                Glob::$vars['user'] = new MNBVUser();
-                MNBVf::logoutOperations(); //Первоначальные установки
-                Glob::$vars['session']->save(); //Сохраним данные сессии
-                //MNBVf::redirect('/intranet/auth/'); //Редирект в корень сайта
-                break;
+        $prodId = SysBF::getFrArr(Glob::$vars['request'],'prodid',0,'intval');
+        $prodQty = SysBF::getFrArr(Glob::$vars['request'],'prodqty',1,'intval');
+        $delivId = SysBF::getFrArr(Glob::$vars['request'],'delivid',0,'intval');
+        $payId = SysBF::getFrArr(Glob::$vars['request'],'payid',0,'intval');
+        
+        if ($act==='add'){ //Добавление позиции
+            $cart->addItem($prodId,$prodQty);
+        }elseif($act==='upd'){ //Редактирование позиции
+            $cart->updateItem($prodId,$prodQty);
+        }elseif($act==='rem'){ //Удаление позиции
+            $cart->remItem($prodId);
+        }elseif($act==='clear'){ //Удаление позиции
+            $cart->clearCart($prodId);
         }
-                
-        //Блок контента, который будет выводиться в шаблоне
-        $item['page_sctpl'] = 'tpl_cart.php'; //Шаблон
+        
+        if (!empty($act)) { //Если были правки по корзине, пересчитаем и сохраним
+            
+            if(!empty($delivId)) $cart->setDeliv($delivId);
+            if(!empty($payId)) $cart->setPay($payId);
+        
+            $cart->recount();
+            $cart->save();
+            
+        }
+        
+        if (!empty($viewOnlyListSize)) { //Режим для аяксовых запросов или подтягивания корзины из шаблона
+            $tpl_mode = 'json';
+            $item = $cart->getQty();
+        }else{
+            
+            $item['cart_items'] = $cart->getItemsList();
+            $item['cart_delivery'] = $cart->getDeliveryList();
+            $item['cart_pay'] = $cart->getPayList();
+                    
+            //Блок контента, который будет выводиться в шаблоне
+            $item['page_sctpl'] = 'tpl_cart.php'; //Шаблон
+        }
 
         //View------------------------
         MNBVf::render(Glob::$vars['mnbv_tpl_file'],$item,$tpl_mode);
