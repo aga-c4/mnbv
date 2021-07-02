@@ -71,7 +71,7 @@ table, tr, td, th, tbody, thead{
     Минимальнное измерение: 20 см.
 </div>
 
-<button type="button" class="btn btn-primary mb-3">Пересчитать</button>
-<button type="button" class="btn btn-primary mb-3">Очистить корзину</button>
-<a class="btn btn-primary mb-3" href="/order" role="button">Оформить заказ</a>
+<button type="button" class="btn btn-primary my-3">Пересчитать</button>
+<button type="button" class="btn btn-primary my-3">Очистить корзину</button>
+<a class="btn btn-primary my-3" href="/order" role="button">Оформить заказ</a>
 
