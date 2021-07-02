@@ -39,6 +39,11 @@ class MNBVCart{
     private $prStorage = 'products';
     
     /**
+     * @var type cуммарное количество единиц товара в корзине
+     */
+    private $qty = 0;
+    
+    /**
      * @var array общие данные по корзине (доставка, оплата, адреса, ...) 
      */
     private $cartInfo = array();
@@ -56,7 +61,7 @@ class MNBVCart{
     /**
      * @var array добавленные или удаленные позиции корзины для счетчиков
      */
-    private $remCartItems = mull;
+    private $remCartItems = null;
     
     public function __construct($prStorage='', $ordStorage='') {
         if (!empty($prStorage)) $this->prStorage = $prStorage;
@@ -141,6 +146,7 @@ class MNBVCart{
      */
     public function clearCart(){
         $this->remCartItems = array();
+        $this->qty = 0;
     }
     
     
@@ -148,9 +154,7 @@ class MNBVCart{
      * Количество товаров в корзине по всем позициям
      */
     public function getQty(){
-        $result = 0;
-        if (is_array($this->remCartItems)) $result = count($this->remCartItems);
-        return $result;
+        return $this->qty;
     }
     
     /**
@@ -208,7 +212,6 @@ class MNBVCart{
      * Сохранение текущей корзины в сессию
      */
     public function save(){
-        Glob::$vars['session']->set('cart_items',$this->cartItems);
         Glob::$vars['session']->set('cart_info',$this->cart_info);
         Glob::$vars['session']->save(); //Сохраним данные сессии
     }

@@ -57,6 +57,46 @@ table, tr, td, th, tbody, thead{
     </tbody>
 </table>
 -->
+
+<div class="mt-3">
+    <h5>Доставка:</h5>
+</div>
+<!--
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="deliv1" id="rdDeliv1">
+  <label class="form-check-label" for="rdDeliv1">
+    Самовывоз (бесплатно)
+  </label>
+</div>
+-->
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="deliv1" id="rdDeliv2" checked>
+  <label class="form-check-label" for="rdDeliv1">
+    Курьер в пределах МКАД (600р.)
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="deliv1" id="rdDeliv3">
+  <label class="form-check-label" for="rdDeliv1">
+    Транспортная компания по Московскому региону (600р.)
+  </label>
+</div>
+<div class="form-check">
+  <input class="form-check-input" type="radio" name="deliv1" id="rdDeliv4">
+  <label class="form-check-label" for="rdDeliv1">
+    Транспортная компания по Московскому России (5000р.)
+  </label>
+</div>
+
+<div class="mt-3">
+    <h5>Оплата:</h5>
+    <select id="paymode" name="paymode" onChange="" class="form-select" style="width: auto;">
+        <option value="1">Наличными</option>
+        <option value="2" selected>Картой банка</option>
+        <option value="3">Яндекс деньги (бонус 2%)</option>
+    </select>   
+</div>
+
 <div class="mt-3">
     <a class="btn btn-primary mb-3" href="/cart" role="button">Вернуться к редактированию заказа</a>
     <h5>Данные по заказу:</h5>

@@ -17,7 +17,7 @@ class CartController extends AbstractMnbvsiteController {
      */
     public function action_index($item=array(),$tpl_mode='html', $console=false){
 
-        $cart = MNBVCart();
+        $cart = new MNBVCart();
         
         if (SysBF::getFrArr(Glob::$vars['request'],'viewonlylistsize')) {
             $viewOnlyListSize = true;
@@ -42,8 +42,8 @@ class CartController extends AbstractMnbvsiteController {
         
         if (!empty($act)) { //Если были правки по корзине, пересчитаем и сохраним
             
-            if(!empty($delivId)) $cart->setDeliv($delivId);
-            if(!empty($payId)) $cart->setPay($payId);
+            //if(!empty($delivId)) $cart->setDeliv($delivId);
+            //if(!empty($payId)) $cart->setPay($payId);
         
             $cart->recount();
             $cart->save();
@@ -56,8 +56,8 @@ class CartController extends AbstractMnbvsiteController {
         }else{
             
             $item['cart_items'] = $cart->getItemsList();
-            $item['cart_delivery'] = $cart->getDeliveryList();
-            $item['cart_pay'] = $cart->getPayList();
+            //$item['cart_delivery'] = $cart->getDeliveryList();
+            //$item['cart_pay'] = $cart->getPayList();
                     
             //Блок контента, который будет выводиться в шаблоне
             $item['page_sctpl'] = 'tpl_cart.php'; //Шаблон

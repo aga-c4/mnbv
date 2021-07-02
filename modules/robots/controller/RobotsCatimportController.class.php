@@ -1007,7 +1007,10 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                                     if (!empty($updateArr["brlength"]) && $updateArr["brlength"]<$updateArr["brminw"]) $updateArr["brminw"] = $updateArr["brlength"];
                                 }
                                 
-                                $v = $updateArr["brwidth"] * $updateArr["brheight"] * $updateArr["brlength"];
+                                $v = 0;
+                                if (!empty($updateArr["brwidth"]) && !empty($updateArr["brheight"]) && !empty($updateArr["brlength"])) {
+                                    $v = $updateArr["brwidth"] * $updateArr["brheight"] * $updateArr["brlength"];
+                                }
                                 
                                 //Размерная категория
                                 $updateArr["sizegr"] = 0;
