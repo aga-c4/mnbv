@@ -574,6 +574,15 @@ $langTmpArr = array(
     "limited" => "Limited",
     "underorder" => "Under order",
     "notinstock" => "Not in stock",
+    
+    "Small" => "Small",
+    "Normal" => "Normal",
+    "Medium" => "Medium",
+    "Big" => "Big",
+    "Biggest" => "Biggest",
+    "Light" => "Light",
+    "Heavy" => "Heavy",
+    "Very heavy" => "Very heavy",
 
     //Свойства объекта SysBaseObj module/mnbv/model/SisBaseObj.php
     "sysBaseObj" => array(
@@ -659,6 +668,15 @@ $langTmpArr = array(
         "country" => "Country",
         "ndspr" => "Tax,%",
         "instock" => "Instock",
+        
+        "brheight" => "Gross height(sm)",
+        "brwidth" => "Gross width(sm)",
+        "brlength" => "Gross length(sm)",
+        "brvolume" => "Gross volume(m3)",
+        "brweight" => "Gross weight(kg)",
+        "weightgr" => "Weight group",
+        "sizegr" => "Size group",
+        "onlyvert" => "Only vert",
         
         "discpr" => 'Discount,%',        //Скидка, %
         "discval" => 'Discount,val',       //Скидка, вал

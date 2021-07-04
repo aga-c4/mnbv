@@ -7,11 +7,15 @@
  */
 ?>
 <style>
-table, tr, td, th, tbody, thead{
-    display:block;
+table, tr, td, th, tbody{
     width:100%;
     display:block;
 }
+
+thead{
+    display:none;
+}
+    
 @media (min-width:768px){
     table{
         display:table;
@@ -34,9 +38,9 @@ table, tr, td, th, tbody, thead{
 <form class="w-100" action="" method=post name=cartform>
     <table class="table table-striped w-100">
         <thead class="table-light">
-            <tr>
+            <tr class="tblhead">
                 <th>
-                <th width="100%">Товар</th>
+                <th  class="tlbhead" width="100%">Товар</th>
                 <th style="min-width:100px;">Цена, <?=Glob::$vars['prod_currency_suf'];?></th>
                 <th style="min-width:50px;">Кол.</th>
                 <th style="min-width:100px;">Сумма, <?=Glob::$vars['prod_currency_suf'];?></th>
@@ -61,6 +65,9 @@ table, tr, td, th, tbody, thead{
     </table>
 </form>
 
+<button type="button" class="btn btn-primary mt-3">Пересчитать</button>
+<button type="button" class="btn btn-primary mt-3">Очистить корзину</button>
+
 <div class="mt-3">
     Стоимость товаров: 5600 р.<br>
     Включая скидку: 800 р.<br>
@@ -68,10 +75,9 @@ table, tr, td, th, tbody, thead{
     Количество товара: 2 шт<br>
     Объем товара: 2,3 м3<br>
     Высота: 1,5м<br>
-    Минимальнное измерение: 20 см.
+    Мин. ширина/глубина: 20 см.<br>
+    Мак. ширина/глубина: 60 см.
 </div>
 
-<button type="button" class="btn btn-primary my-3">Пересчитать</button>
-<button type="button" class="btn btn-primary my-3">Очистить корзину</button>
-<a class="btn btn-primary my-3" href="/order" role="button">Оформить заказ</a>
+<a class="btn btn-primary mt-3" href="/order" role="button">Оформить заказ</a>
 

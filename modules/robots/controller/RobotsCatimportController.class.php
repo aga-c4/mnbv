@@ -1009,8 +1009,9 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                                 
                                 $v = 0;
                                 if (!empty($updateArr["brwidth"]) && !empty($updateArr["brheight"]) && !empty($updateArr["brlength"])) {
-                                    $v = $updateArr["brwidth"] * $updateArr["brheight"] * $updateArr["brlength"];
+                                    $v = $updateArr["brwidth"] * $updateArr["brheight"] * $updateArr["brlength"] / 1000000;
                                 }
+                                $updateArr["brvolume"] = $v;
                                 
                                 //Размерная категория
                                 $updateArr["sizegr"] = 0;

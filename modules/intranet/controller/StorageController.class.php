@@ -1038,8 +1038,8 @@ class StorageController {
                                 if (!empty($res[0])) {
                                     $updateArr["norm_search"] .= ',' . SysBF::strNormalize($res[1]['name']);
                                     $updateArr["norm_search"] .= ',' . SysBF::strNormalize($res[1]['namelang']);
-                                    $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$res[1]['name'],0,2,$item['obj']["siteid"],$sExeptArr);
-                                    $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$res[1]['namelang'],0,2,$item['obj']["siteid"],$sExeptArr);
+                                    $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$res[1]['name'],0,2,$item['obj']["siteid"],$sExeptArr);
+                                    $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$res[1]['namelang'],0,2,$item['obj']["siteid"],$sExeptArr);
                                 }
                                 
                                 //Подтянем Страну
@@ -1049,8 +1049,8 @@ class StorageController {
                                 if (!empty($res[0])) {
                                     $updateArr["norm_search"] .= ',' . SysBF::strNormalize($res[1]['name']);
                                     $updateArr["norm_search"] .= ',' . SysBF::strNormalize($res[1]['namelang']);
-                                    $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$res[1]['name'],0,1,$item['obj']["siteid"],$sExeptArr);
-                                    $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$res[1]['namelang'],0,1,$item['obj']["siteid"],$sExeptArr);
+                                    $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$res[1]['name'],0,1,$item['obj']["siteid"],$sExeptArr);
+                                    $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$item['obj']["id"],$res[1]['namelang'],0,1,$item['obj']["siteid"],$sExeptArr);
                                 }
                                 
                                 //TODO - позже подтянуть также цвет
@@ -1068,6 +1068,50 @@ class StorageController {
                             
                             SysLogs::addLog("Update norm_partnumber=[{$updateArr["norm_partnumber"]}]");
                             SysLogs::addLog("Update norm_search=[{$updateArr["norm_search"]}]");
+                            
+                            //Определим мин и макс размеры
+                            $updateArr["brminw"] = 0;
+                            $updateArr["brmaxw"] = 0;
+                            if (!empty($updateArr["onlyvert"])){ //Можно перевозить только вертикально. выбираем из длины и ширины
+                                if (!empty($updateArr["brwidth"]) && $updateArr["brwidth"]>$updateArr["brmaxw"]) $updateArr["brmaxw"] = $updateArr["brwidth"];
+                                if (!empty($updateArr["brlength"]) && $updateArr["brlength"]>$updateArr["brmaxw"]) $updateArr["brmaxw"] = $updateArr["brlength"];
+
+                                if (!empty($updateArr["brwidth"]) && $updateArr["brwidth"]<$updateArr["brminw"]) $updateArr["brminw"] = $updateArr["brwidth"];
+                                if (!empty($updateArr["brlength"]) && $updateArr["brlength"]<$updateArr["brminw"]) $updateArr["brminw"] = $updateArr["brlength"];
+                            }else{ //Можно перевозить как угодно
+                                if (!empty($updateArr["brheight"]) && $updateArr["brheight"]>$updateArr["brmaxw"]) $updateArr["brmaxw"] = $updateArr["brheight"];
+                                if (!empty($updateArr["brwidth"]) && $updateArr["brwidth"]>$updateArr["brmaxw"]) $updateArr["brmaxw"] = $updateArr["brwidth"];
+                                if (!empty($updateArr["brlength"]) && $updateArr["brlength"]>$updateArr["brmaxw"]) $updateArr["brmaxw"] = $updateArr["brlength"];
+
+                                if (!empty($updateArr["brheight"]) && $updateArr["brheight"]<$updateArr["brmaxw"]) $updateArr["brminw"] = $updateArr["brheight"];
+                                if (!empty($updateArr["brwidth"]) && $updateArr["brwidth"]<$updateArr["brminw"]) $updateArr["brminw"] = $updateArr["brwidth"];
+                                if (!empty($updateArr["brlength"]) && $updateArr["brlength"]<$updateArr["brminw"]) $updateArr["brminw"] = $updateArr["brlength"];
+                            }
+                                
+                            //Объем
+                            if (!empty($updateArr["brwidth"]) && !empty($updateArr["brheight"]) && !empty($updateArr["brlength"])) {
+                                $updateArr["brvolume"] = $updateArr["brwidth"] * $updateArr["brheight"] * $updateArr["brlength"] / 1000000;
+                            }
+                            
+                            //Весовая категория
+                            $updateArr["weightgr"] = 0;
+                            if (!empty($updateArr["brweight"])){
+                                foreach(Glob::$vars['one_weightgr_types_levels'] as $key=>$vval) {
+                                    if ($updateArr["brweight"]>$vval) continue;
+                                    $updateArr["weightgr"] = $key;
+                                    break;
+                                }
+                            }
+                            
+                            //Размерная категория
+                            $updateArr["sizegr"] = 0;
+                            foreach(Glob::$vars['one_sizegr_types_levels'] as $key=>$vval) {
+                                if ($updateArr["brvolume"]>$vval["v"]) continue;
+                                if (!empty($updateArr["brheight"]) && $updateArr["brheight"]>$vval["h"]) continue;
+                                if (!empty($updateArr["brmaxw"]) && $updateArr["brmaxw"]>$vval["l"]) continue;
+                                $updateArr["sizegr"] = $key;
+                                break;
+                            }
                             
                         }
                         

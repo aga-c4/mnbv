@@ -575,6 +575,15 @@ $langTmpArr = array(
     "limited" => "Огр. количество",
     "underorder" => "Под заказ",
     "notinstock" => "Нет в наличии",
+    
+    "Small" => "Маленький",
+    "Normal" => "Нормальный",
+    "Medium" => "Средний",
+    "Big" => "Большой",
+    "Biggest" => "Очень большой",
+    "Light" => "Легкий",
+    "Heavy" => "Тяжелый",
+    "Very heavy" => "Очень тяжелый",
 
     //Свойства объекта SysBaseObj module/mnbv/model/SisBaseObj.php
     "sysBaseObj" => array(
@@ -662,6 +671,15 @@ $langTmpArr = array(
         "country" => "Страна",
         "ndspr" => "НДС,%",
         "instock" => "Наличие",
+        
+        "brheight" => "Брутто высота(см)",
+        "brwidth" => "Брутто ширина(см)",
+        "brlength" => "Брутто глубина(см)",
+        "brvolume" => "Брутто объем(м3)",
+        "brweight" => "Брутто вес(кг)",
+        "weightgr" => "Весовая группа",
+        "sizegr" => "Размерная группа",
+        "onlyvert" => "Вертикально",
         
         "discpr" => 'Скидка,%',        //Скидка, %
         "discval" => 'Скидка,вал',       //Скидка, вал
