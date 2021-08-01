@@ -2,6 +2,7 @@
 ##############################################################################
 # Переменные работы с Базами и хранилищами данных
 ##############################################################################
+//TODO - пройтись по дефолтовым значениям интов 
 
 /**
  * Определение базовых структур данных (можно определять непосредственно в хранилищах)
@@ -441,7 +442,10 @@ SysStorage::$storage['delivery']['stru']['price'] = array("type"=>"decimal", "si
 SysStorage::$storage['delivery']['stru']['region'] = array("type"=>"int", "size"=>11, "creatval"=>0, "dbtype"=>"int", "linkstorage"=>"regions");
 SysStorage::$storage['delivery']['stru']['weightgr'] = array("type"=>"int", "size"=>4, "creatval"=>0, "dbtype"=>"int", "linkstorage"=>Glob::$vars['weightgr_types']);
 SysStorage::$storage['delivery']['stru']['sizegr'] = array("type"=>"int", "size"=>4, "creatval"=>0, "dbtype"=>"int", "linkstorage"=>Glob::$vars['sizegr_types']);
-SysStorage::$storage['delivery']['stru']['days'] = array("type"=>"int", "size"=>11, "creatval"=>100, "dbtype"=>"int");
+SysStorage::$storage['delivery']['stru']['days'] = array("type"=>"int", "size"=>11, "creatval"=>0, "dbtype"=>"int");
+SysStorage::$storage['delivery']['stru']['orderbefore'] = array("type"=>"int", "size"=>11, "creatval"=>12, "dbtype"=>"int");
+SysStorage::$storage['delivery']['stru']['minprice'] = array("type"=>"decimal", "size"=>11, "creatval"=>"0.00", "dbtype"=>"decimal");
+SysStorage::$storage['delivery']['stru']['maxprice'] = array("type"=>"decimal", "size"=>11, "creatval"=>"0.00", "dbtype"=>"decimal");
 
 SysStorage::$storage['delivery']['view']['main'] = array(
     "name" => array("name"=>"name", "type"=>"text","size"=>255,"width"=>"100%","langlink"=>"namelang","checktype" => "text","lang" => "lang"), //Основной язык
@@ -450,10 +454,14 @@ SysStorage::$storage['delivery']['view']['main'] = array(
     "region" => array("name"=>"region", "type"=>"select", "viewindex" =>true, "notset" =>true, "filter_type"=>"objects", "filter_folder"=>1, "checktype" => "id"),
     "weightgr" => array("name"=>"weightgr", "type"=>"select", "viewindex" =>false, "notset" =>true,  "delim"=>" | ", "checktype" => "int"),
     "sizegr" => array("name"=>"sizegr", "type"=>"select", "viewindex" =>false, "notset" =>true,  "delim"=>" | ", "checktype" => "int"),
+    "minprice" => array("name"=>"minprice", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"),
+    "maxprice" => array("name"=>"maxprice", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"),
     "days" => array("name"=>"days", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text"),
+    "orderbefore" => array("name"=>"orderbefore", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text"),
     "text" => array("name"=>"text", "type"=>"textarea","editor"=>true,"rows"=>20,"width"=>"100%","langlink"=>"textlang","table" =>"thline","checktype" => "text","lang" => "lang"), //Основной язык
     "textlang" => array("name"=>"textlang", "type"=>"textarea","editor"=>true,"rows"=>20,"width"=>"100%","langlink"=>"text","table" =>"thline","checktype" => "text","lang" => "altlang"), //Альтернативный язык
     "type" => array("name"=>"type", "type"=>"select", "viewindex" =>false,  "delim"=>" | ", "checktype" => "int"),
+    "parentid" => array("name"=>"parentid", "type"=>"select", "viewindex" =>true, "notset" =>true, "filter_type"=>"folders", "checktype" => "id"),
 );
 //------------------------------------------
 
@@ -947,20 +955,81 @@ SysStorage::$storage['orders'] = array(
     'attruse' => false, //Есть ли у данного хранилища атрибуты, если не требуются, то для быстродействия лучше отключать.
     'files_security' => true, //будет ли ограничение доступа к приложенным файлам объектов хранилища
 );
+SysStorage::$storage['orders']['stru']['price'] = array("type"=>"decimal", "size"=>11, "creatval"=>"0.00", "dbtype"=>"decimal");
+SysStorage::$storage['orders']['stru']["itemsqty"] = array("type"=>"int", "size"=>10, "creatval"=>0, "dbtype"=>"int");
+SysStorage::$storage['orders']['stru']["qty"] = array("type"=>"int", "size"=>10, "creatval"=>0, "dbtype"=>"int");
+
 SysStorage::$storage['orders']['stru']['userid'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar");
 SysStorage::$storage['orders']['stru']['phone'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"); 
 SysStorage::$storage['orders']['stru']['email'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"); 
-SysStorage::$storage['orders']['stru']['from_fio'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar"); 
 
 //UTM метки
 SysStorage::$storage['orders']['stru']['utm_source'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar");
-SysStorage::$storage['orders']['stru']['utm_source'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar");
-SysStorage::$storage['orders']['stru']['utm_source'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar");
+SysStorage::$storage['orders']['stru']['utm_medium'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar");
+SysStorage::$storage['orders']['stru']['utm_campaign'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar");
 SysStorage::$storage['orders']['stru']['utm_term'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar");
 
 //Метки партнерок типа адмитада и т.п.
 SysStorage::$storage['orders']['stru']['partner_alias'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar");
 SysStorage::$storage['orders']['stru']['partner_code'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar");
+
+SysStorage::$storage['orders']['stru']['surname'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar");
+SysStorage::$storage['orders']['stru']['firstname'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar");
+SysStorage::$storage['orders']['stru']['patronymic'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar");
+SysStorage::$storage['orders']['stru']['subscribe'] = array("type"=>"int", "size"=>1, "creatval"=>1, "dbtype"=>"int");
+SysStorage::$storage['orders']['stru']['adress'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar");
+SysStorage::$storage['orders']['stru']['receiverpay'] = array("type"=>"int", "size"=>1, "creatval"=>1, "dbtype"=>"int");
+SysStorage::$storage['orders']['stru']['rfirstname'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar");
+SysStorage::$storage['orders']['stru']['rsurname'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar");
+SysStorage::$storage['orders']['stru']['rpatronymic'] = array("type"=>"string", "size"=>255, "creatval"=>"", "dbtype"=>"varchar");
+
+SysStorage::$storage['orders']['stru']['cart_info'] = array("type"=>"text", "creatval"=>"", "dbtype"=>"text");    
+SysStorage::$storage['orders']['stru']['cart_items'] = array("type"=>"text", "creatval"=>"", "dbtype"=>"text");
+SysStorage::$storage['orders']['stru']['htmlview'] = array("type"=>"text", "creatval"=>"", "dbtype"=>"text");
+    
+SysStorage::$storage['orders']['view']['main'] = array(
+    //"visfirstline" => array("name"=>"visfirstline", "type"=>"visfirstline", "table" =>"thline", "checktype" => "datetime"),
+    "date" => array("name"=>"date", "type"=>"datetime","table" =>"thline","checktype" => "datetime"),
+    "name" => array("name"=>"name", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text", "active" => "print"), //Основной язык
+    "clear1" => array("name"=>"clear1", "type"=>"lineblock", "table" =>"thline", "string"=>"Parameters", "active" => "print"),
+    
+    "surname" => array("name"=>"surname", "type"=>"text", "size"=>255,"width"=>"100%","checktype" => "text"),
+    "firstname" => array("name"=>"firstname", "type"=>"text", "size"=>255,"width"=>"100%","checktype" => "text"),
+    "patronymic" => array("name"=>"patronymic", "type"=>"text", "size"=>255,"width"=>"100%","checktype" => "text"),
+    "email" => array("name"=>"email", "type"=>"text", "size"=>255,"width"=>"100%","checktype" => "text"),
+    "subscribe" => array("name"=>"subscribe", "type"=>"checkbox", "table" =>"td", "checktype" => "on", "active" => "print"),
+    "phone" => array("name"=>"phone", "type"=>"text", "size"=>255,"width"=>"100%","checktype" => "text"),
+    "adress" => array("name"=>"adress", "type"=>"textarea", "print_name"=>"Adress", "editor"=>false,"rows"=>6,"width"=>"100%","table" =>"thline","checktype" => "text"),            
+    "text" => array("name"=>"text", "type"=>"textarea", "print_name"=>"Message", "editor"=>false,"rows"=>6,"width"=>"100%","table" =>"thline","checktype" => "text"),            
+    "clear2" => array("name"=>"clear1", "type"=>"lineblock", "table" =>"thline", "string"=>"Receiver info"),
+    "receiverpay" => array("name"=>"receiverpay", "type"=>"checkbox", "table" =>"td", "checktype" => "on"),
+    "rsurname" => array("name"=>"rsurname", "type"=>"text", "size"=>255,"width"=>"100%","checktype" => "text"),
+    "rfirstname" => array("name"=>"rfirstname", "type"=>"text", "size"=>255,"width"=>"100%","checktype" => "text"),
+    "rpatronymic" => array("name"=>"rpatronymic", "type"=>"text", "size"=>255,"width"=>"100%","checktype" => "text"),       
+    
+    "parentid" => array("name"=>"parentid", "type"=>"select", "viewindex" =>true, "notset" =>true, "filter_type"=>"folders", "checktype" => "id"),
+    
+    "author" => array("name"=>"author", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text","active" => "print"),
+    "userid" => array("name"=>"userid", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text", "active" => "print"), //Основной язык
+    "editdate" => array("name"=>"editdate", "type"=>"datetime","size"=>19, "active" => "print"),
+    "siteid" => array("name"=>"siteid", "type"=>"select", "viewindex" =>true, "notset" =>true, "filter_type"=>"objects", "filter_folder"=>1, "checktype" => "id","active" => "print"),
+
+);
+
+SysStorage::$storage['orders']['view']['order'] = array(
+    //"visfirstline" => array("name"=>"visfirstline", "type"=>"visfirstline", "table" =>"thline", "checktype" => "datetime"),
+    "date" => array("name"=>"date", "type"=>"datetime","table" =>"thline","checktype" => "datetime", "active" => "print"),
+    "name" => array("name"=>"name", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text", "active" => "print"), //Основной язык
+    //"cart_info" => array("name"=>"cart_info", "type"=>"textarea", "print_name"=>"Message", "editor"=>false,"rows"=>6,"width"=>"100%","table" =>"thline","checktype" => "text","active" => "print"),            
+    //"cart_items" => array("name"=>"cart_items", "type"=>"textarea", "print_name"=>"Message", "editor"=>false,"rows"=>6,"width"=>"100%","table" =>"thline","checktype" => "text","active" => "print"),            
+    "htmlview" => array("name"=>"htmlview", "type"=>"textarea", "print_name"=>"Order", "editor"=>false,"rows"=>6,"width"=>"100%","table" =>"thline","checktype" => "text","active" => "print"),            
+    
+    "author" => array("name"=>"author", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text","active" => "print"),
+    "userid" => array("name"=>"userid", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text", "active" => "print"), //Основной язык
+    "editdate" => array("name"=>"editdate", "type"=>"datetime","size"=>19, "active" => "print"),
+    "siteid" => array("name"=>"siteid", "type"=>"select", "viewindex" =>true, "notset" =>true, "filter_type"=>"objects", "filter_folder"=>1, "checktype" => "id","active" => "print"),
+);
+
 
 //------------------------------------------ 
 
@@ -1769,6 +1838,9 @@ SysStorage::$storage['cartitems'] = array( //Кеш
         "prodid" => array("type"=>"int", "size"=>10, "creatval"=>0, "dbtype"=>"int", "linkstorage"=>"products"),
         "qty" => array("type"=>"int", "size"=>10, "creatval"=>0, "dbtype"=>"int"),        
         "price" => array("type"=>"decimal", "size"=>11, "creatval"=>"0.00", "dbtype"=>"decimal"),
+        "discval" => array("type"=>"decimal", "size"=>11, "creatval"=>"0.00", "dbtype"=>"decimal"),
+        "discpr" => array("type"=>"decimal", "size"=>11, "creatval"=>"0.00", "dbtype"=>"decimal"),
+        "promocode" => array("type"=>"string", "size"=>64, "creatval"=>"", "dbtype"=>"varchar"), //алиас объекта
         "ts" => array("type"=>"datetime", "size"=>10, "creatval"=>"0", "dbtype"=>"int"),
         "region" => array("type"=>"int", "size"=>10, "creatval"=>0, "dbtype"=>"int", "linkstorage"=>"regions"),
         "brweight" => array("type"=>"int", "size"=>10, "creatval"=>0, "dbtype"=>"int"),
@@ -1776,6 +1848,7 @@ SysStorage::$storage['cartitems'] = array( //Кеш
         "brminw" => array("type"=>"int", "size"=>10, "creatval"=>0, "dbtype"=>"int"),
         "brmaxw" => array("type"=>"int", "size"=>10, "creatval"=>0, "dbtype"=>"int"),
         "brvolume" => array("type"=>"decimal", "size"=>11, "creatval"=>"0.000", "dbtype"=>"decimal"),
+        "siteid" => array("type"=>"int", "size"=>10, "creatval"=>0, "dbtype"=>"int", "linkstorage"=>"sites"),
     ), //Структура данного хранилища
     'view' => array(), //Формат вывода - редактирования
     'list' => array(), //Формат списка
@@ -1783,3 +1856,45 @@ SysStorage::$storage['cartitems'] = array( //Кеш
     'files_security' => false, //будет ли ограничение доступа к приложенным файлам объектов хранилища
     'varuse' => false, //разрешено ли использование элементов данного хранилища как значение поля
 );
+
+
+//Хранилище способов оплаты ------------------
+SysStorage::$storage['payment'] = array(
+    'group' => 'site', //Группа хранилищ
+    'ru_name' => 'Оплата', //Название на русском
+    'eng_name' => 'Payment', //Название на английском
+    'db' => 'mysql1', //База данных
+    'table' => 'mnbv_payment', //Таблица
+    'access' => 0, // Доступ на чтение
+    'access2' => 200, // Доступ на редактирование
+    //'accessv' => array("view" => 202), //Доступы к различным вкладкам (если не задано, то также как и доступ к объекту)
+    //'access_stru' => array("view" => 2), //Доступы к редактированию структуры (папок со всеми их настройками
+    'stru' => $storageDefStruArr, //Структура данного хранилища
+    'view' => $storageDefViewArr, //Формат вывода - редактирования
+    'list' => $storageDefListArr, //Формат списка
+    'filter' => $storageDefFilterArr, //Формат фильтра
+    'varuse' => true, //разрешено ли использование элементов данного хранилища как значение поля
+    'attruse' => false, //Есть ли у данного хранилища атрибуты, если не требуются, то для быстродействия лучше отключать.
+    'files_security' => true, //будет ли ограничение доступа к приложенным файлам объектов хранилища
+);
+
+SysStorage::$storage['payment']['stru']['discpr'] = array("type"=>"decimal", "size"=>11, "creatval"=>"0.00", "dbtype"=>"decimal");
+SysStorage::$storage['payment']['stru']['discval'] = array("type"=>"decimal", "size"=>11, "creatval"=>"0.00", "dbtype"=>"decimal");
+SysStorage::$storage['payment']['stru']['minprice'] = array("type"=>"decimal", "size"=>11, "creatval"=>"0.00", "dbtype"=>"decimal");
+SysStorage::$storage['payment']['stru']['maxprice'] = array("type"=>"decimal", "size"=>11, "creatval"=>"0.00", "dbtype"=>"decimal");
+
+SysStorage::$storage['payment']["view"] = array(
+    "main" => array(
+        "name" => array("name"=>"name", "type"=>"text","size"=>255,"width"=>"100%","langlink"=>"namelang","checktype" => "text"), //Основной язык
+        "namelang" => array("name"=>"namelang", "type"=>"text","size"=>255,"width"=>"100%","langlink"=>"name","checktype" => "text"), //Альтернативный язык
+        "discpr" => array("name"=>"discpr", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"),
+        "discval" => array("name"=>"discval", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"),
+        "minprice" => array("name"=>"minprice", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"),
+        "maxprice" => array("name"=>"maxprice", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"),
+        "type" => array("name"=>"type", "type"=>"select", "viewindex" =>false, "checktype" => "int"),
+        "siteid" => array("name"=>"siteid", "type"=>"select", "viewindex" =>true, "notset" =>true, "filter_type"=>"objects", "filter_folder"=>1, "checktype" => "id"),
+        "parentid" => array("name"=>"parentid", "type"=>"select", "viewindex" =>true, "notset" =>true, "filter_type"=>"folders", "checktype" => "id"),
+    )
+);
+//------------------------------------------
+

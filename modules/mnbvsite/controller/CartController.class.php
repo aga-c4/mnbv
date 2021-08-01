@@ -17,50 +17,54 @@ class CartController extends AbstractMnbvsiteController {
      */
     public function action_index($item=array(),$tpl_mode='html', $console=false){
 
-        $cart = new MNBVCart();
-        
-        if (SysBF::getFrArr(Glob::$vars['request'],'viewonlylistsize')) {
-            $viewOnlyListSize = true;
-        }
-        
-        //Действия в рамках данного контроллера
-        $act = SysBF::checkStr(SysBF::getFrArr(Glob::$vars['request'],'act',''),'strictstr');
-        $prodId = SysBF::getFrArr(Glob::$vars['request'],'prodid',0,'intval');
-        $prodQty = SysBF::getFrArr(Glob::$vars['request'],'prodqty',1,'intval');
-        $delivId = SysBF::getFrArr(Glob::$vars['request'],'delivid',0,'intval');
-        $payId = SysBF::getFrArr(Glob::$vars['request'],'payid',0,'intval');
-        
-        if ($act==='add'){ //Добавление позиции
-            $cart->addItem($prodId,$prodQty);
-        }elseif($act==='upd'){ //Редактирование позиции
-            $cart->updateItem($prodId,$prodQty);
-        }elseif($act==='rem'){ //Удаление позиции
-            $cart->remItem($prodId);
-        }elseif($act==='clear'){ //Удаление позиции
-            $cart->clearCart($prodId);
-        }
-        
-        if (!empty($act)) { //Если были правки по корзине, пересчитаем и сохраним
+        if (SysBF::getFrArr(Glob::$vars['request'],'onlyqty')) {
             
-            //if(!empty($delivId)) $cart->setDeliv($delivId);
-            //if(!empty($payId)) $cart->setPay($payId);
-        
-            $cart->recount();
-            $cart->save();
-            
-        }
-        
-        if (!empty($viewOnlyListSize)) { //Режим для аяксовых запросов или подтягивания корзины из шаблона
+            $cart = new MNBVCart(array("qty_type"=>'qty'));
             $tpl_mode = 'json';
             $item = $cart->getQty();
+            
         }else{
             
+            //Действия в рамках данного контроллера
+            $act = SysBF::checkStr(SysBF::getFrArr(Glob::$vars['request'],'act',''),'routeitem');
+            $prodId = SysBF::getFrArr(Glob::$vars['request'],'prodid',0,'intval');
+            $itemId = SysBF::getFrArr(Glob::$vars['request'],'itemid',0,'intval');
+            $prodQty = SysBF::getFrArr(Glob::$vars['request'],'prodqty',1,'intval');
+        
+            $cart = new MNBVCart();
+            $cart_items = $cart->getItemsList();
+        
+            $res = false;
+            if ($act==='add'){ //Добавление позиции
+                $res = $cart->addItem($prodId,$prodQty);
+            }elseif($act==='upd'){ //Редактирование позиции
+                $crtitemArr = SysBF::getFrArr(Glob::$vars['request'],'crtitem',array());
+                foreach ($crtitemArr as $itemId){
+                    $curItemQty = SysBF::getFrArr(Glob::$vars['request'],'qty'.$itemId,'not-set');
+                    if ($curItemQty === 'not-set') continue;
+                    $curItemQty = intval($curItemQty);
+                    if (!empty($cart_items["list"]["$itemId"]) && $cart_items["list"]["$itemId"]["qty"]!==$curItemQty){
+                        $res2 = $cart->updateItem($itemId,$curItemQty);
+                        if ($res2) $res = true; //Есть хоть какие-то изменения - будем обновлять список
+                    }
+                }
+            }elseif($act==='rem'){ //Удаление позиции
+                $res = $cart->remItem($itemId);
+            }elseif($act==='clear'){ //Удаление позиции
+                $res = $cart->clearCart($prodId);
+            }
+
+            if (!empty($act) && $res) { //Если были правки по корзине, пересчитаем и сохраним
+                $cart->recount(); //Пересчет корзины
+                $cart->save();
+            }
+
+            $item['cart_qty'] = $cart->getQty();
             $item['cart_items'] = $cart->getItemsList();
-            //$item['cart_delivery'] = $cart->getDeliveryList();
-            //$item['cart_pay'] = $cart->getPayList();
-                    
+
             //Блок контента, который будет выводиться в шаблоне
             $item['page_sctpl'] = 'tpl_cart.php'; //Шаблон
+        
         }
 
         //View------------------------

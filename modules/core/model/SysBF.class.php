@@ -190,16 +190,19 @@ class SysBF {
      * @param string $key ключ
      * @param string $defval дефолтовое значение
      * @param string $update варианты модификации результата (intval|floatval|strval|trim|strtolower|)
+     * @param bool $nullUpd преобразоывывать null (true по-умолчанию)
      * @return mixed Значение
      */
-    public static function getFrArr($arr,$key,$defval=null,$update=''){
+    public static function getFrArr($arr,$key,$defval=null,$update='',$nullUpd=true){
 
         if (!is_array($arr)) $result = $defval;
         elseif (!isset($arr[$key])) $result = $defval;
         else $result = $arr[$key];
+        
+        if ($nullUpd!==true && $result===null) return $result;
 
-            if ($update==='intval') $result = intval($result);
-        elseif ($update==='floatval') $result = floatval($result);
+            if ($update==='intval' || $update==='int') $result = intval($result);
+        elseif ($update==='floatval' || $update==='float') $result = floatval($result);
         elseif ($update==='strval') $result = strval($result);
         elseif ($update==='trim') $result = trim($result);
         elseif ($update==='strtolower') $result = strtolower($result);

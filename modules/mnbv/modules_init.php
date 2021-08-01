@@ -138,6 +138,8 @@ if (!empty($_GET['utm_term'])) {
 }
 //SysLogs::addLog("utm_source=[".Glob::$vars['session']->get('utm_source')."] utm_medium=[".Glob::$vars['session']->get('utm_source')."] utm_campaign=[".Glob::$vars['session']->get('utm_campaign')."] utm_term=[".Glob::$vars['session']->get('utm_term')."]");
 
+Glob::$vars['mnbv_region'] = 2; //Выбранный регион сайта TODO - сделать выбор региона
+
 //----------------------------------------------------------------------------------------------------------------------
 
 //Видимость Лога работы скрипта

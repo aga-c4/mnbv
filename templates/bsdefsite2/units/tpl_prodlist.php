@@ -116,9 +116,14 @@ if (isset($value['files']["img"]["1"]) && $tecObjTxtCode = MNBVf::getObjCodeByUR
 <?}?>
 
 <?}?>
-<? if (empty($value['type']) || $value['type']!=1 && !empty($item['sub_obj']['price']) && $item['sub_obj']['price']>0){?>
-            <a href="<?=MNBVf::requestUrl((!Lang::isDefLang())?'altlang':'',SysBF::getFrArr(Glob::$vars,'cart_url',''));?>?product_id=<?=$value['id'];?>" class="btn btn-primary"><?=Lang::get('Buy');?></a>
-<? } ?>
+<? if (empty($value['type']) || $value['type']!=1 && !empty($item['sub_obj']['price']) && $item['sub_obj']['price']>0){
+if (Glob::$vars['cart_ajax']){?>  
+            <button type="button" class="btn btn-primary" onclick="addToCart('<?=$value['id'];?>')"><?=Lang::get('Buy');?></button>
+<?}else{?>
+            <a href="<?=MNBVf::requestUrl((!Lang::isDefLang())?'altlang':'',SysBF::getFrArr(Glob::$vars,'cart_url',''));?>?act=add&prodid=<?=$value['id'];?>" class="btn btn-primary"><?=Lang::get('Buy');?></a>
+    <? 
+}    
+} ?>
             </div>
         </div>
     </div>    
@@ -246,7 +251,7 @@ if (isset($item['list_max_items'])&&isset($item['list_size'])&&$item['list_max_i
                                 if ($itemsCnt>$maxViewItems){
                                     if (!$moreHref) {
                         ?>
-                        <div class="checkbox <?=$attrAlias;?>-hideview"><a  onclick='$(".<?=$attrAlias;?>-hide").removeClass("d-none"); $(".<?=$attrAlias;?>-hideview").addClass("d-none");' href="#"><?=Lang::get("View all");?></a></a></div>                    
+                        <div class="checkbox <?=$attrAlias;?>-hideview"><a  onclick='$(".<?=$attrAlias;?>-hide").removeClass("d-none"); $(".<?=$attrAlias;?>-hideview").addClass("d-none");' href="#"><?=Lang::get("View all");?></a></div>                    
                         <?
                                         $moreHref = true;
                                     }
@@ -259,7 +264,7 @@ if (isset($item['list_max_items'])&&isset($item['list_size'])&&$item['list_max_i
                         <? }}} 
                         
                         if ($moreHref) ?>
-                        <div class="checkbox <?=$attrAlias;?>-hide d-none"><a onclick='$(".<?=$attrAlias;?>-hide").addClass("d-none"); $(".<?=$attrAlias;?>-hideview").removeClass("d-none");' href="#"><?=Lang::get("Short list");?></a></a></div>
+                        <div class="checkbox <?=$attrAlias;?>-hide d-none"><a onclick='$(".<?=$attrAlias;?>-hide").addClass("d-none"); $(".<?=$attrAlias;?>-hideview").removeClass("d-none");' href="#"><?=Lang::get("Short list");?></a></div>
                         <? } ?>
                     </div>
                 </div>
@@ -278,7 +283,7 @@ if (isset($item['list_max_items'])&&isset($item['list_size'])&&$item['list_max_i
                         
                         if ($filterCounter==0) {
                         ?>
-                        <div class="w-100 attrbl-hideview mt-3"><a onclick='$(".attrbl-hide").removeClass("d-none"); $(".attrbl-hideview").addClass("d-none");' href="#"><?=Lang::get("All filters");?></a></a></div>
+                        <div class="w-100 attrbl-hideview mt-3"><a onclick='$(".attrbl-hide").removeClass("d-none"); $(".attrbl-hideview").addClass("d-none");' href="#"><?=Lang::get("All filters");?></a></div>
                         <?
                         }
                         
@@ -365,7 +370,7 @@ if (isset($item['list_max_items'])&&isset($item['list_size'])&&$item['list_max_i
                                 if ($itemsCnt>$maxViewItems){
                                     if (!$moreHref) {
                         ?>
-                        <div class="checkbox <?=$attrAlias;?>-hideview"><a  onclick='$(".<?=$attrAlias;?>-hide").removeClass("d-none"); $(".<?=$attrAlias;?>-hideview").addClass("d-none");' href="#"><?=Lang::get("View all");?></a></a></div>                    
+                        <div class="checkbox <?=$attrAlias;?>-hideview"><a  onclick='$(".<?=$attrAlias;?>-hide").removeClass("d-none"); $(".<?=$attrAlias;?>-hideview").addClass("d-none");' href="#"><?=Lang::get("View all");?></a></div>                    
                         <?
                                         $moreHref = true;
                                     }
@@ -378,7 +383,7 @@ if (isset($item['list_max_items'])&&isset($item['list_size'])&&$item['list_max_i
                         <? }}} 
                         
                         if ($moreHref) ?>
-                        <div class="checkbox <?=$attrAlias;?>-hide d-none"><a onclick='$(".<?=$attrAlias;?>-hide").addClass("d-none"); $(".<?=$attrAlias;?>-hideview").removeClass("d-none");' href="#"><?=Lang::get("Short list");?></a></a></div>
+                        <div class="checkbox <?=$attrAlias;?>-hide d-none"><a onclick='$(".<?=$attrAlias;?>-hide").addClass("d-none"); $(".<?=$attrAlias;?>-hideview").removeClass("d-none");' href="#"><?=Lang::get("Short list");?></a></div>
                         <? } ?>
                     </div>
                 </div>
@@ -390,7 +395,7 @@ if (isset($item['list_max_items'])&&isset($item['list_size'])&&$item['list_max_i
  
                 ?>
                 
-                <div class="w-100 attrbl-hide d-none mt-3"><a onclick='$(".attrbl-hide").addClass("d-none"); $(".attrbl-hideview").removeClass("d-none");' href="#"><?=Lang::get("Filters short list");?></a></a></div>
+                <div class="w-100 attrbl-hide d-none mt-3"><a onclick='$(".attrbl-hide").addClass("d-none"); $(".attrbl-hideview").removeClass("d-none");' href="#"><?=Lang::get("Filters short list");?></a></div>
                 
             </div>
 

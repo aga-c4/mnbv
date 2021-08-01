@@ -5,6 +5,8 @@
  * Поля:
  * 'login' - если задано, то установим стартовое значение login
  */
+
+if ($item['cart_qty']>0){
 ?>
 <style>
 table, tr, td, th, tbody{
@@ -35,7 +37,7 @@ thead{
     }
 }
 </style>
-<form class="w-100" action="" method=post name=cartform>
+<form class="w-100" action="/cart" method=post name=cartform>
     <table class="table table-striped w-100">
         <thead class="table-light">
             <tr class="tblhead">
@@ -49,35 +51,50 @@ thead{
         </thead>
         
         <tbody>
+            <?
+            $counter = 1;
+            foreach($item['cart_items']['list'] as $value) { ?>
             <tr>
-                <th>1</th><td><a href="/catalog/avtomaticheskie-stiral-nye-mashiny/pr_8-wre-76-p2-xww">Синхрофазотрон зеленый, суперкрутой и с супер длинным названием, которое никуда не лезет</a></td><td>28000</td><td><input type="text" size="4" id="qty1" name=qty class="form-control w-100" value="2"></td><td>56000</td><td>❌</td>
+                <th><?=$counter;?></th>
+                <td><a href="<?=SysBF::getFrArr($value,'url','');?>"><?=SysBF::getFrArr($value,'name','');?></a><? 
+                if (!empty($value["deficit"])){ ?>
+                    <br><?=(!empty($value["instock"]))?('<b>В наличии '.$value["instock"].' ед.</b> / '):'';?><b class="text-danger">Под заказ <?=$value["deficit"];?> ед.</b>    
+                <? } else  {?>
+                    <br><b>Есть в наличии</b>
+                <? } ?></td>
+                <td><?=SysBF::getFrArr($value,'price','');?></td>
+                <td><input type="text" size="4" id="qty<?=$value["id"];?>" name=qty<?=$value["id"];?> class="form-control w-100" value="<?=SysBF::getFrArr($value,'qty',0);?>"></td>
+                <td><?=SysBF::getFrArr($value,'itemsum','');?></td>
+                <td><a href="/cart/?act=rem&itemid=<?=$value["id"];?>" class="text-decoration-none">❌</a></td>
+                <input type="hidden" name="crtitem[]" value="<?=$value["id"];?>">
             </tr>
-            <tr>
-                <th>2</th><td><a href="/catalog/avtomaticheskie-stiral-nye-mashiny/pr_8-wre-76-p2-xww">Синхрофазотрон 327</a></td><td>28000</td><td><input type="text" size="4" id="qty1" name=qty class="form-control w-100" value="2"></td><td>56000</td><td>❌</td>
-            </tr>
-            <tr>
-                <th>3</th><td><a href="/catalog/avtomaticheskie-stiral-nye-mashiny/pr_8-wre-76-p2-xww">Синхрофазотрон 327</a></td><td>28000</td><td><input type="text" size="4" id="qty1" name=qty class="form-control w-100" value="2"></td><td>56000</td><td>❌</td>
-            </tr>
-            <tr>
-                <th>4</th><td><a href="/catalog/avtomaticheskie-stiral-nye-mashiny/pr_8-wre-76-p2-xww">Синхрофазотрон 327</a></td><td>28000</td><td><input type="text" size="4" id="qty1" name=qty class="form-control w-100" value="2"></td><td>56000</td><td>❌</td>
-            </tr>
+            <? $counter++;} ?>
         </tbody>
     </table>
+    
+    <input type="hidden" name="act" value="upd">
+    
+    <button type="submit" class="btn btn-primary mt-3">Пересчитать</button>
+    <a class="btn btn-primary mt-3" href="/cart/?act=clear" role="button">Очистить корзину</a>
+
+    <div class="mt-3">
+        Стоимость товаров: <?=SysBF::getFrArr($item['cart_items'],'prsum',0).' '.Glob::$vars['prod_currency_suf'];?><br>
+        Включая скидку: <?=SysBF::getFrArr($item['cart_items'],'prdisc',0).' '.Glob::$vars['prod_currency_suf'];?><br>
+        Масса товара: <?=SysBF::getFrArr($item['cart_items'],'weight',0);?> кг<br>
+        Количество товара: <?=SysBF::getFrArr($item['cart_items'],'qty',0);?> шт<br>
+        Объем товара: <?=SysBF::getFrArr($item['cart_items'],'volume',0);?> м3<br>
+        Высота: <?=SysBF::getFrArr($item['cart_items'],'height',0);?> cм<br>
+        Мин. ширина/глубина: <?=SysBF::getFrArr($item['cart_items'],'minw',0);?> см<br>
+        Макc. ширина/глубина: <?=SysBF::getFrArr($item['cart_items'],'maxw',0);?> см
+    </div>
+
+    <a class="btn btn-primary mt-3" href="/order?instock=false" role="button">Заказать все</a>
+    <? if (!empty($item['cart_items']['deficit'])) {?>
+    <a class="btn btn-primary mt-3" href="/order?instock=true" role="button">Заказать из наличия</a>
+    <?}?>
+
 </form>
 
-<button type="button" class="btn btn-primary mt-3">Пересчитать</button>
-<button type="button" class="btn btn-primary mt-3">Очистить корзину</button>
-
-<div class="mt-3">
-    Стоимость товаров: 5600 р.<br>
-    Включая скидку: 800 р.<br>
-    Масса товара: 20 кг.<br>
-    Количество товара: 2 шт<br>
-    Объем товара: 2,3 м3<br>
-    Высота: 1,5м<br>
-    Мин. ширина/глубина: 20 см.<br>
-    Мак. ширина/глубина: 60 см.
-</div>
-
-<a class="btn btn-primary mt-3" href="/order" role="button">Оформить заказ</a>
-
+<? } else { ?>
+    Ваша корзина пуста.
+<? } ?>

@@ -77,7 +77,7 @@ echo MNBVf::startVidget('pglist',$item,array(
             
                         
             <div class="text-right pl-2 pr-1" id="cartico" style="background: url(/src/mnbv/img/logo/cart-blue.png) no-repeat; background-position: left center; background-size: 32px 30px; min-width:40px; min-height: 32px;">
-                <a href='<?=MNBVf::requestUrl(Lang::isAltLang()?'altlang':'','/');?>cart'><span class="badge rounded-pill bg-light text-dark" id="carticoqty">2</span></a>
+                <a href='<?=MNBVf::requestUrl(Lang::isAltLang()?'altlang':'','/');?>cart'><span class="badge rounded-pill bg-light text-dark" id="carticoqty"></span></a>
             </div>
             
             <script>
@@ -166,3 +166,27 @@ if (SysLogs::getErrors()!=''){echo "<pre>ERRORS:\n" . SysLogs::getErrors() . "--
     
   </body>
 </html>
+
+<script>
+function getCartQty(){
+    $.ajax({
+        url: "/cart?onlyqty=true",
+        cache: false,
+        success: function(html){
+            $("#carticoqty").text(html);
+        }
+    });
+}
+
+function addToCart(prodid){
+    $.ajax({
+        url: '/cart?act=add&prodid='+prodid+'&tpl_mode=json',
+        cache: false,
+        success: function(html){
+            getCartQty();
+        }
+    });
+}
+
+getCartQty();
+</script>

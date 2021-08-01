@@ -77,6 +77,8 @@ $langTmpArr = array(
     "Value" => "Значение",
     "Date" => "Дата",
     "Name" => "Имя",
+    "Surname" => "Фамилия",
+    "Patronymic" => "Отчество",
     "Phone" => "Телефон",
     "Message" => "Сообщение",
     "Send message" => "Отправить сообщение",
@@ -584,6 +586,8 @@ $langTmpArr = array(
     "Light" => "Легкий",
     "Heavy" => "Тяжелый",
     "Very heavy" => "Очень тяжелый",
+    
+    "Receiver info" => "Данные получателя",
 
     //Свойства объекта SysBaseObj module/mnbv/model/SisBaseObj.php
     "sysBaseObj" => array(
@@ -601,6 +605,14 @@ $langTmpArr = array(
         "first2" => "Маркер2",
         "name" => "Имя",
         "namelang" => "Имя др.яз.",
+        "surname" => "Фамилия",
+        "firstname" => "Имя",
+        "patronymic" => "Отчество",
+        "subscribe" => "Подписаться на рассылку",
+        "receiverpay" => "Плательщик является получателем",
+        "rsurname" => "Фамилия получателя",
+        "rfirstname" => "Имя получателя",
+        "rpatronymic" => "Отчество получателя",
         "alias" => "Алиас",
         "tags" => "Тэги",
         "comm" => "Комментарий",
@@ -628,6 +640,10 @@ $langTmpArr = array(
         "storage" => "Хранилище",
         "objid" => "ID Объекта",
         "objtype" => "Тип объекта",
+        
+        "Delivery adress" => "Адрес доставки",
+        "Adress" => "Адрес",
+        "adress" => "Адрес",
 
         // Внешние свойства объекта (хранятся в отдельных базах)
         "title" => "title",
@@ -687,6 +703,9 @@ $langTmpArr = array(
         "discmaxval" => 'МаксСкидка,вал',    //Максимальное значение скидки, вал
         "discminmargpr" => 'МинМарж,%', //Минимальное значение маржинальности для применнеия скидки, %
         "discminmargval" => 'МинМарж,вал',//Минимальное значение маржинальности для применнеия скидки, вал
+        
+        "minprice" => "Мин. цена",
+        "maxprice" => "Макс. цена",
         
         "products" => "Товары",
         "folders" => "Папки",
