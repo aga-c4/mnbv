@@ -482,6 +482,29 @@ class MNBVCart{
     }
     
     /**
+     * Удаляет позицию с заданным идентификатором из корзины.
+     * @param $itemId Идентификатор удаляемой позиции корзину
+     * @return mixed Результат операции
+     */
+    public function updateItem($itemId,$curItemQty){
+        $itemId = intval($itemId);
+        $curItemQty = intval($curItemQty);
+        if (empty($itemId)) return false;
+        if (empty($curItemQty)) {
+            $this->remItem($itemId);
+            return false;
+        }
+        
+        if (isset($this->cartItems["list"]["$itemId"])){
+            MNBVStorage::setObj('cartitems', array("qty"=>$curItemQty), array("id",'=',$itemId),false);
+            return true;
+        }else{
+            return false;
+        }
+    }
+    
+    
+    /**
      * Очищает корзину и дополнительные поля, если есть.
      */
     public function clearCart(){
