@@ -795,7 +795,7 @@ CREATE TABLE `mnbv_orders` (
   `firstname` varchar(100) NOT NULL DEFAULT '',
   `patronymic` varchar(100) NOT NULL DEFAULT '',
   `subscribe` int(1) NOT NULL DEFAULT 0,
-  `adress` text NOT NULL DEFAULT '\'\'',
+  `adress` text NOT NULL DEFAULT '',
   `receiverpay` int(1) NOT NULL DEFAULT 0,
   `rfirstname` varchar(100) NOT NULL DEFAULT '',
   `rsurname` varchar(100) NOT NULL DEFAULT '',
