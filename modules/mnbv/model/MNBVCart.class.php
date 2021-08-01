@@ -474,7 +474,7 @@ class MNBVCart{
         if (empty($itemId)) return false;
         
         if (isset($this->cartItems["list"]["$itemId"])){
-            MNBVStorage::delObj('cartitems', array("id","=",$itemId));
+            MNBVStorage::delObj('cartitems', array("id","=",$itemId),false);
             return true;
         }else{
             return false;
@@ -486,9 +486,9 @@ class MNBVCart{
      */
     public function clearCart(){
         if (Glob::$vars['user']->get('userid')){ //Авторизованный пользователь
-            MNBVStorage::delObj('cartitems', array("userid","=",Glob::$vars['user']->get('userid')));
+            MNBVStorage::delObj('cartitems', array("userid","=",Glob::$vars['user']->get('userid')),false);
         }else{
-            MNBVStorage::delObj('cartitems', array("sessid","=",Glob::$vars['session']->sid));
+            MNBVStorage::delObj('cartitems', array("sessid","=",Glob::$vars['session']->sid,false));
         }
         $this->qty = 0;
         
