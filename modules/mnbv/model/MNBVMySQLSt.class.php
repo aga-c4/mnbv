@@ -242,7 +242,15 @@ class MNBVMySQLSt implements MNBVdefSt{
             $fromStr .= ' ' . $mysqlTable;
             if (!empty($value['alias'])) $fromStr .= ' ' . $value['alias'];
             
-            if (isset($value['on'])&& is_array($value['on'])) $fromStr .= ' ON (' .  self::createWhereStr($value['on'],$myDb) . ')';
+            if (isset($value['on'])&& is_array($value['on'])) {
+                $onWhereStr = self::createWhereStr($value['on'],$myDb);
+                if (false === $onWhereStr) {
+                    SysLogs::addError('Error MNBVMySQLSt::createOnWhereStr - bad arr['.(implode(",",$filter)).']!');
+                    return array(0); //Если ошибочное завершение, вернем пустой результат
+                }else{ 
+                    $fromStr .= ' ON (' . $onWhereStr . ')';
+                }
+            }
             
         }
         if (empty($main_storage)) return array(0); //Если линка нет, то возвращаем пустой ответ
@@ -261,8 +269,10 @@ class MNBVMySQLSt implements MNBVdefSt{
                 
         //Построим строку фильтров
         $whereStr = (is_array($filter))?(self::createWhereStr($filter,$myDb)):'';
-        if (false === $whereStr) return array(0); //Если ошибочное завершение, вернем пустой результат
-        else $whereStr = ' WHERE' . $whereStr;
+        if (false === $whereStr) {
+            SysLogs::addError('Error MNBVMySQLSt::createWhereStr - bad arr['.((is_array($filter))?(implode(",",$filter)):"NoArr=[$filter]").']!');
+            return array(0); //Если ошибочное завершение, вернем пустой результат
+        }else $whereStr = ' WHERE' . $whereStr;
         if (trim($whereStr) == 'WHERE') $whereStr = '';
         
         //Строка группировки
@@ -337,8 +347,12 @@ class MNBVMySQLSt implements MNBVdefSt{
 
         //Построим строку фильтров
         $whereStr = (is_array($filter))?(self::createWhereStr($filter,$myDb)):'';
-        if (false === $whereStr) return array(0); //Если ошибочное завершение, вернем пустой результат
-        else $whereStr = ' WHERE ' . $whereStr;
+        if (false === $whereStr) {
+            SysLogs::addError('Error MNBVMySQLSt::createWhereStr - bad arr['.((is_array($filter))?(implode(",",$filter)):"NoArr=[$filter]").']!');
+            return array(0); //Если ошибочное завершение, вернем пустой результат
+        } else {
+            $whereStr = ' WHERE ' . $whereStr;
+        }
         if (trim($whereStr) == 'WHERE') $whereStr = '';
         
         $mysqlres = $myDb->query("$fromStr ($fieldsStr) VALUES ($valStr) $whereStr;");
@@ -377,8 +391,12 @@ class MNBVMySQLSt implements MNBVdefSt{
 
         //Построим строку фильтров
         $whereStr = (is_array($filter))?(self::createWhereStr($filter,$myDb)):'';
-        if (false === $whereStr) return array(0); //Если ошибочное завершение, вернем пустой результат
-        else $whereStr = ' WHERE ' . $whereStr;
+        if (false === $whereStr) {
+            SysLogs::addError('Error MNBVMySQLSt::createWhereStr - bad arr['.((is_array($filter))?(implode(",",$filter)):"NoArr=[$filter]").']!');
+            return array(0); //Если ошибочное завершение, вернем пустой результат
+        }else {
+            $whereStr = ' WHERE ' . $whereStr;
+        }
         if (trim($whereStr) == 'WHERE') $whereStr = '';
         
         $mysqlres = $myDb->query("UPDATE$fromStr$fieldsStr $whereStr;");        
@@ -410,8 +428,12 @@ class MNBVMySQLSt implements MNBVdefSt{
 
         //Построим строку фильтров
         $whereStr = (is_array($filter))?(self::createWhereStr($filter,$myDb)):'';
-        if (false === $whereStr) return array(0); //Если ошибочное завершение, вернем пустой результат
-        else $whereStr = ' WHERE ' . $whereStr;
+        if (false === $whereStr) {
+            SysLogs::addError('Error MNBVMySQLSt::createWhereStr - bad arr['.((is_array($filter))?(implode(",",$filter)):"NoArr=[$filter]").']!');
+            return array(0); //Если ошибочное завершение, вернем пустой результат
+        }else {
+            $whereStr = ' WHERE ' . $whereStr;
+        }
         if (trim($whereStr) == 'WHERE') $whereStr = '';
         
         $mysqlres = $myDb->query("DELETE $fromStr $whereStr;");        

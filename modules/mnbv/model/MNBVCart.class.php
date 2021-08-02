@@ -511,7 +511,7 @@ class MNBVCart{
         if (!empty(Glob::$vars['user']->get('userid'))){ //Авторизованный пользователь
             MNBVStorage::delObj('cartitems', array("userid","=",Glob::$vars['user']->get('userid')),false);
         }else{
-            MNBVStorage::delObj('cartitems', array("sessid","=",Glob::$vars['session']->sid,false));
+            MNBVStorage::delObj('cartitems', array("sessid","=",strval(Glob::$vars['session']->sid)),false);
         }
         $this->qty = 0;
         

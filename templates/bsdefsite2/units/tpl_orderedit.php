@@ -202,11 +202,20 @@ if (Glob::$vars['order_empty_deliv_pay'] || (!empty($item['cart_items']["deliv_t
 </div>  
     
 <input type=submit class="btn btn-primary mt-3" value="<?=Lang::get("Edit");?>">
-<button class="btn btn-primary mt-3" onclick="document.edit.act.value='send'; document.edit.submit();">Отправить заказ</button>
+<button class="btn btn-primary mt-3" onclick="editCheck();">Отправить заказ</button>
     
 <input type=hidden name=act value="updinfo">
 </form>
 
+<script>
+    function editCheck(){
+        if (document.edit.ordcond.checked == true && document.edit.ordconfirm.checked == true){
+            document.edit.act.value='send'; 
+        }
+        document.edit.submit();
+    }
+</script>    
+    
 </div>
 <? }else{ ?>
 <div class="w-100 mt-3 text-danger">

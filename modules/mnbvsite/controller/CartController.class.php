@@ -51,7 +51,7 @@ class CartController extends AbstractMnbvsiteController {
             }elseif($act==='rem'){ //Удаление позиции
                 $res = $cart->remItem($itemId);
             }elseif($act==='clear'){ //Удаление позиции
-                $res = $cart->clearCart($prodId);
+                $res = $cart->clearCart();
             }
 
             if (!empty($act) && $res) { //Если были правки по корзине, пересчитаем и сохраним
