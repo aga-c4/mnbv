@@ -508,7 +508,7 @@ class MNBVCart{
      * Очищает корзину и дополнительные поля, если есть.
      */
     public function clearCart(){
-        if (Glob::$vars['user']->get('userid')){ //Авторизованный пользователь
+        if (!empty(Glob::$vars['user']->get('userid'))){ //Авторизованный пользователь
             MNBVStorage::delObj('cartitems', array("userid","=",Glob::$vars['user']->get('userid')),false);
         }else{
             MNBVStorage::delObj('cartitems', array("sessid","=",Glob::$vars['session']->sid,false));
