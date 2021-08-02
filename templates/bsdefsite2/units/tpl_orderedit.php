@@ -164,9 +164,12 @@ if (Glob::$vars['order_empty_deliv_pay'] || (!empty($item['cart_items']["deliv_t
 <div class="w-100 confirmatext">
     
     <div class="mt-3">
-        <input type="checkbox" name="ordcond" id="ordcond" required<?=(!empty($item["ordcond_ok"]))?' checked':'';?>>
+        <input type="checkbox" name="ordcond" id="ordcond"<?=(!empty($item["ordcond_ok"]))?' checked':'';?>>
         <label for="ordcond">Ознакомлен и согласен с условиями, правилами и тарифами:</a></label>
         <a href="javascript:void(0);" id="collapseConfirm1" onclick='$("#collapseConfirm").removeClass("d-none"); $("#collapseConfirm1").addClass("d-none");'>Подробнее</a>
+        <? if (empty($item["ordcond_ok"])) {?>
+        <Br>(<span class="text-danger">для оформления заказа необходимо согласиться с условиями, правилами и тарфиами</span>)
+        <?}?>
     </div>
     
     <div  id="collapseConfirm" class="w-100 mt-3 d-none">
@@ -194,9 +197,12 @@ if (Glob::$vars['order_empty_deliv_pay'] || (!empty($item['cart_items']["deliv_t
     </div>
     
     <div class="mt-3">
-        <input type="checkbox" name="ordconfirm" id="ordconfirm" required<?=(!empty($item["ordconfirm_ok"]))?' checked':'';?>>
+        <input type="checkbox" name="ordconfirm" id="ordconfirm"<?=(!empty($item["ordconfirm_ok"]))?' checked':'';?>>
     Я даю согласие на обработку указанных в этой веб-форме моих персональных данных, включая право поручения обработки другим лицам
     на условиях, изложенных в <a href="/defence/" target="_blank">Политике в отношении обработки персональных данных в Интернете</a>, с которой я ознакомился.
+    <? if (empty($item["ordconfirm_ok"])) {?>
+    <Br>(<span class="text-danger">Для оформления заказа необходимо согласиться на обработку персональных данны</span>)
+    <?}?>
     </div>
 
 </div>  
@@ -214,6 +220,16 @@ if (Glob::$vars['order_empty_deliv_pay'] || (!empty($item['cart_items']["deliv_t
         }
         document.edit.submit();
     }
+    
+    <?
+    if (!empty($item['ordlbl'])){
+        if ($item['ordlbl'] == 'ordcond'){
+            echo 'document.edit.ordcond.focus();';
+        }elseif ($item['ordlbl'] == 'ordconfirm'){
+            echo 'document.edit.ordconfirm.focus();';
+        }
+    }
+    ?>
 </script>    
     
 </div>

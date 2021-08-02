@@ -67,8 +67,9 @@ class OrderController extends AbstractMnbvsiteController {
         $item['cart_items'] = $cart->getItemsList();
         $item['cart_instock_status'] = $instockSess;
         
-        $item['ordcond_ok'] = $ordcond = SysBF::getFrArr(Glob::$vars['request'],'ordcond',$cart->get('ordcond_ok'));
-        $item['ordconfirm_ok'] = $ordconfirm = SysBF::getFrArr(Glob::$vars['request'],'ordconfirm',$cart->get('ordconfirm_ok'));
+        
+        $item['ordcond_ok'] = $ordcond = SysBF::getFrArr(Glob::$vars['request'],'ordcond',0);
+        $item['ordconfirm_ok'] = $ordconfirm = SysBF::getFrArr(Glob::$vars['request'],'ordconfirm',0);
         
         //Получим текущие значения информационных полей заказа
         $item['sub_obj'] = $updateArr = $cart->get('update_arr',array());
@@ -100,6 +101,8 @@ class OrderController extends AbstractMnbvsiteController {
         $item['sub_obj']['sub_obj_storage'] = $storage; 
         $item['sub_obj']['folderid'] = $folderId;   
         $item['sub_obj']['form_folder'] = $form_folder;
+        
+        $item['ordlbl'] = '';
 
         SysLogs::addLog('Select mnbv script storage: [' . $storage . ']');
         SysLogs::addLog('Select mnbv script storage folder: [' . $folderId . ']');
@@ -180,9 +183,22 @@ class OrderController extends AbstractMnbvsiteController {
             $cart->save();
                 
         }
+
+        $sendOk = true;
+        if (!is_array($item['cart_items']['list']) || count($item['cart_items']['list'])==0) {
+            $sendOk = false;//Нет позиций заказа не отправляем
+        }
+
+        if(empty($ordcond)) {
+            $item['ordlbl'] = 'ordcond';
+            $sendOk = false;
+        }elseif(empty($ordconfirm)) {
+            $item['ordlbl'] = 'ordconfirm';
+            $sendOk = false;
+        }     
         
-        
-        if ($act==='send'){
+        if ($act==='send' && $sendOk){
+            
             //Создадим заказ
             $updateArr["parentid"] = $folderId; 
             $updateArr["visible"] = 1; 
