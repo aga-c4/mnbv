@@ -188,14 +188,16 @@ class OrderController extends AbstractMnbvsiteController {
         if (!is_array($item['cart_items']['list']) || count($item['cart_items']['list'])==0) {
             $sendOk = false;//Нет позиций заказа не отправляем
         }
-
-        if(empty($ordcond)) {
-            $item['ordlbl'] = 'ordcond';
-            $sendOk = false;
-        }elseif(empty($ordconfirm)) {
-            $item['ordlbl'] = 'ordconfirm';
-            $sendOk = false;
-        }     
+        
+        if ($act==='send'){
+            if(empty($ordcond)) {
+                $item['ordlbl'] = 'ordcond';
+                $sendOk = false;
+            }elseif(empty($ordconfirm)) {
+                $item['ordlbl'] = 'ordconfirm';
+                $sendOk = false;
+            }     
+        }
         
         if ($act==='send' && $sendOk){
             

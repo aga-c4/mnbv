@@ -122,19 +122,24 @@ if (is_array($item['cart_items']['deliv_list']) && count($item['cart_items']['de
 
 <div class="mt-3">
     <h5>Оплата:</h5>
-    <select id="payid" name="payid" onChange="" class="form-select" style="width: auto;" onclick="selform();" onblur="selform2();">
-        <option value="0"<?=(!empty($item['cart_items']["pay_type_id"]))?' selected':'';?>>Не выбрано</option>
-<? 
+    
+    <input class="form-check-input" type="radio" name="payid" id="rdpay0" value="0"<?=(!empty($item['cart_items']["pay_type_id"]))?' checked':'';?> onclick="document.ordupd.submit();">
+    <label class="form-check-label" for="rdpay0">Не выбрано</label>
+
+<?
 if (is_array($item['cart_items']['pay_list']) && count($item['cart_items']['pay_list'])){
     $dlcnt = 0; 
     foreach($item['cart_items']['pay_list'] as $value) { $dlcnt++; ?>
-        <option value="<?=SysBF::getFrArr($value,'id',0);?>"<?=(!empty($value["selected"]))?' selected':'';?>><?=SysBF::getFrArr($value,'name','');?></option>
-<? 
-    } 
+<div class="form-check">
+    <input class="form-check-input" type="radio" name="payid" id="rdpay<?=$dlcnt;?>" value="<?=SysBF::getFrArr($value,'id',0);?>"<?=(!empty($value["selected"]))?' checked':'';?> onclick="document.ordupd.submit();">
+    <label class="form-check-label" for="rdpay<?=$dlcnt;?>">
+    <?=SysBF::getFrArr($value,'name','');?>
+  </label>
+</div>
+<? } 
 }else{?>
 Нет подходящего типа оплаты, наш менедежер свяжется с вами для определения оптимального варианта оплаты.    
-<?}?>
-    </select>   
+<?}?>  
 </div>
 
 <? }else{ ?>
