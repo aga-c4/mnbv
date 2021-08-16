@@ -22,8 +22,9 @@ foreach ($item['list'] as $key=>$value) if ($key>0) {
     $carouselItem .= '<div class="carousel-caption d-sm-block">'."\n";
     $carouselItem .= '<h5>' . MNBVf::getItemName($value,Lang::isAltLang()) . '</h5>'."\n";
     if ($curAbout=MNBVf::getItemAbout($value,$altlang=Lang::isAltLang(),$defval='')) $carouselItem .= '<div class="d-none d-md-block">'.$curAbout.'</div>'."\n";
-    $carouselItem .= '</div></a></div>'."\n";
+    $carouselItem .= '</div></a>'."\n";
      */
+    $carouselItem .= '</div>'."\n";
     $carouselItems[] = $carouselItem;
     $itemCounter++;  
 }
