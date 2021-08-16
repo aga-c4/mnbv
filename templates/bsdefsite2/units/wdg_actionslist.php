@@ -12,16 +12,18 @@ foreach ($item['list'] as $key=>$value) if ($key>0) {
     
     $carouselItem = '<div class="carousel-item'.((!$itemCounter)?' active':'').'">'."\n";
     //Подготовим размеры изображений
-    $imgWStr = (isset($value['files']["img"]["1"]['size']['min']['w']))?(' width="'.$value['files']["img"]["1"]['size']['min']['w'].'"'):'';
+    $imgWStr = (isset($value['files']["img"]["1"]['size']['w']))?(' width="'.$value['files']["img"]["1"]['size']['w'].'"'):'';
     if ($imgWStr=='' && isset($item['img_max_size']['img_min_max_w'])) $imgWStr = ' width="'. $item['img_max_size']['img_min_max_w'] .'"';
-    $imgHStr = (isset($value['files']["img"]["1"]['size']['min']['h']))?(' height="'.$value['files']["img"]["1"]['size']['min']['h'].'"'):'';
+    $imgHStr = (isset($value['files']["img"]["1"]['size']['h']))?(' height="'.$value['files']["img"]["1"]['size']['h'].'"'):'';
     //$carouselItem .= '<a href="' . SysBF::getFrArr($value,'url','') . '"><img src="' . SysBF::getFrArr($value['files']["img"]["1"],'src_min','') . '" class="d-block w-100" alt="' . MNBVf::getItemName($value,Lang::isAltLang()) . '"></a>'."\n";
-    $carouselItem .= '<a href="' . SysBF::getFrArr($value,'url','') . '"><img src="' . SysBF::getFrArr($value['files']["img"]["1"],'src_min','') . '" class="d-block w-100" alt="' . MNBVf::getItemName($value,Lang::isAltLang()) . '">'."\n";
+    $carouselItem .= '<a href="' . SysBF::getFrArr($value,'url','') . '"><img src="' . SysBF::getFrArr($value['files']["img"]["1"],'src','') . '" class="d-block w-100" alt="' . MNBVf::getItemName($value,Lang::isAltLang()) . '">'."\n";
     //Заголовок и краткое описание
+    /* Если нужно выводить заголовок акции с описанием поверх баннера - раскомментить
     $carouselItem .= '<div class="carousel-caption d-sm-block">'."\n";
     $carouselItem .= '<h5>' . MNBVf::getItemName($value,Lang::isAltLang()) . '</h5>'."\n";
     if ($curAbout=MNBVf::getItemAbout($value,$altlang=Lang::isAltLang(),$defval='')) $carouselItem .= '<div class="d-none d-md-block">'.$curAbout.'</div>'."\n";
     $carouselItem .= '</div></a></div>'."\n";
+     */
     $carouselItems[] = $carouselItem;
     $itemCounter++;  
 }

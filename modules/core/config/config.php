@@ -17,7 +17,7 @@ class Glob {
      * @var array - Массив реестра глобальных переменных
      */
     public static $vars = array(
-        'weeks_arr' => array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oсt","Nov","Des"),
+        'weeks_arr' => array("None","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oсt","Nov","Des"),
         'request' => array(), //Ассоциативный массив параметров запроса
         'response' => null, //Массив, содержащий обработанные данные ответа
         'module' => 'mnbv', //загружаемый модуль - по-умолчанию загружаем default TODO - Поменяйте, если хотите сделать базовым другой модуль
