@@ -315,6 +315,7 @@ $langTmpArr = array(
     "Folder picture" => "Folder picture",
     "Product links" => "Product links",
     "Vendors & models" => "Vendors & models",
+    "Brands" => "Brands",
     "Service description" => "Service description",
     "Go to stroke" => "Go to stroke",
     "Object deleted" => "Object deleted!",

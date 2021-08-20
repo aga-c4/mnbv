@@ -317,6 +317,7 @@ $langTmpArr = array(
     "Folder picture" => "Изображение раздела",
     "Product links" => "Привязки товара",
     "Vendors & models" => "Производители и модели",
+    "Brands" => "Бренды",
     "Service description" => "Служебное описание",
     "Go to stroke" => "Перейти к Штриху",
     "Object deleted" => "Объект удален!",
