@@ -604,8 +604,8 @@ SysStorage::$storage['articles']['view']['params'] = array(
 //Хранилище Производителей  -------------  
 SysStorage::$storage['vendors'] = array(
     'group' => 'site', //Группа хранилищ
-    'name' => 'Производители', //Название на русском
-    'eng_name' => 'Vendors', //Название на английском
+    'name' => 'Бренды', //Название на русском
+    'eng_name' => 'Brands', //Название на английском
     'db' => 'mysql1', //База данных
     'table' => 'mnbv_vendors', //Таблица
     'access' => 0, // Доступ на чтение
