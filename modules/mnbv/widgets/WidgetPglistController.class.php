@@ -84,6 +84,8 @@ class WidgetPglistController extends AbstractWidgetControllerController {
      */
     public $tpl = '';
     
+    public $ban_img_id = 1;
+    
     public function __construct($widget) {
         $this->thisWidgetName = $widget;
     }
@@ -102,6 +104,7 @@ class WidgetPglistController extends AbstractWidgetControllerController {
      * 'filter_type' - ('objects'|'folders'|'all') - типы объектов связей (по-умолчанию objects), если не задано, то без фильтра ('all')
      * 'list_link' - ссылка на полный список объектов, если требуется
      * 'list_link_name' - анкор ссылки на полный список объектов, если требуется
+     * 'ban_img_is' - номер изображения баннера 1 - по-умолчанию
      * 'altlang' - вывод на альтернативном языке
      * 'obj_prop_conf' - Массив конфигурации вывода параметров объекта. По-умолчанию строка 'no_conf' - параметры не выводятся
      * @param type $vidget_tpl название файла шаблона для вывода, если не задан, то используется текущий шаблон Glob::$vars['mnbv_tpl']/units/wdg_ВИДЖЕТ.php
@@ -128,6 +131,7 @@ class WidgetPglistController extends AbstractWidgetControllerController {
         if (!empty($param['list_link_name'])) $this->list_link_name = $param['list_link_name'];
         if (isset($param['only_first'])) $this->only_first = (!empty($param['only_first']))?true:false;
         if (isset($param['obj_prop_conf']) && is_array($param['obj_prop_conf'])) $this->obj_prop_conf = $param['obj_prop_conf'];
+        if (isset($param['list_max_items'])) $this->ban_img_id = intval($param['ban_img_id']);
         $vidget_alias = (!empty($param['vidget_alias']))?$param['vidget_alias']:'';
 
         $tplFile = MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'units/'.((!empty($vidget_tpl))?$vidget_tpl:'wdg_'.$this->thisWidgetName.'.php'));
@@ -235,6 +239,7 @@ class WidgetPglistController extends AbstractWidgetControllerController {
             }
         }
 
+        $item['ban_img_id'] = $this->ban_img_id; 
         $item['list_storage'] = $this->storage;
         $item['list_link'] = MNBVf::requestUrl(!Lang::isDefLang()?'altlang':'',$this->list_link);
         $item['list_link_name'] = $this->list_link_name;
