@@ -486,6 +486,7 @@ class StorageController {
             
             case 'create': //Редактирование элемента списка
                 //Получим новые значения полей
+                $gfrid = SysBF::checkStr(SysBF::getFrArr(Glob::$vars['request'],'gfrid',0),'int');
                 $gpozid = SysBF::checkStr(SysBF::getFrArr(Glob::$vars['request'],'gpozid',0),'int');
                 $gvisible = SysBF::checkStr(SysBF::getFrArr(Glob::$vars['request'],'gvisible',0),'on');
                 $gfirst = SysBF::checkStr(SysBF::getFrArr(Glob::$vars['request'],'gfirst',0),'on');
@@ -497,7 +498,20 @@ class StorageController {
                 
                 SysLogs::addLog("Create object gname=[$gname]");
                 
-                if (!empty($gname)){
+                
+                if (!empty($gfrid)){
+                    
+                    /*
+                    DROP TABLE IF EXISTS tmptmp;
+                    CREATE TEMPORARY TABLE tmptmp SELECT * FROM `mnbv_products` WHERE id=5;
+                    UPDATE tmptmp SET id=(SELECT MAX(ID)+1 FROM `mnbv_products`);
+                    INSERT INTO `mnbv_products` SELECT * FROM tmptmp;
+                    */
+                    $res = MNBVStorage::copyObj($this->getStorage(), $gfrid);
+                    SysLogs::addLog("Copy object $gfrid in /".$this->getStorage()."/" . (($res)?($res.'/ successful!'):' error!'));     
+                    $redirectToList = true;
+                        
+                }elseif (!empty($gname)){
 
                     $updateArr = array(
                         "parentid"=>$parentid,
@@ -540,8 +554,9 @@ class StorageController {
                     $updateArr["editip"] = GetEnv('REMOTE_ADDR');
 
                     $res = MNBVStorage::addObj($this->getStorage(), $updateArr);
-                    SysLogs::addLog("Create object /".$this->getStorage()."/" . (($res)?($res.'/ successful!'):' error!'));
+                    SysLogs::addLog("Create object /".$this->getStorage()."/" . (($res)?($res.'/ successful!'):' error!'));          
                     $redirectToList = true;
+                    
                 }
             break;
             

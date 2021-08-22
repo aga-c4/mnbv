@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Авг 01 2021 г., 23:51
+-- Время создания: Авг 23 2021 г., 02:09
 -- Версия сервера: 10.3.13-MariaDB-log
 -- Версия PHP: 7.3.9
 
@@ -146,8 +146,8 @@ INSERT INTO `mnbv_articles` (`id`, `datestr`, `parentid`, `pozid`, `type`, `type
 (4, '2017-08-19 14:10:18', 5, 100, 0, '', 1, 0, 206, 1, 'Статья 3 - читайте и радуйтесь!', 'Article3', 'stat-ya-3', '', 0, 'Анонс и краткое описание статьи 3. Анонс и краткое описание статьи 3. Анонс и краткое описание статьи 3.', 'Mini description of article 3.', '<p>Полное описание статьи 3  Полное описание статьи 3  Полное описание статьи 3  Полное описание статьи 3  Полное описание статьи 3  Полное описание статьи 3  Полное описание статьи 3  Полное описание статьи 3  Полное описание статьи 3  Полное описание статьи 3  Полное описание статьи 3  Полное описание статьи 3  </p>\r\n<p>Полное описание статьи 3  Полное описание статьи 3  Полное описание статьи 3  Полное описание статьи 3  Полное описание статьи 3  Полное описание статьи 3  Полное описание статьи 3  Полное описание статьи 3  Полное описание статьи 3  Полное описание статьи 3  Полное описание статьи 3  Полное описание статьи 3  Полное описание статьи 3  </p>', '<p>Full description of article1 full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1.</p>\r\n<p> Full description of article1 full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1 .</p>', 1503915000, 0, 0, 2, 1503137418, 2, 1621326507, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"https:\\/\\/youtu.be\\/u48Izeg-5W8\",\"type\":null,\"edituser\":\"2\",\"editdate\":1619479845,\"editip\":\"127.0.0.1\"},\"2\":{\"url\":\"http:\\/\\/mnbv.ru\\/img\\/help_book.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1619479845,\"editip\":\"127.0.0.1\"}}}', 0, ''),
 (5, '2017-08-27 17:30:53', 1, 10, 1, '', 1, 0, 206, 0, 'Полезная информация', 'Useful info', 'poleznaya-informaciya', '', 0, 'Краткое описание данного раздела. Краткое описание данного раздела. Краткое описание данного раздела.', 'Short description of this foler. Short description of this foler. Short description of this foler.', '<p>Описание полезной информации</p>', '', 1503840600, 0, 0, 2, 1503840653, 2, 1621423104, '127.0.0.1', 'Администратор', '', '', '', '', '[\"1\"]', '', 0, ''),
 (6, '2017-08-27 17:59:07', 1, 20, 1, '', 1, 0, 206, 0, 'Бесполезная информация', 'Unuseful info', 'bespoleznaya-informaciya', '', 0, 'Краткое описание данного раздела. Краткое описание данного раздела. Краткое описание данного раздела.', 'Short description of this foler. Short description of this foler. Short description of this foler.', '<p>Описание бесполезной информации</p>', '', 1503842340, 0, 0, 2, 1503842347, 2, 1621423094, '127.0.0.1', 'Администратор', '', '', '', '', '[\"1\"]', '', 0, ''),
-(7, '2017-08-27 17:59:37', 6, 100, 0, '', 1, 0, 206, 0, 'Статья1', 'Article1', 'stat-ya1', '', 0, '', 'Mini description of article 1.', '', '<p>Full description of article1 full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1.</p>\r\n<p> Full description of article1 full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1 .</p>', 1503842340, 0, 0, 2, 1503842377, 2, 1621326568, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, ''),
-(8, '2017-08-27 17:59:43', 6, 100, 0, '', 1, 0, 206, 0, 'Статья2', 'Article2', '', '', 0, '', 'Mini description of article 2.', '', '<p>Full description of article1 full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1.</p>\r\n<p> Full description of article1 full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1 .</p>', 1503842340, 0, 0, 2, 1503842383, 2, 1621326573, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '');
+(7, '2017-08-27 17:59:37', 6, 100, 0, '', 1, 0, 206, 0, 'Статья1', 'Article1', 'stat-ya1', '', 0, '', 'Mini description of article 1.', '', '<p>Full description of article1 full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1.</p>\r\n<p> Full description of article1 full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1 .</p>', 1503842340, 0, 0, 2, 1503842377, 2, 1629647262, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, ''),
+(8, '2017-08-27 17:59:43', 6, 100, 0, '', 1, 0, 206, 0, 'Статья2', 'Article2', 'stat-ya2', '', 0, '', 'Mini description of article 2.', '', '<p>Full description of article1 full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1.</p>\r\n<p> Full description of article1 full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1  full description of article1 .</p>', 1503842340, 0, 0, 2, 1503842383, 2, 1629647276, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '');
 
 -- --------------------------------------------------------
 
@@ -529,6 +529,14 @@ CREATE TABLE `mnbv_longtmp` (
   `val` longtext NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+--
+-- Дамп данных таблицы `mnbv_longtmp`
+--
+
+INSERT INTO `mnbv_longtmp` (`id`, `ts`, `tsto`, `val`) VALUES
+('prodfilters:2', 1629672954, 1629673854, '{\"selected\":0,\"list\":{\"price\":{\"attrid\":\"price\",\"pozid\":1,\"name\":\"\\u0426\\u0435\\u043d\\u0430\",\"namelang\":\"Price\",\"dnuse\":1,\"inshort\":1,\"infilter\":1,\"filter_type\":\"slider\",\"view\":{\"active\":\"update\",\"table\":\"td\",\"type\":\"text\",\"width\":\"100%\",\"filter_type\":\"all\",\"checktype\":\"decimal\",\"lang\":\"all\",\"size\":8,\"dbtype\":\"decimal\",\"dmsize\":2},\"minval\":\"0.00\",\"maxval\":\"100.00\",\"minRval\":\"0.00\",\"maxRval\":\"100.00\"},\"vendor\":{\"attrid\":\"vendor\",\"pozid\":2,\"name\":\"\\u041f\\u0440\\u043e\\u0438\\u0437\\u0432\\u043e\\u0434\\u0438\\u0442\\u0435\\u043b\\u044c\",\"namelang\":\"Vendor\",\"dnuse\":1,\"inshort\":1,\"infilter\":1,\"filter_type\":\"checkbox_gr\",\"view\":{\"active\":\"update\",\"table\":\"td\",\"type\":\"select\",\"viewindex\":0,\"linkstorage\":\"attributes\",\"filter_folder\":4,\"filter_type\":\"objects\",\"checktype\":\"int\",\"lang\":\"all\",\"dbtype\":\"int\",\"notset\":1},\"vals\":{\"2\":{\"id\":\"2\",\"alias\":\"demobrand1\",\"name\":\"DemoBrand1\",\"namelang\":\"\",\"qty\":\"1\"},\"4\":{\"id\":\"4\",\"alias\":\"demobrand2\",\"name\":\"DemoBrand2\",\"namelang\":\"\",\"qty\":\"1\"}}}}}'),
+('prodfilters:4', 1629668367, 1629669267, '{\"selected\":0,\"list\":[]}');
+
 -- --------------------------------------------------------
 
 --
@@ -601,21 +609,23 @@ INSERT INTO `mnbv_menu` (`id`, `datestr`, `parentid`, `pozid`, `type`, `typeval`
 (112, '2017-08-23 11:37:56', 3, 60, 0, '', 1, 0, 104, 0, 'Авторизация', 'Login', '', '', 0, '', '', '', '', 1503473876, 0, 0, 2, 1503473876, 2, 1504388360, '127.0.0.1', 'Администратор', '{\"url\":\"\\/auth\",\"objid\":7}', '', '', '', '', 'ru', 0, '', 0, ''),
 (113, '2017-08-24 16:44:53', 3, 1001, 0, '', 0, 0, 104, 0, 'Intranet', 'Intranet', '', '', 0, '', '', '', '', 1503578693, 0, 0, 2, 1503578693, 2, 1621323110, '127.0.0.1', 'Администратор', '{\"url\":\"\\/intranet\",\"altlang\":1}', '', '', '', '', 'en', 0, '', 0, ''),
 (114, '2017-08-24 16:44:59', 3, 11, 0, '', 1, 0, 104, 0, 'About', 'About', '', '', 0, '', '', '', '', 1503578699, 0, 0, 2, 1503578699, 2, 1621324814, '127.0.0.1', 'Администратор', '{\"url\":\"\\/en\\/about\",\"objid\":2}', '', '', '', '', 'en', 0, '', 0, ''),
-(115, '2017-08-24 16:45:06', 4, 21, 0, '', 1, 0, 104, 0, 'Catalog', 'Catalog', '', '', 0, '', '', '', '', 1503578706, 0, 0, 2, 1503578706, 2, 1621324868, '127.0.0.1', 'Администратор', '{\"url\":\"\\/en\\/catalog\",\"objid\":5}', '', '', '', '', 'en', 0, '', 0, ''),
+(115, '2017-08-24 16:45:06', 4, 20, 0, '', 1, 0, 104, 0, 'Catalog', 'Catalog', '', '', 0, '', '', '', '', 1503578706, 0, 0, 2, 1503578706, 2, 1629478805, '127.0.0.1', 'Администратор', '{\"url\":\"\\/en\\/catalog\",\"objid\":5}', '', '', '', '', 'en', 0, '', 0, ''),
 (116, '2017-08-24 16:45:11', 3, 41, 0, '', 1, 0, 104, 0, 'Contacts', 'Contacts', '', '', 0, '', '', '', '', 1503578711, 0, 0, 2, 1503578711, 2, 1621324820, '127.0.0.1', 'Администратор', '{\"url\":\"\\/en\\/contacts\",\"objid\":6}', '', '', '', '', 'en', 0, '', 0, ''),
 (117, '2017-08-24 16:45:16', 3, 61, 0, '', 1, 0, 104, 0, 'Login', 'Login', '', '', 0, '', '', '', '', 1503578716, 0, 0, 2, 1503578716, 2, 1621324831, '127.0.0.1', 'Администратор', '{\"url\":\"\\/en\\/auth\",\"objid\":7}', '', '', '', '', 'en', 0, '', 0, ''),
 (118, '2017-08-25 18:26:19', 3, 31, 0, '', 0, 0, 104, 0, 'Папка', 'Folder', '', '', 0, '', '', '', '', 1503671179, 0, 0, 2, 1503671179, 2, 1505506154, '127.0.0.1', 'Администратор', '{\"url\":\"\\/sitefolder\",\"objid\":8}', '', '', '', '', 'ru', 0, '', 0, ''),
 (119, '2017-08-25 18:27:19', 3, 31, 0, '', 0, 0, 104, 0, 'Folder', 'Folder', '', '', 0, '', '', '', '', 1503671239, 0, 0, 2, 1503671239, 2, 1621324837, '127.0.0.1', 'Администратор', '{\"url\":\"\\/en\\/sitefolder\",\"objid\":8}', '', '', '', '', 'en', 0, '', 0, ''),
 (120, '2017-09-02 21:29:44', 3, 50, 0, '', 0, 0, 104, 0, 'Корзина', 'Cart', '', '', 0, '', '', '', '', 1504373384, 0, 0, 2, 1504373384, 2, 1621323989, '127.0.0.1', 'Администратор', '{\"objid\":14,\"url\":\"\\/cart\"}', '', '', '', '', 'ru', 0, '', 0, ''),
 (121, '2017-09-02 21:29:53', 3, 51, 0, '', 0, 0, 104, 0, 'Cart', 'Cart', '', '', 0, '', '', '', '', 1504373393, 0, 0, 2, 1504373393, 2, 1621324845, '127.0.0.1', 'Администратор', '{\"objid\":14,\"url\":\"\\/en\\/cart\"}', '', '', '', '', 'en', 0, '', 0, ''),
-(130, '2017-09-16 00:08:16', 4, 30, 0, '', 1, 0, 104, 0, 'Акции', 'Actions', '', '', 0, '', '', '', '', 1505506096, 0, 0, 2, 1505506096, 2, 1621323923, '127.0.0.1', 'Администратор', '{\"url\":\"\\/actions\",\"objid\":15}', '', '', '', '', 'ru', 0, '', 2, ''),
-(131, '2017-09-16 00:08:22', 4, 30, 0, '', 1, 0, 104, 0, 'Actions', 'Actions', '', '', 0, '', '', '', '', 1505506102, 0, 0, 2, 1505506102, 2, 1621324875, '127.0.0.1', 'Администратор', '{\"url\":\"\\/en\\/actions\",\"objid\":15}', '', '', '', '', 'en', 0, '', 2, ''),
+(130, '2017-09-16 00:08:16', 4, 50, 0, '', 1, 0, 104, 0, 'Акции', 'Actions', '', '', 0, '', '', '', '', 1505506096, 0, 0, 2, 1505506096, 2, 1629478797, '127.0.0.1', 'Администратор', '{\"url\":\"\\/actions\",\"objid\":15}', '', '', '', '', 'ru', 0, '', 2, ''),
+(131, '2017-09-16 00:08:22', 4, 50, 0, '', 1, 0, 104, 0, 'Actions', 'Actions', '', '', 0, '', '', '', '', 1505506102, 0, 0, 2, 1505506102, 2, 1629478802, '127.0.0.1', 'Администратор', '{\"url\":\"\\/en\\/actions\",\"objid\":15}', '', '', '', '', 'en', 0, '', 2, ''),
 (132, '2021-04-18 22:41:33', 3, 30, 0, '', 1, 0, 104, 0, 'Доставка', 'Delivery', '', '', 0, '', '', '', '', 1618774893, 0, 0, 2, 1618774893, 2, 1618924068, '127.0.0.1', 'Администратор', '{\"url\":\"\\/delivery\",\"objid\":17}', '', '', '', '', 'ru', 0, '', 2, ''),
 (133, '2021-04-18 22:41:44', 3, 31, 0, '', 1, 0, 104, 0, 'Delivery', 'Delivery', '', '', 0, '', '', '', '', 1618774904, 0, 0, 2, 1618774904, 2, 1621324853, '127.0.0.1', 'Администратор', '{\"url\":\"\\/en\\/delivery\",\"objid\":17}', '', '', '', '', 'en', 0, '', 2, ''),
-(134, '2021-04-19 16:29:58', 4, 100, 0, '', 1, 0, 104, 0, 'Новости', 'News', '', '', 0, '', '', '', '', 1618838998, 0, 0, 2, 1618838998, 2, 1618923990, '127.0.0.1', 'Администратор', '{\"url\":\"\\/news\",\"objid\":4}', '', '', '', '', 'ru', 0, '', 2, ''),
-(135, '2021-04-19 16:30:11', 4, 100, 0, '', 1, 0, 104, 0, 'News', 'News', '', '', 0, '', '', '', '', 1618839011, 0, 0, 2, 1618839011, 2, 1621324882, '127.0.0.1', 'Администратор', '{\"url\":\"\\/en\\/news\",\"objid\":4}', '', '', '', '', 'en', 0, '', 2, ''),
+(134, '2021-04-19 16:29:58', 4, 30, 0, '', 1, 0, 104, 0, 'Новости', 'News', '', '', 0, '', '', '', '', 1618838998, 0, 0, 2, 1618838998, 2, 1629478822, '127.0.0.1', 'Администратор', '{\"url\":\"\\/news\",\"objid\":4}', '', '', '', '', 'ru', 0, '', 2, ''),
+(135, '2021-04-19 16:30:11', 4, 30, 0, '', 1, 0, 104, 0, 'News', 'News', '', '', 0, '', '', '', '', 1618839011, 0, 0, 2, 1618839011, 2, 1629478827, '127.0.0.1', 'Администратор', '{\"url\":\"\\/en\\/news\",\"objid\":4}', '', '', '', '', 'en', 0, '', 2, ''),
 (136, '2021-04-19 16:30:49', 4, 100, 0, '', 1, 0, 104, 0, 'Статьи', 'Articles', '', '', 0, '', '', '', '', 1618839049, 0, 0, 2, 1618839049, 2, 1618924001, '127.0.0.1', 'Администратор', '{\"url\":\"\\/articles\",\"objid\":3}', '', '', '', '', 'ru', 0, '', 2, ''),
-(137, '2021-04-19 16:30:55', 4, 100, 0, '', 1, 0, 104, 0, 'Articles', 'Articles', '', '', 0, '', '', '', '', 1618839055, 0, 0, 2, 1618839055, 2, 1621324888, '127.0.0.1', 'Администратор', '{\"url\":\"\\/en\\/articles\",\"objid\":3}', '', '', '', '', 'en', 0, '', 2, '');
+(137, '2021-04-19 16:30:55', 4, 100, 0, '', 1, 0, 104, 0, 'Articles', 'Articles', '', '', 0, '', '', '', '', 1618839055, 0, 0, 2, 1618839055, 2, 1621324888, '127.0.0.1', 'Администратор', '{\"url\":\"\\/en\\/articles\",\"objid\":3}', '', '', '', '', 'en', 0, '', 2, ''),
+(138, '2021-08-20 19:53:21', 4, 20, 0, '', 1, 0, 104, 0, 'Бренды', 'Brands', '', '', 0, '', '', '', '', 1629478401, 0, 0, 2, 1629478401, 2, 1629648264, '127.0.0.1', 'Администратор', '{\"url\":\"\\/bz\",\"objid\":22}', '', '', '', '', 'ru', 0, '', 0, ''),
+(139, '2021-08-20 19:53:25', 4, 20, 0, '', 1, 0, 104, 0, 'Brands', 'Brands', '', '', 0, '', '', '', '', 1629478405, 0, 0, 2, 1629478405, 2, 1629648271, '127.0.0.1', 'Администратор', '{\"url\":\"\\/eng\\/bz\",\"objid\":22}', '', '', '', '', 'en', 0, '', 0, '');
 
 -- --------------------------------------------------------
 
@@ -979,7 +989,12 @@ CREATE TABLE `mnbv_products` (
 --
 
 INSERT INTO `mnbv_products` (`id`, `outid`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `preview`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `files`, `siteid`, `tags`, `price`, `oldprice`, `cost`, `ndspr`, `quantity`, `instock`, `discmaxpr`, `discmaxval`, `discminmargpr`, `discminmargval`, `vendor`, `prefix`, `prefixlang`, `model`, `partnumber`, `barcode`, `country`, `norm_search`, `norm_partnumber`, `donorurl`, `donorimg`, `searchstr`, `weightgr`, `sizegr`, `onlyvert`, `brweight`, `brheight`, `brwidth`, `brlength`, `brminw`, `brmaxw`, `brvolume`, `supplier`) VALUES
-(1, '', '1970-01-01 03:00:00', 0, 100, 1, '', 1, 0, 210, 0, 'Товары', 'Products', '', '', 0, '', '', '', '', 0, 0, 0, 2, 1469005900, 2, 1624633998, '127.0.0.1', 'Администратор', '', '', '{\"1\":{\"objid\":1,\"attrid\":\"3\",\"pozid\":10000,\"namelang\":\"Weight (kg)\",\"dnuse\":1,\"namedlang\":\"\\u0412\\u0435\\u0441\",\"infilter\":1,\"name\":\"\\u0412\\u0435\\u0441 (\\u043a\\u0433)\"},\"2\":{\"objid\":1,\"attrid\":\"5\",\"pozid\":10001,\"namedlang\":\"\\u041a\\u043e\\u043c\\u043c\\u0435\\u043d\\u0442\",\"namelang\":\"Height (sm)\",\"name\":\"\\u0412\\u044b\\u0441\\u043e\\u0442\\u0430 (\\u0441\\u043c)\",\"dnuse\":1,\"infilter\":1},\"3\":{\"objid\":1,\"attrid\":\"6\",\"name\":\"\\u0428\\u0438\\u0440\\u0438\\u043d\\u0430 (\\u0441\\u043c)\",\"namelang\":\"Width (sm)\",\"dnuse\":1,\"infilter\":1,\"pozid\":10002},\"4\":{\"objid\":1,\"attrid\":\"7\",\"pozid\":10003,\"name\":\"\\u0414\\u043b\\u0438\\u043d\\u0430 (\\u0441\\u043c)\",\"namelang\":\"Length (sm)\",\"dnuse\":1,\"infilter\":1}}', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', 0, 0, '0.00', '0.00', '0.00', '0.00', 0, '', '', '', '', '', 0, ',1,,,,tovary,products,,', '', '', '', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, '0.000', 0);
+(1, '', '1970-01-01 03:00:00', 0, 100, 1, '', 1, 0, 210, 0, 'Товары', 'Products', '', '', 0, '', '', '', '', 0, 0, 0, 2, 1469005900, 2, 1629672908, '127.0.0.1', 'Администратор', '', '', '{\"1\":{\"objid\":1,\"attrid\":\"3\",\"pozid\":10000,\"namelang\":\"Weight (kg)\",\"dnuse\":1,\"namedlang\":\"\\u0412\\u0435\\u0441\",\"infilter\":1,\"name\":\"\\u0412\\u0435\\u0441 (\\u043a\\u0433)\"},\"2\":{\"objid\":1,\"attrid\":\"5\",\"pozid\":10001,\"namedlang\":\"\\u041a\\u043e\\u043c\\u043c\\u0435\\u043d\\u0442\",\"namelang\":\"Height (sm)\",\"name\":\"\\u0412\\u044b\\u0441\\u043e\\u0442\\u0430 (\\u0441\\u043c)\",\"dnuse\":1,\"infilter\":1},\"3\":{\"objid\":1,\"attrid\":\"6\",\"name\":\"\\u0428\\u0438\\u0440\\u0438\\u043d\\u0430 (\\u0441\\u043c)\",\"namelang\":\"Width (sm)\",\"dnuse\":1,\"infilter\":1,\"pozid\":10002},\"4\":{\"objid\":1,\"attrid\":\"7\",\"pozid\":10003,\"name\":\"\\u0414\\u043b\\u0438\\u043d\\u0430 (\\u0441\\u043c)\",\"namelang\":\"Length (sm)\",\"dnuse\":1,\"infilter\":1}}', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', 0, 0, '0.00', '0.00', '0.00', '0.00', 2, '', '', '', '', '', 0, ',tovary,products,,', '', '', '', '', 0, 1, 0, 0, 0, 0, 0, 0, 0, '0.000', 0),
+(2, '', '2021-08-22 23:28:18', 1, 10, 1, '', 1, 0, 210, 1, 'Категория 1', '', 'kategoriya-1', '', 0, '', '', '', '', 1629664080, 0, 0, 2, 1629664098, 2, 1629664296, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"http:\\/\\/mnbv.ru\\/img\\/help_book.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1629664217,\"editip\":\"127.0.0.1\"}}}', 0, '', '0.00', '0.00', '0.00', '0.00', 0, 0, '0.00', '0.00', '0.00', '0.00', 0, '', '', '', '', '', 0, ',kategoriya1,,,', '', '', '', '', 0, 1, 0, 0, 0, 0, 0, 0, 0, '0.000', 0),
+(3, '', '2021-08-22 23:28:56', 2, 100, 0, '', 1, 0, 210, 0, 'Товар1', '', 'tovar1', '', 0, '', '', '', '', 1629664080, 0, 0, 2, 1629664136, 2, 1629673679, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"http:\\/\\/mnbv.ru\\/img\\/help_book.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1629664226,\"editip\":\"127.0.0.1\"}}}', 0, '', '100.00', '150.00', '0.00', '0.00', 0, 0, '0.00', '0.00', '0.00', '0.00', 2, '', '', '', '', '', 0, ',3,,,,tovar1,,,', '', '', '', '', 0, 1, 0, 0, 0, 0, 0, 0, 0, '0.000', 0),
+(4, '', '2021-08-22 23:31:03', 1, 100, 1, '', 1, 0, 210, 1, 'Категория 2', '', 'kategoriya-2', '', 0, '', '', '', '', 1629664260, 0, 0, 2, 1629664263, 2, 1629664314, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"http:\\/\\/mnbv.ru\\/img\\/help_book.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1629664285,\"editip\":\"127.0.0.1\"}}}', 0, '', '0.00', '0.00', '0.00', '0.00', 0, 0, '0.00', '0.00', '0.00', '0.00', 0, '', '', '', '', '', 0, ',kategoriya2,,,', '', '', '', '', 0, 1, 0, 0, 0, 0, 0, 0, 0, '0.000', 0),
+(5, '', '2021-08-22 23:32:02', 4, 100, 0, '', 1, 0, 210, 1, 'Товар2', '', 'tovar2', '', 0, '', '', '', '', 1629664320, 0, 0, 2, 1629664322, 2, 1629664477, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"http:\\/\\/mnbv.ru\\/img\\/help_book.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1629664353,\"editip\":\"127.0.0.1\"}}}', 0, '', '200.00', '0.00', '0.00', '0.00', 0, 0, '0.00', '0.00', '0.00', '0.00', 0, '', '', '', '', '', 0, ',5,,,,tovar2,,,', '', '', '', '', 0, 1, 0, 0, 0, 0, 0, 0, 0, '0.000', 0),
+(6, '', '2021-08-23 01:50:34', 2, 100, 0, '', 1, 0, 210, 1, 'Товар3', '', '', '', 0, '', '', '', '', 1629672600, 0, 0, 2, 1629672634, 2, 1629673683, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"http:\\/\\/mnbv.ru\\/img\\/help_book.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1629673021,\"editip\":\"127.0.0.1\"}}}', 0, '', '0.00', '0.00', '0.00', '0.00', 0, 0, '0.00', '0.00', '0.00', '0.00', 4, '', '', '', '', '', 0, ',6,,,,tovar3,,,', '', '', '', '', 0, 1, 0, 0, 0, 0, 0, 0, 0, '0.000', 0);
 
 -- --------------------------------------------------------
 
@@ -1186,6 +1201,36 @@ CREATE TABLE `mnbv_searchindex` (
   `weight` int(3) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Поисковый индекс';
 
+--
+-- Дамп данных таблицы `mnbv_searchindex`
+--
+
+INSERT INTO `mnbv_searchindex` (`id`, `siteid`, `type`, `objid`, `objtype`, `normstr`, `weight`) VALUES
+(5, 0, 0, 3, 0, '3', 3),
+(6, 0, 0, 2, 0, '2', 3),
+(7, 0, 0, 2, 0, '2', 3),
+(10, 0, 0, 3, 0, '3', 6),
+(17, 0, 1, 2, 1, 'katigoriia', 2),
+(18, 0, 1, 2, 1, '1', 2),
+(19, 0, 0, 3, 0, '3', 6),
+(20, 0, 0, 3, 0, '3', 6),
+(21, 0, 1, 4, 1, 'katigoriia', 2),
+(22, 0, 1, 4, 1, '2', 2),
+(23, 0, 0, 5, 0, '5', 6),
+(24, 0, 0, 5, 0, '5', 3),
+(25, 0, 0, 5, 0, '5', 6),
+(26, 0, 0, 5, 0, '5', 6),
+(27, 0, 0, 3, 0, '3', 6),
+(28, 0, 0, 3, 0, '3', 6),
+(33, 0, 1, 1, 1, 'tovari', 2),
+(34, 0, 1, 1, 1, 'produks', 2),
+(35, 0, 0, 3, 0, '3', 6),
+(36, 0, 0, 6, 0, '6', 6),
+(37, 0, 0, 6, 0, '6', 6),
+(38, 0, 0, 6, 0, 'dimobrand2', 2),
+(39, 0, 0, 3, 0, '3', 3),
+(40, 0, 0, 6, 0, '6', 3);
+
 -- --------------------------------------------------------
 
 --
@@ -1239,7 +1284,7 @@ CREATE TABLE `mnbv_site` (
 INSERT INTO `mnbv_site` (`id`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `preview`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `files`, `siteid`, `tags`) VALUES
 (1, '2017-08-08 12:49:06', 0, 100, 1, '', 1, 0, 102, 0, 'Демо интернет-магазин MNBV', 'MNBV demo online store', '', '', 0, '', '', '', '', 1502182140, 0, 0, 2, 1502182146, 2, 1621327137, '127.0.0.1', 'Администратор', '{\"tpl_file\":\"index.php\"}', '', '', '', '', '{\"img\":{\"2\":{\"size\":{\"kb\":225,\"w\":1288,\"h\":300},\"type\":\"jpg\",\"fname\":\"60-\\u0440\\u043e\\u043c\\u0430\\u0448\\u043a\\u0438-\\u043a\\u0430\\u0440\\u0442\\u0438\\u043d\\u043a\\u0438-\\u043a\\u0440\\u0430\\u0441\\u0438\\u0432\\u044b\\u0435.jpg\",\"edituser\":\"2\",\"editdate\":1618778526,\"upldate\":1618778526,\"editip\":\"127.0.0.1\"},\"3\":{\"size\":{\"kb\":301,\"w\":1288,\"h\":300,\"min\":{\"kb\":13,\"w\":100,\"h\":80},\"big\":{\"kb\":922,\"w\":1280,\"h\":1024}},\"type\":\"jpg\",\"fname\":\"Many-strawberries-red-fruit-delicious_1280x1024.jpg\",\"edituser\":\"2\",\"editdate\":1618778538,\"upldate\":1618778538,\"editip\":\"127.0.0.1\"},\"4\":{\"size\":{\"kb\":351,\"w\":1288,\"h\":300},\"type\":\"jpg\",\"fname\":\"beach-sea-coast-water-nature-outdoor-sand-ocean-shore-wave-summer-paradise-holiday-lifestyle-material-body-of-water-sunny-waves-happy-habitat-beach-sand-summer-fun-mudflat-wind-wave-646583.jpg\",\"edituser\":\"2\",\"editdate\":1618778556,\"upldate\":1618778556,\"editip\":\"127.0.0.1\"},\"5\":{\"size\":{\"kb\":346,\"w\":1288,\"h\":300},\"type\":\"jpg\",\"fname\":\"wtkVBKz0M8-126.jpg\",\"edituser\":\"2\",\"editdate\":1618778572,\"upldate\":1618778572,\"editip\":\"127.0.0.1\"}}}', 0, ''),
 (2, '2017-08-08 12:49:42', 1, 100, 0, '', 1, 0, 102, 0, 'О компании', 'About', 'about', '', 0, 'Информация о компании.', 'Put the information about your company here.', '<p>{{img-right:1}}</p>\r\n<h4>План по доработкам Интернет-Магазина:</h4>\r\n<ol>\r\n<li>Доработать систему задач, интегрировать в нее прием заказов и входящие письма.</li>\r\n<li>Сделать механизм передачи заказов в учетную систему и механизм передачи пользователей со скидками из учетной системы на сайт.</li>\r\n<li>Сделать рейтинги полезности товаров по валовой прибыли, отклонению от центра. Сделать деление товаров на группы брендов от A- до C+, деление товаров по цене на 6 частей.</li>\r\n<li>Сделать рекомендательную систему: вы смотрели, похожие товары, сопутствующие товары, персональные рекомендации (на базе просмотренных товаров смотрим категории, которые смотрел пользователь, уровень бренда, квартиль цены и показываем ему пропорционально наиболее рейтинговые товары из этих категорий с коррекцией на уровень бренда +-1 и группы цены +-1. Сразу заложить аналитику CTR и влияние рекомендаций на продажи.</li>\r\n<li>Сделать баннерную систему.</li>\r\n<li>Сделать отображение товаров в акциях, учет акционных скидок при формировании корзины и заказа. Отображение категории и товары, сделать брендзоны.</li>\r\n<li>Аналитика, события, подключение счетчиков, в т.ч. отслеживание связи продаж товаров с переходами на соответствующие акции и баннеры в рамках сессии.</li>\r\n<li>Сделать онлайн оплату, интегрировать ее в систему задач, привязать к заказам.</li>\r\n<li>Доработать модуль SEO оптимизации (формирование метатегов по маскам для разных групп структурных элементов).</li>\r\n<li>Сделать систему регистрации новых пользователей, подписку на рассылки разного рода и пуш уведомления.</li>\r\n<li>Ввести деление на регионы, статусы наличия и цены по ним, доработать вывод фидов с учетом регионов.</li>\r\n<li>Внедрить автоматическое определение региона с автоустановкой (предварительно уточнив что правы).</li>\r\n<li>Внедрить КЛАДР и помощник ввода имен, валидацию имен и адресов.</li>\r\n<li>Сделать избранное и сравнение товаров.</li>\r\n</ol>\r\n<p>&nbsp;</p>', '<p>{{img-right:1}}Hello! We are glad to sea you in this Demo Site!</p>\r\n<p>It cotsists of:</p>\r\n<ul>\r\n<li>structure of static pages,</li>\r\n<li>structure of news and articles,</li>\r\n<li>product catalog,</li>\r\n<li>contacts whith feedback  form,</li>\r\n<li>banners system,</li>\r\n<li>user login and personal account, </li>\r\n<li>discount system,</li>\r\n<li>events system,</li>\r\n<li>feeds generator,</li>\r\n<li>CMS,</li>\r\n<li>storage uploader</li>\r\n<li>catalog autocomplite.</li>\r\n</ul>\r\n<p>Select template and connect it to system.</p>\r\n<p>You can work whith multiple sites.</p>', 1502182140, 0, 0, 2, 1502182182, 2, 1627799508, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"\\/src\\/mnbv\\/img\\/logo\\/smile.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1618779999,\"editip\":\"127.0.0.1\"}}}', 0, ''),
-(3, '2017-08-08 12:49:51', 1, 100, 0, '', 1, 0, 102, 0, 'Статьи', 'Articles', 'articles', '', 0, '', 'The articles list of the company.', '', '', 1502182140, 0, 0, 2, 1502182191, 2, 1621326393, '127.0.0.1', 'Администратор', '{\"script\":\"pglist\",\"list_sort\":\"date_desc\",\"script_storage\":\"articles\",\"script_folder\":\"1\",\"list_max_items\":2,\"script_tpl_file\":\"tpl_articleslist.php\",\"script_tpl2_file\":\"tpl_newsview.php\"}', '', '', '', '', '', 0, ''),
+(3, '2017-08-08 12:49:51', 1, 100, 0, '', 1, 0, 102, 0, 'Статьи', 'Articles', 'articles', '', 0, '', 'The articles list of the company.', '', '', 1502182140, 0, 0, 2, 1502182191, 2, 1629478033, '127.0.0.1', 'Администратор', '{\"script\":\"pglist\",\"list_sort\":\"date_desc\",\"script_storage\":\"articles\",\"script_folder\":\"1\",\"list_max_items\":8,\"script_tpl_file\":\"tpl_articleslist.php\",\"script_tpl2_file\":\"tpl_newsview.php\"}', '', '', '', '', '', 0, ''),
 (4, '2017-08-08 12:50:05', 1, 100, 0, '', 1, 0, 102, 0, 'Новости', 'News', 'news', '', 0, 'Новинки компании - будте всегда в курсе!', 'The news list of the company. ', '<p>Новинки компании - будте всегда в курсе!</p>', '<p>The news list of the company.&nbsp;</p>', 1502182200, 0, 0, 2, 1502182205, 2, 1619479613, '127.0.0.1', 'Администратор', '{\"script\":\"pglist\",\"script_storage\":\"news\",\"script_folder\":\"1\",\"list_max_items\":6,\"list_sort\":\"date_desc\",\"script_tpl_file\":\"tpl_newslist.php\",\"script_tpl2_file\":\"tpl_newsview.php\"}', '', '', '', '', '', 0, ''),
 (5, '2017-08-08 12:50:13', 1, 100, 0, '', 1, 0, 102, 0, 'Каталог', 'Catalog', 'catalog', '', 0, 'Каталог товаров, реализуемых компанией - найдите что-то полезное для себя!', 'Product catalog page.', '<p>Каталог товаров, реализуемых компанией - найдите что-то полезное для себя!</p>', '<p>Product catalog here.</p>', 1502182200, 0, 0, 2, 1502182213, 2, 1621342852, '127.0.0.1', 'Администратор', '{\"script\":\"products\",\"script_storage\":\"products\",\"script_folder\":\"1\",\"list_max_items\":8,\"scriptvalign\":1}', '', '', '', '', '', 0, ''),
 (6, '2017-08-08 12:50:33', 1, 100, 0, '', 1, 0, 102, 0, 'Контакты', 'Contacts', 'contacts', '', 0, 'Контактная информация компании и форма обратной связи.', 'Contacts whith feedback  form.', '<p>Контакты для связи:</p>\r\n<ul>\r\n<li>Адрес ...,</li>\r\n<li>Телефон ...,</li>\r\n<li>E-mail ...,</li>\r\n<li>Skype ...</li>\r\n</ul>\r\n<p>Или оставьте сообщение ниже в форме обратной связи:</p>', '<p>Contacts:</p>\r\n<ul>\r\n<li>Address ...,</li>\r\n<li>Phone ...,</li>\r\n<li>E-mail ...,</li>\r\n<li>Skype ...</li>\r\n</ul>\r\n<p>You can send us the message by the feedback &nbsp;form on bottom.</p>', 1502182200, 0, 0, 2, 1502182233, 2, 1504212227, '127.0.0.1', 'Администратор', '{\"script\":\"contacts\",\"script_storage\":\"messages\",\"script_folder\":\"2\"}', '', '', '', '', '', 0, ''),
@@ -1255,7 +1300,8 @@ INSERT INTO `mnbv_site` (`id`, `datestr`, `parentid`, `pozid`, `type`, `typeval`
 (17, '2021-04-18 22:55:13', 1, 100, 0, '', 1, 0, 102, 0, 'Доставка', 'Delivery', 'delivery', '', 0, '', '', '{{img-right:1}}<p>Условия доставки будут размещены тут. Условия доставки будут размещены тут.Условия доставки будут размещены тут.Условия доставки будут размещены тут.Условия доставки будут размещены тут.Условия доставки будут размещены тут.Условия доставки будут размещены тут.Условия доставки будут размещены тут.</p>\r\n<p>Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. </p>\r\n<p>Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. Описание разных вариантов доставки. </p>', '', 1618775700, 0, 0, 2, 1618775713, 2, 1619788941, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"\\/src\\/mnbv\\/img\\/logo\\/smile.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1618926476,\"editip\":\"127.0.0.1\"}}}', 0, ''),
 (18, '2021-04-19 00:08:47', 0, 100, 1, '', 0, 0, 102, 0, 'Служебные объекты', 'Service objects', '', '', 0, '', '', '', '', 1618780127, 0, 0, 2, 1618780127, 2, 1621324613, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, ''),
 (19, '2021-04-19 00:09:05', 18, 100, 0, '', 0, 0, 102, 0, 'Описание компании для футора', 'Footer site text', '', '', 0, '', '', '<p>Добро пожаловать на демонстрационную версию сайта компании. Она включает основные элементы, которые необходимы полноценному информационному ресурсу, а именно:</p>\r\n<ul>\r\n<li>структуру статических страниц, удобное управление контентом,</li>\r\n<li>новости и статьи,</li>\r\n<li>каталог товаров, акции, корзина с формированием заказа,</li>\r\n<li>контакты с формой обратной связи,</li>\r\n<li>баннерная система,</li>\r\n<li>авторизация, контроль доступа к ресурсам, личный кабинет пользователя, </li>\r\n<li>система скидок для каталога товаров,</li>\r\n<li>система обработки событий (нужна для установки счетчиков и др. скриптов партнерских программ),</li>\r\n<li>систему выгрузки товарных фидов различных видов,</li>\r\n<li>система загрузки и синхронизации данных в хранилищах</li>\r\n<li>система автоматического формирования каталогов, свойств товара и при необходимости группировки их значений из XML фида с параметрами товара.</li>\r\n<li>система аналитики, позволяющая подключать счетчики основных систем, а также вести расширенный учет электронной торговли и влияния акций, баннеров и рекомендаций на продаж.</li>\r\n</ul>\r\n<p>Вы можете подключить любой выбранный вами шаблон дизайна и использовать несколько вариантов шаблонов дизайна одновременно, переключаясь между ними.</p>\r\n<p>Система поддерживает работу с несколькими сайтами, а также позволяет подключать разные варианты шаблонов отображения на разные доменные имена.</p>', '<p>Hello! We are glad to sea you in this Demo Site!</p>\r\n<p>It cotsists of:</p>\r\n<ul>\r\n<li>structure of static pages,</li>\r\n<li>structure of news and articles,</li>\r\n<li>product catalog,</li>\r\n<li>contacts whith feedback  form,</li>\r\n<li>banners system,</li>\r\n<li>user login and personal account, </li>\r\n<li>discount system,</li>\r\n<li>events system,</li>\r\n<li>feeds generator,</li>\r\n<li>CMS,</li>\r\n<li>storage uploader</li>\r\n<li>catalog autocomplite.</li>\r\n</ul>\r\n<p>Select template and connect it to system.</p>\r\n<p>You can work whith multiple sites.</p>', 1618780140, 0, 0, 2, 1618780145, 2, 1621340095, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, ''),
-(20, '2021-06-17 14:46:53', 1, 100, 0, '', 1, 0, 102, 0, 'Заказ', 'Order', 'order', '', 0, '', '', '', '', 1623930360, 0, 0, 2, 1623930413, 2, 1623937749, '127.0.0.1', 'Администратор', '{\"script\":\"order\"}', '', '', '', '', '', 0, '');
+(20, '2021-06-17 14:46:53', 1, 100, 0, '', 1, 0, 102, 0, 'Заказ', 'Order', 'order', '', 0, '', '', '', '', 1623930360, 0, 0, 2, 1623930413, 2, 1623937749, '127.0.0.1', 'Администратор', '{\"script\":\"order\"}', '', '', '', '', '', 0, ''),
+(22, '2021-08-20 14:12:56', 1, 100, 0, '', 1, 0, 102, 0, 'Бренды', '', 'bz', '', 0, '', '', '', '', 1629457920, 0, 0, 2, 1629457976, 2, 1629648539, '127.0.0.1', 'Администратор', '{\"script\":\"pglist\",\"script_tpl_file\":\"tpl_bzlist.php\",\"script_tpl2_file\":\"tpl_bzview.php\",\"script_storage\":\"vendors\",\"script_folder\":\"1\",\"list_max_items\":8,\"list_sort\":\"date_desc\"}', '', '', '', '', '', 0, '');
 
 -- --------------------------------------------------------
 
@@ -1625,6 +1671,13 @@ CREATE TABLE `mnbv_tmp` (
   `val` varchar(21000) NOT NULL DEFAULT ''
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
+--
+-- Дамп данных таблицы `mnbv_tmp`
+--
+
+INSERT INTO `mnbv_tmp` (`id`, `ts`, `tsto`, `val`) VALUES
+('gormenucatalog', 1629666619, 1629753019, '{\"1\":{\"id\":\"2\",\"name\":\"\\u041a\\u0430\\u0442\\u0435\\u0433\\u043e\\u0440\\u0438\\u044f 1\",\"namelang\":\"\",\"alias\":\"kategoriya-1\",\"type\":\"1\"},\"2\":{\"id\":\"4\",\"name\":\"\\u041a\\u0430\\u0442\\u0435\\u0433\\u043e\\u0440\\u0438\\u044f 2\",\"namelang\":\"\",\"alias\":\"kategoriya-2\",\"type\":\"1\"}}');
+
 -- --------------------------------------------------------
 
 --
@@ -1658,7 +1711,15 @@ INSERT INTO `mnbv_urlaliases` (`id`, `siteid`, `urltype`, `alias`, `idref`, `obj
 (27, 0, 2, 'novost-6', 7, 0, ''),
 (30, 0, 2, 'novost-7', 8, 0, ''),
 (38, 0, 2, 'novost-1', 2, 0, ''),
-(39, 0, 2, 'novost-2', 3, 0, '');
+(39, 0, 2, 'novost-2', 3, 0, ''),
+(40, 0, 5, 'demobrand1', 2, 1, ''),
+(41, 0, 5, 'demopage', 3, 0, 'demobrand1'),
+(42, 0, 3, 'stat-ya2', 8, 0, 'bespoleznaya-informaciya'),
+(43, 0, 1, 'kategoriya-2', 4, 1, ''),
+(44, 0, 1, 'kategoriya-1', 2, 1, ''),
+(45, 0, 1, 'tovar1', 3, 0, 'kategoriya-1'),
+(46, 0, 1, 'tovar2', 5, 0, 'kategoriya-2'),
+(47, 0, 5, 'demobrand2', 4, 0, '');
 
 -- --------------------------------------------------------
 
@@ -1774,7 +1835,10 @@ CREATE TABLE `mnbv_vendors` (
 --
 
 INSERT INTO `mnbv_vendors` (`id`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `preview`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `files`, `siteid`, `tags`, `discmaxpr`, `discmaxval`, `discminmargpr`, `discminmargval`, `searchstr`) VALUES
-(1, '2017-09-15 18:20:38', 0, 100, 1, '', 1, 0, 210, 0, 'Производители', 'Vendors', '', '', 0, '', '', '', '', 1505485238, 0, 0, 2, 1505485238, 2, 1505485246, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', '');
+(1, '2017-09-15 18:20:38', 0, 100, 1, '', 1, 0, 210, 0, 'Бренды', 'Brands', '', '', 0, '', '', '', '', 1505485200, 0, 0, 2, 1505485238, 2, 1629649267, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', ''),
+(2, '2021-08-22 09:35:09', 1, 100, 1, '', 1, 0, 210, 1, 'DemoBrand1', '', 'demobrand1', '', 0, '', '', '', '', 1629614100, 0, 0, 2, 1629614109, 2, 1629672661, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"5\":{\"url\":\"\\/src\\/bsdefsite2\\/img\\/p1_2.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1629614158,\"editip\":\"127.0.0.1\"}}}', 0, '', '0.00', '0.00', '0.00', '0.00', ''),
+(3, '2021-08-22 09:40:02', 2, 100, 0, '', 1, 0, 210, 0, 'DemoPage', '', 'demopage', '', 0, 'Демо страница в рамках брендзоны тестового бренда.', '', '<p>Демо страница в рамках брендзоны тестового бренда&nbsp;Демо страница в рамках брендзоны тестового бренда&nbsp;Демо страница в рамках брендзоны тестового бренда</p>', '', 1629614400, 0, 0, 2, 1629614402, 2, 1629672666, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', ''),
+(4, '2021-08-23 01:51:22', 1, 100, 0, '', 1, 0, 210, 0, 'DemoBrand2', '', 'demobrand2', '', 0, '', '', '', '', 1629672660, 0, 0, 2, 1629672682, 2, 1629672703, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', '');
 
 --
 -- Индексы сохранённых таблиц
@@ -2017,7 +2081,7 @@ ALTER TABLE `mnbv_attrvals`
 -- AUTO_INCREMENT для таблицы `mnbv_cartitems`
 --
 ALTER TABLE `mnbv_cartitems`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT для таблицы `mnbv_carts`
@@ -2047,7 +2111,7 @@ ALTER TABLE `mnbv_discounts`
 -- AUTO_INCREMENT для таблицы `mnbv_menu`
 --
 ALTER TABLE `mnbv_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=1000;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=1002;
 
 --
 -- AUTO_INCREMENT для таблицы `mnbv_messages`
@@ -2083,7 +2147,7 @@ ALTER TABLE `mnbv_prinstock`
 -- AUTO_INCREMENT для таблицы `mnbv_products`
 --
 ALTER TABLE `mnbv_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT для таблицы `mnbv_regions`
@@ -2107,13 +2171,13 @@ ALTER TABLE `mnbv_robotsrun`
 -- AUTO_INCREMENT для таблицы `mnbv_searchindex`
 --
 ALTER TABLE `mnbv_searchindex`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT для таблицы `mnbv_site`
 --
 ALTER TABLE `mnbv_site`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT для таблицы `mnbv_sites`
@@ -2155,7 +2219,7 @@ ALTER TABLE `mnbv_tickets`
 -- AUTO_INCREMENT для таблицы `mnbv_urlaliases`
 --
 ALTER TABLE `mnbv_urlaliases`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=40;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT для таблицы `mnbv_users`
@@ -2167,7 +2231,7 @@ ALTER TABLE `mnbv_users`
 -- AUTO_INCREMENT для таблицы `mnbv_vendors`
 --
 ALTER TABLE `mnbv_vendors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

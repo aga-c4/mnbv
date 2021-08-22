@@ -131,7 +131,7 @@ else {echo '<td width="100%"><input type="text" name="'.$gnameid.'" value="'.$gn
 
 <tr>
 <form method=post action="" class="form1">
-<th></th>
+<th><input type="text" style="WIDTH: 100%" ssize="10" name="gfrid" value="" ></th>
 <? if (empty($item['list_not_edit'])){?>
 <th><input type="text" size="4" style="text-align:right;WIDTH: 100%" name=gpozid value=100 ></th>
 <? } ?>

@@ -854,7 +854,7 @@ SysStorage::$storage['products']['view']["main"] = array(
     "clear2" => array("name"=>"clear1", "type"=>"lineblock", "table" =>"thline", "string"=>"Parameters"),
     "prefix" => array("name"=>"prefix", "type"=>"text","size"=>255,"width"=>"100%","langlink"=>"prefixlang","checktype" => "text","lang" => "lang"), //Основной язык
     "prefixlang" => array("name"=>"prefixlang", "type"=>"text","size"=>255,"width"=>"100%","langlink"=>"prefix","checktype" => "text","lang" => "altlang"), //Основной язык
-    "vendor" => array("name"=>"vendor", "type"=>"select", "viewindex" =>true, "notset" =>true, "filter_type"=>"objects", "filter_folder"=>1, "checktype" => "id"),
+    "vendor" => array("name"=>"vendor", "type"=>"select", "viewindex" =>true, "notset" =>true, "filter_type"=>"all", "filter_folder"=>1, "checktype" => "id"),
     "model" => array("name"=>"model", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text"), //Основной язык
     "partnumber" => array("name"=>"partnumber", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text"), //Основной язык
     "barcode" => array("name"=>"barcode", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "text"), //Основной язык

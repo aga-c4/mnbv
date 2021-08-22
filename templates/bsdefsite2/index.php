@@ -101,7 +101,9 @@ echo MNBVf::startVidget('pglist',$item,array(
         <div class="row">   
             <!-- Карусель -->         
             <div id="carouselCaptions" class="carousel slide" data-ride="carousel">    
-<? //Виджет акций
+<? 
+/*
+//Виджет акций
 //echo '<b>'.Lang::get('Special offers').':</b><br>';
 MNBVf::startVidget('pglist',$item,array(
     'storage' => 'actions',//хранилище из которого будут забираться объекты, если не задано, то виджет не выводит ничего
@@ -117,6 +119,26 @@ MNBVf::startVidget('pglist',$item,array(
     'altlang' => Lang::isAltLang(),//вывод на альтернативном языке
 ),
 'wdg_actionslist.php');
+*/
+
+//Виджет брендзон
+//echo '<b>'.Lang::get('Special offers').':</b><br>';
+MNBVf::startVidget('pglist',$item,array(
+    'storage' => 'vendors',//хранилище из которого будут забираться объекты, если не задано, то виджет не выводит ничего
+    'folderid' => 0,//папка из которой будут выбираться объекты. Если не задано, то 1
+    'list_main_alias' => (Lang::isAltLang()?('/'.Lang::getAltLangName()):'').'/bz',//основная часть URL на базе которой будет формироваться URL элемента списка хранилища добавляя туда язык, идентификатор и алиас
+    'folder_start_id' => 1,//идентификатор корневой папки списка в хранилище (нужно чтоб корректно URL формировать)
+    'list_max_items' => 5,//количество выводимых элементов
+    'list_sort' => 'pozid', //сортировка списка
+    'only_first' =>true, //выводить только объекты, выделенные свойством First (Гл)
+    'filter_type' => 'all', //('objects'|'folders'|'all') - типы объектов связей (по-умолчанию objects), если не задано, то без фильтра ('all')
+    'list_link' => (Lang::isAltLang()?('/'.Lang::getAltLangName()):'').'/bz',//ссылка на полный список объектов, если требуется
+    'list_link_name' => Lang::get('Brands'),//анкор ссылки на полный список объектов, если требуется
+    'altlang' => Lang::isAltLang(),//вывод на альтернативном языке
+    'ban_img_id' => 5, //Номер изображения баннера
+),
+'wdg_actionslist.php');
+
 ?>
             </div>
         </div>
@@ -263,14 +285,24 @@ function getCartQty(){
     });
 }
 
+let bbcOk = new Array();
 function addToCart(prodid){
-    $.ajax({
-        url: '/cart?act=add&prodid='+prodid+'&tpl_mode=json',
-        cache: false,
-        success: function(html){
-            getCartQty();
-        }
-    });
+    if (typeof bbcOk["bbc"+prodid] === "undefined"){
+        $.ajax({
+            url: '/cart?act=add&prodid='+prodid+'&tpl_mode=json',
+            cache: false,
+            success: function(html){
+                getCartQty();
+            }
+        });
+    
+        $("#bbc"+prodid).removeClass("btn-primary");
+        $("#bbc"+prodid).addClass("btn-outline-success");
+        document.getElementById("bbc"+prodid).innerText="Перейти в корзину";
+        bbcOk["bbc"+prodid] = true;
+    }else{
+        document.location.href = "/cart";
+    }
 }
 
 getCartQty();

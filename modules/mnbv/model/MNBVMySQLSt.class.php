@@ -359,6 +359,35 @@ class MNBVMySQLSt implements MNBVdefSt{
         if ($mysqlres) return $myDb->mysql_insert_id();        
         return $mysqlres;
     }
+
+    /**
+     * Копирование объекта хранилища
+     * @param string $storage - хранилище
+     * @param array $id - идентификатор копируемого объекта (первичный ключ). Новый будет иметь следующее значение 
+     * @param bool $params - дополнительные параметры в частности тип добавления см потом в реализации мускула
+     * @return mixed - если успешно, то id созданного объекта, иначе FALSE
+     */
+    public static function copyObj($storage,$id='',$filter=array(),$params=array()){
+        
+        if (empty($id)) return false;
+        
+        $result = false; //Результат операции
+        //Получим данные по соединению
+        if (!empty(SysStorage::$storage["$storage"]["table"])) $mysqlTable = SysStorage::$storage["$storage"]["table"]; else return false; //Таблица
+        if (!empty(SysStorage::$storage["$storage"]["stru"])) $mysqlStru = SysStorage::$storage["$storage"]["stru"]; else return false; //Структура
+        
+        $myDb = SysStorage::getLink($storage);
+        if ($myDb===null) return false; //Если линка нет, то возвращаем пустой ответ  
+
+        $mysqlres = $myDb->query("DROP TABLE IF EXISTS tmp".Glob::$vars['session']->sid.";");
+        $mysqlres = $myDb->query("CREATE TEMPORARY TABLE tmp".Glob::$vars['session']->sid." SELECT * FROM `mnbv_products` WHERE id=$id;");
+        $mysqlres = $myDb->query("UPDATE tmp".Glob::$vars['session']->sid." SET id=(SELECT MAX(ID)+1 FROM `".$mysqlTable."`);");
+        $mysqlres = $myDb->query("INSERT INTO `mnbv_products` SELECT * FROM tmp".Glob::$vars['session']->sid.";");
+        $mysqlres = $myDb->query("DROP TABLE IF EXISTS tmp".Glob::$vars['session']->sid.";");
+        
+        if ($mysqlres) return $myDb->mysql_insert_id();        
+        return $mysqlres;
+    }
     
     /**
      * Редактирование объекта хранилища

@@ -178,14 +178,24 @@ function getCartQty(){
     });
 }
 
+let bbcOk = new Array();
 function addToCart(prodid){
-    $.ajax({
-        url: '/cart?act=add&prodid='+prodid+'&tpl_mode=json',
-        cache: false,
-        success: function(html){
-            getCartQty();
-        }
-    });
+    if (typeof bbcOk["bbc"+prodid] === "undefined"){
+        $.ajax({
+            url: '/cart?act=add&prodid='+prodid+'&tpl_mode=json',
+            cache: false,
+            success: function(html){
+                getCartQty();
+            }
+        });
+    
+        $("#bbc"+prodid).removeClass("btn-primary");
+        $("#bbc"+prodid).addClass("btn-outline-success");
+        document.getElementById("bbc"+prodid).innerText="Перейти в корзину";
+        bbcOk["bbc"+prodid] = true;
+    }else{
+        document.location.href = "/cart";
+    }
 }
 
 getCartQty();

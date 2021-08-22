@@ -68,7 +68,9 @@ function CheckListSort(){
 <?
 //Список объектов
 $folderCounter = 0;
+$curItemId = 0;
 foreach ($item['list'] as $key=>$value) if ($key>0) {
+    $curItemId++;
     if ($value['type']!=ST_FOLDER && empty($folderCounter)) {
         echo '<script>$(".use-prods").removeClass("d-none");</script>';
         $folderCounter++;
@@ -116,11 +118,11 @@ if (isset($value['files']["img"]["1"]) && $tecObjTxtCode = MNBVf::getObjCodeByUR
 <?}?>
 
 <?}?>
-<? if (empty($value['type']) || $value['type']!=1 && !empty($item['sub_obj']['price']) && $item['sub_obj']['price']>0){
+<? if ((empty($value['type']) || $value['type']!=1) && !empty($value['price']) && $value['price']>0){
 if (Glob::$vars['cart_ajax']){?>  
-            <button type="button" class="btn btn-primary" onclick="addToCart('<?=$value['id'];?>')"><?=Lang::get('Buy');?></button>
+            <button type="button" class="btn btn-primary" id="bbc<?=$value['id'];?>" onclick='addToCart("<?=$value['id'];?>");'><?=Lang::get('Buy');?></button>
 <?}else{?>
-            <a href="<?=MNBVf::requestUrl((!Lang::isDefLang())?'altlang':'',SysBF::getFrArr(Glob::$vars,'cart_url',''));?>?act=add&prodid=<?=$value['id'];?>" class="btn btn-primary"><?=Lang::get('Buy');?></a>
+            <a id="<?=$curItemId;?>" href="<?=MNBVf::requestUrl((!Lang::isDefLang())?'altlang':'',SysBF::getFrArr(Glob::$vars,'cart_url',''));?>?act=add&prodid=<?=$value['id'];?>" class="btn btn-primary"><?=Lang::get('Buy');?></a>
     <? 
 }    
 } ?>

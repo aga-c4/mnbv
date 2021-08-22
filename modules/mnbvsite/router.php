@@ -117,6 +117,11 @@ if ($kol_mnbv_route_arr>0 && preg_match("/([^\/]+)$/ui", Glob::$vars['mnbv_route
     }
 }
 
+//Для брендзон выберем по бренду его категорию - обход засады с тем, что вендора уже забрали и вытащить его стандартным путем уже не выйдет
+if (!empty($tecObjAlias) && $tecObjAlias==='bz' && !empty(Glob::$vars['mnbv_site']['sub_vendid'])){
+    Glob::$vars['mnbv_site']['sub_list_id'] = Glob::$vars['mnbv_site']['sub_vendid'];
+}
+
 //Обработаем ЧПУ URL
 Glob::$vars['mnbv_cur_master_uri'] = $currMasterUri = '/' . implode('/',Glob::$vars['mnbv_route_arr']); //Неразобранный остаток строки
 

@@ -211,7 +211,7 @@ Glob::$vars['url_types'] = array(
     "news" => array('id'=>2,'mod_pref'=>'news','cat_alias_view'=>true,'item_pref'=>'nv_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''),        //Параметры новости
     "articles" => array('id'=>3,'mod_pref'=>'articles','cat_alias_view'=>true,'item_pref'=>'art_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''),//Параметры статьи
     "actions" => array('id'=>4,'mod_pref'=>'actions','cat_alias_view'=>true,'item_pref'=>'act_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''), //Параметры отзывов
-    "vendors" => array('id'=>5,'mod_pref'=>'vendors','cat_alias_view'=>true,'item_pref'=>'','alias_delim'=>'','alias_view'=>true,'item_postf'=>''),  //Вендоры
+    "vendors" => array('id'=>5,'mod_pref'=>'bz','cat_alias_view'=>true,'item_pref'=>'bz_','alias_delim'=>'-','alias_view'=>true,'item_postf'=>''), //Вендоры
 );
 
 /**

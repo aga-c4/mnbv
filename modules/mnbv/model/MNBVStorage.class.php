@@ -244,6 +244,52 @@ class MNBVStorage{
         return $result;
     }
 
+    /**
+     * Копирование объекта хранилища
+     * @param string $storage - хранилище
+     * @param array $id - идентификатор копируемого объекта (первичный ключ). Новый будет иметь следующее значение 
+     * @param bool $accVal - маркер необходимости проводить проверку прав доступа из Glob::$vars['user']->get('permstr')
+     * @param bool $params - дополнительные параметры в частности тип добавления см потом в реализации мускула
+     * @return mixed - если успешно, то id созданного объекта, иначе FALSE
+     */
+    public static function copyObj($storage,$id='',$accVal=true,$params=array()){
+
+        if (empty($id)) return array(0);
+        
+        $timeStartFunct = SysBF::getmicrotime();
+
+        //Выберем подходящий тип хранилища
+        if (is_array($storage)){
+            $mainStorage = strtolower($storage[0]['name']);
+        }else{
+            $mainStorage = strtolower($storage);
+        }
+
+        if (!empty(SysStorage::$storage["$mainStorage"]["db"])&&!empty(SysStorage::$db[SysStorage::$storage["$mainStorage"]["db"]]['dbtype'])&&in_array(SysStorage::$db[SysStorage::$storage["$mainStorage"]["db"]]['dbtype'],SysStorage::$dbtypes)){
+            $dbtype = SysStorage::$db[SysStorage::$storage["$mainStorage"]["db"]]['dbtype'];
+        }else{SysLogs::addError("No storage: $mainStorage");return array(0);}
+
+        //В фильтры при необходимости добавим условие на проверку прав доступа
+        if ($accVal && !Glob::$vars['user']->get('root') && !in_array(SysStorage::$storage["$storage"]["access2"],Glob::$vars['user']->get('permarr'))) return false;
+
+        $result = array(0);
+        if     ($dbtype === 'mysql') $result =  MNBVMySQLSt::copyObj($storage,$id,$params);
+        elseif ($dbtype === 'mongodb') $result =  MNBVMongoSt::copyObj($storage,$id);
+        elseif ($dbtype === 'redis') $result =  MNBVRedisSt::copyObj($storage,$id);
+        elseif ($dbtype === 'file') $result =  MNBVFileSt::copyObj($storage,$id);
+        elseif ($dbtype === 'array') $result =  MNBVArraySt::copyObj($storage,$id);
+        
+        if (SysLogs::$logsEnable) {
+            $timeRunFunct = SysBF::getmicrotime()-$timeStartFunct;
+            if (isset(self::$stat[$dbtype])) {
+                self::$stat[$dbtype]['add']['qty']++;
+                self::$stat[$dbtype]['add']['time'] += $timeRunFunct;
+            }
+        }
+        
+        return $result;
+    }
+
 
     /**
      * Удаляет из заданного хранилища объекты, соответствующие фильтру

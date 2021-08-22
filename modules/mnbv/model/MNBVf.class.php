@@ -777,6 +777,7 @@ class MNBVf {
                             }else{
                                 $result .= '/io' . $obj['id']; //Идентификатор объекта или списка, если это папка
                             }
+                            echo "$result";
                         }
                     } else { //Вариант с текущим хранилищем
                         $result .= (!empty($obj['alias']))?('/'.$obj['alias']):('/id'.$obj['id']);

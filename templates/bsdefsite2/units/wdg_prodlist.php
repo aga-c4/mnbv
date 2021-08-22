@@ -58,9 +58,9 @@ if (isset($value['files']["img"]["1"]) && $tecObjTxtCode = MNBVf::getObjCodeByUR
 
 <?}?>
 <? 
-if (empty($value['type']) || $value['type']!=1 && !empty($item['sub_obj']['price']) && $item['sub_obj']['price']>0){
+if ((empty($value['type']) || $value['type']!=1) && !empty($value['price']) && $value['price']>0){
 if (Glob::$vars['cart_ajax']){?>  
-            <button type="button" class="btn btn-primary" onclick="addToCart('<?=$value['id'];?>')"><?=Lang::get('Buy');?></button>
+            <button type="button" id="bbc<?=$value['id'];?>" class="btn btn-primary" onclick="addToCart('<?=$value['id'];?>')"><?=Lang::get('Buy');?></button>
 <?}else{?>
             <a href="<?=MNBVf::requestUrl((!Lang::isDefLang())?'altlang':'',SysBF::getFrArr(Glob::$vars,'cart_url',''));?>?act=add&prodid=<?=$value['id'];?>" class="btn btn-primary"><?=Lang::get('Buy');?></a>
     <? 

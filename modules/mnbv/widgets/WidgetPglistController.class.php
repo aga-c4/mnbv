@@ -84,6 +84,9 @@ class WidgetPglistController extends AbstractWidgetControllerController {
      */
     public $tpl = '';
     
+    /**
+     * @var type номер изображения баннера 1 - по-умолчанию
+     */
     public $ban_img_id = 1;
     
     public function __construct($widget) {
@@ -131,7 +134,7 @@ class WidgetPglistController extends AbstractWidgetControllerController {
         if (!empty($param['list_link_name'])) $this->list_link_name = $param['list_link_name'];
         if (isset($param['only_first'])) $this->only_first = (!empty($param['only_first']))?true:false;
         if (isset($param['obj_prop_conf']) && is_array($param['obj_prop_conf'])) $this->obj_prop_conf = $param['obj_prop_conf'];
-        if (isset($param['list_max_items'])) $this->ban_img_id = intval($param['ban_img_id']);
+        if (isset($param['ban_img_id'])) $this->ban_img_id = intval($param['ban_img_id']);
         $vidget_alias = (!empty($param['vidget_alias']))?$param['vidget_alias']:'';
 
         $tplFile = MNBVf::getRealTplName(Glob::$vars['mnbv_tpl'], 'units/'.((!empty($vidget_tpl))?$vidget_tpl:'wdg_'.$this->thisWidgetName.'.php'));
@@ -205,7 +208,6 @@ class WidgetPglistController extends AbstractWidgetControllerController {
         
         foreach ($item['list'] as $key=>$value) if ($key>0) {
             if (!empty($value["id"])) {
-
                 //Формирование полей vars,attr объекта --------------------------------------------------------------------------
                 $value['vars'] = (!empty($value['vars']))?SysBF::json_decode($value['vars']):array();
                 $value['attr'] = (!empty($value['attr']))?SysBF::json_decode($value['attr']):array();
@@ -218,6 +220,7 @@ class WidgetPglistController extends AbstractWidgetControllerController {
                 $value['page_main_alias'] = $this->list_main_alias;
                 $value['folder_start_id'] = $this->folder_start_id;
                 $value['folder_alias'] = $this->folder_alias;
+                
                 $item['list'][strval($key)]['files'] = (!empty($value['files']))?MNBVf::updateFilesArr($this->storage,$value["id"],$value['files']):array();
                 if (Lang::isDefLang()){//Дефолтовый язык
                     $item['list'][strval($key)]['url'] = MNBVf::generateObjUrl($value); //Формирование URL из текущего адреса
