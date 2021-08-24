@@ -171,7 +171,7 @@ MNBVf::startVidget('pglist',$item,array(
         "price" => array("name"=>"price", "type"=>"text", "active" => "print")
     )
 ),
-'wdg_prodlist.php');
+'wdg_prodlist2.php');
 ?>
 <div class="w-100 mt-3 pl-1"><a href="<?=(Lang::isAltLang()?('/'.Lang::getAltLangName()):'');?>/news" class="h5 text-dark font-weight-bold text-decoration-none"><?=Lang::get('News');?></a></div>
 <? //Виджет новостей
