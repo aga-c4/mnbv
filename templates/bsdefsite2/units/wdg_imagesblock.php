@@ -63,7 +63,10 @@ for ($i=1;$i<=$formImgNum;$i++){
         $a1 = (SysBF::getFrArr($item['sub_obj']['files']["img"]["$i"],'src_big'))?'<a href="'.$item['sub_obj']['files']["img"]["$i"]['src_big'].'" data-lightbox="lightbox" data-title="'.$n.'">':'';
         $a2 = (!empty($a1))?'</a>':'';
 
-        $previewBl .= $a1 . '<img class="img-fluid" src="' . $u . '""' . $imgWStr . $imgWStr . '>' . $a2 . "\n";
+        //Костыль по высоте, делаем жестко
+        $imgHStr = ' height="80px"';
+        $imgWStr = '';
+        $previewBl .= $a1 . '<img class="img-fluid" src="' . $u . '""' . $imgWStr . $imgHStr . '>' . $a2 . "\n";
         $itemCNT++;
     }
 }
