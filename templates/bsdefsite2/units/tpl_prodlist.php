@@ -22,7 +22,7 @@ if (isset($item['attr_filters']) && is_array($item['attr_filters'])
 } 
 ?>
 
-<div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-4 mb-2">
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 mb-2">
     
 <? if (isset($item['attr_filters']) && is_array($item['attr_filters']) && count($item['attr_filters'])){ ?>
 <div class="col mt-2">
@@ -64,7 +64,7 @@ function CheckListSort(){
 <? } ?>
 </div>
 
-<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-1">
+<div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-4 g-1">
 <?
 //Список объектов
 $folderCounter = 0;
