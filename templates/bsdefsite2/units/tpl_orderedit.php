@@ -159,8 +159,8 @@ if (is_array($item['cart_items']['pay_list']) && count($item['cart_items']['pay_
 
 <div class="mt-3">
     <h5>Данные по оплате:</h5>
-    Стоимость доставки: <?=SysBF::getFrArr($item['cart_items'],'delivsum',0).' '.Glob::$vars['prod_currency_suf'];?><br>
-    <b>Всего к оплате: <?=SysBF::getFrArr($item['cart_items'],'finsum',0).' '.Glob::$vars['prod_currency_suf'];?></b>
+    Стоимость доставки: <?=SysBF::getFrArr($item['cart_items'],'delivsum',0).' '.Glob::$vars['prod_currency_suf'];?><br><br>
+    <h4 style="color:green">Всего к оплате: <?=SysBF::getFrArr($item['cart_items'],'finsum',0).' '.Glob::$vars['prod_currency_suf'];?></h4>
 </div>
 
 <?
