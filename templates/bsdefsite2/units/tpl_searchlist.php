@@ -89,9 +89,9 @@ function CheckListSort(){
 </div>
 
 <? if (!empty($item['cat_list_size'])) { ?>
-<div class="row row-cols-1 row-cols-lg-2 row-cols-xl-3 g-1">
+<div class="row row-cols-2 row-cols-lg-3 row-cols-xl-4 g-1">
 <? }else{ ?>
-<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-xl-4 g-1">    
+<div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-4 g-1">    
 <? } ?>  
 
 <?
@@ -132,7 +132,7 @@ if (isset($value['files']["img"]["1"]) && $tecObjTxtCode = MNBVf::getObjCodeByUR
 } 
 ?>
         <div class="card-body">
-            <h5 class="card-title"><a href="<?=SysBF::getFrArr($value,'url','');?>"><?=SysBF::getFrArr($value,'name','');?></a></h5>
+            <h5 class="card-title<?=($value['type'])?' card-title-cat':' card-title-prod';?>"><a href="<?=SysBF::getFrArr($value,'url','');?>"><?=SysBF::getFrArr($value,'name','');?></a></h5>
             <? if ($value["type"]!=1) echo Lang::get("Code") .': '. SysBF::getFrArr($value,'id','')."<br>\n";?>
     <? /*=(!empty($value['about']))?('<p class="card-text">'.$value['about'].'</p>'):'';*/?>
 <? if (!empty($value['price']) && $value['price']>0){
