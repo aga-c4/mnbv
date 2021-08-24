@@ -66,9 +66,9 @@ thead{
             <? } else  {?>
                 <br><b>Есть в наличии</b>
             <? } ?></td>
-            <td><?=SysBF::getFrArr($value,'price','');?></td>
-            <td><?=SysBF::getFrArr($value,'qty',0);?></td>
-            <td><?=SysBF::getFrArr($value,'itemsum','');?></td>
+            <td><span class="d-md-none">Цена: </span><b><?=SysBF::getFrArr($value,'price','');?></b><span class="d-md-none"> <?=Glob::$vars['prod_currency_suf'];?></span></td>
+            <td><span class="d-md-none">Количество: </span><?=SysBF::getFrArr($value,'qty',0);?></td>
+            <td><span class="d-md-none">Сумма: </span><b><?=SysBF::getFrArr($value,'itemsum','');?></b><span class="d-md-none"> <?=Glob::$vars['prod_currency_suf'];?></span></td>
         </tr>
         <? $counter++;} ?>
     </tbody>
@@ -82,14 +82,16 @@ thead{
 <? } ?>
 
 <div class="mt-3">
-    Стоимость товаров: <?=SysBF::getFrArr($item['cart_items'],'prsum',0).' '.Glob::$vars['prod_currency_suf'];?><br>
-    Включая скидку: <?=SysBF::getFrArr($item['cart_items'],'prdisc',0).' '.Glob::$vars['prod_currency_suf'];?><br>
-    Масса товара: <?=SysBF::getFrArr($item['cart_items'],'weight',0);?> кг<br>
-    Количество товара: <?=SysBF::getFrArr($item['cart_items'],'qty',0);?> шт<br>
-    Объем товара: <?=SysBF::getFrArr($item['cart_items'],'volume',0);?> м3<br>
-    Высота: <?=SysBF::getFrArr($item['cart_items'],'height',0);?> cм<br>
-    Мин. ширина/глубина: <?=SysBF::getFrArr($item['cart_items'],'minw',0);?> см<br>
-    Макc. ширина/глубина: <?=SysBF::getFrArr($item['cart_items'],'maxw',0);?> см
+    <h5>Стоимость товаров: <?=SysBF::getFrArr($item['cart_items'],'prsum',0).' '.Glob::$vars['prod_currency_suf'];?></h5>
+    <?
+    if (SysBF::getFrArr($item['cart_items'],'prdisc',0)>0) echo 'Включая скидку: '.SysBF::getFrArr($item['cart_items'],'prdisc',0).' '.Glob::$vars['prod_currency_suf']."<br>\n";
+    if (SysBF::getFrArr($item['cart_items'],'weight',0)>0) echo 'Масса товара: '.SysBF::getFrArr($item['cart_items'],'weight',0)." кг<br>\n";
+    echo 'Количество товара: '.SysBF::getFrArr($item['cart_items'],'qty',0)." шт<br>\n";
+    if (SysBF::getFrArr($item['cart_items'],'volume',0)>0) echo 'Объем товара: '.SysBF::getFrArr($item['cart_items'],'volume',0)." м3<br>\n";
+    if (SysBF::getFrArr($item['cart_items'],'height',0)>0) echo 'Высота: '.SysBF::getFrArr($item['cart_items'],'height',0)." cм<br>\n";
+    if (SysBF::getFrArr($item['cart_items'],'minw',0)>0) echo 'Мин. ширина/глубина: '.SysBF::getFrArr($item['cart_items'],'minw',0)." см<br>\n";
+    if (SysBF::getFrArr($item['cart_items'],'maxw',0)>0) echo 'Макc. ширина/глубина: '.SysBF::getFrArr($item['cart_items'],'maxw',0)." см\n";
+    ?>
 </div>
 
 <script>

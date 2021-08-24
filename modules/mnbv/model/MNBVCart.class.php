@@ -253,7 +253,7 @@ class MNBVCart{
             //discminmargval - порог маржи в рублях, ниже которого скидка не может быть
             $discountParamsArr = array('user' => 'current','discmaxpr'=>$value["discmaxpr"],'discmaxval'=>$value["discmaxval"], 'discminmargpr'=>$value["discminmargpr"], 'discminmargval'=>$value["discminmargval"]);
             $value['discount_price'] = MNBVDiscount::getPrice($value["prodid"], $value["prdprice"], $value["cost"], $discountParamsArr);
-            $value['itemsum'] = $value['discount_price'] * $value["qty"];
+            $value['itemsum'] = round($value['discount_price'] * $value["qty"],2);
             
             //Размеры и вес
             $result["prsum"] += $value['itemsum']; //Стоимость товаров 
