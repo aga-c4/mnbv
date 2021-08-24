@@ -66,7 +66,7 @@ for ($i=1;$i<=$formImgNum;$i++){
         //Костыль по высоте, делаем жестко
         $imgHStr = ' height="60px"';
         $imgWStr = '';
-        $previewBl .= $a1 . '<img class="img-fluid" src="' . $u . '""' . $imgWStr . $imgHStr . '>' . $a2 . "\n";
+        $previewBl .= $a1 . '<img class="img-fluid" src="' . $u . '"' . $imgWStr . $imgHStr . '>' . $a2 . "\n";
         $itemCNT++;
     }
 }
