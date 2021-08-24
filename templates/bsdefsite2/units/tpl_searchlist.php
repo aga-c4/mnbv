@@ -89,7 +89,7 @@ function CheckListSort(){
 </div>
 
 <? if (!empty($item['cat_list_size'])) { ?>
-<div class="row row-cols-<?($item['cat_list_size']>1)?'2':'1';?> row-cols-lg-3 row-cols-xl-4 g-1">
+<div class="row row-cols-<?=($item['cat_list_size']>1)?'2':'1';?> row-cols-lg-3 row-cols-xl-4 g-1">
 <? }else{ ?>
 <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-4 g-1">    
 <? } ?>  
