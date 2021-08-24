@@ -43,7 +43,10 @@ if (isset($item['sub_obj']['files']["img"]["1"]) && $tecObjTxtCode = MNBVf::getO
 //Под основным изображением выведем минигаллерею с открытием больших картинок
 //Вывод типа: <a href='URL_big' data-toggle="lightbox" data-title='$row->name'><img src='URL'></a>
 $formImgNum = (isset($item["img_max_size"]["form_img_num"]))?intval($item["img_max_size"]["form_img_num"]):5; //количество изображений в панели редактирования
-for ($i=2;$i<=$formImgNum;$i++){
+$itemCNT = 0;
+$previewBl = '';
+for ($i=1;$i<=$formImgNum;$i++){
+    
     if (isset($item['sub_obj']['files']["img"]["$i"]) && !$tecObjTxtCode = MNBVf::getObjCodeByURL(SysBF::getFrArr($item['sub_obj']['files']["img"]["$i"],'src',''))){ //Это не специфический объект - выводим
 
         $imgWStr = (isset($value['files']["img"]["$i"]['size']['min']['w']))?(' width="'.$value['files']["img"]["$i"]['size']['min']['w'].'"'):'';
@@ -60,9 +63,11 @@ for ($i=2;$i<=$formImgNum;$i++){
         $a1 = (SysBF::getFrArr($item['sub_obj']['files']["img"]["$i"],'src_big'))?'<a href="'.$item['sub_obj']['files']["img"]["$i"]['src_big'].'" data-lightbox="lightbox" data-title="'.$n.'">':'';
         $a2 = (!empty($a1))?'</a>':'';
 
-        echo $a1 . '<img class="img-fluid" src="' . $u . '""' . $imgWStr . $imgWStr . '>' . $a2 . "\n";
+        $previewBl .= $a1 . '<img class="img-fluid" src="' . $u . '""' . $imgWStr . $imgWStr . '>' . $a2 . "\n";
+        $itemCNT++;
     }
 }
+if ($itemCNT>1) echo $previewBl;
 ?>        
 </div>
 <!-- /Images -->
