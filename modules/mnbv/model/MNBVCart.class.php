@@ -207,13 +207,13 @@ class MNBVCart{
             $itemId = $value["id"];
             $prodidStr = strval($value["prodid"]);
             
-            $itemFiles = (!empty($value['files']))?SysBF::json_decode($value['files']):array();
+            $itemFiles = (!empty($value['files']))?MNBVf::updateFilesArr("products",$value["prodid"],$value['files']):array();
             
             $value["img"] = '';
             
             if (isset($itemFiles["img"])){
                 if (isset($itemFiles["img"]["1"]) && $tecObjTxtCode = MNBVf::getObjCodeByURL(SysBF::getFrArr($itemFiles["img"]["1"],'src',''))){//Нашли специфический объект (видео, ютуб.....), выводим его 
-                    $yuScrArr = MNBVf::getYoutubeScreenByURL(SysBF::getFrArr($value['files']["img"]["1"],'src',''));
+                    $yuScrArr = MNBVf::getYoutubeScreenByURL(SysBF::getFrArr($itemFiles["img"]["1"],'src',''));
                     $value["img"] = SysBF::getFrArr($yuScrArr,'default','');
                 } else {//Никакого специфического объекта не нашли, выводим изображения по стандартной схеме
                     if (isset($itemFiles['img']["1"])){ 
