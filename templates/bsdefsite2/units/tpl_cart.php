@@ -72,7 +72,7 @@ thead{
                 <td><span class="d-md-none">Цена: </span><b><?=SysBF::getFrArr($value,'price','');?></b><span class="d-md-none"> <?=Glob::$vars['prod_currency_suf'];?></span></td>
                 <td><span class="d-md-none">Количество: </span><input type="text" size="4" id="qty<?=$value["id"];?>" name=qty<?=$value["id"];?> class="form-control" value="<?=SysBF::getFrArr($value,'qty',0);?>"></td>
                 <td><span class="d-md-none">Сумма: </span><b><?=SysBF::getFrArr($value,'itemsum','');?></b><span class="d-md-none"> <?=Glob::$vars['prod_currency_suf'];?></span></td>
-                <td><a href="/cart/?act=rem&itemid=<?=$value["id"];?>" class="text-decoration-none">❌</a></td>
+                <td><span class="d-md-none">Удалить: </span><a href="/cart/?act=rem&itemid=<?=$value["id"];?>" class="text-decoration-none">❌</a></td>
                 <input type="hidden" name="crtitem[]" value="<?=$value["id"];?>">
             </tr>
             <? $counter++;} ?>
