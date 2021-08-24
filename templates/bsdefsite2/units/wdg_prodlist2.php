@@ -10,12 +10,14 @@
 $itemCounter = 0;
 $listSize = count($item['list']);
 $max_item_3 = $listSize - $listSize%3;
+$max_item_2 = $listSize - $listSize%2;
 foreach ($item['list'] as $key=>$value) if ($key>0) {
     $dopItemClassStr = '';
     //if ($itemCounter==1) $dopItemClassStr = ''; // Если на минимуме 1 товар. то так: ' d-none d-md-block';  //d-sm-none d-xl-block
     //elseif ($itemCounter==2) $dopItemClassStr = ' d-none d-lg-block';
     //elseif ($itemCounter>2) $dopItemClassStr = ' d-none d-xl-block';
     if ($itemCounter+1>$max_item_3) $dopItemClassStr = ' d-block d-md-none d-lg-block';
+    if ($itemCounter>3 && $itemCounter+1>$max_item_2) continue; //Отрезаем лишние нечетные блоки
     $itemCounter++;
 ?>
 <?
