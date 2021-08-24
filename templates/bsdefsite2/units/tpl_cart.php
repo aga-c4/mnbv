@@ -41,7 +41,7 @@ thead{
     <table class="table table-striped w-100">
         <thead class="table-light">
             <tr class="tblhead">
-                <th>
+                <th style="width:100px;"></th>
                 <th  class="tlbhead" width="100%">Товар</th>
                 <th style="min-width:100px;">Цена, <?=Glob::$vars['prod_currency_suf'];?></th>
                 <th style="min-width:50px;">Кол.</th>
@@ -55,8 +55,15 @@ thead{
             $counter = 1;
             foreach($item['cart_items']['list'] as $value) { ?>
             <tr>
-                <th><?=$counter;?></th>
-                <td><a href="<?=SysBF::getFrArr($value,'url','');?>"><?=SysBF::getFrArr($value,'name','');?></a><? 
+                <th style="width:100px;"><?
+                    $itemImg = SysBF::getFrArr($value,'img','');
+                    if (!empty($itemImg)) {
+                        echo '<a href="'.SysBF::getFrArr($value,'url','').'"><img src="'.$itemImg.'" style="width:100%;"></a>';
+                    }
+                ?></th>
+                <td><a href="<?=SysBF::getFrArr($value,'url','');?>"><?=SysBF::getFrArr($value,'name','');?></a><br>
+                    Код товара: <?=SysBF::getFrArr($value,'prodid','');?>    
+                <? 
                 if (!empty($value["deficit"])){ ?>
                     <br><?=(!empty($value["instock"]))?('<b>В наличии '.$value["instock"].' ед.</b> / '):'';?><b class="text-danger">Под заказ <?=$value["deficit"];?> ед.</b>    
                 <? } else  {?>

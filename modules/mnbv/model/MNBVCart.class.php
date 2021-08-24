@@ -177,7 +177,7 @@ class MNBVCart{
                 array('name'=>'cartitems','alias'=>'ci'),
                 array('join'=>'left','name'=>'products', 'alias'=>'prd','on'=>array("prd.id","=","field::ci.prodid"))),
                 
-            array(array("ci.id","id"),"prodid","qty",array("ci.price","price"),"discval","discpr","promocode","ts","region",
+            array(array("ci.id","id"),"prodid","files","qty",array("ci.price","price"),"discval","discpr","promocode","ts","region",
                 array("ci.brweight","brweight"),array("ci.brheight","brheight"),array("ci.brminw","brminw"),array("ci.brmaxw","brmaxw"),array("ci.brvolume","brvolume"),
                 "name","namelang","alias",array("prd.price","prdprice"),"cost","discmaxpr","discmaxval","discminmargpr","discminmargval",array("prd.quantity","prdqty")),
             
@@ -206,6 +206,22 @@ class MNBVCart{
         foreach ($item['list'] as $key=>$value) if ($key>0) {
             $itemId = $value["id"];
             $prodidStr = strval($value["prodid"]);
+            
+            $itemFiles = (!empty($value['files']))?SysBF::json_decode($value['files']):array();
+            
+            $value["img"] = '';
+            
+            if (isset($itemFiles["img"])){
+                if (isset($itemFiles["img"]["1"]) && $tecObjTxtCode = MNBVf::getObjCodeByURL(SysBF::getFrArr($itemFiles["img"]["1"],'src',''))){//Нашли специфический объект (видео, ютуб.....), выводим его 
+                    $yuScrArr = MNBVf::getYoutubeScreenByURL(SysBF::getFrArr($value['files']["img"]["1"],'src',''));
+                    $value["img"] = SysBF::getFrArr($yuScrArr,'default','');
+                } else {//Никакого специфического объекта не нашли, выводим изображения по стандартной схеме
+                    if (isset($itemFiles['img']["1"])){ 
+                        $value["img"] = SysBF::getFrArr($itemFiles["img"]["1"],'src_min','');
+                        if (empty($value["img"])) $value["img"] = SysBF::getFrArr($itemFiles["img"]["1"],'url','');
+                    }
+                } 
+            }
             
             if (!isset($cartProdsQty[$prodidStr])) $cartProdsQty[$prodidStr] = 0;
             $cartProdsQty[$prodidStr] += $value["qty"];
