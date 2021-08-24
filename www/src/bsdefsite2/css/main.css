@@ -11,3 +11,13 @@
 .prodlist-img{
     width: auto;
 }
+
+.card-title-prod {
+    font-size: 1rem;
+    text-decoration: none;
+}
+
+.card-title-cat {
+    font-size: 1rem;  
+    text-decoration: none;
+}

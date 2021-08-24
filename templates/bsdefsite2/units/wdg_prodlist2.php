@@ -50,7 +50,7 @@ if (isset($value['files']["img"]["1"]) && $tecObjTxtCode = MNBVf::getObjCodeByUR
 } 
 ?>
         <div class="card-body">
-            <h5 class="card-title"><a href="<?=SysBF::getFrArr($value,'url','');?>"><?=SysBF::getFrArr($value,'name','');?></a></h5>
+            <h5 class="card-title <?=($value['type'])?' card-title-cat':' card-title-prod';?>"><a href="<?=SysBF::getFrArr($value,'url','');?>"><?=SysBF::getFrArr($value,'name','');?></a></h5>
     <?=($value['type']==1 && !empty($value['about']))?('<p class="card-text">'.$value['about'].'</p>'):'';?>
 <? if (!empty($value['price']) && $value['price']>0){
     ?><?=Lang::get("Price");?>: <span style="font-weight:bold;"><?=SysBF::getFrArr($value,'price','').Glob::$vars['prod_currency_suf'];?></span>
