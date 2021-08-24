@@ -64,9 +64,8 @@ for ($i=1;$i<=$formImgNum;$i++){
         $a2 = (!empty($a1))?'</a>':'';
 
         //Костыль по высоте, делаем жестко
-        $imgHStr = ' height="60px"';
-        $imgWStr = '';
-        $previewBl .= $a1 . '<img class="img-fluid" src="' . $u . '"' . $imgWStr . $imgHStr . '>' . $a2 . "\n";
+        //$previewBl .= $a1 . '<img class="img-fluid" src="' . $u . '"' . $imgWStr . $imgHStr . '>' . $a2 . "\n";
+        $previewBl .= $a1 . '<img class="img-fluid" src="' . $u . '" style="height:60px;">' . $a2 . "\n";
         $itemCNT++;
     }
 }
