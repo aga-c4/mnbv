@@ -39,7 +39,7 @@ if (isset($value['files']["img"]["1"]) && $tecObjTxtCode = MNBVf::getObjCodeByUR
         if ($imgWStr=='' && isset($item['img_max_size']['img_max_w'])) $imgWStr = ' width="'. $item['img_max_size']['img_max_w'] .'"';
         $imgHStr = (isset($value['files']["img"]["1"]['size']['h']))?(' height="'.$value['files']["img"]["1"]['size']['h'].'"'):'';
 ?>
-        <a href="<?=SysBF::getFrArr($value,'url','');?>" class="prodlist-img-a w-100 d-flex justify-content-center bg-white"><img class="card-img-top prodlist-img h-100" src='<?=SysBF::getFrArr($value['files']["img"]["1"],'src','');?>' alt="<?=SysBF::getFrArr($value,'name','');?>"></a>
+        <a href="<?=SysBF::getFrArr($value,'url','');?>" class="prodlist-img-a w-100 d-flex justify-content-center bg-white"><img class="card-img-top prodlist-img h-100" src='<?=SysBF::getFrArr($value['files']["img"]["1"],'src_min','');?>' alt="<?=SysBF::getFrArr($value,'name','');?>"></a>
 <? 
     }
 } 

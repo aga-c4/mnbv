@@ -91,7 +91,7 @@ if (isset($value['files']["img"]["1"]) && $tecObjTxtCode = MNBVf::getObjCodeByUR
 } else {//Никакого специфического объекта не нашли, выводим изображения по стандартной схеме
     if (isset($value['files']['img']["1"])){ 
         //Подготовим размеры изображений
-        $imgURL = SysBF::getFrArr($value['files']["img"]["1"],'src','');
+        $imgURL = SysBF::getFrArr($value['files']["img"]["1"],'src_min','');
         $imgWStr = (isset($value['files']["img"]["1"]['size']['w']))?(' width="'.$value['files']["img"]["1"]['size']['w'].'"'):'';
         if ($imgWStr=='' && isset($item['img_max_size']['img_max_w'])) $imgWStr = ' width="'. $item['img_max_size']['img_max_w'] .'"';
         $imgHStr = (isset($value['files']["img"]["1"]['size']['h']))?(' height="'.$value['files']["img"]["1"]['size']['h'].'"'):'';
