@@ -4,16 +4,6 @@
  * Данные передаются массиве $item
  */
 ?>
-<div class ="row">
-    <div class="col-sm-12 col-md-6">
-        
-        <p>
-            <i><?=SysBF::getFrArr($item['sub_obj'],'about','');?></i>
-        </p>
-
-    </div>  
-</div>
-
 <div class="w-100">
 <?=SysBF::getFrArr($item['sub_obj'],'text','');?>
 </div>
