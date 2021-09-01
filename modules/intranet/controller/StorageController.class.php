@@ -1109,7 +1109,7 @@ class StorageController {
                             }
                             
                             //Весовая категория
-                            $updateArr["weightgr"] = 0;
+                            if (isset($updateArr["weightgr"])) $updateArr["weightgr"] = 0;
                             if (!empty($updateArr["brweight"])){
                                 foreach(Glob::$vars['one_weightgr_types_levels'] as $key=>$vval) {
                                     if ($updateArr["brweight"]>$vval) continue;
@@ -1119,7 +1119,7 @@ class StorageController {
                             }
                             
                             //Размерная категория
-                            $updateArr["sizegr"] = 0;
+                            if (isset($updateArr["sizegr"])) $updateArr["sizegr"] = 0;
                             foreach(Glob::$vars['one_sizegr_types_levels'] as $key=>$vval) {
                                 if ($updateArr["brvolume"]>$vval["v"]) continue;
                                 if (!empty($updateArr["brheight"]) && $updateArr["brheight"]>$vval["h"]) continue;
