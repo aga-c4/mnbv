@@ -1576,9 +1576,9 @@ class MNBVf {
                 }elseif(!empty($files["img"]["$i"]['src'])){
                     $imgTitle = (!empty($files["img"]["$i"]["name"]))?$files["img"]["$i"]["name"]:'';
                     $imgSrc = SysBF::getFrArr($files['img']["$i"],'src','');
-                    $replace1 = ((SysBF::getFrArr($files["img"]["$i"],'go_link'))?('<a href="'.$files['img']["$i"]['go_link'].'" target=_blank>'):'') . '<img src="' . $imgSrc . '" title="'.$imgTitle.'">'.((SysBF::getFrArr($files["img"]["$i"],'go_link'))?('</a>'):'');
-                    $replace2 = ((SysBF::getFrArr($files["img"]["$i"],'go_link'))?('<a href="'.$files['img']["$i"]['go_link'].'" target=_blank>'):'') . '<img align=left src="' . $imgSrc . '" title="'.$imgTitle.'">'.((SysBF::getFrArr($files["img"]["$i"],'go_link'))?('</a>'):'');
-                    $replace3 = ((SysBF::getFrArr($files["img"]["$i"],'go_link'))?('<a href="'.$files['img']["$i"]['go_link'].'" target=_blank>'):'') . '<img align=right src="' . $imgSrc . '" title="'.$imgTitle.'">'.((SysBF::getFrArr($files["img"]["$i"],'go_link'))?('</a>'):'');
+                    $replace1 = ((SysBF::getFrArr($files["img"]["$i"],'go_link'))?('<a href="'.$files['img']["$i"]['go_link'].'" target=_blank>'):'') . '<img class="imgrpl" src="' . $imgSrc . '" title="'.$imgTitle.'">'.((SysBF::getFrArr($files["img"]["$i"],'go_link'))?('</a>'):'');
+                    $replace2 = ((SysBF::getFrArr($files["img"]["$i"],'go_link'))?('<a href="'.$files['img']["$i"]['go_link'].'" target=_blank>'):'') . '<img class="imgrpl" align=left src="' . $imgSrc . '" title="'.$imgTitle.'">'.((SysBF::getFrArr($files["img"]["$i"],'go_link'))?('</a>'):'');
+                    $replace3 = ((SysBF::getFrArr($files["img"]["$i"],'go_link'))?('<a href="'.$files['img']["$i"]['go_link'].'" target=_blank>'):'') . '<img class="imgrpl" align=right src="' . $imgSrc . '" title="'.$imgTitle.'">'.((SysBF::getFrArr($files["img"]["$i"],'go_link'))?('</a>'):'');
                     $PgHtml = preg_replace("/\{\{img:".$i."\}\}/ui", $replace1, $PgHtml);
                     $PgHtml = preg_replace("/\{\{img-left:".$i."\}\}/ui", $replace2, $PgHtml);
                     $PgHtml = preg_replace("/\{\{img-right:".$i."\}\}/ui", $replace3, $PgHtml);
