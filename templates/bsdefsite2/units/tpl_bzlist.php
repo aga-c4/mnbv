@@ -66,7 +66,6 @@ if (isset($value['files']["img"]["1"]) && $tecObjTxtCode = MNBVf::getObjCodeByUR
                 <div class="col-md-8">
                     <div class="card-body">
                         <h5 class="card-title"><a href="<?=SysBF::getFrArr($value,'url','');?>"><?=SysBF::getFrArr($value,'name','');?></a></h5>
-                        <?=(SysBF::getFrArr($value,'type')!=1)?('<span class="card-subtitle mb-2 text-muted">'.MNBVf::getDateStr(SysBF::getFrArr($value,'date',0),array('mnbv_format'=>'type1')).'</span>'):'';?>
                         <?=(!empty($value['about']))?('<p class="card-text">'.$value['about'].'</p>'):'';?>
                     </div>
                 </div>
