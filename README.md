@@ -158,10 +158,14 @@ mklink /j imgeditor ..\..\tmp\imgeditor
 Для папки www/data:
 mklink /j site ..\..\data\storage_files\site
 mklink /j news ..\..\data\storage_files\news
+mklink /j actions ..\..\data\storage_files\actions
 mklink /j articles ..\..\data\storage_files\articles
 mklink /j products ..\..\data\storage_files\products
-mklink /j actions ..\..\data\storage_files\actions
+mklink /j vendors ..\..\data\storage_files\vendors
 ```
+
+Если необходимо подключить статику из app, то переходим в www\src и делаем что-то вроде:
+mklink /j appsrc ..\..\app\www\src\appsrc
 
 5. Создайте базу данных базовая кодировка utf-8, сравнение utf8_general_ci
 По-умолчанию для базы используется название mnbv8. При локальных тестах она
