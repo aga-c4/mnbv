@@ -405,13 +405,60 @@ class SysBF {
     
     public static function prepareSearchSth($str){
         $res = $str;
-        $res=preg_replace('/<[^>]*>/'," ",$res);        
-        $res=preg_replace("/</"," ",$res);
-        $res=preg_replace("/>/"," ",$res);
-        $res=preg_replace("/%/"," ",$res);
-        $res=preg_replace("/&/"," ",$res);
-        $res=preg_replace("/(\s)+/"," ",$res);
-        $search=trim($str, " \t.");
+        
+        $search  = array(
+            '/<[^>]*>/',
+            '/</',
+            '/>/',
+            '/%/',
+            '/&/',
+            '/&/'
+        );
+        
+        $res=preg_replace($search," ",$res);        
+        
+        $search  = array(
+            '/ kg$/',
+            '/ kg /',
+            '/ kg\./',
+            '/ кг$/',
+            '/ кг /',
+            '/ кг\./',
+            
+            '/ g$/',
+            '/ g /',
+            '/ g\./',
+            '/ г/',
+            '/ г /',
+            '/ г\./',
+            
+            '/ sm$/',
+            '/ sm /',
+            '/ sm\./',
+            '/ см$/',
+            '/ см /',
+            '/ см\./',
+            
+            '/ m$/',
+            '/ m /',
+            '/ m\./',
+            '/ м$/',
+            '/ м /',
+            '/ м\./',
+            
+            '/\s+/'
+        );
+        $replace = array( //Обращаем внимание на пробел в конце, НЕ нужен только если выражение в конце стрки
+            'кг','кг ','кг ', 'кг','кг ','кг ',
+            'г','г ','г ', 'г','г ','г ',
+            'см','см ','см ','см','см ','см ',
+            'м','м ','м ','м','м ','м ',
+            ' '
+        );
+
+        $res=preg_replace($search,$replace,$res);
+        
+        $res=trim($res);
         return $res;
     }
     
