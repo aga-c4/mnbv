@@ -59,7 +59,7 @@ class OrderController extends AbstractMnbvsiteController {
         $params = array("qty_type" => ($instockSess)?'instock':'' );
         if ($act==='upd'){
             if ($delivId!==null) $params["deliv_type_id"] = $delivId;
-            if ($payId!==null) $params["pay_type_id"] = $payId;            
+            if ($payId!==null) $params["pay_type_id"] = $payId;    
         }
         
         $cart = new MNBVCart($params);
@@ -67,7 +67,15 @@ class OrderController extends AbstractMnbvsiteController {
         $item['cart_items'] = $cart->getItemsList();
         $item['cart_instock_status'] = $instockSess;
         
-        
+        if ($act==='upd'){
+            $old_deliv_type_id = $cart->get('old_deliv_type_id');
+            $old_pay_type_id = $cart->get('old_pay_type_id');    
+            $deliv_type_id = $cart->get('deliv_type_id');
+            $pay_type_id = $cart->get('pay_type_id');    
+            if ($old_deliv_type_id!=$deliv_type_id) $item['cart_goto'] = 'ldeliv';
+            elseif ($old_pay_type_id!=$pay_type_id) $item['cart_goto'] = 'lpay';
+        }
+          
         $item['ordcond_ok'] = $ordcond = SysBF::getFrArr(Glob::$vars['request'],'ordcond',0);
         $item['ordconfirm_ok'] = $ordconfirm = SysBF::getFrArr(Glob::$vars['request'],'ordconfirm',0);
         

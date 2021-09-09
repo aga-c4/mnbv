@@ -110,10 +110,10 @@ thead{
 </script>
 <form method=post action="" id="ordupd" name="ordupd" class="form1">
 <input type=hidden name=act value="upd">
+<a name="ldeliv"></a>
 <div class="mt-3">
     <h5>Доставка:</h5>
 </div>
-
 <input class="form-check-input" type="radio" name="delivid" id="rddeliv0" value="0"<?=(!empty($item['cart_items']["deliv_type_id"]))?' checked':'';?> onclick="document.ordupd.submit();">
 <label class="form-check-label" for="rddeliv0">Не выбрано</label>
     
@@ -122,13 +122,13 @@ if (is_array($item['cart_items']['deliv_list']) && count($item['cart_items']['de
     $dlcnt = 0; 
     foreach($item['cart_items']['deliv_list'] as $value) { $dlcnt++; ?>
 <div class="form-check">
-    <input class="form-check-input" type="radio" name="delivid" id="rddeliv<?=$dlcnt;?>" value="<?=SysBF::getFrArr($value,'id',0);?>"<?=(!empty($value["selected"]))?' checked':'';?> onclick="document.ordupd.submit();">
+    <input class="form-check-input" type="radio" name="delivid" id="rddeliv<?=$dlcnt;?>" value="<?=SysBF::getFrArr($value,'id',0);?>"<?=(!empty($value["selected"]))?' checked':' onclick="document.ordupd.submit();"';?>>
     <label class="form-check-label" for="rddeliv<?=$dlcnt;?>">
     <?=SysBF::getFrArr($value,'name','');?> (<?=SysBF::getFrArr($value,'price','').' '.Glob::$vars['prod_currency_suf'];?>)
   </label>
 </div>
 <? } ?>
-
+<a name="lpay"></a>
 <div class="mt-3">
     <h5>Оплата:</h5>
     
@@ -140,7 +140,7 @@ if (is_array($item['cart_items']['pay_list']) && count($item['cart_items']['pay_
     $dlcnt = 0; 
     foreach($item['cart_items']['pay_list'] as $value) { $dlcnt++; ?>
 <div class="form-check">
-    <input class="form-check-input" type="radio" name="payid" id="rdpay<?=$dlcnt;?>" value="<?=SysBF::getFrArr($value,'id',0);?>"<?=(!empty($value["selected"]))?' checked':'';?> onclick="document.ordupd.submit();">
+    <input class="form-check-input" type="radio" name="payid" id="rdpay<?=$dlcnt;?>" value="<?=SysBF::getFrArr($value,'id',0);?>"<?=(!empty($value["selected"]))?' checked':' onclick="document.ordupd.submit();"';?>>
     <label class="form-check-label" for="rdpay<?=$dlcnt;?>">
     <?=SysBF::getFrArr($value,'name','');?>
   </label>
@@ -156,6 +156,12 @@ if (is_array($item['cart_items']['pay_list']) && count($item['cart_items']['pay_
 <?}?>
 
 </form>
+
+<? if (!empty($item['cart_goto'])) {?>
+<script>
+document.location.href='#<?=$item['cart_goto'];?>';
+</script>
+<? } ?>
 
 <div class="mt-3">
     <h5>Данные по оплате:</h5>

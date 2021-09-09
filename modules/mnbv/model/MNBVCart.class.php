@@ -326,6 +326,8 @@ class MNBVCart{
                 }
             }
         }
+        $old_deliv_type_id = $this->get('deliv_type_id');
+        $this->set('old_deliv_type_id',$old_deliv_type_id);
         if ($delivTypeFound){
             $result["delivdays"] = $delivDays;
             $result["delivorderbefore"] = $delivOrderbefore;
@@ -366,6 +368,8 @@ class MNBVCart{
                 }
             }
         }
+        $old_pay_type_id = $this->get('pay_type_id');
+        $this->set('old_pay_type_id',$old_pay_type_id);
         if ($payTypeFound){
             //Проверка по скидке в валюте
             $price = $result['prsum'] + $result["delivsum"];
