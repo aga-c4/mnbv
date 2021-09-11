@@ -27,13 +27,15 @@
 <div class="col col-12  col-md-4 col-lg-3 mt-3">
 <?
 //Список категорий
-$folderCounter = 0;
+$folderCounter = 1;
 foreach ($item['cat_list'] as $key=>$value) if ($key>0) {
-    if ($folderCounter>10) break;
+    $curItemViewMode = '';
+    if ($folderCounter>15) break;
+    if ($folderCounter>3) $curItemViewMode = ' d-none d-md-block';
     if ($value['type']!=ST_FOLDER) continue; 
     $folderCounter++;
 ?>
-    <div class="m-1 bg-light border-0 w-100 p-1">
+    <div class="m-1 bg-light border-0 w-100 p-1<?=$curItemViewMode;?>">
         <a href="<?=SysBF::getFrArr($value,'url','');?>"><?=SysBF::getFrArr($value,'name','');?></a>
     </div>
 <? } ?>

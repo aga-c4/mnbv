@@ -211,7 +211,7 @@ class SearchController extends AbstractMnbvsiteController {
         
         //Список категорий
         $quConfArr["sort"] = array("pozid"=>"inc","name"=>"inc");
-        $quConfArr["limit"] = array(0,5);
+        $quConfArr["limit"] = array(0,15);
         array_push($quFilterArr, 'and','strindex.type','=',1,"and","prd.id","!=",Glob::$vars['prod_storage_rootid']);
         $item['cat_list'] = MNBVStorage::getObjAcc(array(
             array('name'=>'searchindex','alias'=>'strindex'),

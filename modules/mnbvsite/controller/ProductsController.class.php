@@ -121,6 +121,7 @@ class ProductsController extends AbstractMnbvsiteController {
         //Формирование массива выбранных элементов фильтров и диапазонов
         $filterValsArr = (isset(Glob::$vars['mnbv_listfilter'])&&is_array(Glob::$vars['mnbv_listfilter']))?Glob::$vars['mnbv_listfilter']:array();
         $finFilterValsArr = false;
+        $listVendorId = (!empty(Glob::$vars['mnbv_site']['sub_vendid']))?Glob::$vars['mnbv_site']['sub_vendid']:0;
         
         if (empty($folderId) || $folderId!=Glob::$vars['prod_storage_rootid']){ //Фильтры только для заданной категории, кроме случая с указанием конкретных товаров, в таком случае делаем фильтры корневой категории каталога
             $cache = new MNBVCache('longtmp');
@@ -138,15 +139,21 @@ class ProductsController extends AbstractMnbvsiteController {
                 $item['attr_filters_selected_nums'] = $attr_filters['selected'];
                 if (isset($attr_filters['selected_items']) && is_array($attr_filters['selected_items'])) {
                     $finFilterValsArr = $attr_filters['selected_items'];
-                }elseif (!empty(Glob::$vars['mnbv_site']['sub_vendid'])){
+                    if(!empty($listVendorId)){
+                        $finFilterValsArr['vendor'] = array(
+                            "id"=>"vendor",
+                            "type"=>"list",
+                            "vals"=>Array($listVendorId));
+                    }
+                }elseif(!empty($listVendorId)){
                     $finFilterValsArr = array('vendor'=>array(
                         "id"=>"vendor",
                         "type"=>"list",
-                        "vals"=>Array(Glob::$vars['mnbv_site']['sub_vendid'])));
+                        "vals"=>Array($listVendorId)));
                 }
             }
         }
-        
+
         //Доработаем условие фильтрации списка 
         if (is_array($finFilterValsArr) 
                 && !empty(SysStorage::$storage[Glob::$vars['prod_storage']])
