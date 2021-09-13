@@ -1148,6 +1148,7 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
 
                                     $addAtrItem["objid"] = $prodid;
                                     $addAtrItem["objparentid"] = $parentid;
+                                    $addAtrItem["objvendorid"] = (!empty($vendorid))?$vendorid:0;
 
                                     $res = MNBVStorage::getObj(
                                         SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'],

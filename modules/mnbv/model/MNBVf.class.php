@@ -2392,11 +2392,13 @@ class MNBVf {
      * @param array $obj - объект текущей папки
      * @param array $params - массив параметров
      * 'folderid' - идентификатор папки из которой выводятся товары, если 0 или не задано, то без учета папки.
+     * 'vendorid' - идентификатор вендора в рамках папки, если 0 или не задано, то без учета вендора
      * 'limitparams' - ограниченный список параметров - цена и наличие
      */
     public static function objFilterGenerator($usestorage, $obj, $params=array()){
         if (!is_array($obj)) $obj = array('folderid'=>0);
         $catFolderid = SysBF::getFrArr($params,'folderid',Glob::$vars['prod_storage_rootid'],'intval');
+        $catVendorid = SysBF::getFrArr($params,'vendorid',0,'intval');
         $limitparams = SysBF::getFrArr($params,'limitparams',0,'intval');
 
         //Сформируем список описаний атрибутов из attr и attrup
@@ -2431,6 +2433,7 @@ class MNBVf {
         //Посчитаем минимальную и максимальную цену товара
         $quFilterArr = array();
         if (!empty($catFolderid) && $catFolderid!=Glob::$vars['prod_storage_rootid']) array_push($quFilterArr, "parentid","=",$catFolderid,"and");
+        if (!empty($catVendorid)) array_push($quFilterArr, "vendor","=",$catVendorid,"and");
         array_push($quFilterArr, "type","!=",ST_FOLDER);
         $res = MNBVStorage::getObjAcc(Glob::$vars['prod_storage'],
                 array(array("min(price)","min"),array("max(price)","max")),
@@ -2470,6 +2473,7 @@ class MNBVf {
                 ),
             );
 
+            //Найдем список доступный вендоров
             $curFltFndItm = array();
             $quFilterArr = array();
             if ($catFolderid!=Glob::$vars['prod_storage_rootid']) array_push($quFilterArr, "parentid","=",$catFolderid,"and");
@@ -2560,6 +2564,7 @@ class MNBVf {
         );
         $quFilterArr = array();
         if ($catFolderid!=Glob::$vars['prod_storage_rootid']) array_push($quFilterArr, "parentid","=",$catFolderid,"and");
+        if (!empty($catVendorid)) array_push($quFilterArr, "vendor","=",$catVendorid,"and");
         array_push($quFilterArr, "type","!=",ST_FOLDER);
         $res = MNBVStorage::getObjAcc(Glob::$vars['prod_storage'],
                 array("instock","name","namelang",array("count(*)","qty")),
@@ -2606,6 +2611,7 @@ class MNBVf {
         $curFltFndItm = array();
         $quFilterArr = array();
         if ($catFolderid!=Glob::$vars['prod_storage_rootid']) array_push($quFilterArr, "parentid","=",$catFolderid,"and");
+        if (!empty($catVendorid)) array_push($quFilterArr, "vendor","=",$catVendorid,"and");
         array_push($quFilterArr, "type","!=",ST_FOLDER);
         $res = MNBVStorage::getObjAcc(Glob::$vars['prod_storage'],
                 array("country",array("count(*)","qty")),
@@ -2668,6 +2674,7 @@ class MNBVf {
                 && isset(SysStorage::$storage[SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse']])){
                 $quFilterArr = array("vint",">",0);
                 if ($catFolderid!=Glob::$vars['prod_storage_rootid']) array_push($quFilterArr,"and","objparentid","=",$catFolderid);
+                if (!empty($catVendorid)) array_push($quFilterArr, "and","objvendorid","=",$catVendorid);
                 $fList = MNBVStorage::getObj(SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'],
                         array("attrid","vint",array("count(*)","qty")),
                         $quFilterArr,
@@ -2709,6 +2716,7 @@ class MNBVf {
                                         
                                         $quFilterArr = array("attrid","=",$value["id"],"and","vint",">",0);
                                         if ($catFolderid!=Glob::$vars['prod_storage_rootid']) array_push($quFilterArr,"and","objparentid","=",$catFolderid);
+                                        if (!empty($catVendorid)) array_push($quFilterArr, "and","objvendorid","=",$catVendorid);
                                         $res = MNBVStorage::getObj(SysStorage::$storage[Glob::$vars['prod_storage']]['arrtindexuse'],
                                                 array(array("min(vint)","min"),array("max(vint)","max")),
                                                 $quFilterArr);

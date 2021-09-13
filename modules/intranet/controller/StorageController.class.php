@@ -866,6 +866,7 @@ class StorageController {
                                 $attrDBAddArr[] = array(
                                     "objid"=>$item["id"],
                                     "objparentid"=>$item['obj']['parent']['id'],
+                                    "objvendorid"=>$item['obj']["vendor"],
                                     "attrid"=>$realKeyId,
                                     "vint"=>MNBVf::decimal2int($attrValsArr["$realKey"],intval($realKeyView["dmsize"])),
                                 );
@@ -878,6 +879,7 @@ class StorageController {
                                     $attrDBAddArr[] = array(
                                         "objid"=>$item["id"],
                                         "objparentid"=>$item['obj']['parent']['id'],
+                                        "objvendorid"=>$item['obj']["vendor"],
                                         "attrid"=>$realKeyId,
                                         "vint"=>$lval,
                                         "type"=>'list'.$curCnt, //Костылек - в первую запись пишем маркер, по которому удалим из индекса все итемы, а потом добавим
@@ -888,6 +890,7 @@ class StorageController {
                                 $attrDBAddArr[] = array(
                                     "objid"=>$item["id"],
                                     "objparentid"=>$item['obj']['parent']['id'],
+                                    "objvendorid"=>$item['obj']["vendor"],
                                     "attrid"=>$realKeyId,
                                     "vint"=>(!empty($attrValsArr["$realKey"]))?$attrValsArr["$realKey"]:0,
                                 );                                
@@ -895,6 +898,7 @@ class StorageController {
                                 $attrDBAddArr[] = array(
                                     "objid"=>$item["id"],
                                     "objparentid"=>$item['obj']['parent']['id'],
+                                    "objvendorid"=>$item['obj']["vendor"],
                                     "attrid"=>$realKeyId,
                                     "vstr"=>(!empty($attrValsArr["$realKey"]))?$attrValsArr["$realKey"]:'',
                                 );

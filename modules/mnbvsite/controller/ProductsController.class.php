@@ -125,11 +125,11 @@ class ProductsController extends AbstractMnbvsiteController {
         
         if (empty($folderId) || $folderId!=Glob::$vars['prod_storage_rootid']){ //Фильтры только для заданной категории, кроме случая с указанием конкретных товаров, в таком случае делаем фильтры корневой категории каталога
             $cache = new MNBVCache('longtmp');
-            $attr_filters = $cache->get("prodfilters:$folderId",true);
+            $attr_filters = $cache->get("prodfilters:$folderId:$listVendorId",true); //$attr_filters
             //echo "(prodfilters:$folderId=>[$attrFiltersCacheStr])";
             if ($attr_filters===null || !is_array($attr_filters) || !empty(Glob::$vars['no_cache'])){ //Необходимо перегенерить кеш
-                $attr_filters = MNBVf::objFilterGenerator('attributes',$realFolder,array('folderid'=>(!empty($folderId))?$folderId:Glob::$vars['prod_storage_rootid'])); //Специально без выделения пунктов, чтоб можно было закешировать.
-                $cache->set("prodfilters:$folderId",$attr_filters,Glob::$vars['prod_filters_cache_ttl']);
+                $attr_filters = MNBVf::objFilterGenerator('attributes',$realFolder,array('folderid'=>(!empty($folderId))?$folderId:Glob::$vars['prod_storage_rootid'],'vendorid'=>$listVendorId)); //Специально без выделения пунктов, чтоб можно было закешировать.
+                $cache->set("prodfilters:$folderId:$listVendorId",$attr_filters,Glob::$vars['prod_filters_cache_ttl']);
             }
   
             //Если фильтры найдены, подготовим элементы для их вывода в шаблоне
