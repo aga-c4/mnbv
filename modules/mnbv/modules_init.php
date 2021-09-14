@@ -9,6 +9,8 @@
  */
 SysLogs::addLog('Modules_init start mnbv_module = ['.Glob::$vars['mnbv_module'].'].' );
 
+if (isset($appCacheMode)) Glob::$vars['cacheMode'] = $appCacheMode; //Режим работы кеша (none/rw/r/w) 
+
 //Определим домен и сооветственно сайт для данного домена, при необходимости сделаем редирект---------------------------
 if (!isset($_SERVER['SERVER_NAME'])) $_SERVER['SERVER_NAME'] = '';
 $currentDomen = strtolower($_SERVER['SERVER_NAME']);

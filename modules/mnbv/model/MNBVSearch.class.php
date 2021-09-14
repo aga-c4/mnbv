@@ -61,6 +61,9 @@ class MNBVSearch {
     public function set($storage, $objid, $search, $objtype=0, $weight=1, $siteid=0, $exeptions=null)
     {
         $result = false;
+        //SysLogs::addLog("MNBVSearch:get str [".$search."]");
+        
+        $search = SysBF::prepareSearchStr($search);
         //TODO - сделать убирание запятых, точек с запятыми, и делить по пробелам и завоидть как разные слова
         $search = preg_replace("~[\.,;/()]~", " ", $search);
         $search=preg_replace("/ ( )+/u"," ",$search);
@@ -79,11 +82,12 @@ class MNBVSearch {
             $normstr = SysBF::strNormalize($searchStr);
             if (mb_strlen($normstr,'utf-8')<2 && !preg_match("/[0-9]/", $normstr)) continue;
             $normstr = SysBF::normUpdate($normstr);
-            //Для исключения повторяющихся слов
-            if (in_array($normstr,$exeptions)) continue;
+            
+            if (in_array($normstr,$exeptions)) continue; //Для исключения повторяющихся слов
+            
             $updateArr = array(
                 "siteid" => $siteid,
-                "type" => $objtype,
+                "type" => $storageId,
                 "objid" => $objid,
                 "objtype" => $objtype,
                 "normstr" => $normstr,
@@ -91,10 +95,11 @@ class MNBVSearch {
             );
 
             $addId = MNBVStorage::addObj($this->storage, $updateArr,'',false);
+            //SysLogs::addLog("MNBVSearch:add index [$normstr]");
             $exeptions[] = $normstr;
             $result = $normstr;
         }
-        return $result;
+        return $exeptions;
 
     }
     

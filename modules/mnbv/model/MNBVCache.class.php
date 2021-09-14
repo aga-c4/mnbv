@@ -15,11 +15,22 @@ class MNBVCache {
     protected $storage = 'tmp';
     
     /**
+     * @var string режим работы кеша - зависит от системной переменной Glob::$vars['cacheMode'] (none/rw/r/w)   
+     */
+    protected $cacheMode = 'rw'; 
+    
+    /**
      * При инициализации загрузим данные сессии
      * @param string $storage - алиас хранилища кеша
      */
     public function __construct($storage='tmp') {
 
+        if (!empty(Glob::$vars['cacheMode']) && in_array(Glob::$vars['cacheMode'], array('none','rw','r','w'))){
+            $this->cacheMode = Glob::$vars['cacheMode'];
+        }else{
+            $this->cacheMode = 'none';
+        }
+        
         if (!empty(SysStorage::$storage["$storage"]["db"])&&!empty(SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'])&&in_array(SysStorage::$db[SysStorage::$storage["$storage"]["db"]]['dbtype'],SysStorage::$dbtypes)){
             $this->storage = $storage;
         }else{
@@ -37,6 +48,9 @@ class MNBVCache {
      */
     public function set($id, $val, $ttl=0, $assoc=false)
     {
+        if ($this->cacheMode!=='rw' && $this->cacheMode!=='w') return false;
+        if (!empty(Glob::$vars['no_cache'])) return false;
+            
         $assoc = (!empty($assoc))?true:false;
         $ttl = intval($ttl);
         if ($val==null) return false;
@@ -74,7 +88,8 @@ class MNBVCache {
      */
     public function get($id, $assoc=false, $lag=0)
     {
-
+        if ($this->cacheMode!=='rw' && $this->cacheMode!=='r') return false;
+        if (!empty(Glob::$vars['no_cache'])) return false;
         $assoc = (!empty($assoc))?true:false;
         $lag = intval($lag);
         if ($lag==0) {
@@ -103,8 +118,9 @@ class MNBVCache {
      * Уничтожает элемент контейнера
      * @param string $id алиас элемента
      */
-    public function del($id)
-    {
+    public function del($id) {
+        if ($this->cacheMode!=='rw' && $this->cacheMode!=='w') return false;
+        if (!empty(Glob::$vars['no_cache'])) return false;
         MNBVStorage::delObj($this->storage, array("id","=","$id"));
     }
     
@@ -113,6 +129,8 @@ class MNBVCache {
      * @param int $ts timestump до которого значение считается устаревшим, если 0 или не задан, то удаляем все устаревшие по данным из записей
      */
     public function clear($ts=0){
+        if ($this->cacheMode!=='rw' && $this->cacheMode!=='w') return false;
+        if (!empty(Glob::$vars['no_cache'])) return false;
         $ts = intval($ts);
         $currTs = ($ts==0)?time():$ts;
         MNBVStorage::delObj($this->storage, array("tsto","<",$currTs));

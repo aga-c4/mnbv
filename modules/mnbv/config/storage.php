@@ -833,6 +833,8 @@ SysStorage::$storage['products']['stru']['onlyvert'] = array("type"=>"int", "siz
 
 SysStorage::$storage['products']['stru']['supplier'] = array("type"=>"int", "size"=>11, "creatval"=>0, "dbtype"=>"int", "linkstorage"=>"suppliers");
 
+SysStorage::$storage['products']['stru']['color'] = array("name"=>"color", "type"=>"int", "size"=>10, "creatval"=>0, "dbtype"=>"int", "linkstorage" => "attributes");
+
 SysStorage::$storage['products']['view']["main"] = array(
     //"visfirstline" => array("name"=>"visfirstline", "type"=>"visfirstline", "table" =>"thline", "checktype" => "datetime"),
     "date" => array("name"=>"date", "type"=>"datetime","table" =>"thline","checktype" => "datetime"),
@@ -864,11 +866,12 @@ SysStorage::$storage['products']['view']["main"] = array(
     "brwidth" => array("name"=>"brwidth", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "int"),
     "brlength" => array("name"=>"brlength", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "int"),
     "brvolume" => array("name"=>"brvolume", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"),
-    "brweight" => array("name"=>"brweight", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "int"),
+    "brweight" => array("name"=>"brweight", "type"=>"text","size"=>255,"width"=>"100%","checktype" => "decimal"),
     "weightgr" => array("name"=>"weightgr", "type"=>"select", "viewindex" =>false, "notset" =>true,  "delim"=>" | ", "checktype" => "int"),
     "sizegr" => array("name"=>"sizegr", "type"=>"select", "viewindex" =>false, "notset" =>true,  "delim"=>" | ", "checktype" => "int"),
     "onlyvert" => array("name"=>"onlyvert", "type"=>"checkbox", "table" =>"td", "checktype" => "on"),
     //"attrvals" => array("name"=>"attrvals", "type"=>"attrvals"),
+    "color" => array("name"=>"color", "type"=>"select", "notset" =>true, "filter_type"=>"objects", "filter_folder"=>12, "checktype" => "id", "linkstorage" => "attributes"),
     "about" => array("name"=>"about", "type"=>"textarea","editor"=>false,"rows"=>4,"width"=>"100%","langlink"=>"aboutlang","table" =>"thline","checktype" => "text","lang" => "lang"), //Основной язык
     "aboutlang" => array("name"=>"aboutlang", "type"=>"textarea","editor"=>false,"rows"=>4,"width"=>"100%","langlink"=>"about","table" =>"thline","checktype" => "text","lang" => "altlang"), //Альтернативный язык
     "clear3" => array("name"=>"clear1", "type"=>"lineblock", "table" =>"tdline", "string"=>""),

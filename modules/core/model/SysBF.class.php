@@ -403,7 +403,7 @@ class SysBF {
         return $result;
     }
     
-    public static function prepareSearchSth($str){
+    public static function prepareSearchStr($str){
         $res = $str;
         
         $search  = array(
@@ -412,10 +412,11 @@ class SysBF {
             '/>/',
             '/%/',
             '/&/',
-            '/&/'
+            '/&/',
+            '/ ( )+/u'
         );
         
-        $res=preg_replace($search," ",$res);        
+        $res=preg_replace($search," ",$res);
         
         $search  = array(
             '/ kg$/',

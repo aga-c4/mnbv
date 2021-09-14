@@ -691,6 +691,7 @@ $langTmpArr = array(
         "weightgr" => "Weight group",
         "sizegr" => "Size group",
         "onlyvert" => "Only vert",
+        "color" => "Color",
         
         "discpr" => 'Discount,%',        //Скидка, %
         "discval" => 'Discount,val',       //Скидка, вал

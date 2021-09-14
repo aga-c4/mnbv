@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Авг 01 2021 г., 23:54
+-- Время создания: Сен 14 2021 г., 15:35
 -- Версия сервера: 10.3.13-MariaDB-log
 -- Версия PHP: 7.3.9
 
@@ -149,7 +149,8 @@ INSERT INTO `mnbv_attributes` (`id`, `datestr`, `parentid`, `pozid`, `type`, `ty
 (9, '2021-06-09 17:42:38', 1, 100, 0, '', 1, 0, 103, 0, 'Брутто высота (см)', 'Gross height (sm)', '', '', '', '', '', '', 1623249758, 0, 0, 2, 1623249758, 2, 1623270628, '127.0.0.1', 'Администратор', '{\"dbtype\":\"int\",\"active\":\"update\",\"table\":\"td\",\"type\":\"text\",\"filter_type\":\"all\",\"checktype\":\"int\",\"lang\":\"all\",\"size\":\"10\"}', '', '', '', '', '', 0, ''),
 (10, '2021-06-09 17:42:46', 1, 100, 0, '', 1, 0, 103, 0, 'Брутто ширина (см)', 'Gross width (sm)', '', '', '', '', '', '', 1623249766, 0, 0, 2, 1623249766, 2, 1623270633, '127.0.0.1', 'Администратор', '{\"dbtype\":\"int\",\"active\":\"update\",\"table\":\"td\",\"type\":\"text\",\"size\":\"10\",\"filter_type\":\"all\",\"checktype\":\"int\",\"lang\":\"all\"}', '', '', '', '', '', 0, ''),
 (11, '2021-06-09 17:43:00', 1, 100, 0, '', 1, 0, 103, 0, 'Брутто длина (см)', 'Gross length (sm)', '', '', '', '', '', '', 1623249780, 0, 0, 2, 1623249780, 2, 1623270638, '127.0.0.1', 'Администратор', '{\"dbtype\":\"int\",\"active\":\"update\",\"table\":\"td\",\"type\":\"text\",\"size\":\"10\",\"filter_type\":\"all\",\"checktype\":\"int\",\"lang\":\"all\"}', '', '', '', '', '', 0, ''),
-(12, '2021-06-09 23:36:39', 1, 100, 1, '', 1, 0, 103, 0, 'Цвет', 'Color', '', '', '', '', '', '', 1623270999, 0, 0, 2, 1623270999, 2, 1623271090, '127.0.0.1', 'Администратор', '{\"dbtype\":\"int\",\"active\":\"update\",\"table\":\"td\",\"type\":\"select\",\"size\":\"1\",\"linkstorage\":\"attributes\",\"filter_folder\":\"12\",\"filter_type\":\"all\",\"checktype\":\"int\",\"lang\":\"all\",\"notset\":1}', '', '', '', '[\"1\"]', '', 0, '');
+(12, '2021-06-09 23:36:39', 1, 100, 1, '', 1, 0, 103, 0, 'Цвет', 'Color', '', '', '', '', '', '', 1623270999, 0, 0, 2, 1623270999, 2, 1623271090, '127.0.0.1', 'Администратор', '{\"dbtype\":\"int\",\"active\":\"update\",\"table\":\"td\",\"type\":\"select\",\"size\":\"1\",\"linkstorage\":\"attributes\",\"filter_folder\":\"12\",\"filter_type\":\"all\",\"checktype\":\"int\",\"lang\":\"all\",\"notset\":1}', '', '', '', '[\"1\"]', '', 0, ''),
+(13, '2021-09-13 20:23:07', 12, 100, 0, '', 1, 0, 103, 0, 'Прозрачный', '', '', '', '', '', '', '', 1631553787, 0, 0, 2, 1631553787, 2, 1631553787, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '');
 
 -- --------------------------------------------------------
 
@@ -162,6 +163,7 @@ CREATE TABLE `mnbv_attrvals` (
   `id` int(10) NOT NULL,
   `objid` int(10) NOT NULL DEFAULT 0,
   `objparentid` int(10) NOT NULL DEFAULT 0,
+  `objvendorid` int(10) NOT NULL DEFAULT 0,
   `attrid` int(10) NOT NULL DEFAULT 0,
   `vint` int(10) NOT NULL DEFAULT 0,
   `vstr` varchar(255) NOT NULL DEFAULT ''
@@ -255,6 +257,65 @@ CREATE TABLE `mnbv_carts` (
 
 INSERT INTO `mnbv_carts` (`id`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `preview`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `files`, `siteid`, `tags`, `orders`, `utm_source`, `utm_medium`, `utm_campaign`, `utm_term`, `find_keys`, `partner_id`, `partner_code`, `utm_history`) VALUES
 (1, '2017-09-02 21:43:39', 0, 100, 1, '', 1, 118, 118, 0, 'Корзины пользователей', '', '', '', 0, '', '', '', '', 1504374180, 0, 0, 2, 1504374219, 2, 1504374227, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', 0, '', '', '', '', '', '', '', '');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `mnbv_countries`
+--
+
+DROP TABLE IF EXISTS `mnbv_countries`;
+CREATE TABLE `mnbv_countries` (
+  `id` int(11) NOT NULL COMMENT 'Id',
+  `datestr` varchar(19) NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `parentid` int(11) NOT NULL DEFAULT 0,
+  `pozid` int(11) NOT NULL DEFAULT 100,
+  `type` int(1) NOT NULL DEFAULT 0,
+  `typeval` varchar(255) NOT NULL DEFAULT '',
+  `visible` int(1) NOT NULL DEFAULT 1,
+  `access` int(11) NOT NULL DEFAULT 0,
+  `access2` int(11) NOT NULL DEFAULT 0,
+  `first` int(1) NOT NULL DEFAULT 0,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `namelang` varchar(255) NOT NULL DEFAULT '',
+  `alias` varchar(255) NOT NULL DEFAULT '',
+  `comm` varchar(255) NOT NULL DEFAULT '',
+  `preview` int(1) NOT NULL DEFAULT 0,
+  `about` text NOT NULL DEFAULT '',
+  `aboutlang` text NOT NULL DEFAULT '',
+  `text` text NOT NULL DEFAULT '',
+  `textlang` text NOT NULL DEFAULT '',
+  `date` int(10) NOT NULL DEFAULT 0,
+  `date1` int(10) NOT NULL DEFAULT 0,
+  `date2` int(10) NOT NULL DEFAULT 0,
+  `createuser` int(11) NOT NULL DEFAULT 0,
+  `createdate` int(10) NOT NULL DEFAULT 0,
+  `edituser` int(11) NOT NULL DEFAULT 0,
+  `editdate` int(10) NOT NULL DEFAULT 0,
+  `editip` varchar(255) NOT NULL DEFAULT '',
+  `author` varchar(255) NOT NULL DEFAULT '',
+  `vars` text NOT NULL DEFAULT '',
+  `attrup` text NOT NULL DEFAULT '',
+  `attr` text NOT NULL DEFAULT '',
+  `attrvals` text NOT NULL DEFAULT '',
+  `upfolders` text NOT NULL DEFAULT '',
+  `files` text NOT NULL DEFAULT '',
+  `siteid` int(11) NOT NULL DEFAULT 0,
+  `tags` varchar(255) NOT NULL DEFAULT '',
+  `discmaxpr` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `discmaxval` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `discminmargpr` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `discminmargval` decimal(10,2) NOT NULL DEFAULT 0.00,
+  `searchstr` varchar(255) NOT NULL DEFAULT ''
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `mnbv_countries`
+--
+
+INSERT INTO `mnbv_countries` (`id`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `preview`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `files`, `siteid`, `tags`, `discmaxpr`, `discmaxval`, `discminmargpr`, `discminmargval`, `searchstr`) VALUES
+(1, '2017-09-15 18:19:07', 0, 100, 1, '', 1, 0, 210, 0, 'Страны', 'Countries', '', '', 0, '', '', '', '', 1505485140, 0, 0, 2, 1505485147, 2, 1505485196, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', ''),
+(2, '2021-09-13 20:48:46', 1, 100, 0, '', 1, 0, 210, 0, 'Россия', 'Russia', '', '', 0, '', '', '', '', 1631555326, 0, 0, 2, 1631555326, 2, 1631555338, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', '');
 
 -- --------------------------------------------------------
 
@@ -414,66 +475,6 @@ CREATE TABLE `mnbv_longtmp` (
 -- --------------------------------------------------------
 
 --
--- Структура таблицы `mnbv_news`
---
-
-DROP TABLE IF EXISTS `mnbv_news`;
-CREATE TABLE `mnbv_news` (
-  `id` int(11) NOT NULL COMMENT 'Id',
-  `datestr` varchar(19) NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `parentid` int(11) NOT NULL DEFAULT 0,
-  `pozid` int(11) NOT NULL DEFAULT 100,
-  `type` int(1) NOT NULL DEFAULT 0,
-  `typeval` varchar(255) NOT NULL DEFAULT '',
-  `visible` int(1) NOT NULL DEFAULT 1,
-  `access` int(11) NOT NULL DEFAULT 0,
-  `access2` int(11) NOT NULL DEFAULT 0,
-  `first` int(1) NOT NULL DEFAULT 0,
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `namelang` varchar(255) NOT NULL DEFAULT '',
-  `alias` varchar(255) NOT NULL DEFAULT '',
-  `comm` varchar(255) NOT NULL DEFAULT '',
-  `preview` int(1) NOT NULL DEFAULT 0,
-  `about` text NOT NULL DEFAULT '',
-  `aboutlang` text NOT NULL DEFAULT '',
-  `text` text NOT NULL DEFAULT '',
-  `textlang` text NOT NULL DEFAULT '',
-  `date` int(10) NOT NULL DEFAULT 0,
-  `date1` int(10) NOT NULL DEFAULT 0,
-  `date2` int(10) NOT NULL DEFAULT 0,
-  `createuser` int(11) NOT NULL DEFAULT 0,
-  `createdate` int(10) NOT NULL DEFAULT 0,
-  `edituser` int(11) NOT NULL DEFAULT 0,
-  `editdate` int(10) NOT NULL DEFAULT 0,
-  `editip` varchar(255) NOT NULL DEFAULT '',
-  `author` varchar(255) NOT NULL DEFAULT '',
-  `vars` text NOT NULL DEFAULT '',
-  `attrup` text NOT NULL DEFAULT '',
-  `attr` text NOT NULL DEFAULT '',
-  `attrvals` text NOT NULL DEFAULT '',
-  `upfolders` text NOT NULL DEFAULT '',
-  `files` text NOT NULL DEFAULT '',
-  `siteid` int(11) NOT NULL DEFAULT 0,
-  `tags` varchar(255) NOT NULL DEFAULT ''
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Дамп данных таблицы `mnbv_news`
---
-
-INSERT INTO `mnbv_news` (`id`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `preview`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `files`, `siteid`, `tags`) VALUES
-(1, '2017-08-19 14:09:37', 0, 100, 1, '', 1, 0, 205, 0, 'Новости', 'News', '', '', 0, '', '', '', '', 1503137377, 0, 0, 2, 1503137377, 2, 1621325813, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, ''),
-(2, '2017-08-19 14:10:30', 1, 100, 0, '', 1, 0, 205, 0, 'Новость 1', 'News1', 'novost-1', '', 0, 'краткое описание новости 1', 'Short news1 text. Short news1 text. Short news1 text.', '<p>Полное описание новости 1.</p>', '<p>Full description of curent news full description of curent news full description of news3 full description of news3 full description of news3 full description of news3 full description of news3 full description of news3 full description of news3 full description of news3 full description of news3 full description of news3 full description of news3 full description of news3 full description of news3 full description of news3 full description of news3 full description of news3.</p>\r\n<p> full description of news3 full description of news3 full description of news3 full description of news3 full description of news3 full description of news3 full description of news3 full description of news3 full description of news3 full description of news3 full description of news3.</p>\r\n<p>{{img:2}}</p>', 1503137400, 0, 0, 2, 1503137430, 2, 1621326043, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"http:\\/\\/mnbv.ru\\/img\\/help_book.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1522002027,\"editip\":\"127.0.0.1\"}}}', 0, ''),
-(3, '2017-08-19 14:10:36', 1, 100, 0, '', 1, 0, 205, 0, 'Новость 2', 'News2', 'novost-2', '', 0, 'краткое описание новости 2', 'Short news2 text. Short news2 text. Short news2 text.', '<p>Полное описание новости 2</p>', '<p>Full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news</p>\r\n<p>Full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news</p>\r\n<p>Full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news</p>', 1503223800, 0, 0, 2, 1503137436, 2, 1621326085, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"http:\\/\\/mnbv.ru\\/img\\/help_book.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1522002033,\"editip\":\"127.0.0.1\"}}}', 0, ''),
-(4, '2017-08-19 14:10:42', 1, 100, 0, '', 1, 0, 205, 0, 'Новость 3', 'News3', 'News3', '', 0, 'краткое описание новости 3.', 'mini description of news3.', '<p>Полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3.</p>\r\n<p> полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3.</p>', '<p>Full description of news3&nbsp;full description of news3&nbsp;full description of news3&nbsp;full description of news3&nbsp;full description of news3&nbsp;full description of news3&nbsp;full description of news3&nbsp;full description of news3&nbsp;full description of news3&nbsp;full description of news3&nbsp;full description of news3&nbsp;full description of news3&nbsp;full description of news3&nbsp;full description of news3&nbsp;full description of news3&nbsp;full description of news3&nbsp;full description of news3&nbsp;full description of news3.</p>\r\n<p>&nbsp;full description of news3&nbsp;full description of news3&nbsp;full description of news3&nbsp;full description of news3&nbsp;full description of news3&nbsp;full description of news3&nbsp;full description of news3&nbsp;full description of news3&nbsp;full description of news3&nbsp;full description of news3&nbsp;full description of news3.</p>\r\n<p>{{img:2}}</p>', 1503310200, 0, 0, 2, 1503137442, 2, 1522002048, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"2\":{\"url\":\"https:\\/\\/youtu.be\\/u48Izeg-5W8\",\"type\":null,\"edituser\":\"2\",\"editdate\":1522002048,\"editip\":\"127.0.0.1\"},\"1\":{\"url\":\"http:\\/\\/mnbv.ru\\/img\\/help_book.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1522002048,\"editip\":\"127.0.0.1\"}}}', 0, ''),
-(5, '2021-04-24 11:48:15', 1, 100, 0, '', 1, 0, 205, 0, 'Новость 4', 'News4', 'novost-4', '', 0, 'Краткое описание новости 4.', 'Short news4 text. Short news4 text. Short news4 text.', '<p>Полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3.</p>\r\n<p> полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3.</p>', '<p>Full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news</p>\r\n<p>Full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news</p>\r\n<p>Full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news</p>', 1619254080, 0, 0, 2, 1619254095, 2, 1621326093, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"http:\\/\\/mnbv.ru\\/img\\/help_book.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1619254170,\"editip\":\"127.0.0.1\"}}}', 0, ''),
-(6, '2021-04-24 11:48:20', 1, 100, 0, '', 1, 0, 205, 0, 'Новость 5', 'News5', 'novost-5', '', 0, 'Краткое описание новости 5.', 'Short news5 text. Short news5 text. Short news5 text.', '<p>Полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3.</p>\r\n<p> полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3.</p>', '<p>Full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news</p>\r\n<p>Full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news</p>\r\n<p>Full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news</p>', 1619167680, 0, 0, 2, 1619254100, 2, 1621326096, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"http:\\/\\/mnbv.ru\\/img\\/help_book.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1619254177,\"editip\":\"127.0.0.1\"}}}', 0, ''),
-(7, '2021-04-24 11:48:25', 1, 100, 0, '', 1, 0, 205, 0, 'Новость 6', 'News6', 'novost-6', '', 0, 'Краткое описание новости 6. Краткое описание новости 6', 'Short news7 text. Short news7 text. Short news7 text.', '<p>Полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3.</p>\r\n<p> полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3 полное описание новости 3.</p>', '<p>Full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news</p>\r\n<p>Full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news</p>\r\n<p>Full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news, full description of curent news</p>', 1619340480, 0, 0, 2, 1619254105, 2, 1621326100, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"http:\\/\\/mnbv.ru\\/img\\/help_book.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1619254181,\"editip\":\"127.0.0.1\"}}}', 0, ''),
-(8, '2021-04-25 14:24:36', 1, 100, 0, '', 1, 0, 205, 0, 'Новость 7', 'News7', 'novost-7', '', 0, 'Краткое описание новости без полного текста и ссылки. Краткое описание новости 7. Краткое описание новости 7', 'Short news7 text. Short news7 text. Short news7 text.', '', '', 1619349840, 0, 0, 2, 1619349876, 2, 1621325913, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"http:\\/\\/mnbv.ru\\/img\\/help_book.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1619350006,\"editip\":\"127.0.0.1\"}}}', 0, '');
-
--- --------------------------------------------------------
-
---
 -- Структура таблицы `mnbv_orders`
 --
 
@@ -551,67 +552,6 @@ INSERT INTO `mnbv_orders` (`id`, `datestr`, `parentid`, `pozid`, `type`, `typeva
 (3, '2021-08-01 00:08:22', 0, 100, 1, '', 1, 118, 118, 0, 'Выполненные заказы', '', '', '', 0, '', '', '', '', 1627765702, 0, 0, 2, 1627765702, 2, 1627765702, '127.0.0.1', 'Администратор', '', '', '', '', '', 0, '', 0, '', '0.00', 0, 0, '', '', '', '', '', '', '', 0, '', '', '', 0, '\'\'', 0, '', '', '', '', '', ''),
 (4, '2021-08-01 00:09:05', 0, 100, 1, '', 1, 118, 118, 0, 'Отложенные заказы', '', '', '', 0, '', '', '', '', 1627765745, 0, 0, 2, 1627765745, 2, 1627765745, '127.0.0.1', 'Администратор', '', '', '', '', '', 0, '', 0, '', '0.00', 0, 0, '', '', '', '', '', '', '', 0, '', '', '', 0, '\'\'', 0, '', '', '', '', '', ''),
 (5, '2021-08-01 00:08:48', 0, 100, 1, '', 1, 118, 118, 0, 'Отмененные заказы', '', '', '', 0, '', '', '', '', 1627765728, 0, 0, 2, 1627765728, 2, 1627765728, '127.0.0.1', 'Администратор', '', '', '', '', '', 0, '', 0, '', '0.00', 0, 0, '', '', '', '', '', '', '', 0, '', '', '', 0, '\'\'', 0, '', '', '', '', '', '');
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `mnbv_payment`
---
-
-DROP TABLE IF EXISTS `mnbv_payment`;
-CREATE TABLE `mnbv_payment` (
-  `id` int(10) NOT NULL COMMENT 'Id',
-  `datestr` varchar(19) NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `parentid` int(10) NOT NULL DEFAULT 0,
-  `pozid` int(10) NOT NULL DEFAULT 100,
-  `type` int(1) NOT NULL DEFAULT 0,
-  `typeval` varchar(255) NOT NULL DEFAULT '',
-  `visible` int(1) NOT NULL DEFAULT 1,
-  `access` int(10) NOT NULL DEFAULT 0,
-  `access2` int(10) NOT NULL DEFAULT 0,
-  `first` int(1) NOT NULL DEFAULT 0,
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `namelang` varchar(255) NOT NULL DEFAULT '',
-  `alias` varchar(255) NOT NULL DEFAULT '',
-  `comm` varchar(255) NOT NULL DEFAULT '',
-  `preview` int(1) NOT NULL DEFAULT 0,
-  `about` text NOT NULL DEFAULT '',
-  `aboutlang` text NOT NULL DEFAULT '',
-  `text` text NOT NULL DEFAULT '',
-  `textlang` text NOT NULL DEFAULT '',
-  `date` int(10) NOT NULL DEFAULT 0,
-  `date1` int(10) NOT NULL DEFAULT 0,
-  `date2` int(10) NOT NULL DEFAULT 0,
-  `createuser` int(10) NOT NULL DEFAULT 0,
-  `createdate` int(10) NOT NULL DEFAULT 0,
-  `edituser` int(10) NOT NULL DEFAULT 0,
-  `editdate` int(10) NOT NULL DEFAULT 0,
-  `editip` varchar(255) NOT NULL DEFAULT '',
-  `author` varchar(255) NOT NULL DEFAULT '',
-  `vars` text NOT NULL DEFAULT '',
-  `attrup` text NOT NULL DEFAULT '',
-  `attr` text NOT NULL DEFAULT '',
-  `attrvals` text NOT NULL DEFAULT '',
-  `upfolders` text NOT NULL DEFAULT '',
-  `userid` int(10) NOT NULL DEFAULT 0,
-  `files` text NOT NULL DEFAULT '',
-  `siteid` int(10) NOT NULL DEFAULT 0,
-  `tags` varchar(255) NOT NULL DEFAULT '',
-  `discpr` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `discval` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `minprice` decimal(10,2) NOT NULL DEFAULT 0.00,
-  `maxprice` decimal(10,2) NOT NULL DEFAULT 0.00
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Дамп данных таблицы `mnbv_payment`
---
-
-INSERT INTO `mnbv_payment` (`id`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `preview`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `userid`, `files`, `siteid`, `tags`, `discpr`, `discval`, `minprice`, `maxprice`) VALUES
-(1, '2021-07-26 15:56:17', 0, 100, 1, '', 1, 0, 200, 0, 'Варианты оплаты', '', '', '', 0, '', '', '', '', 1627304177, 0, 0, 2, 1627304177, 2, 1627304227, '127.0.0.1', 'Администратор', '', '', '', '', '', 0, '', 0, '', '0.00', '0.00', '0.00', '0.00'),
-(2, '2021-07-26 15:57:34', 1, 30, 0, '', 1, 0, 200, 0, 'Наличными при приеме товара (скидка 5%)', 'Cash (5% discount)', '', '', 0, '', '', '', '', 1627304254, 0, 0, 2, 1627304254, 2, 1627334213, '127.0.0.1', 'Администратор', '', '', '', '', '', 0, '', 0, '', '5.00', '0.00', '0.00', '20000.00'),
-(3, '2021-07-26 15:58:05', 1, 10, 0, '', 1, 0, 200, 0, 'Картой банка', 'Bank card', '', '', 0, '', '', '', '', 1627304285, 0, 0, 2, 1627304285, 2, 1627334400, '127.0.0.1', 'Администратор', '', '', '', '', '', 0, '', 0, '', '0.00', '0.00', '10000.00', '0.00'),
-(4, '2021-07-26 15:58:29', 1, 20, 0, '', 1, 0, 200, 0, 'Безналичный платеж', 'Bank transfer', '', '', 0, '', '', '', '', 1627304309, 0, 0, 2, 1627304309, 2, 1627334210, '127.0.0.1', 'Администратор', '', '', '', '', '', 0, '', 0, '', '0.00', '0.00', '0.00', '0.00');
 
 -- --------------------------------------------------------
 
@@ -700,22 +640,23 @@ CREATE TABLE `mnbv_products` (
   `weightgr` int(4) NOT NULL DEFAULT 0,
   `sizegr` int(4) NOT NULL DEFAULT 0,
   `onlyvert` int(1) NOT NULL DEFAULT 0,
-  `brweight` int(10) NOT NULL DEFAULT 0,
+  `brweight` decimal(10,3) NOT NULL DEFAULT 0.000,
   `brheight` int(10) NOT NULL DEFAULT 0,
   `brwidth` int(10) NOT NULL DEFAULT 0,
   `brlength` int(10) NOT NULL DEFAULT 0,
   `brminw` int(10) NOT NULL DEFAULT 0,
   `brmaxw` int(10) NOT NULL DEFAULT 0,
   `brvolume` decimal(10,3) NOT NULL DEFAULT 0.000,
-  `supplier` int(10) NOT NULL DEFAULT 0
+  `supplier` int(10) NOT NULL DEFAULT 0,
+  `color` int(10) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Дамп данных таблицы `mnbv_products`
 --
 
-INSERT INTO `mnbv_products` (`id`, `outid`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `preview`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `files`, `siteid`, `tags`, `price`, `oldprice`, `cost`, `ndspr`, `quantity`, `instock`, `discmaxpr`, `discmaxval`, `discminmargpr`, `discminmargval`, `vendor`, `prefix`, `prefixlang`, `model`, `partnumber`, `barcode`, `country`, `norm_search`, `norm_partnumber`, `donorurl`, `donorimg`, `searchstr`, `weightgr`, `sizegr`, `onlyvert`, `brweight`, `brheight`, `brwidth`, `brlength`, `brminw`, `brmaxw`, `brvolume`, `supplier`) VALUES
-(1, '', '1970-01-01 03:00:00', 0, 100, 1, '', 1, 0, 210, 0, 'Товары', 'Products', '', '', 0, '', '', '', '', 0, 0, 0, 2, 1469005900, 2, 1624633998, '127.0.0.1', 'Администратор', '', '', '{\"1\":{\"objid\":1,\"attrid\":\"3\",\"pozid\":10000,\"namelang\":\"Weight (kg)\",\"dnuse\":1,\"namedlang\":\"\\u0412\\u0435\\u0441\",\"infilter\":1,\"name\":\"\\u0412\\u0435\\u0441 (\\u043a\\u0433)\"},\"2\":{\"objid\":1,\"attrid\":\"5\",\"pozid\":10001,\"namedlang\":\"\\u041a\\u043e\\u043c\\u043c\\u0435\\u043d\\u0442\",\"namelang\":\"Height (sm)\",\"name\":\"\\u0412\\u044b\\u0441\\u043e\\u0442\\u0430 (\\u0441\\u043c)\",\"dnuse\":1,\"infilter\":1},\"3\":{\"objid\":1,\"attrid\":\"6\",\"name\":\"\\u0428\\u0438\\u0440\\u0438\\u043d\\u0430 (\\u0441\\u043c)\",\"namelang\":\"Width (sm)\",\"dnuse\":1,\"infilter\":1,\"pozid\":10002},\"4\":{\"objid\":1,\"attrid\":\"7\",\"pozid\":10003,\"name\":\"\\u0414\\u043b\\u0438\\u043d\\u0430 (\\u0441\\u043c)\",\"namelang\":\"Length (sm)\",\"dnuse\":1,\"infilter\":1}}', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', 0, 0, '0.00', '0.00', '0.00', '0.00', 0, '', '', '', '', '', 0, ',1,,,,tovary,products,,', '', '', '', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, '0.000', 0);
+INSERT INTO `mnbv_products` (`id`, `outid`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `preview`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `files`, `siteid`, `tags`, `price`, `oldprice`, `cost`, `ndspr`, `quantity`, `instock`, `discmaxpr`, `discmaxval`, `discminmargpr`, `discminmargval`, `vendor`, `prefix`, `prefixlang`, `model`, `partnumber`, `barcode`, `country`, `norm_search`, `norm_partnumber`, `donorurl`, `donorimg`, `searchstr`, `weightgr`, `sizegr`, `onlyvert`, `brweight`, `brheight`, `brwidth`, `brlength`, `brminw`, `brmaxw`, `brvolume`, `supplier`, `color`) VALUES
+(1, '', '1970-01-01 03:00:00', 0, 100, 1, '', 1, 0, 210, 0, 'Товары', 'Products', '', '', 0, '', '', '', '', 0, 0, 0, 2, 1469005900, 2, 1631622298, '127.0.0.1', 'Администратор', '', '', '{\"1\":{\"objid\":1,\"attrid\":\"3\",\"pozid\":10000,\"namelang\":\"Weight (kg)\",\"dnuse\":1,\"namedlang\":\"\\u0412\\u0435\\u0441\",\"infilter\":1,\"name\":\"\\u0412\\u0435\\u0441 (\\u043a\\u0433)\"},\"2\":{\"objid\":1,\"attrid\":\"5\",\"pozid\":10001,\"namedlang\":\"\\u041a\\u043e\\u043c\\u043c\\u0435\\u043d\\u0442\",\"namelang\":\"Height (sm)\",\"name\":\"\\u0412\\u044b\\u0441\\u043e\\u0442\\u0430 (\\u0441\\u043c)\",\"dnuse\":1,\"infilter\":1},\"3\":{\"objid\":1,\"attrid\":\"6\",\"name\":\"\\u0428\\u0438\\u0440\\u0438\\u043d\\u0430 (\\u0441\\u043c)\",\"namelang\":\"Width (sm)\",\"dnuse\":1,\"infilter\":1,\"pozid\":10002},\"4\":{\"objid\":1,\"attrid\":\"7\",\"pozid\":10003,\"name\":\"\\u0414\\u043b\\u0438\\u043d\\u0430 (\\u0441\\u043c)\",\"namelang\":\"Length (sm)\",\"dnuse\":1,\"infilter\":1}}', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', 0, 0, '0.00', '0.00', '0.00', '0.00', 0, '', '', '', '', '', 0, ',tovary,products,,', '', '', '', '', 1, 1, 0, '0.000', 0, 0, 0, 0, 0, '0.000', 0, 0);
 
 -- --------------------------------------------------------
 
@@ -785,8 +726,7 @@ CREATE TABLE `mnbv_suppliers` (
 --
 
 INSERT INTO `mnbv_suppliers` (`id`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `preview`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `files`, `siteid`, `tags`) VALUES
-(1, '0000-00-00 00:00:00', 0, 1, 1, '', 1, 0, 200, 0, 'Поставщики', 'Suppliers', '', '', 0, '', '', '', '', 0, 0, 0, 0, 0, 2, 1624442600, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, ''),
-(2, '2021-06-23 13:03:35', 1, 100, 0, '', 1, 0, 200, 0, 'Поставщик1', 'Supplier1', '', '', 0, '', '', '', '', 1624442615, 0, 0, 2, 1624442615, 2, 1624442626, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '');
+(1, '0000-00-00 00:00:00', 0, 1, 1, '', 1, 0, 200, 0, 'Поставщики', 'Suppliers', '', '', 0, '', '', '', '', 0, 0, 0, 0, 0, 2, 1624442600, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '');
 
 -- --------------------------------------------------------
 
@@ -893,7 +833,10 @@ CREATE TABLE `mnbv_vendors` (
 --
 
 INSERT INTO `mnbv_vendors` (`id`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `preview`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `files`, `siteid`, `tags`, `discmaxpr`, `discmaxval`, `discminmargpr`, `discminmargval`, `searchstr`) VALUES
-(1, '2017-09-15 18:20:38', 0, 100, 1, '', 1, 0, 210, 0, 'Производители', 'Vendors', '', '', 0, '', '', '', '', 1505485238, 0, 0, 2, 1505485238, 2, 1505485246, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', '');
+(1, '2017-09-15 18:20:38', 0, 100, 1, '', 1, 0, 210, 0, 'Бренды', 'Brands', '', '', 0, '', '', '', '', 1505485200, 0, 0, 2, 1505485238, 2, 1629649267, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', ''),
+(2, '2021-08-22 09:35:09', 1, 100, 1, '', 1, 0, 210, 1, 'DemoBrand1', '', 'demobrand1', '', 0, '', '', '', '', 1629614100, 0, 0, 2, 1629614109, 2, 1629672661, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"5\":{\"url\":\"\\/src\\/bsdefsite2\\/img\\/p1_2.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1629614158,\"editip\":\"127.0.0.1\"}}}', 0, '', '0.00', '0.00', '0.00', '0.00', ''),
+(3, '2021-08-22 09:40:02', 2, 100, 0, '', 1, 0, 210, 0, 'DemoPage', '', 'demopage', '', 0, 'Демо страница в рамках брендзоны тестового бренда.', '', '<p>Демо страница в рамках брендзоны тестового бренда&nbsp;Демо страница в рамках брендзоны тестового бренда&nbsp;Демо страница в рамках брендзоны тестового бренда</p>', '', 1629614400, 0, 0, 2, 1629614402, 2, 1629672666, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', ''),
+(4, '2021-08-23 01:51:22', 1, 100, 0, '', 1, 0, 210, 0, 'DemoBrand2', '', 'demobrand2', '', 0, '', '', '', '', 1629672660, 0, 0, 2, 1629672682, 2, 1629672703, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', '');
 
 --
 -- Индексы сохранённых таблиц
@@ -917,7 +860,7 @@ ALTER TABLE `mnbv_attributes`
 ALTER TABLE `mnbv_attrvals`
   ADD PRIMARY KEY (`id`),
   ADD KEY `obtvint` (`objid`,`vint`),
-  ADD KEY `attrfolder` (`attrid`,`objparentid`);
+  ADD KEY `attrfoldervend` (`attrid`,`objparentid`,`objvendorid`) USING BTREE;
 
 --
 -- Индексы таблицы `mnbv_cartitems`
@@ -931,6 +874,12 @@ ALTER TABLE `mnbv_cartitems`
 -- Индексы таблицы `mnbv_carts`
 --
 ALTER TABLE `mnbv_carts`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Индексы таблицы `mnbv_countries`
+--
+ALTER TABLE `mnbv_countries`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -952,21 +901,9 @@ ALTER TABLE `mnbv_longtmp`
   ADD PRIMARY KEY (`id`);
 
 --
--- Индексы таблицы `mnbv_news`
---
-ALTER TABLE `mnbv_news`
-  ADD PRIMARY KEY (`id`);
-
---
 -- Индексы таблицы `mnbv_orders`
 --
 ALTER TABLE `mnbv_orders`
-  ADD PRIMARY KEY (`id`);
-
---
--- Индексы таблицы `mnbv_payment`
---
-ALTER TABLE `mnbv_payment`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1034,7 +971,7 @@ ALTER TABLE `mnbv_actions`
 -- AUTO_INCREMENT для таблицы `mnbv_attributes`
 --
 ALTER TABLE `mnbv_attributes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT для таблицы `mnbv_attrvals`
@@ -1046,13 +983,19 @@ ALTER TABLE `mnbv_attrvals`
 -- AUTO_INCREMENT для таблицы `mnbv_cartitems`
 --
 ALTER TABLE `mnbv_cartitems`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT для таблицы `mnbv_carts`
 --
 ALTER TABLE `mnbv_carts`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT для таблицы `mnbv_countries`
+--
+ALTER TABLE `mnbv_countries`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `mnbv_delivery`
@@ -1067,22 +1010,10 @@ ALTER TABLE `mnbv_discounts`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT для таблицы `mnbv_news`
---
-ALTER TABLE `mnbv_news`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=9;
-
---
 -- AUTO_INCREMENT для таблицы `mnbv_orders`
 --
 ALTER TABLE `mnbv_orders`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=1000;
-
---
--- AUTO_INCREMENT для таблицы `mnbv_payment`
---
-ALTER TABLE `mnbv_payment`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT для таблицы `mnbv_prinstock`
@@ -1106,7 +1037,7 @@ ALTER TABLE `mnbv_searchindex`
 -- AUTO_INCREMENT для таблицы `mnbv_suppliers`
 --
 ALTER TABLE `mnbv_suppliers`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=3;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT для таблицы `mnbv_urlaliases`
@@ -1118,7 +1049,7 @@ ALTER TABLE `mnbv_urlaliases`
 -- AUTO_INCREMENT для таблицы `mnbv_vendors`
 --
 ALTER TABLE `mnbv_vendors`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

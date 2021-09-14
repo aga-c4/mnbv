@@ -2463,8 +2463,8 @@ class MNBVf {
                     "table" => 'td',
                     "type" => 'select',
                     "viewindex" => 0,
-                    "linkstorage" => 'attributes',
-                    "filter_folder" => 4,
+                    "linkstorage" => Glob::$vars['vend_storage'],
+                    "filter_folder" => 1,
                     "filter_type" => 'objects',
                     "checktype" => 'int',
                     "lang" => 'all',
@@ -2527,8 +2527,8 @@ class MNBVf {
                 "table" => 'td',
                 "type" => 'select',
                 "viewindex" => 0,
-                "linkstorage" => 'attributes',
-                "filter_folder" => 4,
+                "linkstorage" => '',
+                "filter_folder" => 0,
                 "filter_type" => 'objects',
                 "checktype" => 'int',
                 "lang" => 'all',
@@ -2598,8 +2598,8 @@ class MNBVf {
                 "table" => 'td',
                 "type" => 'select',
                 "viewindex" => 0,
-                "linkstorage" => 'attributes',
-                "filter_folder" => 4,
+                "linkstorage" => Glob::$vars['prod_country_storage'],
+                "filter_folder" => Glob::$vars['prod_country_rootid'],
                 "filter_type" => 'objects',
                 "checktype" => 'int',
                 "lang" => 'all',
@@ -2646,6 +2646,69 @@ class MNBVf {
             }
         }
         if (!isset($useAttrArr["country"]["vals"]) || count($useAttrArr["country"]["vals"])==0) unset($useAttrArr["country"]); 
+        
+        $useAttrArr["color"] = Array(
+            "attrid" => "color",
+            "pozid" => 3,
+            "name" => 'Цвет',
+            "namelang" => 'Color',
+            "dnuse" => 1,
+            "inshort" => 0,
+            "infilter" => 1,
+            "filter_type" => 'checkbox_gr',
+            "view" => Array (
+                "active" => 'update',
+                "table" => 'td',
+                "type" => 'select',
+                "viewindex" => 0,
+                "linkstorage" => Glob::$vars['attr_storage'],
+                "filter_folder" => Glob::$vars['attr_color_folder_id'],
+                "filter_type" => 'objects',
+                "checktype" => 'int',
+                "lang" => 'all',
+                "dbtype" => 'int',
+                "notset" => 1,
+            ),
+        );
+
+        $curFltFndItm = array();
+        $quFilterArr = array();
+        if ($catFolderid!=Glob::$vars['prod_storage_rootid']) array_push($quFilterArr, "parentid","=",$catFolderid,"and");
+        if (!empty($catVendorid)) array_push($quFilterArr, "vendor","=",$catVendorid,"and");
+        array_push($quFilterArr, "type","!=",ST_FOLDER);
+        $res = MNBVStorage::getObjAcc(Glob::$vars['prod_storage'],
+                array("color",array("count(*)","qty")),
+                $quFilterArr,
+                array("group" => "color"));
+        if (!empty($res[0])) {
+            unset($res[0]);
+            foreach($res as $value) {
+                if (!empty($value["color"])){
+                    $curFltFndItm[strval($value["color"])] = $value["qty"];
+                }
+            }
+        }
+        if (count($curFltFndItm)) {      
+            $fList = MNBVStorage::getObjAcc(Glob::$vars['attr_storage'],
+                    array("id","parentid","name","namelang","pozid","alias"),
+                    array("parentid","=",Glob::$vars['attr_color_folder_id']),
+                    array("sort"=>array("pozid"=>"inc","name"=>"inc")));
+            if (((int)$fList[0])>0) {
+                unset($fList[0]); //Вынесем размер списка из массива 
+                foreach ($fList as $key=>$value) {
+                    if (!isset($curFltFndItm[strval($value["id"])])) continue;
+                    if (!isset($useAttrArr["color"]["vals"]) || !is_array($useAttrArr["color"]["vals"])) $useAttrArr["color"]["vals"] = array();
+                    $useAttrArr["color"]["vals"][strval($value["id"])] = array(
+                        "id" => $value["id"],
+                        "alias" => $value["alias"],
+                        "name" => $value["name"],
+                        "namelang" => $value["namelang"],
+                        "qty" => $curFltFndItm[strval($value["id"])],
+                    );   
+                }
+            }
+        }
+        if (!isset($useAttrArr["color"]["vals"]) || count($useAttrArr["color"]["vals"])==0) unset($useAttrArr["color"]); 
         
         $ids = array();
         if (isset($obj["attrup"]) && is_array($obj["attrup"]) && count($obj["attrup"])){

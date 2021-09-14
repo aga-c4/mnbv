@@ -35,6 +35,12 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
     public $countryArr = array();
     
     /**
+     * @var array - массив цветов с алиасами, синонимами и названиями. 
+     */
+    public $colorArr = array();
+    
+    
+    /**
      * @var type массив параметров и их значений
      */
     public $paramArr = array();
@@ -150,6 +156,7 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
         if ('Брутто вес (кг)' === $strVal) $result = true;
         if ('Брутто размер (ВхШхГ) (см)' === $strVal) $result = true;
         if ('Страна-производитель' === $strVal) $result = true;
+        if ('Цвет' === $strVal) $result = true;
         if ('Габариты брутто (ВхШхГ) (см)' === $strVal) $result = true;
         return $result;
     }
@@ -160,46 +167,7 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
      */
     public function startParamArr(){
         $this->paramArr = array(
-            "Цвет" => Array(
-                "name" => "Цвет",
-                "dbid" => 12,
-                "vals" => Array(),
-                "size" => null, 
-                "vars" => Array(
-                    "dbtype" => "int",
-                    "active" => "update",
-                    "table" => "td",
-                    "type" => "select",
-                    "size" => 1,
-                    "linkstorage" => "attributes",
-                    "filter_folder" => 12,
-                    "filter_type" => "all",
-                    "checktype" => "int",
-                    "lang" => "all",
-                    "notset" => 1,
-                ),
-                "infilter" => 1,
-            ),
-            
-            "Брутто вес (кг)" => Array(
-                "name" => "Брутто вес (кг)",
-                "dbid" => 8,
-                "vals" => Array(),
-                "size" => Array("size"=>7,"dmsize"=>3),
-                "vars" => Array(
-                    "dbtype" => "decimal",
-                    "active" => "update",
-                    "table" => "td",
-                    "type" => "text",
-                    "filter_type" => "all",
-                    "checktype" => "decimal",
-                    "lang" => "all",
-                    "size" => 7,
-                    "dmsize" => 3,
-                ),
-                "infilter" => 1,
-            ),
-            
+                        
             "Вес (кг)" => Array(
                 "name" => "Вес (кг)",
                 "dbid" => 3,
@@ -210,7 +178,6 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                     "active" => "update",
                     "table" => "td",
                     "type" => "text",
-                    "filter_type" => "all",
                     "checktype" => "decimal",
                     "lang" => "all",
                     "size" => 7,
@@ -234,9 +201,6 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                     "type" => "text",
                     "size" => 10,
                     "dmsize" => 0,
-                    "linkstorage" => "attributes",
-                    "filter_folder" => 20,
-                    "filter_type" => "objects",
                     "checktype" => "int",
                     "lang" => "all",
                     "viewindex" => 0,
@@ -261,9 +225,6 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                     "type" => "text",
                     "size" => 10,
                     "dmsize" => 0,
-                    "linkstorage" => "attributes",
-                    "filter_folder" => 20,
-                    "filter_type" => "objects",
                     "checktype" => "int",
                     "lang" => "all",
                     "viewindex" => 0,
@@ -288,9 +249,6 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                     "type" => "text",
                     "size" => 10,
                     "dmsize" => 0,
-                    "linkstorage" => "attributes",
-                    "filter_folder" => 20,
-                    "filter_type" => "objects",
                     "checktype" => "int",
                     "lang" => "all",
                     "viewindex" => 0,
@@ -300,6 +258,47 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                 "infilter" => 1,
             ),
             
+            /*
+            //Что в комменте переведено в основные поля 
+            "Цвет" => Array(
+                "name" => "Цвет",
+                "dbid" => 12,
+                "vals" => Array(),
+                "size" => null, 
+                "vars" => Array(
+                    "dbtype" => "int",
+                    "active" => "update",
+                    "table" => "td",
+                    "type" => "select",
+                    "size" => 1,
+                    "linkstorage" => Glob::$vars['attr_storage'],
+                    "filter_folder" => Glob::$vars['attr_color_folder_id'],
+                    "filter_type" => "all",
+                    "checktype" => "int",
+                    "lang" => "all",
+                    "notset" => 1,
+                ),
+                "infilter" => 1,
+            ),
+            
+            "Брутто вес (кг)" => Array(
+                "name" => "Брутто вес (кг)",
+                "dbid" => 8,
+                "vals" => Array(),
+                "size" => Array("size"=>7,"dmsize"=>3),
+                "vars" => Array(
+                    "dbtype" => "decimal",
+                    "active" => "update",
+                    "table" => "td",
+                    "type" => "text",
+                    "checktype" => "decimal",
+                    "lang" => "all",
+                    "size" => 7,
+                    "dmsize" => 3,
+                ),
+                "infilter" => 1,
+            ),
+
             "Брутто высота (см)" => Array(
                 "name" => "Брутто высота (см)",
                 "dbid" => 9,
@@ -315,9 +314,6 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                     "type" => "text",
                     "size" => 10,
                     "dmsize" => 0,
-                    "linkstorage" => "attributes",
-                    "filter_folder" => 20,
-                    "filter_type" => "objects",
                     "checktype" => "int",
                     "lang" => "all",
                     "viewindex" => 0,
@@ -342,9 +338,6 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                     "type" => "text",
                     "size" => 10,
                     "dmsize" => 0,
-                    "linkstorage" => "attributes",
-                    "filter_folder" => 20,
-                    "filter_type" => "objects",
                     "checktype" => "int",
                     "lang" => "all",
                     "viewindex" => 0,
@@ -369,9 +362,6 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                     "type" => "text",
                     "size" => 10,
                     "dmsize" => 0,
-                    "linkstorage" => "attributes",
-                    "filter_folder" => 20,
-                    "filter_type" => "objects",
                     "checktype" => "int",
                     "lang" => "all",
                     "viewindex" => 0,
@@ -380,6 +370,7 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                 ),
                 "infilter" => 1,
             ),
+             */
         );
     }
     
@@ -577,6 +568,12 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                         if (empty($paramAttr['name'])) continue;
                         $paramName = trim(strval($paramAttr['name']));
                         $curParamItemName = trim(strval($curParam));
+                        
+                        if ('Цвет' === $paramName){
+                            $colorStr = trim(SysBF::checkStr($curParamItemName,'stringkav'));
+                            $color = $this->checkColor($curParamItemName);
+                            continue;
+                        }
                         
                         if ($this->checkAttrExeptions($paramName)) continue;
                         //echo "param=[$paramName][$curParamItemName]\n";
@@ -884,7 +881,29 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                             
                             //Параметры - исключения
                             $mainAttrOk = true;
-                            if ('Вес' === $paramName) {
+                            
+                            if ('Цвет' === $paramName){
+                                
+                                $mainAttrOk = false;
+                                //Проверка на цвет
+                                $colorStr = trim(SysBF::checkStr($curParamItemName,'stringkav'));
+                                $colorid = 0;
+                                //echo "--->colorstr=[$colorStr]";
+                                if (!empty($colorStr) && isset($this->colorArr[$colorStr]) && !empty($this->colorArr[$colorStr]["dbid"])) {
+                                    $colorid = $this->colorArr[$colorStr]["dbid"];
+                                    $prodColorStrNorm = SysBF::strNormalize($curParamItemName);
+                                    //echo " colorid=[$colorid] curParamItemName=[$curParamItemName] prodColorStrNorm=[$prodColorStrNorm]";
+                                    if (!empty($prodColorStrNorm)) { //Так будет корректнее индекс
+                                        $prodColorStr = $curParamItemName;
+                                        $updateArr["color"] = intval($colorid);
+                                        $updateArr["norm_search"] .= ',' . $prodColorStrNorm;
+                                        //echo "Ok!";
+                                    }
+                                }
+                                //echo "\n";
+                                continue;
+                                
+                            } elseif ('Вес' === $paramName) {
                                 
                                 $mainAttrOk = false;
                                 $paramName = 'Вес (кг)';
@@ -1086,15 +1105,6 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
                                     }
                                 }
                                 
-                                if ($paramName==='Цвет'){
-                                    $prodColorStrNorm = SysBF::strNormalize($curParamItemName);
-                                    //if (false===strpos(SysBF::normUpdate($updateArr["norm_search"]),SysBF::normUpdate($prodColorStrNorm))){
-                                    if (!empty($prodColorStrNorm)) { //Так будет корректнее индекс
-                                        $prodColorStr = $curParamItemName;
-                                        $updateArr["norm_search"] .= ',' . $prodColorStrNorm;
-                                    }
-                                }
-                                
                             }
 
                         }
@@ -1105,21 +1115,23 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
 
                         $prodid = MNBVStorage::addObj(Glob::$vars['prod_storage'], $updateArr);
                         
-                        //Сформируем поисковые строки
+                        $str_norm_partnumber = SysBF::strNormalize($updateArr["partnumber"]);
+                        
+                        //Сформируем поисковый индекс
                         $sExeptArr = array();
                         $searchObj->del(Glob::$vars['prod_storage'],$prodid);
-                        $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,"$prodid",0,6,$this->siteid,$sExeptArr);
-                        $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$updateArr["partnumber"],0,2,$this->siteid,$sExeptArr);
-                        $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,preg_replace("/[^0-9]/","",$updateArr["partnumber"]),0,2,$this->siteid,$sExeptArr);
-                        $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$updateArr["barcode"],0,2,$this->siteid,$sExeptArr);
-                        $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid, str_replace(' ', '', $updateArr["model"]),0,2,$this->siteid,$sExeptArr);
-                        $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,preg_replace("/[^0-9]/","",$updateArr["model"]),0,2,$this->siteid,$sExeptArr);
-                        if (!empty($upFolderName) && $upFolderName!=='root') $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$upFolderName,0,2,$this->siteid,$sExeptArr);
-                        //$sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$updateArr["name"],0,2,$this->siteid,$sExeptArr);
-                        $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$updateArr["prefix"],0,2,$this->siteid,$sExeptArr);
-                        if (!empty($vendorid)) $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$this->vendArr[$vendorStr]["name"],0,2,$this->siteid,$sExeptArr);
-                        if (!empty($countryid)) $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$this->countryArr[$countryStr]["name"],0,1,$this->siteid,$sExeptArr);
-                        if (!empty($prodColorStr)) $sExeptArr[] = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$prodColorStr,0,1,$this->siteid,$sExeptArr);
+                        $sExeptArr = $searchObj->set(Glob::$vars['prod_storage'],$prodid, "$prodid",0,100,$this->siteid,$sExeptArr);
+                        $sExeptArr = $searchObj->set(Glob::$vars['prod_storage'],$prodid, $str_norm_partnumber,0,10,$this->siteid,$sExeptArr);
+                        $sExeptArr = $searchObj->set(Glob::$vars['prod_storage'],$prodid, preg_replace("/[^0-9]/","",$str_norm_partnumber),0,2,$this->siteid,$sExeptArr);
+                        $sExeptArr = $searchObj->set(Glob::$vars['prod_storage'],$prodid, SysBF::strNormalize($updateArr["barcode"]),0,10,$this->siteid,$sExeptArr);
+                        $sExeptArr = $searchObj->set(Glob::$vars['prod_storage'],$prodid, SysBF::strNormalize($updateArr["model"]),0,10,$this->siteid,$sExeptArr);
+                        $sExeptArr = $searchObj->set(Glob::$vars['prod_storage'],$prodid,preg_replace("/[^0-9]/","",$updateArr["model"]),0,2,$this->siteid,$sExeptArr);
+                        $sExeptArr = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$updateArr["prefix"],0,2,$this->siteid,$sExeptArr);
+                        if (!empty($vendorid)) $sExeptArr = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$this->vendArr[$vendorStr]["name"],0,2,$this->siteid,$sExeptArr);
+                        if (!empty($countryid)) $sExeptArr = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$this->countryArr[$countryStr]["name"],0,2,$this->siteid,$sExeptArr);
+                        if (!empty($prodColorStr)) $sExeptArr = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$prodColorStr,0,2,$this->siteid,$sExeptArr);
+                        $sExeptArr = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$updateArr["name"],0,1,$this->siteid,$sExeptArr);
+                        if (!empty($upFolderName) && $upFolderName!=='root') $sExeptArr = $searchObj->set(Glob::$vars['prod_storage'],$prodid,$upFolderName,0,1,$this->siteid,$sExeptArr);
                         
                         
                         if (false!==$prodid) {
@@ -1324,7 +1336,7 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
             return $country["id"];
         }
         
-        //Если вендора не нашлось - создадим его
+        //Если страны не нашлось - создадим ее
         $updateArr["searchstr"] = (!empty($country_search))?$country_search:'';
         $updateArr["name"] = $countryStr;
         $updateArr["alias"] = MNBVf::str2alias($countryStr);
@@ -1362,6 +1374,74 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
         );         
         
         return $countryid; 
+    }
+
+    /**
+     * Проверка наличия и возможности использования цвета, при необходимости - создание цвета
+     * @param string $colorStr - название страны - как пришло в фиде 
+     * @param string $color_search - строка синонимов из фида
+     * @return intval $id - идентификатор страны найденный или созданный или false, если ошибка и идентификатор найти не удалось.
+     */
+    private function checkColor($colorStr){
+        
+        $colorStr = trim($colorStr);
+
+        //Если уже отработали этот цвет, то не повторяемся
+        if (!empty($colorStr) && isset($this->colorArr[$colorStr])) return $this->colorArr[$colorStr]["id"];
+        
+        $updateArr = array();
+        $color = false;
+        $res = MNBVStorage::getObj(Glob::$vars['attr_storage'],
+                array("id"),
+                array("name","=",$colorStr));
+        if (!empty($res[0])) {
+            $color = $res[1];
+            echo "Found color id=[".$color["id"]."] [{$colorStr}]\n";
+            $this->colorArr[$colorStr] = array(
+                "id" => $color["id"],
+                "name" => $colorStr,
+                "dbid" => $color["id"],
+            );         
+        
+            return $color["id"];
+        }
+        
+        //Если цвета не нашлось - создадим его
+        $updateArr["name"] = $colorStr;
+        $updateArr["alias"] = MNBVf::str2alias($colorStr);
+        $updateArr["parentid"] = Glob::$vars['attr_color_folder_id'];
+        $updateArr["pozid"] = 100;
+        $updateArr["visible"] = 1;
+        $updateArr["first"] = 0;
+        $updateArr["access"] = 0;
+        $updateArr["access2"] = 210;
+        $updateArr["type"] = 0;
+        $updateArr["datestr"] = $this->thisDateTime;
+        $updateArr["date"] = $this->thisTime;
+        $updateArr["siteid"] = $this->siteid;
+        $updateArr["author"] = Glob::$vars['user']->get('name');
+        $updateArr["createuser"] = Glob::$vars['user']->get('userid');
+        $updateArr["createdate"] = $this->thisTime;
+        $updateArr["edituser"] = Glob::$vars['user']->get('userid');
+        $updateArr["editdate"] = $this->thisTime;
+        $updateArr["editip"] = GetEnv('REMOTE_ADDR');
+        $colorid = MNBVStorage::addObj(Glob::$vars['attr_storage'], $updateArr);
+        
+        if (false!==$colorid) {     
+            echo "Add color id=[{$colorid}] [{$colorStr}]\n";
+        } else {
+            echo "Add color error colorStr=[$colorStr] from [{$updateArr["name"]}]\n";
+        }
+        
+        if ($color===false) return false;
+        
+        $this->colorArr[$colorStr] = array(
+            "id" => $colorid,
+            "name" => $colorStr,
+            "dbid" => $colorid,
+        );         
+        
+        return $colorid; 
     }
 
         

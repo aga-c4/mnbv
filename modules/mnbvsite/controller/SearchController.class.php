@@ -113,22 +113,33 @@ class SearchController extends AbstractMnbvsiteController {
         //Обработка строки поиска
         $stemmer = new StemmerRu();
         $search = SysBF::getFrArr(Glob::$vars['request'],'search','');      
-        $search = $item['search_str'] = SysBF::prepareSearchSth($search);
+        $search = $item['search_str'] = SysBF::prepareSearchStr($search);
         SysLogs::addLog('Search str: [' . $item['search_str'] . ']'); 
         
-        $searchArr0 = preg_split("/ /",$search);
         $searchNormStr = '';
         $searchArr = array();
-        $wcnt = 0;
-        foreach($searchArr0 as $key=>$value){
-            $normstr = SysBF::strNormalize($stemmer->getWordBase($value));
-            $normstr = SysBF::normUpdate($normstr);
-            if (mb_strlen($normstr,'utf-8')>=2 || preg_match("/[0-9]/", $normstr)) {
-                $searchArr[$key] = $normstr;
-                $searchNormStr .= ((!empty($searchNormStr))?' ':'') . $searchArr[$key];
-                $wcnt++;
+        
+        $normstr = SysBF::normUpdate(SysBF::strNormalize($search));
+        $normstr_len = mb_strlen($normstr,'utf-8');
+        if (($normstr_len>=2 && $normstr_len<20)  || preg_match("/[0-9]/", $normstr)) {
+            $searchArr[] = $normstr;
+            $searchNormStr .= ((!empty($searchNormStr))?' ':'') . $normstr;
+            $wcnt = 1;
+        }
+        
+        $searchArr0 = preg_split("/ /",$search);
+        if (count($searchArr0)>1){
+            $wcnt = 0;
+            foreach($searchArr0 as $value){
+                $normstr = SysBF::strNormalize($stemmer->getWordBase($value));
+                $normstr = SysBF::normUpdate($normstr);
+                if (mb_strlen($normstr,'utf-8')>=2 || preg_match("/[0-9]/", $normstr)) {
+                    $searchArr[] = $normstr;
+                    $searchNormStr .= ((!empty($searchNormStr))?' ':'') . $normstr;
+                    $wcnt++;
+                }
+                if ($wcnt>=4) break;
             }
-            if ($wcnt>=3) break;
         }
     
         SysLogs::addLog('Search norm str: [' . $searchNormStr . '] slov_v_stroke=['.$wcnt.']');
@@ -165,7 +176,7 @@ class SearchController extends AbstractMnbvsiteController {
         
         //Список объектов
         $quFilterArr2 = $quFilterArr;
-        array_push($quFilterArr2, 'and','strindex.type','=',0);
+        array_push($quFilterArr2, 'and','strindex.type','=',1, 'and','strindex.objtype','=',0); //Поиск по товарам
         $item['list'] = MNBVStorage::getObjAcc(array(
             array('name'=>'searchindex','alias'=>'strindex'),
             array('join'=>'left','name'=>$storage, 'alias'=>'prd','on'=>array("prd.id","=","field::strindex.objid"))),
@@ -212,7 +223,7 @@ class SearchController extends AbstractMnbvsiteController {
         //Список категорий
         $quConfArr["sort"] = array("pozid"=>"inc","name"=>"inc");
         $quConfArr["limit"] = array(0,15);
-        array_push($quFilterArr, 'and','strindex.type','=',1,"and","prd.id","!=",Glob::$vars['prod_storage_rootid']);
+        array_push($quFilterArr, 'and','strindex.type','=',1, 'and','strindex.objtype','=',1,"and","prd.id","!=",Glob::$vars['prod_storage_rootid']);
         $item['cat_list'] = MNBVStorage::getObjAcc(array(
             array('name'=>'searchindex','alias'=>'strindex'),
             array('join'=>'left','name'=>$storage, 'alias'=>'prd','on'=>array("prd.id","=","field::strindex.objid"))),

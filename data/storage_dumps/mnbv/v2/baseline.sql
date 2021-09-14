@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Авг 23 2021 г., 02:09
+-- Время создания: Сен 14 2021 г., 15:18
 -- Версия сервера: 10.3.13-MariaDB-log
 -- Версия PHP: 7.3.9
 
@@ -209,7 +209,8 @@ INSERT INTO `mnbv_attributes` (`id`, `datestr`, `parentid`, `pozid`, `type`, `ty
 (9, '2021-06-09 17:42:38', 1, 100, 0, '', 1, 0, 103, 0, 'Брутто высота (см)', 'Gross height (sm)', '', '', '', '', '', '', 1623249758, 0, 0, 2, 1623249758, 2, 1623270628, '127.0.0.1', 'Администратор', '{\"dbtype\":\"int\",\"active\":\"update\",\"table\":\"td\",\"type\":\"text\",\"filter_type\":\"all\",\"checktype\":\"int\",\"lang\":\"all\",\"size\":\"10\"}', '', '', '', '', '', 0, ''),
 (10, '2021-06-09 17:42:46', 1, 100, 0, '', 1, 0, 103, 0, 'Брутто ширина (см)', 'Gross width (sm)', '', '', '', '', '', '', 1623249766, 0, 0, 2, 1623249766, 2, 1623270633, '127.0.0.1', 'Администратор', '{\"dbtype\":\"int\",\"active\":\"update\",\"table\":\"td\",\"type\":\"text\",\"size\":\"10\",\"filter_type\":\"all\",\"checktype\":\"int\",\"lang\":\"all\"}', '', '', '', '', '', 0, ''),
 (11, '2021-06-09 17:43:00', 1, 100, 0, '', 1, 0, 103, 0, 'Брутто длина (см)', 'Gross length (sm)', '', '', '', '', '', '', 1623249780, 0, 0, 2, 1623249780, 2, 1623270638, '127.0.0.1', 'Администратор', '{\"dbtype\":\"int\",\"active\":\"update\",\"table\":\"td\",\"type\":\"text\",\"size\":\"10\",\"filter_type\":\"all\",\"checktype\":\"int\",\"lang\":\"all\"}', '', '', '', '', '', 0, ''),
-(12, '2021-06-09 23:36:39', 1, 100, 1, '', 1, 0, 103, 0, 'Цвет', 'Color', '', '', '', '', '', '', 1623270999, 0, 0, 2, 1623270999, 2, 1623271090, '127.0.0.1', 'Администратор', '{\"dbtype\":\"int\",\"active\":\"update\",\"table\":\"td\",\"type\":\"select\",\"size\":\"1\",\"linkstorage\":\"attributes\",\"filter_folder\":\"12\",\"filter_type\":\"all\",\"checktype\":\"int\",\"lang\":\"all\",\"notset\":1}', '', '', '', '[\"1\"]', '', 0, '');
+(12, '2021-06-09 23:36:39', 1, 100, 1, '', 1, 0, 103, 0, 'Цвет', 'Color', '', '', '', '', '', '', 1623270999, 0, 0, 2, 1623270999, 2, 1623271090, '127.0.0.1', 'Администратор', '{\"dbtype\":\"int\",\"active\":\"update\",\"table\":\"td\",\"type\":\"select\",\"size\":\"1\",\"linkstorage\":\"attributes\",\"filter_folder\":\"12\",\"filter_type\":\"all\",\"checktype\":\"int\",\"lang\":\"all\",\"notset\":1}', '', '', '', '[\"1\"]', '', 0, ''),
+(13, '2021-09-13 20:23:07', 12, 100, 0, '', 1, 0, 103, 0, 'Прозрачный', '', '', '', '', '', '', '', 1631553787, 0, 0, 2, 1631553787, 2, 1631553787, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '');
 
 -- --------------------------------------------------------
 
@@ -222,10 +223,29 @@ CREATE TABLE `mnbv_attrvals` (
   `id` int(10) NOT NULL,
   `objid` int(10) NOT NULL DEFAULT 0,
   `objparentid` int(10) NOT NULL DEFAULT 0,
+  `objvendorid` int(10) NOT NULL DEFAULT 0,
   `attrid` int(10) NOT NULL DEFAULT 0,
   `vint` int(10) NOT NULL DEFAULT 0,
   `vstr` varchar(255) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `mnbv_attrvals`
+--
+
+INSERT INTO `mnbv_attrvals` (`id`, `objid`, `objparentid`, `objvendorid`, `attrid`, `vint`, `vstr`) VALUES
+(2, 3, 2, 2, 3, 0, ''),
+(3, 3, 2, 2, 5, 0, ''),
+(4, 3, 2, 2, 6, 0, ''),
+(5, 3, 2, 2, 7, 0, ''),
+(7, 6, 2, 4, 3, 0, ''),
+(8, 6, 2, 4, 5, 0, ''),
+(9, 6, 2, 4, 6, 0, ''),
+(10, 6, 2, 4, 7, 0, ''),
+(12, 7, 2, 2, 3, 0, ''),
+(13, 7, 2, 2, 5, 0, ''),
+(14, 7, 2, 2, 6, 0, ''),
+(15, 7, 2, 2, 7, 0, '');
 
 -- --------------------------------------------------------
 
@@ -253,6 +273,13 @@ CREATE TABLE `mnbv_cartitems` (
   `brvolume` decimal(10,3) NOT NULL DEFAULT 0.000,
   `siteid` int(10) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Дамп данных таблицы `mnbv_cartitems`
+--
+
+INSERT INTO `mnbv_cartitems` (`id`, `sessid`, `userid`, `prodid`, `qty`, `price`, `discval`, `discpr`, `promocode`, `ts`, `region`, `brweight`, `brheight`, `brminw`, `brmaxw`, `brvolume`, `siteid`) VALUES
+(7, '3fu0pip4cglo374nqcsoh0r0bo1pem3o', 2, 5, 1, '160.00', '40.00', '0.20', '', 1631531954, 2, 0, 0, 0, 0, '0.000', 3);
 
 -- --------------------------------------------------------
 
@@ -372,7 +399,8 @@ CREATE TABLE `mnbv_countries` (
 --
 
 INSERT INTO `mnbv_countries` (`id`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `preview`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `files`, `siteid`, `tags`, `discmaxpr`, `discmaxval`, `discminmargpr`, `discminmargval`, `searchstr`) VALUES
-(1, '2017-09-15 18:19:07', 0, 100, 1, '', 1, 0, 210, 0, 'Страны', 'Countries', '', '', 0, '', '', '', '', 1505485140, 0, 0, 2, 1505485147, 2, 1505485196, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', '');
+(1, '2017-09-15 18:19:07', 0, 100, 1, '', 1, 0, 210, 0, 'Страны', 'Countries', '', '', 0, '', '', '', '', 1505485140, 0, 0, 2, 1505485147, 2, 1505485196, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', ''),
+(2, '2021-09-13 20:48:46', 1, 100, 0, '', 1, 0, 210, 0, 'Россия', 'Russia', '', '', 0, '', '', '', '', 1631555326, 0, 0, 2, 1631555326, 2, 1631555338, '127.0.0.1', 'Администратор', '', '', '', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', '');
 
 -- --------------------------------------------------------
 
@@ -528,14 +556,6 @@ CREATE TABLE `mnbv_longtmp` (
   `tsto` int(11) NOT NULL DEFAULT 0,
   `val` longtext NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Дамп данных таблицы `mnbv_longtmp`
---
-
-INSERT INTO `mnbv_longtmp` (`id`, `ts`, `tsto`, `val`) VALUES
-('prodfilters:2', 1629672954, 1629673854, '{\"selected\":0,\"list\":{\"price\":{\"attrid\":\"price\",\"pozid\":1,\"name\":\"\\u0426\\u0435\\u043d\\u0430\",\"namelang\":\"Price\",\"dnuse\":1,\"inshort\":1,\"infilter\":1,\"filter_type\":\"slider\",\"view\":{\"active\":\"update\",\"table\":\"td\",\"type\":\"text\",\"width\":\"100%\",\"filter_type\":\"all\",\"checktype\":\"decimal\",\"lang\":\"all\",\"size\":8,\"dbtype\":\"decimal\",\"dmsize\":2},\"minval\":\"0.00\",\"maxval\":\"100.00\",\"minRval\":\"0.00\",\"maxRval\":\"100.00\"},\"vendor\":{\"attrid\":\"vendor\",\"pozid\":2,\"name\":\"\\u041f\\u0440\\u043e\\u0438\\u0437\\u0432\\u043e\\u0434\\u0438\\u0442\\u0435\\u043b\\u044c\",\"namelang\":\"Vendor\",\"dnuse\":1,\"inshort\":1,\"infilter\":1,\"filter_type\":\"checkbox_gr\",\"view\":{\"active\":\"update\",\"table\":\"td\",\"type\":\"select\",\"viewindex\":0,\"linkstorage\":\"attributes\",\"filter_folder\":4,\"filter_type\":\"objects\",\"checktype\":\"int\",\"lang\":\"all\",\"dbtype\":\"int\",\"notset\":1},\"vals\":{\"2\":{\"id\":\"2\",\"alias\":\"demobrand1\",\"name\":\"DemoBrand1\",\"namelang\":\"\",\"qty\":\"1\"},\"4\":{\"id\":\"4\",\"alias\":\"demobrand2\",\"name\":\"DemoBrand2\",\"namelang\":\"\",\"qty\":\"1\"}}}}}'),
-('prodfilters:4', 1629668367, 1629669267, '{\"selected\":0,\"list\":[]}');
 
 -- --------------------------------------------------------
 
@@ -974,27 +994,29 @@ CREATE TABLE `mnbv_products` (
   `weightgr` int(4) NOT NULL DEFAULT 0,
   `sizegr` int(4) NOT NULL DEFAULT 0,
   `onlyvert` int(1) NOT NULL DEFAULT 0,
-  `brweight` int(10) NOT NULL DEFAULT 0,
+  `brweight` decimal(10,3) NOT NULL DEFAULT 0.000,
   `brheight` int(10) NOT NULL DEFAULT 0,
   `brwidth` int(10) NOT NULL DEFAULT 0,
   `brlength` int(10) NOT NULL DEFAULT 0,
   `brminw` int(10) NOT NULL DEFAULT 0,
   `brmaxw` int(10) NOT NULL DEFAULT 0,
   `brvolume` decimal(10,3) NOT NULL DEFAULT 0.000,
-  `supplier` int(10) NOT NULL DEFAULT 0
+  `supplier` int(10) NOT NULL DEFAULT 0,
+  `color` int(10) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Дамп данных таблицы `mnbv_products`
 --
 
-INSERT INTO `mnbv_products` (`id`, `outid`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `preview`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `files`, `siteid`, `tags`, `price`, `oldprice`, `cost`, `ndspr`, `quantity`, `instock`, `discmaxpr`, `discmaxval`, `discminmargpr`, `discminmargval`, `vendor`, `prefix`, `prefixlang`, `model`, `partnumber`, `barcode`, `country`, `norm_search`, `norm_partnumber`, `donorurl`, `donorimg`, `searchstr`, `weightgr`, `sizegr`, `onlyvert`, `brweight`, `brheight`, `brwidth`, `brlength`, `brminw`, `brmaxw`, `brvolume`, `supplier`) VALUES
-(1, '', '1970-01-01 03:00:00', 0, 100, 1, '', 1, 0, 210, 0, 'Товары', 'Products', '', '', 0, '', '', '', '', 0, 0, 0, 2, 1469005900, 2, 1629672908, '127.0.0.1', 'Администратор', '', '', '{\"1\":{\"objid\":1,\"attrid\":\"3\",\"pozid\":10000,\"namelang\":\"Weight (kg)\",\"dnuse\":1,\"namedlang\":\"\\u0412\\u0435\\u0441\",\"infilter\":1,\"name\":\"\\u0412\\u0435\\u0441 (\\u043a\\u0433)\"},\"2\":{\"objid\":1,\"attrid\":\"5\",\"pozid\":10001,\"namedlang\":\"\\u041a\\u043e\\u043c\\u043c\\u0435\\u043d\\u0442\",\"namelang\":\"Height (sm)\",\"name\":\"\\u0412\\u044b\\u0441\\u043e\\u0442\\u0430 (\\u0441\\u043c)\",\"dnuse\":1,\"infilter\":1},\"3\":{\"objid\":1,\"attrid\":\"6\",\"name\":\"\\u0428\\u0438\\u0440\\u0438\\u043d\\u0430 (\\u0441\\u043c)\",\"namelang\":\"Width (sm)\",\"dnuse\":1,\"infilter\":1,\"pozid\":10002},\"4\":{\"objid\":1,\"attrid\":\"7\",\"pozid\":10003,\"name\":\"\\u0414\\u043b\\u0438\\u043d\\u0430 (\\u0441\\u043c)\",\"namelang\":\"Length (sm)\",\"dnuse\":1,\"infilter\":1}}', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', 0, 0, '0.00', '0.00', '0.00', '0.00', 2, '', '', '', '', '', 0, ',tovary,products,,', '', '', '', '', 0, 1, 0, 0, 0, 0, 0, 0, 0, '0.000', 0),
-(2, '', '2021-08-22 23:28:18', 1, 10, 1, '', 1, 0, 210, 1, 'Категория 1', '', 'kategoriya-1', '', 0, '', '', '', '', 1629664080, 0, 0, 2, 1629664098, 2, 1629664296, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"http:\\/\\/mnbv.ru\\/img\\/help_book.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1629664217,\"editip\":\"127.0.0.1\"}}}', 0, '', '0.00', '0.00', '0.00', '0.00', 0, 0, '0.00', '0.00', '0.00', '0.00', 0, '', '', '', '', '', 0, ',kategoriya1,,,', '', '', '', '', 0, 1, 0, 0, 0, 0, 0, 0, 0, '0.000', 0),
-(3, '', '2021-08-22 23:28:56', 2, 100, 0, '', 1, 0, 210, 0, 'Товар1', '', 'tovar1', '', 0, '', '', '', '', 1629664080, 0, 0, 2, 1629664136, 2, 1629673679, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"http:\\/\\/mnbv.ru\\/img\\/help_book.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1629664226,\"editip\":\"127.0.0.1\"}}}', 0, '', '100.00', '150.00', '0.00', '0.00', 0, 0, '0.00', '0.00', '0.00', '0.00', 2, '', '', '', '', '', 0, ',3,,,,tovar1,,,', '', '', '', '', 0, 1, 0, 0, 0, 0, 0, 0, 0, '0.000', 0),
-(4, '', '2021-08-22 23:31:03', 1, 100, 1, '', 1, 0, 210, 1, 'Категория 2', '', 'kategoriya-2', '', 0, '', '', '', '', 1629664260, 0, 0, 2, 1629664263, 2, 1629664314, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"http:\\/\\/mnbv.ru\\/img\\/help_book.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1629664285,\"editip\":\"127.0.0.1\"}}}', 0, '', '0.00', '0.00', '0.00', '0.00', 0, 0, '0.00', '0.00', '0.00', '0.00', 0, '', '', '', '', '', 0, ',kategoriya2,,,', '', '', '', '', 0, 1, 0, 0, 0, 0, 0, 0, 0, '0.000', 0),
-(5, '', '2021-08-22 23:32:02', 4, 100, 0, '', 1, 0, 210, 1, 'Товар2', '', 'tovar2', '', 0, '', '', '', '', 1629664320, 0, 0, 2, 1629664322, 2, 1629664477, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"http:\\/\\/mnbv.ru\\/img\\/help_book.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1629664353,\"editip\":\"127.0.0.1\"}}}', 0, '', '200.00', '0.00', '0.00', '0.00', 0, 0, '0.00', '0.00', '0.00', '0.00', 0, '', '', '', '', '', 0, ',5,,,,tovar2,,,', '', '', '', '', 0, 1, 0, 0, 0, 0, 0, 0, 0, '0.000', 0),
-(6, '', '2021-08-23 01:50:34', 2, 100, 0, '', 1, 0, 210, 1, 'Товар3', '', '', '', 0, '', '', '', '', 1629672600, 0, 0, 2, 1629672634, 2, 1629673683, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"http:\\/\\/mnbv.ru\\/img\\/help_book.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1629673021,\"editip\":\"127.0.0.1\"}}}', 0, '', '0.00', '0.00', '0.00', '0.00', 0, 0, '0.00', '0.00', '0.00', '0.00', 4, '', '', '', '', '', 0, ',6,,,,tovar3,,,', '', '', '', '', 0, 1, 0, 0, 0, 0, 0, 0, 0, '0.000', 0);
+INSERT INTO `mnbv_products` (`id`, `outid`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `preview`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `files`, `siteid`, `tags`, `price`, `oldprice`, `cost`, `ndspr`, `quantity`, `instock`, `discmaxpr`, `discmaxval`, `discminmargpr`, `discminmargval`, `vendor`, `prefix`, `prefixlang`, `model`, `partnumber`, `barcode`, `country`, `norm_search`, `norm_partnumber`, `donorurl`, `donorimg`, `searchstr`, `weightgr`, `sizegr`, `onlyvert`, `brweight`, `brheight`, `brwidth`, `brlength`, `brminw`, `brmaxw`, `brvolume`, `supplier`, `color`) VALUES
+(1, '', '1970-01-01 03:00:00', 0, 100, 1, '', 1, 0, 210, 0, 'Товары', 'Products', '', '', 0, '', '', '', '', 0, 0, 0, 2, 1469005900, 2, 1629672908, '127.0.0.1', 'Администратор', '', '', '{\"1\":{\"objid\":1,\"attrid\":\"3\",\"pozid\":10000,\"namelang\":\"Weight (kg)\",\"dnuse\":1,\"namedlang\":\"\\u0412\\u0435\\u0441\",\"infilter\":1,\"name\":\"\\u0412\\u0435\\u0441 (\\u043a\\u0433)\"},\"2\":{\"objid\":1,\"attrid\":\"5\",\"pozid\":10001,\"namedlang\":\"\\u041a\\u043e\\u043c\\u043c\\u0435\\u043d\\u0442\",\"namelang\":\"Height (sm)\",\"name\":\"\\u0412\\u044b\\u0441\\u043e\\u0442\\u0430 (\\u0441\\u043c)\",\"dnuse\":1,\"infilter\":1},\"3\":{\"objid\":1,\"attrid\":\"6\",\"name\":\"\\u0428\\u0438\\u0440\\u0438\\u043d\\u0430 (\\u0441\\u043c)\",\"namelang\":\"Width (sm)\",\"dnuse\":1,\"infilter\":1,\"pozid\":10002},\"4\":{\"objid\":1,\"attrid\":\"7\",\"pozid\":10003,\"name\":\"\\u0414\\u043b\\u0438\\u043d\\u0430 (\\u0441\\u043c)\",\"namelang\":\"Length (sm)\",\"dnuse\":1,\"infilter\":1}}', '', '', '', 0, '', '0.00', '0.00', '0.00', '0.00', 0, 0, '0.00', '0.00', '0.00', '0.00', 2, '', '', '', '', '', 0, ',tovary,products,,', '', '', '', '', 0, 1, 0, '0.000', 0, 0, 0, 0, 0, '0.000', 0, 0),
+(2, '', '2021-08-22 23:28:18', 1, 10, 1, '', 1, 0, 210, 1, 'Категория 1', '', 'kategoriya-1', '', 0, '', '', '', '', 1629664080, 0, 0, 2, 1629664098, 2, 1631603914, '127.0.0.1', 'Администратор', '', '[{\"objid\":1,\"attrid\":\"3\",\"pozid\":10000,\"namelang\":\"Weight (kg)\",\"dnuse\":1,\"namedlang\":\"\\u0412\\u0435\\u0441\",\"infilter\":1,\"name\":\"\\u0412\\u0435\\u0441 (\\u043a\\u0433)\"},{\"objid\":1,\"attrid\":\"5\",\"pozid\":10001,\"namedlang\":\"\\u041a\\u043e\\u043c\\u043c\\u0435\\u043d\\u0442\",\"namelang\":\"Height (sm)\",\"name\":\"\\u0412\\u044b\\u0441\\u043e\\u0442\\u0430 (\\u0441\\u043c)\",\"dnuse\":1,\"infilter\":1},{\"objid\":1,\"attrid\":\"6\",\"name\":\"\\u0428\\u0438\\u0440\\u0438\\u043d\\u0430 (\\u0441\\u043c)\",\"namelang\":\"Width (sm)\",\"dnuse\":1,\"infilter\":1,\"pozid\":10002},{\"objid\":1,\"attrid\":\"7\",\"pozid\":10003,\"name\":\"\\u0414\\u043b\\u0438\\u043d\\u0430 (\\u0441\\u043c)\",\"namelang\":\"Length (sm)\",\"dnuse\":1,\"infilter\":1}]', '', '', '[\"1\"]', '{\"img\":{\"1\":{\"url\":\"http:\\/\\/mnbv.ru\\/img\\/help_book.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1629664217,\"editip\":\"127.0.0.1\"}}}', 0, '', '0.00', '0.00', '0.00', '0.00', 0, 0, '0.00', '0.00', '0.00', '0.00', 0, '', '', '', '', '', 0, ',2,,,,kategoriya1,,,', '', '', '', '', 0, 1, 0, '0.000', 0, 0, 0, 0, 0, '0.000', 0, 0),
+(3, '', '2021-08-22 23:28:56', 2, 100, 0, '', 1, 0, 210, 0, 'Товар1', '', 'tovar1', '', 0, '', '', '', '', 1629664080, 0, 0, 2, 1629664136, 2, 1631603098, '127.0.0.1', 'Администратор', '{\"color\":\"13\"}', '', '', '{\"attr3\":0}', '', '{\"img\":{\"1\":{\"url\":\"http:\\/\\/mnbv.ru\\/img\\/help_book.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1629664226,\"editip\":\"127.0.0.1\"}}}', 0, '', '100.00', '150.00', '0.00', '0.00', 0, 0, '0.00', '0.00', '0.00', '0.00', 2, 'txtprefix', '', 'tctmod12345', 'tctpartnum67890', 'txtean', 2, ',3,txtean,tctpartnum67890,tctmod12345,demobrand1,rossiya,russia,tovar1,,txtprefix,', 'tctpartnum67890', '', '', '', 1, 1, 0, '0.000', 0, 0, 0, 0, 0, '0.000', 0, 0),
+(4, '', '2021-08-22 23:31:03', 1, 100, 1, '', 1, 0, 210, 1, 'Категория 2', '', 'kategoriya-2', '', 0, '', '', '', '', 1629664260, 0, 0, 2, 1629664263, 2, 1631537212, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"http:\\/\\/mnbv.ru\\/img\\/help_book.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1629664285,\"editip\":\"127.0.0.1\"}}}', 0, '', '0.00', '0.00', '0.00', '0.00', 0, 0, '0.00', '0.00', '0.00', '0.00', 0, '', '', '', '', '', 0, ',kategoriya2,,,', '', '', '', '', 0, 1, 0, '0.000', 0, 0, 0, 0, 0, '0.000', 0, 0),
+(5, '', '2021-08-22 23:32:02', 4, 100, 0, '', 1, 0, 210, 1, 'Товарчик2', '', 'tovar2', '', 0, '', '', '', '', 1629664320, 0, 0, 2, 1629664322, 2, 1631556150, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"http:\\/\\/mnbv.ru\\/img\\/help_book.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1629664353,\"editip\":\"127.0.0.1\"}}}', 0, '', '200.00', '0.00', '0.00', '0.00', 0, 0, '0.00', '0.00', '0.00', '0.00', 4, 'pref', '', 'mod1234', 'art6789', 'strokekode', 2, ',5,strokekode,art6789,mod1234,demobrand2,rossiya,russia,tovarchik2,,pref,', 'art6789', '', '', '', 0, 1, 0, '0.000', 0, 0, 0, 0, 0, '0.000', 0, 0),
+(6, '', '2021-08-23 01:50:34', 2, 100, 0, '', 1, 0, 210, 1, 'Товар3', '', '', '', 0, '', '', '', '', 1629672600, 0, 0, 2, 1629672634, 2, 1631603946, '127.0.0.1', 'Администратор', '', '', '', '{\"attr12\":13,\"attr3\":0}', '', '{\"img\":{\"1\":{\"url\":\"http:\\/\\/mnbv.ru\\/img\\/help_book.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1629673021,\"editip\":\"127.0.0.1\"}}}', 0, '', '200.00', '0.00', '0.00', '0.00', 10, 1, '0.00', '0.00', '0.00', '0.00', 4, '', '', '', '', '', 2, ',6,,,,demobrand2,rossiya,russia,tovar3,,,', '', '', '', '', 1, 1, 0, '0.000', 0, 0, 0, 0, 0, '0.000', 0, 13),
+(7, '', '2021-09-13 22:08:35', 2, 100, 0, '', 1, 0, 210, 0, 'Товар 2', '', 'tovar-2', '', 0, '', '', '', '', 1631560080, 0, 0, 2, 1631560115, 2, 1631603967, '127.0.0.1', 'Администратор', '', '', '', '{\"attr3\":0,\"attr12\":13}', '', '{\"img\":{\"1\":{\"url\":\"http:\\/\\/mnbv.ru\\/img\\/help_book.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1631560177,\"editip\":\"127.0.0.1\"}}}', 0, '', '500.00', '0.00', '0.00', '0.00', 20, 1, '0.00', '0.00', '0.00', '0.00', 2, '', '', '234', '', '', 2, ',7,,,234,demobrand1,rossiya,russia,tovar2,,,', '', '', '', '', 1, 1, 0, '0.000', 0, 0, 0, 0, 0, '0.000', 0, 13);
 
 -- --------------------------------------------------------
 
@@ -1206,30 +1228,42 @@ CREATE TABLE `mnbv_searchindex` (
 --
 
 INSERT INTO `mnbv_searchindex` (`id`, `siteid`, `type`, `objid`, `objtype`, `normstr`, `weight`) VALUES
-(5, 0, 0, 3, 0, '3', 3),
-(6, 0, 0, 2, 0, '2', 3),
-(7, 0, 0, 2, 0, '2', 3),
-(10, 0, 0, 3, 0, '3', 6),
-(17, 0, 1, 2, 1, 'katigoriia', 2),
-(18, 0, 1, 2, 1, '1', 2),
-(19, 0, 0, 3, 0, '3', 6),
-(20, 0, 0, 3, 0, '3', 6),
-(21, 0, 1, 4, 1, 'katigoriia', 2),
-(22, 0, 1, 4, 1, '2', 2),
-(23, 0, 0, 5, 0, '5', 6),
-(24, 0, 0, 5, 0, '5', 3),
-(25, 0, 0, 5, 0, '5', 6),
-(26, 0, 0, 5, 0, '5', 6),
-(27, 0, 0, 3, 0, '3', 6),
-(28, 0, 0, 3, 0, '3', 6),
-(33, 0, 1, 1, 1, 'tovari', 2),
-(34, 0, 1, 1, 1, 'produks', 2),
-(35, 0, 0, 3, 0, '3', 6),
-(36, 0, 0, 6, 0, '6', 6),
-(37, 0, 0, 6, 0, '6', 6),
-(38, 0, 0, 6, 0, 'dimobrand2', 2),
-(39, 0, 0, 3, 0, '3', 3),
-(40, 0, 0, 6, 0, '6', 3);
+(198, 0, 1, 5, 0, '5', 100),
+(199, 0, 1, 5, 0, 'art6789', 10),
+(200, 0, 1, 5, 0, '6789', 2),
+(201, 0, 1, 5, 0, 'strokikodi', 10),
+(202, 0, 1, 5, 0, 'mod1234', 10),
+(203, 0, 1, 5, 0, '1234', 2),
+(204, 0, 1, 5, 0, 'prif', 2),
+(205, 0, 1, 5, 0, 'dimobrand2', 2),
+(206, 0, 1, 5, 0, 'rosiia', 2),
+(207, 0, 1, 5, 0, 'rusa', 2),
+(208, 0, 1, 5, 0, 'tovarshik2', 1),
+(546, 0, 1, 3, 0, '3', 100),
+(547, 0, 1, 3, 0, 'tktpartnum67890', 10),
+(548, 0, 1, 3, 0, '67890', 2),
+(549, 0, 1, 3, 0, 'tkstian', 10),
+(550, 0, 1, 3, 0, 'tktmod12345', 10),
+(551, 0, 1, 3, 0, '12345', 2),
+(552, 0, 1, 3, 0, 'tkstprifiks', 2),
+(553, 0, 1, 3, 0, 'dimobrand1', 2),
+(554, 0, 1, 3, 0, 'rusa', 2),
+(555, 0, 1, 3, 0, 'tovar1', 1),
+(556, 0, 1, 2, 0, '2', 100),
+(557, 0, 1, 2, 0, 'katigoriia', 1),
+(558, 0, 1, 2, 0, '1', 1),
+(559, 0, 1, 6, 0, '6', 100),
+(560, 0, 1, 6, 0, 'dimobrand2', 2),
+(561, 0, 1, 6, 0, 'rosiia', 2),
+(562, 0, 1, 6, 0, 'rusa', 2),
+(563, 0, 1, 6, 0, 'tovar3', 1),
+(564, 0, 1, 7, 0, '7', 100),
+(565, 0, 1, 7, 0, '234', 10),
+(566, 0, 1, 7, 0, 'dimobrand1', 2),
+(567, 0, 1, 7, 0, 'rosiia', 2),
+(568, 0, 1, 7, 0, 'rusa', 2),
+(569, 0, 1, 7, 0, 'tovar', 1),
+(570, 0, 1, 7, 0, '2', 1);
 
 -- --------------------------------------------------------
 
@@ -1283,7 +1317,7 @@ CREATE TABLE `mnbv_site` (
 
 INSERT INTO `mnbv_site` (`id`, `datestr`, `parentid`, `pozid`, `type`, `typeval`, `visible`, `access`, `access2`, `first`, `name`, `namelang`, `alias`, `comm`, `preview`, `about`, `aboutlang`, `text`, `textlang`, `date`, `date1`, `date2`, `createuser`, `createdate`, `edituser`, `editdate`, `editip`, `author`, `vars`, `attrup`, `attr`, `attrvals`, `upfolders`, `files`, `siteid`, `tags`) VALUES
 (1, '2017-08-08 12:49:06', 0, 100, 1, '', 1, 0, 102, 0, 'Демо интернет-магазин MNBV', 'MNBV demo online store', '', '', 0, '', '', '', '', 1502182140, 0, 0, 2, 1502182146, 2, 1621327137, '127.0.0.1', 'Администратор', '{\"tpl_file\":\"index.php\"}', '', '', '', '', '{\"img\":{\"2\":{\"size\":{\"kb\":225,\"w\":1288,\"h\":300},\"type\":\"jpg\",\"fname\":\"60-\\u0440\\u043e\\u043c\\u0430\\u0448\\u043a\\u0438-\\u043a\\u0430\\u0440\\u0442\\u0438\\u043d\\u043a\\u0438-\\u043a\\u0440\\u0430\\u0441\\u0438\\u0432\\u044b\\u0435.jpg\",\"edituser\":\"2\",\"editdate\":1618778526,\"upldate\":1618778526,\"editip\":\"127.0.0.1\"},\"3\":{\"size\":{\"kb\":301,\"w\":1288,\"h\":300,\"min\":{\"kb\":13,\"w\":100,\"h\":80},\"big\":{\"kb\":922,\"w\":1280,\"h\":1024}},\"type\":\"jpg\",\"fname\":\"Many-strawberries-red-fruit-delicious_1280x1024.jpg\",\"edituser\":\"2\",\"editdate\":1618778538,\"upldate\":1618778538,\"editip\":\"127.0.0.1\"},\"4\":{\"size\":{\"kb\":351,\"w\":1288,\"h\":300},\"type\":\"jpg\",\"fname\":\"beach-sea-coast-water-nature-outdoor-sand-ocean-shore-wave-summer-paradise-holiday-lifestyle-material-body-of-water-sunny-waves-happy-habitat-beach-sand-summer-fun-mudflat-wind-wave-646583.jpg\",\"edituser\":\"2\",\"editdate\":1618778556,\"upldate\":1618778556,\"editip\":\"127.0.0.1\"},\"5\":{\"size\":{\"kb\":346,\"w\":1288,\"h\":300},\"type\":\"jpg\",\"fname\":\"wtkVBKz0M8-126.jpg\",\"edituser\":\"2\",\"editdate\":1618778572,\"upldate\":1618778572,\"editip\":\"127.0.0.1\"}}}', 0, ''),
-(2, '2017-08-08 12:49:42', 1, 100, 0, '', 1, 0, 102, 0, 'О компании', 'About', 'about', '', 0, 'Информация о компании.', 'Put the information about your company here.', '<p>{{img-right:1}}</p>\r\n<h4>План по доработкам Интернет-Магазина:</h4>\r\n<ol>\r\n<li>Доработать систему задач, интегрировать в нее прием заказов и входящие письма.</li>\r\n<li>Сделать механизм передачи заказов в учетную систему и механизм передачи пользователей со скидками из учетной системы на сайт.</li>\r\n<li>Сделать рейтинги полезности товаров по валовой прибыли, отклонению от центра. Сделать деление товаров на группы брендов от A- до C+, деление товаров по цене на 6 частей.</li>\r\n<li>Сделать рекомендательную систему: вы смотрели, похожие товары, сопутствующие товары, персональные рекомендации (на базе просмотренных товаров смотрим категории, которые смотрел пользователь, уровень бренда, квартиль цены и показываем ему пропорционально наиболее рейтинговые товары из этих категорий с коррекцией на уровень бренда +-1 и группы цены +-1. Сразу заложить аналитику CTR и влияние рекомендаций на продажи.</li>\r\n<li>Сделать баннерную систему.</li>\r\n<li>Сделать отображение товаров в акциях, учет акционных скидок при формировании корзины и заказа. Отображение категории и товары, сделать брендзоны.</li>\r\n<li>Аналитика, события, подключение счетчиков, в т.ч. отслеживание связи продаж товаров с переходами на соответствующие акции и баннеры в рамках сессии.</li>\r\n<li>Сделать онлайн оплату, интегрировать ее в систему задач, привязать к заказам.</li>\r\n<li>Доработать модуль SEO оптимизации (формирование метатегов по маскам для разных групп структурных элементов).</li>\r\n<li>Сделать систему регистрации новых пользователей, подписку на рассылки разного рода и пуш уведомления.</li>\r\n<li>Ввести деление на регионы, статусы наличия и цены по ним, доработать вывод фидов с учетом регионов.</li>\r\n<li>Внедрить автоматическое определение региона с автоустановкой (предварительно уточнив что правы).</li>\r\n<li>Внедрить КЛАДР и помощник ввода имен, валидацию имен и адресов.</li>\r\n<li>Сделать избранное и сравнение товаров.</li>\r\n</ol>\r\n<p>&nbsp;</p>', '<p>{{img-right:1}}Hello! We are glad to sea you in this Demo Site!</p>\r\n<p>It cotsists of:</p>\r\n<ul>\r\n<li>structure of static pages,</li>\r\n<li>structure of news and articles,</li>\r\n<li>product catalog,</li>\r\n<li>contacts whith feedback  form,</li>\r\n<li>banners system,</li>\r\n<li>user login and personal account, </li>\r\n<li>discount system,</li>\r\n<li>events system,</li>\r\n<li>feeds generator,</li>\r\n<li>CMS,</li>\r\n<li>storage uploader</li>\r\n<li>catalog autocomplite.</li>\r\n</ul>\r\n<p>Select template and connect it to system.</p>\r\n<p>You can work whith multiple sites.</p>', 1502182140, 0, 0, 2, 1502182182, 2, 1627799508, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"\\/src\\/mnbv\\/img\\/logo\\/smile.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1618779999,\"editip\":\"127.0.0.1\"}}}', 0, ''),
+(2, '2017-08-08 12:49:42', 1, 100, 0, '', 1, 0, 102, 0, 'О компании', 'About', 'about', '', 0, 'Информация о компании.', 'Put the information about your company here.', '<p>{{img-right:1}}</p>\r\n<p>Добро пожаловать на демонстрационную версию сайта компании. Она включает основные элементы, которые необходимы полноценному информационному ресурсу, а именно:</p>\r\n<ul>\r\n<li>структуру статических страниц, удобное управление контентом,</li>\r\n<li>новости и статьи,</li>\r\n<li>каталог товаров, акции, корзина с формированием заказа,</li>\r\n<li>контакты с формой обратной связи,</li>\r\n<li>баннерная система,</li>\r\n<li>авторизация, контроль доступа к ресурсам, личный кабинет пользователя,&nbsp;</li>\r\n<li>система скидок для каталога товаров,</li>\r\n<li>система обработки событий (нужна для установки счетчиков и др. скриптов партнерских программ),</li>\r\n<li>систему выгрузки товарных фидов различных видов,</li>\r\n<li>система загрузки и синхронизации данных в хранилищах</li>\r\n<li>система автоматического формирования каталогов, свойств товара и при необходимости группировки их значений из XML фида с параметрами товара.</li>\r\n<li>система аналитики, позволяющая подключать счетчики основных систем, а также вести расширенный учет электронной торговли и влияния акций, баннеров и рекомендаций на продаж.</li>\r\n</ul>\r\n<p>Вы можете подключить любой выбранный вами шаблон дизайна и использовать несколько вариантов шаблонов дизайна одновременно, переключаясь между ними.</p>\r\n<p>Система поддерживает работу с несколькими сайтами, а также позволяет подключать разные варианты шаблонов отображения на разные доменные имена.</p>', '<p>{{img-right:1}}Hello! We are glad to sea you in this Demo Site!</p>\r\n<p>It cotsists of:</p>\r\n<ul>\r\n<li>structure of static pages,</li>\r\n<li>structure of news and articles,</li>\r\n<li>product catalog,</li>\r\n<li>contacts whith feedback  form,</li>\r\n<li>banners system,</li>\r\n<li>user login and personal account, </li>\r\n<li>discount system,</li>\r\n<li>events system,</li>\r\n<li>feeds generator,</li>\r\n<li>CMS,</li>\r\n<li>storage uploader</li>\r\n<li>catalog autocomplite.</li>\r\n</ul>\r\n<p>Select template and connect it to system.</p>\r\n<p>You can work whith multiple sites.</p>', 1502182140, 0, 0, 2, 1502182182, 2, 1631620929, '127.0.0.1', 'Администратор', '', '', '', '', '', '{\"img\":{\"1\":{\"url\":\"\\/src\\/mnbv\\/img\\/logo\\/smile.jpg\",\"type\":\"jpg\",\"edituser\":\"2\",\"editdate\":1618779999,\"editip\":\"127.0.0.1\"}}}', 0, ''),
 (3, '2017-08-08 12:49:51', 1, 100, 0, '', 1, 0, 102, 0, 'Статьи', 'Articles', 'articles', '', 0, '', 'The articles list of the company.', '', '', 1502182140, 0, 0, 2, 1502182191, 2, 1629478033, '127.0.0.1', 'Администратор', '{\"script\":\"pglist\",\"list_sort\":\"date_desc\",\"script_storage\":\"articles\",\"script_folder\":\"1\",\"list_max_items\":8,\"script_tpl_file\":\"tpl_articleslist.php\",\"script_tpl2_file\":\"tpl_newsview.php\"}', '', '', '', '', '', 0, ''),
 (4, '2017-08-08 12:50:05', 1, 100, 0, '', 1, 0, 102, 0, 'Новости', 'News', 'news', '', 0, 'Новинки компании - будте всегда в курсе!', 'The news list of the company. ', '<p>Новинки компании - будте всегда в курсе!</p>', '<p>The news list of the company.&nbsp;</p>', 1502182200, 0, 0, 2, 1502182205, 2, 1619479613, '127.0.0.1', 'Администратор', '{\"script\":\"pglist\",\"script_storage\":\"news\",\"script_folder\":\"1\",\"list_max_items\":6,\"list_sort\":\"date_desc\",\"script_tpl_file\":\"tpl_newslist.php\",\"script_tpl2_file\":\"tpl_newsview.php\"}', '', '', '', '', '', 0, ''),
 (5, '2017-08-08 12:50:13', 1, 100, 0, '', 1, 0, 102, 0, 'Каталог', 'Catalog', 'catalog', '', 0, 'Каталог товаров, реализуемых компанией - найдите что-то полезное для себя!', 'Product catalog page.', '<p>Каталог товаров, реализуемых компанией - найдите что-то полезное для себя!</p>', '<p>Product catalog here.</p>', 1502182200, 0, 0, 2, 1502182213, 2, 1621342852, '127.0.0.1', 'Администратор', '{\"script\":\"products\",\"script_storage\":\"products\",\"script_folder\":\"1\",\"list_max_items\":8,\"scriptvalign\":1}', '', '', '', '', '', 0, ''),
@@ -1671,13 +1705,6 @@ CREATE TABLE `mnbv_tmp` (
   `val` varchar(21000) NOT NULL DEFAULT ''
 ) ENGINE=MEMORY DEFAULT CHARSET=utf8;
 
---
--- Дамп данных таблицы `mnbv_tmp`
---
-
-INSERT INTO `mnbv_tmp` (`id`, `ts`, `tsto`, `val`) VALUES
-('gormenucatalog', 1629666619, 1629753019, '{\"1\":{\"id\":\"2\",\"name\":\"\\u041a\\u0430\\u0442\\u0435\\u0433\\u043e\\u0440\\u0438\\u044f 1\",\"namelang\":\"\",\"alias\":\"kategoriya-1\",\"type\":\"1\"},\"2\":{\"id\":\"4\",\"name\":\"\\u041a\\u0430\\u0442\\u0435\\u0433\\u043e\\u0440\\u0438\\u044f 2\",\"namelang\":\"\",\"alias\":\"kategoriya-2\",\"type\":\"1\"}}');
-
 -- --------------------------------------------------------
 
 --
@@ -1719,7 +1746,8 @@ INSERT INTO `mnbv_urlaliases` (`id`, `siteid`, `urltype`, `alias`, `idref`, `obj
 (44, 0, 1, 'kategoriya-1', 2, 1, ''),
 (45, 0, 1, 'tovar1', 3, 0, 'kategoriya-1'),
 (46, 0, 1, 'tovar2', 5, 0, 'kategoriya-2'),
-(47, 0, 5, 'demobrand2', 4, 0, '');
+(47, 0, 5, 'demobrand2', 4, 0, ''),
+(49, 0, 1, 'tovar-2', 7, 0, 'kategoriya-1');
 
 -- --------------------------------------------------------
 
@@ -1868,7 +1896,7 @@ ALTER TABLE `mnbv_attributes`
 ALTER TABLE `mnbv_attrvals`
   ADD PRIMARY KEY (`id`),
   ADD KEY `obtvint` (`objid`,`vint`),
-  ADD KEY `attrfolder` (`attrid`,`objparentid`);
+  ADD KEY `attrfoldervend` (`attrid`,`objparentid`,`objvendorid`) USING BTREE;
 
 --
 -- Индексы таблицы `mnbv_cartitems`
@@ -2069,19 +2097,19 @@ ALTER TABLE `mnbv_articles`
 -- AUTO_INCREMENT для таблицы `mnbv_attributes`
 --
 ALTER TABLE `mnbv_attributes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT для таблицы `mnbv_attrvals`
 --
 ALTER TABLE `mnbv_attrvals`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT для таблицы `mnbv_cartitems`
 --
 ALTER TABLE `mnbv_cartitems`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT для таблицы `mnbv_carts`
@@ -2093,7 +2121,7 @@ ALTER TABLE `mnbv_carts`
 -- AUTO_INCREMENT для таблицы `mnbv_countries`
 --
 ALTER TABLE `mnbv_countries`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT для таблицы `mnbv_delivery`
@@ -2147,7 +2175,7 @@ ALTER TABLE `mnbv_prinstock`
 -- AUTO_INCREMENT для таблицы `mnbv_products`
 --
 ALTER TABLE `mnbv_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT для таблицы `mnbv_regions`
@@ -2171,7 +2199,7 @@ ALTER TABLE `mnbv_robotsrun`
 -- AUTO_INCREMENT для таблицы `mnbv_searchindex`
 --
 ALTER TABLE `mnbv_searchindex`
-  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=571;
 
 --
 -- AUTO_INCREMENT для таблицы `mnbv_site`
@@ -2219,7 +2247,7 @@ ALTER TABLE `mnbv_tickets`
 -- AUTO_INCREMENT для таблицы `mnbv_urlaliases`
 --
 ALTER TABLE `mnbv_urlaliases`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=49;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Id', AUTO_INCREMENT=50;
 
 --
 -- AUTO_INCREMENT для таблицы `mnbv_users`
