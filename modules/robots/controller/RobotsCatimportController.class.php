@@ -1251,7 +1251,7 @@ class RobotsCatimportController extends AbstractMnbvsiteController{
         $updateArr["first"] = 0;
         $updateArr["access"] = 0;
         $updateArr["access2"] = 210;
-        $updateArr["type"] = 0;
+        $updateArr["type"] = ST_FOLDER;
         $updateArr["datestr"] = $this->thisDateTime;
         $updateArr["date"] = $this->thisTime;
         $updateArr["siteid"] = $this->siteid;
