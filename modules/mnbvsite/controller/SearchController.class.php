@@ -128,10 +128,12 @@ class SearchController extends AbstractMnbvsiteController {
         }
         
         $searchArr0 = preg_split("/ /",$search);
-        if (count($searchArr0)>1){
+        if (count($searchArr0)>0){
             $wcnt = 0;
             foreach($searchArr0 as $value){
-                $normstr = SysBF::strNormalize($stemmer->getWordBase($value));
+                $curStemmerStr = $stemmer->getWordBase($value);
+                SysLogs::addLog('Search str: stemmer=>[' . $curStemmerStr . ']'); 
+                $normstr = SysBF::strNormalize($curStemmerStr);
                 $normstr = SysBF::normUpdate($normstr);
                 if (mb_strlen($normstr,'utf-8')>=2 || preg_match("/[0-9]/", $normstr)) {
                     $searchArr[] = $normstr;
