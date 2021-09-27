@@ -42,6 +42,11 @@ class StemmerRu
     
     const REGEX_CUSTOM = '(ечными|ечная|ечных|иками|йками|овками|овыми|овкам|овкой|ками|йная|йные|йными|йкой|йками|ьных|ьная|ьными|ными|овая|овка|овки|йка|йки|кой|ных|ный|ная|ные|мых|мый|мая|мые|ыми|ами|ка|ки|ик)$'; //Мои добавления
     
+    const REGEX_CUSTOM_REPL = array(
+        'айфон' => 'ифон',
+        'асер' => 'ацер',
+    );
+    
     /**
      * @param string $word
      *
@@ -54,6 +59,7 @@ class StemmerRu
         
         //self::removeEndings($word, self::REGEX_CUSTOM, $rv);
         $word2 = preg_replace('/' . self::REGEX_CUSTOM . '/ui', '', $word);
+        $word2 = strtr($word2, self::REGEX_CUSTOM_REPL);
         if ($word!==$word2) return $word2;
         $word = $word2;
 
