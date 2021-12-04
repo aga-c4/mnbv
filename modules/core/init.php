@@ -29,8 +29,12 @@ if (isset ($systemErrorsView)) SysLogs::$errorsView = ($systemErrorsView)?true:f
  * Обработка входных параметров.
  * Внимание! Существует директива magic_quotes_sybase. Она вместо слеша добавляет кавычку и ОТМЕНЯЕТ действие magic_quotes_gpc.
  * Если она у вас установлена, тогда доработайте схему преобразования входных данных
+ *
+ * Внимание! get_magic_quotes_gpc устарела и php уже не проставляет автоматом слешей перед кавычками
+ * Поэтому пока отключаем, потом удаляем
  */
-if (get_magic_quotes_gpc()) { 
+//if (get_magic_quotes_gpc()) {
+if (false) {
   SysBF::stripsl($_GET);
   SysBF::stripsl($_POST);
   SysBF::stripsl($_COOKIE); 
