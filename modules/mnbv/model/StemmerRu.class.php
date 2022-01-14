@@ -36,10 +36,17 @@ class StemmerRu
     const REGEX_NOUN = '(а|ев|ов|ие|ье|е|ьё|иями|ями|ами|еи|ии|и|ией|ей|ой|ий|й|иям|ям|ием|ем|ам|ом|о|у|ах|иях|ях|ы|ь|ию|ью|ю|ия|ья|я)$';
     const REGEX_SUPERLATIVE = '(ейш|ейше)$';
     const REGEX_DERIVATIONAL = '(ост|ость)$';
-    const REGEX_I = 'и$';
+    const REGEX_I = '(й|и)$'; //Было 'и$' 
     const REGEX_NN = 'нн$';
     const REGEX_SOFT_SIGN = 'ь$';
-
+    
+    const REGEX_CUSTOM = '(ечными|ечная|ечных|иками|йками|овками|овыми|овкам|овкой|ками|йная|йные|йными|йкой|йками|ьных|ьная|ьными|ными|овая|овка|овки|йка|йки|кой|ных|ный|ная|ные|мых|мый|мая|мые|ыми|ами|ка|ки|ик)$'; //Мои добавления
+    
+    const REGEX_CUSTOM_REPL = array(
+        'айфон' => 'ифон',
+        'асер' => 'ацер',
+    );
+    
     /**
      * @param string $word
      *
@@ -49,6 +56,12 @@ class StemmerRu
     {
         $originalInternalEncoding = mb_internal_encoding();
         mb_internal_encoding('UTF-8');
+        
+        //self::removeEndings($word, self::REGEX_CUSTOM, $rv);
+        $word2 = preg_replace('/' . self::REGEX_CUSTOM . '/ui', '', $word);
+        $word2 = strtr($word2, self::REGEX_CUSTOM_REPL);
+        if ($word!==$word2) return $word2;
+        $word = $word2;
 
         list($rv, $r2) = self::findRegions($word);
 
