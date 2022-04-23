@@ -60,8 +60,8 @@
  */
 $config = array(
     'mnbv' => array(
-        "db_dump_scrpt" => "mysqldump -uroot mnbv8 > ", //Скрипт создания дампа бд - в конце будет добавлен файл дампа
-        "db_script" => "mysql -uroot mnbv8 < ", //Скрипт выполнения скрипта бд - в конце будет добавлен файл дампа
+        "db_dump_scrpt" => "mysqldump -h 127.0.0.1 -uroot mnbv8 > ", //Скрипт создания дампа бд - в конце будет добавлен файл дампа
+        "db_script" => "mysql -h 127.0.0.1 -uroot mnbv8 < ", //Скрипт выполнения скрипта бд - в конце будет добавлен файл дампа
         "version" => 2, //Номер текущей версии, для которой будут выполняться файлы миграций
         "ext" => "sql", //расширение файлов миграции и дампов.
     )
@@ -277,9 +277,9 @@ class MNBVMigration {
             if ($baselineFileNam==$tec_file_nam) $baselineFound = true;
 
             //Условия блокировки
+            if (empty($tecArr[1]) || $tec_file_nam===$baselineFileNam) continue;
             if (in_array($tec_file_nam,$this->migrations)) continue;
             if ($this->version != intval($tecArr[1])) continue;
-            if ($tec_file_nam==$baselineFileNam) continue;
 
             $resArr[] = $tec_file_nam;
         }
@@ -300,7 +300,7 @@ class MNBVMigration {
      * @return string
      */
     public function getDbVersion(){
-        return $this->$version;
+        return $this->version;
     }
 
     /**
