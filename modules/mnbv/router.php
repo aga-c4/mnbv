@@ -16,8 +16,18 @@ Glob::$vars['mnbv_action'] = Glob::$vars['mnbv_def_action']; //Действие 
 //Разбор URL для определния параметров
 Glob::$vars['mnbv_route_arr'] = array();
 if (!empty(Glob::$vars['request']['route_url'])) {
-    Glob::$vars['mnbv_route_arr'] = preg_split("/\//",Glob::$vars['request']['route_url']);
-    foreach(Glob::$vars['mnbv_route_arr'] as $key=>$value) Glob::$vars['mnbv_route_arr'][$key] = SysBF::checkStr($value,'routeitem');
+    $mnbv_route_arr = preg_split("/\//",Glob::$vars['request']['route_url']);
+    foreach($mnbv_route_arr as $key=>$value) {
+        if (!empty($value)) {
+            $mnbv_route_arr[$key] = SysBF::checkStr($value,'routeitem');
+        } else {
+            unset($mnbv_route_arr[$key]);
+        }
+    }
+
+    Glob::$vars['mnbv_route_arr'] = array();
+    foreach($mnbv_route_arr as $value) Glob::$vars['mnbv_route_arr'][] = $value;
+
     $request_uri_str = (!empty($_SERVER['REQUEST_URI']))?$_SERVER['REQUEST_URI']:'';
     SysLogs::addLog('REQUEST_URI: ' . $request_uri_str);
     SysLogs::addLog('RouteStr: ' . implode('/',Glob::$vars['mnbv_route_arr']));

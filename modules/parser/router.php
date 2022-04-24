@@ -16,8 +16,18 @@ if (!empty(Glob::$vars['request']['action'])) Glob::$vars['action'] = Glob::$var
 //Разбор URL для определния параметров
 Glob::$vars['route_arr'] = array();
 if (!empty(Glob::$vars['request']['route_url'])) {
-    Glob::$vars['route_arr'] = preg_split("/\//",Glob::$vars['request']['route_url']);
-    foreach(Glob::$vars['route_arr'] as $key=>$value) Glob::$vars['route_arr'][$key] = SysBF::checkStr($value,'routeitem');
+    $route_arr = preg_split("/\//", Glob::$vars['request']['route_url']);
+    foreach($route_arr as $key=>$value) {
+        if (!empty($value)) {
+            $route_arr[$key] = SysBF::checkStr($value,'routeitem');
+        } else {
+            unset($route_arr[$key]);
+        }
+    }
+
+    Glob::$vars['route_arr'] = array();
+    foreach($route_arr as $value) Glob::$vars['route_arr'][] = $value;
+
     $request_uri_str = (!empty($_SERVER['REQUEST_URI']))?$_SERVER['REQUEST_URI']:'';
     SysLogs::addLog('REQUEST_URI: ' . $request_uri_str);
     SysLogs::addLog('RouteStr: ' . implode('/',Glob::$vars['route_arr']));
